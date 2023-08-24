@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78502e411b0f7ee4e92d2fb8d6370fd2, type: 3}
+  m_Name: BasketballPositions
+  m_EditorClassIdentifier: 
+  _sportsType: 0
+  _positions:
+  - {fileID: 11400000, guid: ea09f11d83391b343b075349c0199f87, type: 2}
+  - {fileID: 11400000, guid: d65b02df107b1e2498f393a7539a7a05, type: 2}
+  - {fileID: 11400000, guid: b0ff951a89510b649b30be3384a02014, type: 2}
+  - {fileID: 11400000, guid: c5f318fc46900c84a919ee5a57c1cee9, type: 2}
+  - {fileID: 11400000, guid: 372c2be96cd9ef541b273d6783e41bf5, type: 2}

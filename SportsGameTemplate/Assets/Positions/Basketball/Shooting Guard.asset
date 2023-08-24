@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbd5f84f5ac878e40a44f67598030c0a, type: 3}
+  m_Name: Shooting Guard
+  m_EditorClassIdentifier: 
+  _positionName: Shooting Guard
+  _positionStats:
+  - _skillName: 0
+    _skillWeightForPosition: 0
+  - _skillName: 1
+    _skillWeightForPosition: 0
+  - _skillName: 2
+    _skillWeightForPosition: 0
+  - _skillName: 3
+    _skillWeightForPosition: 0
+  - _skillName: 4
+    _skillWeightForPosition: 0
+  - _skillName: 5
+    _skillWeightForPosition: 0
+  - _skillName: 6
+    _skillWeightForPosition: 0
+  - _skillName: 7
+    _skillWeightForPosition: 0
+  - _skillName: 8
+    _skillWeightForPosition: 0
+  - _skillName: 9
+    _skillWeightForPosition: 0
+  - _skillName: 10
+    _skillWeightForPosition: 0
+  - _skillName: 11
+    _skillWeightForPosition: 0
+  - _skillName: 12
+    _skillWeightForPosition: 0
