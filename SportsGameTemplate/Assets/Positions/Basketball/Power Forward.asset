@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Power Forward
   m_EditorClassIdentifier: 
   _positionName: Power Forward
+  _amountInStartingTeam: 3
   _positionStats:
   - _skillName: 0
     _skillWeightForPosition: 0

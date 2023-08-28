@@ -14,4 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _positionName: Pitcher
   _amountInStartingTeam: 0
-  _positionStats: []
+  _totalWeightOfSkills: 0
+  _positionStats:
+  - _skillName: 0
+    _skillWeightForPosition: 0
+  - _skillName: 13
+    _skillWeightForPosition: 0
+  - _skillName: 14
+    _skillWeightForPosition: 0
+  - _skillName: 15
+    _skillWeightForPosition: 0
+  - _skillName: 16
+    _skillWeightForPosition: 0
+  - _skillName: 17
+    _skillWeightForPosition: 0
+  - _skillName: 6
+    _skillWeightForPosition: 0

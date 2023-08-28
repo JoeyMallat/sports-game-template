@@ -12,4 +12,14 @@ public class PositionConfig : ScriptableObject
     {
         return _positions;
     }
+
+    public Position GetPosition(string position)
+    {
+        foreach (Position pos in _positions)
+        {
+            if (pos.GetPositionName() == position)
+                return pos;
+        }
+        return null;
+    }
 }
