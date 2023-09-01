@@ -17,4 +17,14 @@ public class Team
         _teamRating = rating;
         _players = players;
     }
+
+    public int GetTeamID()
+    {
+        return _teamID;
+    }
+
+    public string GetTeamName()
+    {
+        return _teamName;
+    }
 }

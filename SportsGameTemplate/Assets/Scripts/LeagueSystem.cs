@@ -6,7 +6,7 @@ public class LeagueSystem : MonoBehaviour
 {
     [SerializeField] List<Team> _teams;
 
-    private void Start()
+    private void Awake()
     {
         ReadTeamsFromFile();
     }
@@ -33,5 +33,10 @@ public class LeagueSystem : MonoBehaviour
 
             id++;
         }
+    }
+
+    public List<Team> GetTeams()
+    {
+        return _teams;
     }
 }

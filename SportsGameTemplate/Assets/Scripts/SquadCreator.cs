@@ -14,7 +14,6 @@ public class SquadCreator
         foreach (Position position in ConfigManager.Instance.GetCurrentConfig().PositionConfig.GetPositions())
         {
             int amount = position.GetAmountInStartingTeam();
-            Debug.Log(amount);
 
             for (int j = 0; j < amount; j++)
             {

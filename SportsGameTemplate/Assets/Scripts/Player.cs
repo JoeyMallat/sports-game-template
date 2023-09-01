@@ -42,7 +42,7 @@ public class Player
 
         float randomness = Graphs.Instance.SkillImportanceGraph.Evaluate(importance) * rating / 4;
 
-        Debug.Log($"Importance of {positionStat.GetSkill()} stat is {importance}, resulting in {randomness} randomness");
+        // Debug.Log($"Importance of {positionStat.GetSkill()} stat is {importance}, resulting in {randomness} randomness");
 
         int skillRating = Mathf.Clamp(Mathf.RoundToInt(UnityEngine.Random.Range(baseRating - randomness, baseRating + randomness)), 0, 99);
 

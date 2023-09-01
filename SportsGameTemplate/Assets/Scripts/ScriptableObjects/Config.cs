@@ -9,4 +9,5 @@ public class Config : ScriptableObject
     public TextAsset LeagueFile;
     public int AverageSquadSize;
     public PositionConfig PositionConfig;
+    [SerializeReference] public ScheduleGenerator ScheduleGenerator;
 }
