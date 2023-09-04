@@ -17,7 +17,6 @@ public class BasketballScheduleGenerator : ScheduleGenerator
                 if (team.GetTeamID() != t.GetTeamID())
                 {
                     matches.Add(new Match(0, 0, team.GetTeamID(), t.GetTeamID()));
-                    Debug.Log($"Match: {team.GetTeamName()} - {t.GetTeamName()}");
                 }
             }
         }

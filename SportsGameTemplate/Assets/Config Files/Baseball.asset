@@ -17,8 +17,7 @@ MonoBehaviour:
   ScheduleGenerator:
     rid: -2
   AverageSquadSize: 25
-  FirstNames: {fileID: 4900000, guid: 97c37434d5de94c4591f38accca57f29, type: 3}
-  LastNames: {fileID: 4900000, guid: e13296201c305bd4eb205ea70e036735, type: 3}
+  AverageAgeInLeague: 24
   LeagueFile: {fileID: 4900000, guid: b580189a43450e4428ef68d28a3c4249, type: 3}
   WeightedDraftLottery: 0
   DraftRounds: 0

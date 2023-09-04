@@ -17,12 +17,11 @@ MonoBehaviour:
   ScheduleGenerator:
     rid: 7850772540815572992
   AverageSquadSize: 16
-  FirstNames: {fileID: 4900000, guid: 97c37434d5de94c4591f38accca57f29, type: 3}
-  LastNames: {fileID: 4900000, guid: e13296201c305bd4eb205ea70e036735, type: 3}
+  AverageAgeInLeague: 25
   LeagueFile: {fileID: 4900000, guid: 522c45c2c290a0a428cdf6c80f684299, type: 3}
   WeightedDraftLottery: 0
-  DraftRounds: 0
-  PlayersPerDraftRound: 0
+  DraftRounds: 2
+  PlayersPerDraftRound: 30
   references:
     version: 2
     RefIds:

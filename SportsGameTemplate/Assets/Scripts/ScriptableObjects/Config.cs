@@ -12,6 +12,7 @@ public class Config : ScriptableObject
 
     [Header("League & World Settings")]
     public int AverageSquadSize;
+    public int AverageAgeInLeague;
     public TextAsset LeagueFile;
 
     [Header("Draft Settings")]

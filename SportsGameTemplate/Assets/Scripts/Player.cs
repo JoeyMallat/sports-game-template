@@ -5,13 +5,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Player
+public class Player : ITradeable
 {
     [SerializeField][ReadOnly] string _playerID;
     [SerializeField] string _firstName;
     [SerializeField] string _lastName;
     [SerializeField] string _position;
+    [SerializeField] int _age;
     [ReadOnly][SerializeField] int _rating;
+    [ReadOnly][SerializeField] int _tradeValue;
     [SerializeField] List<PlayerSkill> _skills;
 
     [Header("Appearance Settings")]
@@ -27,8 +29,21 @@ public class Player
         _firstName = firstname;
         _lastName = lastname;
         _position = position;
+        _age = UnityEngine.Random.Range(20, 39);
 
         _skills = new();
+    }
+
+    public int CalculateTradeValue()
+    {
+        _tradeValue = CalculateRatingForPosition() * (40 - _age);
+        return _tradeValue;
+    }
+
+    public int CalculateRatingForPosition()
+    {
+        _rating = ConfigManager.Instance.GetCurrentConfig().PositionConfig.GetPosition(_position).CalculateAverageRatingForPosition(_skills);
+        return _rating;
     }
 
     public void SetRandomSkills(int averageRating, List<PositionStat> positionStats)
@@ -37,7 +52,8 @@ public class Player
         {
             int ratingForSkill = CalculateRatingForSkill(averageRating, positionStat, positionStats);
             _skills.Add(new PlayerSkill(positionStat.GetSkill(), ratingForSkill));
-            _rating = ConfigManager.Instance.GetCurrentConfig().PositionConfig.GetPosition(_position).CalculateAverageRatingForPosition(_skills);
+            CalculateRatingForPosition();
+            CalculateTradeValue();
         }
     }
 
@@ -56,5 +72,10 @@ public class Player
         int skillRating = Mathf.Clamp(Mathf.RoundToInt(UnityEngine.Random.Range(baseRating - randomness, baseRating + randomness)), 0, 99);
 
         return skillRating;
+    }
+
+    public string GetPlayerID()
+    {
+        return _playerID;
     }
 }
