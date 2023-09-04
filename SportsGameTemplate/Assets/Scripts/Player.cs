@@ -8,15 +8,24 @@ using UnityEngine;
 public class Player
 {
     [SerializeField][ReadOnly] string _playerID;
-    [SerializeField] string _name;
+    [SerializeField] string _firstName;
+    [SerializeField] string _lastName;
     [SerializeField] string _position;
     [ReadOnly][SerializeField] int _rating;
     [SerializeField] List<PlayerSkill> _skills;
 
-    public Player(string name, string position)
+    [Header("Appearance Settings")]
+    [SerializeField] int _skinID;
+    [SerializeField] int _eyesID;
+    [SerializeField] int _noseID;
+    [SerializeField] int _mouthID;
+    [SerializeField] int _hairID;
+
+    public Player(string firstname, string lastname, string position)
     {
         _playerID = RandomIDGenerator.GenerateRandomID();
-        _name = name;
+        _firstName = firstname;
+        _lastName = lastname;
         _position = position;
 
         _skills = new();

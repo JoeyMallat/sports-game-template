@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,13 +18,23 @@ public class SquadCreator
 
             for (int j = 0; j < amount; j++)
             {
+                // Get random name from list of names
+                string firstName = GetRandomNameFromList(Resources.Load<TextAsset>("Names/first_names"));
+                string lastName = GetRandomNameFromList(Resources.Load<TextAsset>("Names/last_names"));
+
                 // Create player with position y
-                Player newPlayer = new Player($"Player_{position.GetPositionName()}_{j}", position.GetPositionName());
+                Player newPlayer = new Player(firstName, lastName, position.GetPositionName());
                 players.Add(newPlayer);
                 newPlayer.SetRandomSkills(rating, position.GetPositionStats());
             }
         }
 
         return players;
+    }
+
+    private string GetRandomNameFromList(TextAsset nameList)
+    {
+        string[] names = nameList.text.Split('\n');
+        return names[UnityEngine.Random.Range(0, names.Length)];
     }
 }

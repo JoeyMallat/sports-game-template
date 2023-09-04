@@ -6,8 +6,16 @@ using UnityEngine;
 public class Config : ScriptableObject
 {
     public SportsType SportsType;
-    public TextAsset LeagueFile;
-    public int AverageSquadSize;
+
     public PositionConfig PositionConfig;
     [SerializeReference] public ScheduleGenerator ScheduleGenerator;
+
+    [Header("League & World Settings")]
+    public int AverageSquadSize;
+    public TextAsset LeagueFile;
+
+    [Header("Draft Settings")]
+    public bool WeightedDraftLottery;
+    public int DraftRounds;
+    public int PlayersPerDraftRound;
 }
