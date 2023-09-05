@@ -14,6 +14,7 @@ public class Config : ScriptableObject
     public int AverageSquadSize;
     public int AverageAgeInLeague;
     public TextAsset LeagueFile;
+    public int GamesPerTeamInRegularSeason;
 
     [Header("Draft Settings")]
     public bool WeightedDraftLottery;

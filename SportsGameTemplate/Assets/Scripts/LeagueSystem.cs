@@ -8,6 +8,7 @@ public class LeagueSystem : MonoBehaviour
     public static LeagueSystem Instance;
 
     [SerializeField] List<Team> _teams;
+    [SerializeField] List<Match> _seasonMatches;
 
     private void Awake()
     {
@@ -41,6 +42,13 @@ public class LeagueSystem : MonoBehaviour
         }
 
         DistributeDraftPicks();
+        _seasonMatches = ConfigManager.Instance.GetCurrentConfig().ScheduleGenerator.GenerateSchedule(_teams);
+        _seasonMatches = _seasonMatches.OrderBy(x => x.GetWeek()).ToList();
+
+        foreach (Match match in _seasonMatches)
+        {
+            Debug.Log($"Gameweek {match.GetWeek()}: {GetTeam(match.GetHomeTeamID()).GetTeamName()} - {GetTeam(match.GetAwayTeamID()).GetTeamName()}");
+        }
     }
 
     public Team GetTeam(int id)

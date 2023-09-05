@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [System.Serializable]
@@ -9,8 +10,10 @@ public class Team
     [SerializeField] int _teamID;
     [SerializeField] string _teamName;
     [SerializeField] int _teamRating;
-    [SerializeField] List<Player> _players;
-    [SerializeField] List<DraftPick> _draftPicks;
+    List<Player> _players;
+    List<DraftPick> _draftPicks;
+    [SerializeField] private List<int> _matchdays;
+    private List<int> _availableMatchdays;
 
     public Team(int id, string name, int rating, List<Player> players)
     {
@@ -67,5 +70,54 @@ public class Team
         assets.AddRange(_draftPicks);
         assets.AddRange(_players);
         return assets;
+    }
+
+    public List<int> GetMatchdays()
+    {
+        if (_matchdays != null)
+            return _matchdays;
+
+        return new List<int>();
+    }
+
+    public int GetFirstAvailableMatchday()
+    {
+        for (int i = 0; i < ConfigManager.Instance.GetCurrentConfig().GamesPerTeamInRegularSeason; i++)
+        {
+            if (_matchdays.Contains(i))
+            {
+                continue;
+            } else
+            {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+    public List<int> GetAvailableMatchdays()
+    {
+        if (_availableMatchdays == null)
+        {
+            _availableMatchdays = new List<int>();
+
+            for (int i = 0; i < ConfigManager.Instance.GetCurrentConfig().GamesPerTeamInRegularSeason * 1.2f; i++)
+            {
+                _availableMatchdays.Add(i);
+            }
+        }
+
+        return _availableMatchdays;
+    }
+
+    public void AddMatchdayAsTaken(int week)
+    {
+        _availableMatchdays.Remove(week);
+
+        if (_matchdays == null)
+            _matchdays = new List<int>();
+
+        _matchdays.Add(week);
     }
 }

@@ -18,4 +18,19 @@ public class Match
         _homeTeamID = homeID;
         _awayTeamID = awayID;
     }
+
+    public int GetWeek()
+    {
+        return _week;
+    }
+
+    public int GetHomeTeamID()
+    {
+        return _homeTeamID;
+    }
+
+    public int GetAwayTeamID()
+    {
+        return _awayTeamID;
+    }
 }

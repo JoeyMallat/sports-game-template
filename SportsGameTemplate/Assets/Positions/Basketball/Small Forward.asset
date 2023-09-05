@@ -14,30 +14,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _positionName: Small Forward
   _amountInStartingTeam: 3
+  _totalWeightOfSkills: 0.9990001
   _positionStats:
   - _skillName: 0
-    _skillWeightForPosition: 0
+    _skillWeightForPosition: 0.089
   - _skillName: 1
-    _skillWeightForPosition: 0
+    _skillWeightForPosition: 0.06
   - _skillName: 2
-    _skillWeightForPosition: 0
+    _skillWeightForPosition: 0.09
   - _skillName: 3
-    _skillWeightForPosition: 0
+    _skillWeightForPosition: 0.04
   - _skillName: 4
-    _skillWeightForPosition: 0
+    _skillWeightForPosition: 0.07
   - _skillName: 5
-    _skillWeightForPosition: 0
+    _skillWeightForPosition: 0.1
   - _skillName: 6
-    _skillWeightForPosition: 0
+    _skillWeightForPosition: 0.1
   - _skillName: 7
-    _skillWeightForPosition: 0
+    _skillWeightForPosition: 0.1
   - _skillName: 8
-    _skillWeightForPosition: 0
+    _skillWeightForPosition: 0.1
   - _skillName: 9
-    _skillWeightForPosition: 0
+    _skillWeightForPosition: 0.04
   - _skillName: 10
-    _skillWeightForPosition: 0
+    _skillWeightForPosition: 0.07
   - _skillName: 11
-    _skillWeightForPosition: 0
+    _skillWeightForPosition: 0.07
   - _skillName: 12
-    _skillWeightForPosition: 0
+    _skillWeightForPosition: 0.07

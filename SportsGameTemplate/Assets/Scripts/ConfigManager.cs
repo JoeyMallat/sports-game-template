@@ -20,9 +20,4 @@ public class ConfigManager : MonoBehaviour
 
         Debug.Log($"Current loaded config: {_configFile.SportsType}");
     }
-
-    private void Start()
-    {
-        _configFile.ScheduleGenerator.GenerateSchedule(FindAnyObjectByType<LeagueSystem>().GetTeams());
-    }
 }

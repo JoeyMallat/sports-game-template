@@ -9,7 +9,7 @@ public class TradingSystem : MonoBehaviour
     [SerializeField] int _teamAID = 0;
     [SerializeReference] List<ITradeable> _teamATradingAssets;
     [InfoBox("@GetTotalTradeValue(_teamBTradingAssets)")]
-    [SerializeField] int _teamBID = 1;
+    [SerializeField] int _teamBID = 10;
     [SerializeReference] List<ITradeable> _teamBTradingAssets;
 
     private void Update()
@@ -66,7 +66,7 @@ public class TradingSystem : MonoBehaviour
         _teamBTradingAssets = new();
 
         AddAssetToTrade(0, FindAnyObjectByType<LeagueSystem>().GetTeams()[0].GetPlayersFromTeam()[0]);
-        AddAssetToTrade(0, FindAnyObjectByType<LeagueSystem>().GetTeams()[0].GetPlayersFromTeam()[1]);
+        AddAssetToTrade(0, FindAnyObjectByType<LeagueSystem>().GetTeams()[0].GetPlayersFromTeam()[10]);
     }
 
     public void DebugCounterOffer()
