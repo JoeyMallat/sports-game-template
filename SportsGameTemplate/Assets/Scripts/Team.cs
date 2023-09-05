@@ -60,4 +60,12 @@ public class Team
     {
         return _draftPicks;
     }
+
+    public List<ITradeable> GetTradeAssets()
+    {
+        List<ITradeable> assets = new List<ITradeable>();
+        assets.AddRange(_draftPicks);
+        assets.AddRange(_players);
+        return assets;
+    }
 }

@@ -18,6 +18,11 @@ public class TradingSystem : MonoBehaviour
         {
             DebugAddRandomPlayerToTradingAssets();
         }
+
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            DebugCounterOffer();
+        }
     }
 
     [Button(ButtonSizes.Large)]
@@ -62,8 +67,11 @@ public class TradingSystem : MonoBehaviour
 
         AddAssetToTrade(0, FindAnyObjectByType<LeagueSystem>().GetTeams()[0].GetPlayersFromTeam()[0]);
         AddAssetToTrade(0, FindAnyObjectByType<LeagueSystem>().GetTeams()[0].GetPlayersFromTeam()[1]);
-        AddAssetToTrade(1, FindAnyObjectByType<LeagueSystem>().GetTeams()[1].GetDraftPicks()[0]);
-        AddAssetToTrade(1, FindAnyObjectByType<LeagueSystem>().GetTeams()[1].GetPlayersFromTeam()[1]);
+    }
+
+    public void DebugCounterOffer()
+    {
+        _teamBTradingAssets = GetOffer(1);
     }
 
     public void AddAssetToTrade(int team, ITradeable assetToAdd)
@@ -81,5 +89,22 @@ public class TradingSystem : MonoBehaviour
         }
 
         return total;
+    }
+
+    public List<ITradeable> GetOffer(int teamToOffer)
+    {
+        AITrader aiTrader = new AITrader();
+
+        switch (teamToOffer)
+        {
+            case 0:
+                return aiTrader.GenerateOffer(GetTotalTradeValue(_teamBTradingAssets), LeagueSystem.Instance.GetTeam(_teamAID).GetTradeAssets());
+            case 1:
+                return aiTrader.GenerateOffer(GetTotalTradeValue(_teamATradingAssets), LeagueSystem.Instance.GetTeam(_teamBID).GetTradeAssets());
+            default:
+                break;
+        }
+
+        return null;
     }
 }

@@ -23,6 +23,7 @@ public static class Extensions
         Debug.Log(pickID);
         List<DraftPick> picksToRemove = picks.Where(x => x.GetPickID() == pickID).ToList();
 
+
         if (picksToRemove.Any())
         {
             picks.Remove(picksToRemove[0]);
@@ -31,5 +32,22 @@ public static class Extensions
         {
             Debug.LogWarning($"No draft pick found with id {picksToRemove[0].GetPickID()}");
         }
+    }
+
+
+    public static List<T> Shuffle<T>(this IList<T> list)
+    {
+        System.Random rng = new System.Random();
+
+        int n = list.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = rng.Next(n + 1);
+            T value = list[k];
+            list[k] = list[n];
+            list[n] = value;
+        }
+        return list.ToList();
     }
 }
