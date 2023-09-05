@@ -45,9 +45,9 @@ public class LeagueSystem : MonoBehaviour
         _seasonMatches = ConfigManager.Instance.GetCurrentConfig().ScheduleGenerator.GenerateSchedule(_teams);
         _seasonMatches = _seasonMatches.OrderBy(x => x.GetWeek()).ToList();
 
-        foreach (Match match in _seasonMatches)
+        foreach (var match in _seasonMatches)
         {
-            Debug.Log($"Gameweek {match.GetWeek()}: {GetTeam(match.GetHomeTeamID()).GetTeamName()} - {GetTeam(match.GetAwayTeamID()).GetTeamName()}");
+            //Debug.Log($"Matchweek {match.GetWeek()}: {GetTeam(match.GetHomeTeamID()).GetTeamName()} - {GetTeam(match.GetAwayTeamID()).GetTeamName()}");
         }
     }
 

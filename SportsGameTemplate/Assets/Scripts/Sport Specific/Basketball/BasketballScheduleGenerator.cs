@@ -16,10 +16,13 @@ public class BasketballScheduleGenerator : ScheduleGenerator
 
         foreach (Team team in teams)
         {
-            int limit = team.GetMatchdays().Count;
             teamsToPlay = UpdatePossibleOpponents(teamsToPlay);
+            int gamesToGenerate = ConfigManager.Instance.GetCurrentConfig().GamesPerTeamInRegularSeason;
+            Debug.Log($"Games to generate: {gamesToGenerate}");
+            int limit = team.GetMatchdayCount();
+            Debug.Log($"Limit: {limit}");
 
-            for (int i = 0; i < ConfigManager.Instance.GetCurrentConfig().GamesPerTeamInRegularSeason - limit; i++)
+            for (int i = 0; i < gamesToGenerate - limit; i++)
             {
                 int opponentID = GetRandomOpponent(team.GetTeamID(), teamsToPlay);
                 Team opponent = LeagueSystem.Instance.GetTeam(opponentID);
@@ -35,6 +38,8 @@ public class BasketballScheduleGenerator : ScheduleGenerator
                 {
                     matches.Add(new Match(0, week, opponentID, team.GetTeamID()));
                 }
+
+                teamsToPlay = UpdatePossibleOpponents(teamsToPlay, opponent);
             }
         }
 
@@ -47,13 +52,31 @@ public class BasketballScheduleGenerator : ScheduleGenerator
 
         foreach (Team team in teamsToPlay)
         {
-            if (team.GetMatchdays().Count < ConfigManager.Instance.GetCurrentConfig().GamesPerTeamInRegularSeason)
+            if (team.GetAvailableMatchdays().Count > 0)
             {
                 possible.Add(team);
             }
         }
 
         return possible;
+    }
+
+
+
+    private List<Team> UpdatePossibleOpponents(List<Team> teamsToPlay, Team toCheck)
+    {
+        if (teamsToPlay.Contains(toCheck))
+        {
+            if (toCheck.GetMatchdayCount() < ConfigManager.Instance.GetCurrentConfig().GamesPerTeamInRegularSeason)
+            {
+                return teamsToPlay;
+            } else
+            {
+                teamsToPlay.Remove(toCheck);
+            }
+        }
+
+        return teamsToPlay;
     }
 
     private int FindFreeMatchday(Team team, Team opponent)
@@ -67,15 +90,13 @@ public class BasketballScheduleGenerator : ScheduleGenerator
     private int GetRandomOpponent(int teamID, List<Team> possibleOpponents)
     {
         int opponentID = -1;
+        int tries = 0;
 
-        while (opponentID < 0 || teamID == opponentID)
+        while (opponentID < 0 && teamID != opponentID && tries < 30)
         {
             int random = UnityEngine.Random.Range(0, possibleOpponents.Count);
-            
-            if (possibleOpponents[random].GetMatchdays().Count < ConfigManager.Instance.GetCurrentConfig().GamesPerTeamInRegularSeason)
-            {
-                opponentID = possibleOpponents[random].GetTeamID();
-            }
+            opponentID = possibleOpponents[random].GetTeamID();
+            tries++;
         }
 
         return opponentID;

@@ -12,8 +12,8 @@ public class Team
     [SerializeField] int _teamRating;
     List<Player> _players;
     List<DraftPick> _draftPicks;
-    [SerializeField] private List<int> _matchdays;
-    private List<int> _availableMatchdays;
+    List<int> _matchdays;
+    [SerializeField] List<int> _availableMatchdays;
 
     public Team(int id, string name, int rating, List<Player> players)
     {
@@ -22,6 +22,8 @@ public class Team
         _teamRating = rating;
         _players = players;
         _draftPicks = new();
+        _matchdays = new List<int>();
+        InitializeAvailableMatchdays();
     }
 
     public List<Player> GetPlayersFromTeam()
@@ -72,52 +74,33 @@ public class Team
         return assets;
     }
 
-    public List<int> GetMatchdays()
-    {
-        if (_matchdays != null)
-            return _matchdays;
-
-        return new List<int>();
-    }
-
-    public int GetFirstAvailableMatchday()
-    {
-        for (int i = 0; i < ConfigManager.Instance.GetCurrentConfig().GamesPerTeamInRegularSeason; i++)
-        {
-            if (_matchdays.Contains(i))
-            {
-                continue;
-            } else
-            {
-                return i;
-            }
-        }
-
-        return 0;
-    }
-
     public List<int> GetAvailableMatchdays()
     {
-        if (_availableMatchdays == null)
-        {
-            _availableMatchdays = new List<int>();
-
-            for (int i = 0; i < ConfigManager.Instance.GetCurrentConfig().GamesPerTeamInRegularSeason * 1.2f; i++)
-            {
-                _availableMatchdays.Add(i);
-            }
-        }
-
         return _availableMatchdays;
+    }
+
+    private void InitializeAvailableMatchdays()
+    {
+        _availableMatchdays = new List<int>();
+
+        for (int i = 0; i < ConfigManager.Instance.GetCurrentConfig().GamesPerTeamInRegularSeason * 2f; i++)
+        {
+            _availableMatchdays.Add(i);
+        }
     }
 
     public void AddMatchdayAsTaken(int week)
     {
-        _availableMatchdays.Remove(week);
-
-        if (_matchdays == null)
-            _matchdays = new List<int>();
+        if (_availableMatchdays.Contains(week))
+        {
+            _availableMatchdays.Remove(week);
+        }
 
         _matchdays.Add(week);
+    }
+
+    public int GetMatchdayCount()
+    {
+        return _matchdays.Count;
     }
 }
