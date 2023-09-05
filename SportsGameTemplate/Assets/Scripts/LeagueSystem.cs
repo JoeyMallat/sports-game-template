@@ -45,10 +45,37 @@ public class LeagueSystem : MonoBehaviour
         _seasonMatches = ConfigManager.Instance.GetCurrentConfig().ScheduleGenerator.GenerateSchedule(_teams);
         _seasonMatches = _seasonMatches.OrderBy(x => x.GetWeek()).ToList();
 
-        foreach (var match in _seasonMatches)
+        List<Match> matchesForTeam = GetMatchesForTeam(_teams[0]);
+
+        foreach (Match match in matchesForTeam)
         {
-            //Debug.Log($"Matchweek {match.GetWeek()}: {GetTeam(match.GetHomeTeamID()).GetTeamName()} - {GetTeam(match.GetAwayTeamID()).GetTeamName()}");
+            if (match.GetHomeTeamID() == _teams[0].GetTeamID())
+            {
+                Debug.Log($"vs {GetTeam(match.GetAwayTeamID()).GetTeamName()}");
+            } else
+            {
+                Debug.Log($"vs {GetTeam(match.GetHomeTeamID()).GetTeamName()}");
+            }
         }
+    }
+
+    public List<Match> GetMatchesForTeam(Team team)
+    {
+        List<Match> matchesForTeam = new List<Match>();
+        int teamID = team.GetTeamID();
+
+        foreach (Match match in _seasonMatches)
+        {
+            if (match.GetHomeTeamID() == teamID)
+            {
+                matchesForTeam.Add(match);
+            } else if (match.GetAwayTeamID() == teamID)
+            {
+                matchesForTeam.Add(match);
+            }
+        }
+
+        return matchesForTeam;
     }
 
     public Team GetTeam(int id)

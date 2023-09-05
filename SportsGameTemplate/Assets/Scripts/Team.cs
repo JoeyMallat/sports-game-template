@@ -12,7 +12,7 @@ public class Team
     [SerializeField] int _teamRating;
     List<Player> _players;
     List<DraftPick> _draftPicks;
-    List<int> _matchdays;
+    [SerializeField] List<int> _matchdays;
     [SerializeField] List<int> _availableMatchdays;
 
     public Team(int id, string name, int rating, List<Player> players)
@@ -83,7 +83,7 @@ public class Team
     {
         _availableMatchdays = new List<int>();
 
-        for (int i = 0; i < ConfigManager.Instance.GetCurrentConfig().GamesPerTeamInRegularSeason * 2f; i++)
+        for (int i = 0; i < ConfigManager.Instance.GetCurrentConfig().GamesPerTeamInRegularSeason * 2.5f; i++)
         {
             _availableMatchdays.Add(i);
         }
