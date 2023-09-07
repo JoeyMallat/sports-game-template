@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 [System.Serializable]
 public class Team
@@ -10,10 +11,10 @@ public class Team
     [SerializeField] int _teamID;
     [SerializeField] string _teamName;
     [SerializeField] int _teamRating;
-    List<Player> _players;
+    [InfoBox("@GetTotalSalaryAmount().ToString(\"C0\")")][SerializeField] List<Player> _players;
     List<DraftPick> _draftPicks;
-    [SerializeField] List<int> _matchdays;
-    [SerializeField] List<int> _availableMatchdays;
+    List<int> _matchdays;
+    List<int> _availableMatchdays;
 
     public Team(int id, string name, int rating, List<Player> players)
     {
@@ -102,5 +103,16 @@ public class Team
     public int GetMatchdayCount()
     {
         return _matchdays.Count;
+    }
+
+    public int GetTotalSalaryAmount()
+    {
+        int total = 0;
+        foreach (Player player in _players)
+        {
+            total += player.GetContract().GetYearlySalary();
+        }
+
+        return total;
     }
 }

@@ -44,19 +44,6 @@ public class LeagueSystem : MonoBehaviour
         DistributeDraftPicks();
         _seasonMatches = ConfigManager.Instance.GetCurrentConfig().ScheduleGenerator.GenerateSchedule(_teams);
         _seasonMatches = _seasonMatches.OrderBy(x => x.GetWeek()).ToList();
-
-        List<Match> matchesForTeam = GetMatchesForTeam(_teams[0]);
-
-        foreach (Match match in matchesForTeam)
-        {
-            if (match.GetHomeTeamID() == _teams[0].GetTeamID())
-            {
-                Debug.Log($"vs {GetTeam(match.GetAwayTeamID()).GetTeamName()}");
-            } else
-            {
-                Debug.Log($"vs {GetTeam(match.GetHomeTeamID()).GetTeamName()}");
-            }
-        }
     }
 
     public List<Match> GetMatchesForTeam(Team team)
@@ -86,6 +73,18 @@ public class LeagueSystem : MonoBehaviour
     public List<Team> GetTeams()
     {
         return _teams;
+    }
+
+    public List<Player> GetAllPlayers()
+    {
+        List<Player> players = new();
+
+        foreach (Team team in _teams)
+        {
+            players.AddRange(team.GetPlayersFromTeam());
+        }
+
+        return players;
     }
 
     private void DistributeDraftPicks()

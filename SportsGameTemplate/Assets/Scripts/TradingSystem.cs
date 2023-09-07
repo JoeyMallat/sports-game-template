@@ -23,6 +23,11 @@ public class TradingSystem : MonoBehaviour
         {
             DebugCounterOffer();
         }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            GenerateRandomAITrade();
+        }
     }
 
     [Button(ButtonSizes.Large)]
@@ -80,6 +85,16 @@ public class TradingSystem : MonoBehaviour
         if (team == 1) _teamBTradingAssets.Add(assetToAdd);
     }
 
+    public void GenerateRandomAITrade()
+    {
+        _teamAID = UnityEngine.Random.Range(0, LeagueSystem.Instance.GetTeams().Count - 1);
+        AITrader aiTrader = new AITrader();
+        _teamATradingAssets = aiTrader.GenerateOffer(UnityEngine.Random.Range(300, 2500), LeagueSystem.Instance.GetTeam(_teamAID).GetTradeAssets());
+
+        _teamBID = UnityEngine.Random.Range(0, LeagueSystem.Instance.GetTeams().Count - 1);
+        _teamBTradingAssets = GetOffer(1);
+    }
+
     public int GetTotalTradeValue(List<ITradeable> assets)
     {
         int total = 0;
@@ -91,7 +106,7 @@ public class TradingSystem : MonoBehaviour
         return total;
     }
 
-    public List<ITradeable> GetOffer(int teamToOffer)
+    public List<ITradeable> GetOffer(int teamToOffer = 1)
     {
         AITrader aiTrader = new AITrader();
 

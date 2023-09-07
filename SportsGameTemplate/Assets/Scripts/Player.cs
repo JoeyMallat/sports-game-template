@@ -12,9 +12,13 @@ public class Player : ITradeable
     [SerializeField] string _lastName;
     [SerializeField] string _position;
     [SerializeField] int _age;
+    [SerializeField] Potential _potential;
+    [SerializeField] float _percentageScouted;
     [ReadOnly][SerializeField] int _rating;
     [ReadOnly][SerializeField] int _tradeValue;
     [SerializeField] List<PlayerSkill> _skills;
+
+    [SerializeField] Contract _contract;
 
     [Header("Appearance Settings")]
     [SerializeField] int _skinID;
@@ -23,20 +27,59 @@ public class Player : ITradeable
     [SerializeField] int _mouthID;
     [SerializeField] int _hairID;
 
-    public Player(string firstname, string lastname, string position)
+    public Player(string firstname, string lastname, Position position, int teamRating)
     {
         _playerID = RandomIDGenerator.GenerateRandomID();
         _firstName = firstname;
         _lastName = lastname;
-        _position = position;
+        _position = position.GetPositionName();
         _age = UnityEngine.Random.Range(20, 39);
 
-        _skills = new();
+        SetRandomSkills(teamRating, position.GetPositionStats());
+
+        _contract = new Contract(CalculateRatingForPosition(), _age);
+        _potential = SetPotential();
+    }
+
+    public Player(bool rookie, string firstname, string lastname, Position position, int averageRating)
+    {
+        _playerID = RandomIDGenerator.GenerateRandomID();
+        _firstName = firstname;
+        _lastName = lastname;
+        _position = position.GetPositionName();
+        _age = UnityEngine.Random.Range(20, 22);
+        _percentageScouted = 0;
+
+        SetRandomSkills(averageRating, position.GetPositionStats());
+        _potential = SetPotential();
+    }
+
+    private Potential SetPotential()
+    {
+        float random = UnityEngine.Random.Range(0f, 1f);
+        float valueOnGraph = ConfigManager.Instance.GetCurrentConfig().DistributionOfPotential.Evaluate(random);
+
+        switch (valueOnGraph)
+        {
+            case >= 0.25f:
+                return Potential.Starter;
+            case >= 0.2f:
+                return Potential.Bench;
+            case >= 0.15f:
+                return Potential.Filler;
+            case >= 0.05f:
+                return Potential.WorldClass;
+            default:
+                return Potential.Elite;
+        }
     }
 
     public int CalculateTradeValue()
     {
         _tradeValue = CalculateRatingForPosition() * (40 - _age);
+        float contractLengthMultiplier = ConfigManager.Instance.GetCurrentConfig().ContractLengthImpactOnTradeValue.Evaluate(_age / 40);
+
+        _tradeValue = Mathf.RoundToInt(_tradeValue * contractLengthMultiplier / ((float)_potential + 1));
         return _tradeValue;
     }
 
@@ -48,6 +91,7 @@ public class Player : ITradeable
 
     public void SetRandomSkills(int averageRating, List<PositionStat> positionStats)
     {
+        _skills = new();
         foreach (PositionStat positionStat in positionStats)
         {
             int ratingForSkill = CalculateRatingForSkill(averageRating, positionStat, positionStats);
@@ -67,8 +111,6 @@ public class Player : ITradeable
 
         float randomness = Graphs.Instance.SkillImportanceGraph.Evaluate(importance) * rating / 4;
 
-        // Debug.Log($"Importance of {positionStat.GetSkill()} stat is {importance}, resulting in {randomness} randomness");
-
         int skillRating = Mathf.Clamp(Mathf.RoundToInt(UnityEngine.Random.Range(baseRating - randomness, baseRating + randomness)), 0, 99);
 
         return skillRating;
@@ -77,5 +119,16 @@ public class Player : ITradeable
     public string GetPlayerID()
     {
         return _playerID;
+    }
+
+    public Contract GetContract()
+    {
+        return _contract;
+    }
+
+    public Contract SetRookieContract(int pick)
+    {
+        _contract = new Contract(pick);
+        return _contract;
     }
 }

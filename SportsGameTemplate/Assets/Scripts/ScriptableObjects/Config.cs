@@ -15,9 +15,15 @@ public class Config : ScriptableObject
     public int AverageAgeInLeague;
     public TextAsset LeagueFile;
     public int GamesPerTeamInRegularSeason;
+    public int SalaryCap;
 
     [Header("Draft Settings")]
     public bool WeightedDraftLottery;
     public int DraftRounds;
     public int PlayersPerDraftRound;
+    public AnimationCurve RookieSalaryScale;
+
+    [Header("Calculations")]
+    public AnimationCurve ContractLengthImpactOnTradeValue;
+    public AnimationCurve DistributionOfPotential;
 }

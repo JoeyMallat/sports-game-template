@@ -18,18 +18,37 @@ public class SquadCreator
 
             for (int j = 0; j < amount; j++)
             {
-                // Get random name from list of names
-                string firstName = GetRandomNameFromList(Resources.Load<TextAsset>("Names/first_names"));
-                string lastName = GetRandomNameFromList(Resources.Load<TextAsset>("Names/last_names"));
-
                 // Create player with position y
-                Player newPlayer = new Player(firstName, lastName, position.GetPositionName());
+                Player newPlayer = CreatePlayer(false, position, rating);
                 players.Add(newPlayer);
-                newPlayer.SetRandomSkills(rating, position.GetPositionStats());
             }
         }
 
         return players;
+    }
+
+    public List<Player> CreateDraftClass(int rating)
+    {
+        List<Player> draftClass = new();
+        List<Position> positions = ConfigManager.Instance.GetCurrentConfig().PositionConfig.GetPositions();
+        int playersInDraftClass = ConfigManager.Instance.GetCurrentConfig().DraftRounds * ConfigManager.Instance.GetCurrentConfig().PlayersPerDraftRound;
+        for (int i = 0; i < playersInDraftClass; i++)
+        {
+            Player player = CreatePlayer(true, positions[UnityEngine.Random.Range(0, positions.Count)], rating);
+            draftClass.Add(player);
+        }
+
+        return draftClass;
+    }
+
+    private Player CreatePlayer(bool draft, Position position, int rating)
+    {
+        // Get random name from list of names
+        string firstName = GetRandomNameFromList(Resources.Load<TextAsset>("Names/first_names"));
+        string lastName = GetRandomNameFromList(Resources.Load<TextAsset>("Names/last_names"));
+
+        if (draft) { return new Player(draft, firstName, lastName, position, rating); }
+        else { return new Player(firstName, lastName, position, rating); }
     }
 
     private string GetRandomNameFromList(TextAsset nameList)

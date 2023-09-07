@@ -20,9 +20,118 @@ MonoBehaviour:
   AverageAgeInLeague: 25
   LeagueFile: {fileID: 4900000, guid: 522c45c2c290a0a428cdf6c80f684299, type: 3}
   GamesPerTeamInRegularSeason: 82
+  SalaryCap: 136000000
   WeightedDraftLottery: 0
   DraftRounds: 2
   PlayersPerDraftRound: 30
+  RookieSalaryScale:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.9418569
+      outSlope: -0.9418569
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.12647848
+    - serializedVersion: 3
+      time: 0.6025159
+      value: 0.2
+      inSlope: -0.014514381
+      outSlope: -0.014514381
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.32702693
+    - serializedVersion: 3
+      time: 1
+      value: 0.2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  ContractLengthImpactOnTradeValue:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.5
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.7761986
+      value: 1.4361789
+      inSlope: -3.722962
+      outSlope: -3.722962
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.04651647
+      outWeight: 0.39019105
+    - serializedVersion: 3
+      time: 0.88129467
+      value: 0.6760523
+      inSlope: -2.3187146
+      outSlope: -2.3187146
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.4700305
+      outWeight: 0.23682229
+    - serializedVersion: 3
+      time: 1
+      value: 0.5
+      inSlope: -0.07458854
+      outSlope: -0.07458854
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.98820347
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  DistributionOfPotential:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   references:
     version: 2
     RefIds:
