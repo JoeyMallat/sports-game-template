@@ -16,6 +16,8 @@ MonoBehaviour:
   PositionConfig: {fileID: 11400000, guid: f631c7fbda7343e438cb34f6fea205c0, type: 2}
   ScheduleGenerator:
     rid: 7850772540815572992
+  MatchSimulator:
+    rid: 4319223881481322496
   AverageSquadSize: 16
   AverageAgeInLeague: 25
   LeagueFile: {fileID: 4900000, guid: 522c45c2c290a0a428cdf6c80f684299, type: 3}
@@ -135,6 +137,10 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: 4319223881481322496
+      type: {class: BasketballMatchSimulator, ns: , asm: Assembly-CSharp}
+      data:
+        _scoringRate: 0
     - rid: 7850772540815572992
       type: {class: BasketballScheduleGenerator, ns: , asm: Assembly-CSharp}
       data: 

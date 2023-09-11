@@ -27,6 +27,20 @@ public class Team
         InitializeAvailableMatchdays();
     }
 
+    public int GetAverageTeamRating()
+    {
+        int rating = 0;
+        foreach (Player player in _players)
+        {
+            rating += player.CalculateRatingForPosition();
+        }
+
+        rating /= _players.Count;
+
+        _teamRating = rating;
+        return rating;
+    }
+
     public List<Player> GetPlayersFromTeam()
     {
         return _players;
@@ -114,5 +128,21 @@ public class Team
         }
 
         return total;
+    }
+
+    public void DebugShowStats()
+    {
+        List<Match> matches = LeagueSystem.Instance.GetMatchesForTeam(this);
+
+        int wins = 0;
+        int losses = 0;
+
+        foreach (Match match in matches)
+        {
+            wins += match.GetWinStatForTeam(_teamID).Item1;
+            losses += match.GetWinStatForTeam(_teamID).Item2;
+        }
+
+        Debug.Log($"{_teamName} finished the season with a {wins}-{losses} record");
     }
 }

@@ -122,4 +122,27 @@ public class TradingSystem : MonoBehaviour
 
         return null;
     }
+
+    public bool CheckTradeEligibility(int teamID, List<ITradeable> assets)
+    {
+        int totalSalary = 0;
+
+        foreach (ITradeable asset in assets)
+        {
+            if (asset.GetType() == typeof(Player))
+            {
+                Player player = (Player)asset;
+                totalSalary += player.GetContract().GetYearlySalary();
+            }
+        }
+
+        return CheckSalaryForSalaryCap(teamID, totalSalary);
+    }
+
+    public bool CheckSalaryForSalaryCap(int teamID, int totalSalary)
+    {
+        Team team = LeagueSystem.Instance.GetTeam(teamID);
+
+        return team.GetTotalSalaryAmount() + totalSalary < ConfigManager.Instance.GetCurrentConfig().SalaryCap;
+    }
 }

@@ -9,6 +9,7 @@ public class Config : ScriptableObject
 
     public PositionConfig PositionConfig;
     [SerializeReference] public ScheduleGenerator ScheduleGenerator;
+    [SerializeReference] public MatchSimulator MatchSimulator;
 
     [Header("League & World Settings")]
     public int AverageSquadSize;

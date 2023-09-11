@@ -18,6 +18,14 @@ public class LeagueSystem : MonoBehaviour
         ReadTeamsFromFile();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            SimulateSeason();
+        }
+    }
+
     private void ReadTeamsFromFile()
     {
         _teams = new List<Team>();
@@ -108,5 +116,18 @@ public class LeagueSystem : MonoBehaviour
             }
         }
 
+    }
+
+    public void SimulateSeason()
+    {
+        foreach (Match match in _seasonMatches)
+        {
+            ConfigManager.Instance.GetCurrentConfig().MatchSimulator.SimulateMatch(match);
+        }
+
+        foreach (Team team in _teams)
+        {
+            team.DebugShowStats();
+        }
     }
 }
