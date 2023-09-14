@@ -42,7 +42,7 @@ public class LeagueSystem : MonoBehaviour
             string teamName = teamData[0];
             int.TryParse(teamData[1], out int rating);
 
-            List<Player> players = squadCreator.CreateSquad(rating);
+            List<Player> players = squadCreator.CreateSquad(id, rating);
             Team newTeam = new Team(id, teamName, rating, players);
             _teams.Add(newTeam);
 

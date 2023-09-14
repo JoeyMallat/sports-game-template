@@ -50,4 +50,14 @@ public static class Extensions
         }
         return list.ToList();
     }
+
+    public static string ConvertToMonetaryString(this int number)
+    {
+        string character = "M";
+        if (number < 1000000)
+            character = "K";
+
+        number = Mathf.RoundToInt(number / 1000000f);
+        return $"{number.ToString("F1")}{character}";
+    }
 }

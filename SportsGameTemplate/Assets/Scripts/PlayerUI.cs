@@ -24,7 +24,7 @@ public class PlayerUI : MonoBehaviour, ISettable
         _rating.text = player.CalculateRatingForPosition().ToString();
         _height.text = $"6\'{UnityEngine.Random.Range(1, 11)}\"";
         _team.text = LeagueSystem.Instance.GetTeam(player.GetTeamID()).GetTeamName();
-        _contract.text = $"{player.GetContract().GetYearlySalary()}\n{player.GetContract().GetYearsOnContract()}";
+        _contract.text = $"{player.GetContract().GetYearlySalary().ConvertToMonetaryString()}\n{player.GetContract().GetYearsOnContract()} YRS";
         _position.text = player.GetPosition();
     }
 }
