@@ -29,7 +29,7 @@ public class PlayerItem : MonoBehaviour
         {
             button.onClick.RemoveAllListeners();
 
-            button.onClick.AddListener(() => Debug.Log(player.GetFullName()));
+            button.onClick.AddListener(() => Navigation.Instance.GoToScreen(Navigation.Instance.GetCanvas(CanvasKey.Player), player));
         }
     }
 }

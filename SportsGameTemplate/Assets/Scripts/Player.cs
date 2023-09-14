@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class Player : ITradeable
 {
     [SerializeField][ReadOnly] string _playerID;
+    [SerializeField] int _teamID;
     [SerializeField] string _firstName;
     [SerializeField] string _lastName;
     [SerializeField] string _position;
@@ -24,13 +25,14 @@ public class Player : ITradeable
     [Header("Appearance Settings")]
     [SerializeField] int _portraitID;
 
-    public Player(string firstname, string lastname, Position position, int teamRating)
+    public Player(string firstname, string lastname, Position position, int teamRating, int teamID)
     {
         _playerID = RandomIDGenerator.GenerateRandomID();
         _firstName = firstname;
         _lastName = lastname;
         _position = position.GetPositionName();
         _age = UnityEngine.Random.Range(20, 39);
+        _teamID = teamID;
 
         SetRandomSkills(teamRating, position.GetPositionStats());
 
@@ -52,11 +54,22 @@ public class Player : ITradeable
         _potential = SetPotential();
 
         _portraitID = UnityEngine.Random.Range(0, Resources.LoadAll<Sprite>("Faces/").Length);
+        _teamID = -1;
     }
 
     public string GetFullName()
     {
         return $"{_firstName} {_lastName}".Replace("\r", "");
+    }
+
+    public int GetAge()
+    {
+        return _age;
+    }
+
+    public int GetTeamID()
+    {
+        return _teamID;
     }
 
     public string GetPosition()
