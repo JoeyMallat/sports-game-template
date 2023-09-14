@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class Player : ITradeable
@@ -21,11 +22,7 @@ public class Player : ITradeable
     [SerializeField] Contract _contract;
 
     [Header("Appearance Settings")]
-    [SerializeField] int _skinID;
-    [SerializeField] int _eyesID;
-    [SerializeField] int _noseID;
-    [SerializeField] int _mouthID;
-    [SerializeField] int _hairID;
+    [SerializeField] int _portraitID;
 
     public Player(string firstname, string lastname, Position position, int teamRating)
     {
@@ -39,6 +36,7 @@ public class Player : ITradeable
 
         _contract = new Contract(CalculateRatingForPosition(), _age);
         _potential = SetPotential();
+        _portraitID = UnityEngine.Random.Range(0, Resources.LoadAll<Sprite>("Faces/").Length);
     }
 
     public Player(bool rookie, string firstname, string lastname, Position position, int averageRating)
@@ -52,6 +50,18 @@ public class Player : ITradeable
 
         SetRandomSkills(averageRating, position.GetPositionStats());
         _potential = SetPotential();
+
+        _portraitID = UnityEngine.Random.Range(0, Resources.LoadAll<Sprite>("Faces/").Length);
+    }
+
+    public string GetFullName()
+    {
+        return $"{_firstName} {_lastName}".Replace("\r", "");
+    }
+
+    public string GetPosition()
+    {
+        return _position;
     }
 
     private Potential SetPotential()
@@ -130,5 +140,10 @@ public class Player : ITradeable
     {
         _contract = new Contract(pick);
         return _contract;
+    }
+
+    public Sprite GetPlayerPortrait()
+    {
+        return Resources.Load<Sprite>($"Faces/{_portraitID}");
     }
 }
