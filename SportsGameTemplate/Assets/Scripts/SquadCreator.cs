@@ -19,7 +19,8 @@ public class SquadCreator
             for (int j = 0; j < amount; j++)
             {
                 // Create player with position y
-                Player newPlayer = CreatePlayer(false, position, rating);
+                int randomizedRating = UnityEngine.Random.Range(rating - 10, rating + 10);
+                Player newPlayer = CreatePlayer(false, position, randomizedRating);
                 players.Add(newPlayer);
             }
         }

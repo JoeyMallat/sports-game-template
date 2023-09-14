@@ -128,6 +128,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1523471681}
     m_Modifications:
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: 0.0000001192093
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: colorBleedMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4721538856863620790, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_Name
       value: Player Portrait (2)
@@ -159,6 +171,14 @@ PrefabInstance:
     - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: -28.197693
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: 6.774224
       objectReference: {fileID: 0}
     - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchorMax.y
@@ -286,6 +306,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 998150764}
     m_Modifications:
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: 0.0000001192093
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: colorBleedMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4721538856863620790, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_Name
       value: Player Portrait
@@ -313,6 +345,14 @@ PrefabInstance:
     - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: -28.197693
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: 6.774224
       objectReference: {fileID: 0}
     - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchorMax.y
@@ -440,6 +480,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1814729728}
     m_Modifications:
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: 0.0000001192093
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: colorBleedMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4721538856863620790, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_Name
       value: Player Portrait (2)
@@ -467,6 +519,14 @@ PrefabInstance:
     - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: -28.197693
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: 6.774224
       objectReference: {fileID: 0}
     - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchorMax.y
@@ -594,6 +654,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1430327064}
     m_Modifications:
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: 0.0000001192093
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: colorBleedMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4721538856863620790, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_Name
       value: Player Portrait (1)
@@ -621,6 +693,14 @@ PrefabInstance:
     - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: -28.197693
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: 6.774224
       objectReference: {fileID: 0}
     - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1029,6 +1109,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1951106919}
     m_Modifications:
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: 0.0000001192093
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: colorBleedMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4721538856863620790, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_Name
       value: Player Portrait (1)
@@ -1056,6 +1148,14 @@ PrefabInstance:
     - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: -28.197693
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: 6.774224
       objectReference: {fileID: 0}
     - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1183,6 +1283,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 407262585}
     m_Modifications:
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: 0.0000001192093
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: colorBleedMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4721538856863620790, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_Name
       value: Player Portrait
@@ -1210,6 +1322,14 @@ PrefabInstance:
     - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: -28.197693
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: 6.774224
       objectReference: {fileID: 0}
     - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1423,6 +1543,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 998150764}
     m_Modifications:
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: 0.0000001192093
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: colorBleedMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4721538856863620790, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_Name
       value: Player Portrait (2)
@@ -1450,6 +1582,14 @@ PrefabInstance:
     - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: -28.197693
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: 6.774224
       objectReference: {fileID: 0}
     - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1756,6 +1896,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1523471681}
     m_Modifications:
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: 0.0000001192093
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: colorBleedMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4721538856863620790, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_Name
       value: Player Portrait (1)
@@ -1783,6 +1935,14 @@ PrefabInstance:
     - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: -28.197693
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: 6.774224
       objectReference: {fileID: 0}
     - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1978,6 +2138,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1951106919}
     m_Modifications:
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: 0.0000001192093
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: colorBleedMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4721538856863620790, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_Name
       value: Player Portrait
@@ -2005,6 +2177,14 @@ PrefabInstance:
     - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: -28.197693
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: 6.774224
       objectReference: {fileID: 0}
     - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2132,6 +2312,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1951106919}
     m_Modifications:
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: 0.0000001192093
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: colorBleedMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4721538856863620790, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_Name
       value: Player Portrait (2)
@@ -2159,6 +2351,14 @@ PrefabInstance:
     - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: -28.197693
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: 6.774224
       objectReference: {fileID: 0}
     - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2371,6 +2571,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 998150764}
     m_Modifications:
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: 0.0000001192093
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: colorBleedMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4721538856863620790, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_Name
       value: Player Portrait (1)
@@ -2398,6 +2610,14 @@ PrefabInstance:
     - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: -28.197693
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: 6.774224
       objectReference: {fileID: 0}
     - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2525,6 +2745,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1151603503}
     m_Modifications:
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: 0.0000001192093
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: colorBleedMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4721538856863620790, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_Name
       value: Player Portrait
@@ -2552,6 +2784,14 @@ PrefabInstance:
     - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: -28.197693
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: 6.774224
       objectReference: {fileID: 0}
     - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2759,6 +2999,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1151603503}
     m_Modifications:
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: 0.0000001192093
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: colorBleedMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4721538856863620790, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_Name
       value: Player Portrait (2)
@@ -2786,6 +3038,14 @@ PrefabInstance:
     - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: -28.197693
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: 6.774224
       objectReference: {fileID: 0}
     - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2988,6 +3248,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1430327064}
     m_Modifications:
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: 0.0000001192093
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: colorBleedMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4721538856863620790, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_Name
       value: Player Portrait
@@ -3015,6 +3287,14 @@ PrefabInstance:
     - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: -28.197693
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: 6.774224
       objectReference: {fileID: 0}
     - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3398,6 +3678,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1814729728}
     m_Modifications:
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: 0.0000001192093
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: colorBleedMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4721538856863620790, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_Name
       value: Player Portrait
@@ -3425,6 +3717,14 @@ PrefabInstance:
     - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: -28.197693
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: 6.774224
       objectReference: {fileID: 0}
     - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3632,6 +3932,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1430327064}
     m_Modifications:
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: 0.0000001192093
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: colorBleedMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4721538856863620790, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_Name
       value: Player Portrait (2)
@@ -3659,6 +3971,14 @@ PrefabInstance:
     - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: -28.197693
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: 6.774224
       objectReference: {fileID: 0}
     - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3786,6 +4106,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1151603503}
     m_Modifications:
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: 0.0000001192093
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: colorBleedMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4721538856863620790, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_Name
       value: Player Portrait (1)
@@ -3813,6 +4145,14 @@ PrefabInstance:
     - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: -28.197693
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: 6.774224
       objectReference: {fileID: 0}
     - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4218,6 +4558,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1814729728}
     m_Modifications:
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: 0.0000001192093
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: colorBleedMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4721538856863620790, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_Name
       value: Player Portrait (1)
@@ -4245,6 +4597,14 @@ PrefabInstance:
     - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: -28.197693
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: 6.774224
       objectReference: {fileID: 0}
     - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4372,6 +4732,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 407262585}
     m_Modifications:
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: 0.0000001192093
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: colorBleedMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4721538856863620790, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_Name
       value: Player Portrait (2)
@@ -4399,6 +4771,14 @@ PrefabInstance:
     - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: -28.197693
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: 6.774224
       objectReference: {fileID: 0}
     - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4561,6 +4941,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 407262585}
     m_Modifications:
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: 0.0000001192093
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3585065589725079310, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: colorBleedMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4721538856863620790, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_Name
       value: Player Portrait (1)
@@ -4588,6 +4980,14 @@ PrefabInstance:
     - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.x
+      value: -28.197693
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748535891952360623, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: offset.y
+      value: 6.774224
       objectReference: {fileID: 0}
     - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4718,6 +5118,54 @@ PrefabInstance:
     - target: {fileID: 4721538856863620790, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_Name
       value: Player Portrait
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5701079836223720057, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7475321357944539867, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7584496442921002608, guid: 5e83b85c4cd8f9142a5d2df46f42fb73, type: 3}
       propertyPath: m_Pivot.x

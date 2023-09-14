@@ -75,6 +75,7 @@ GameObject:
   - component: {fileID: 8992457192626258318}
   - component: {fileID: 3109928856286098890}
   - component: {fileID: 8232709119957623780}
+  - component: {fileID: 6748535891952360623}
   m_Layer: 5
   m_Name: Player Portrait
   m_TagString: Untagged
@@ -139,6 +140,36 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6748535891952360623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 568463650828448858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52c162dc854d2f24fa639ba0623de5ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size: 35
+  spread: 0
+  useGlobalAngle: 0
+  offsetAngle: 193.50876
+  offsetDistance: 29
+  offset: {x: -28.197693, y: 6.774224}
+  color: {r: 0, g: 0, b: 0, a: 0.45490196}
+  inset: 0
+  blendMode: 0
+  useCasterAlpha: 1
+  ignoreCasterColor: 0
+  colorBleedMode: 2
+  disableFitCompensation: 0
+  shadowAsSibling: 0
+  cutout: 0
+  baked: 0
+  modifiedFromInspector: 0
+  bakedShadows: []
 --- !u!1 &2114971813829650868
 GameObject:
   m_ObjectHideFlags: 0
@@ -668,6 +699,7 @@ GameObject:
   - component: {fileID: 3287589468816708517}
   - component: {fileID: 7423310956343903188}
   - component: {fileID: 5837167427954329319}
+  - component: {fileID: 3585065589725079310}
   m_Layer: 5
   m_Name: Portrait Background
   m_TagString: Untagged
@@ -762,6 +794,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
+--- !u!114 &3585065589725079310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6960508971769719152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52c162dc854d2f24fa639ba0623de5ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size: 2
+  spread: 1
+  useGlobalAngle: 0
+  offsetAngle: 90
+  offsetDistance: 2
+  offset: {x: 0.0000001192093, y: -2}
+  color: {r: 0, g: 0, b: 0, a: 1}
+  inset: 1
+  blendMode: 0
+  useCasterAlpha: 1
+  ignoreCasterColor: 1
+  colorBleedMode: 2
+  disableFitCompensation: 0
+  shadowAsSibling: 0
+  cutout: 0
+  baked: 0
+  modifiedFromInspector: 0
+  bakedShadows: []
 --- !u!1 &7198966966385199292
 GameObject:
   m_ObjectHideFlags: 0
@@ -935,8 +997,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Lebron James
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 764e0c8ccbd45c7459cb740fa2336dec, type: 2}
-  m_sharedMaterial: {fileID: 7046958600716098612, guid: 764e0c8ccbd45c7459cb740fa2336dec, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 933e2a61fbe7e884c9b7046d37bdd588, type: 2}
+  m_sharedMaterial: {fileID: -2562579218642588419, guid: 933e2a61fbe7e884c9b7046d37bdd588, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
