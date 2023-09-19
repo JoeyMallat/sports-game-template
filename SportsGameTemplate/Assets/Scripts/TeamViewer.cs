@@ -2,33 +2,21 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TeamViewer : MonoBehaviour
+public class TeamViewer : MonoBehaviour, ISettable
 {
     [SerializeField][ReadOnly] int _currentShowedTeam;
     [SerializeField] RectTransform _playerRoot;
+    [SerializeField] TextMeshProUGUI _teamNameText;
 
-    private void Start()
+    public void SetDetails<T>(T item) where T : class
     {
-        ShowTeam(8);
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            int random = UnityEngine.Random.Range(0, 30);
-            ShowTeam(random);
-        }
-    }
-
-    public void ShowTeam(int teamID)
-    {
-        _currentShowedTeam = teamID;
-
-        Team team = LeagueSystem.Instance.GetTeam(teamID);
+        Team team = item as Team;
+        _currentShowedTeam = team.GetTeamID();
+        _teamNameText.text = team.GetTeamName();
         List<Player> players = team.GetPlayersFromTeam().OrderBy(x => x.GetPosition()).ToList();
         List<PlayerItem> playerItems = _playerRoot.GetComponentsInChildren<PlayerItem>().ToList();
 
@@ -38,7 +26,8 @@ public class TeamViewer : MonoBehaviour
             {
                 playerItems[i].gameObject.SetActive(true);
                 playerItems[i].SetPlayerDetails(players[i]);
-            } else
+            }
+            else
             {
                 playerItems[i].gameObject.SetActive(false);
             }

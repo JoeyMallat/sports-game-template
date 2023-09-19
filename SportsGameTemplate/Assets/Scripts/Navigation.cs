@@ -17,9 +17,10 @@ public class Navigation : SerializedMonoBehaviour
             Destroy(this);
     }
 
-    public void GoToScreen(Canvas canvas, Player player)
+    public void GoToScreen(bool overlay, Canvas canvas, Player player)
     {
-        DisableAllCanvasses();
+        if (!overlay)
+            DisableAllCanvasses();
 
         canvas.enabled = true;
 
@@ -31,9 +32,10 @@ public class Navigation : SerializedMonoBehaviour
         }
     }
 
-    public void GoToScreen(Canvas canvas, Team team)
+    public void GoToScreen(bool overlay, Canvas canvas, Team team)
     {
-        DisableAllCanvasses();
+        if (!overlay)
+            DisableAllCanvasses();
 
         canvas.enabled = true;
 
@@ -43,6 +45,26 @@ public class Navigation : SerializedMonoBehaviour
         {
             settable.SetDetails(team);
         }
+    }
+
+    public void GoToScreen(bool overlay, Canvas canvas, List<Team> teams)
+    {
+        if (!overlay)
+            DisableAllCanvasses();
+
+        canvas.enabled = true;
+
+        ISettable settable = canvas.gameObject.GetComponent<ISettable>();
+
+        if (settable != null)
+        {
+            settable.SetDetails(teams);
+        }
+    }
+
+    public void CloseCanvas(Canvas canvas)
+    {
+        canvas.enabled = false;
     }
 
     public Canvas GetCanvas(CanvasKey key)

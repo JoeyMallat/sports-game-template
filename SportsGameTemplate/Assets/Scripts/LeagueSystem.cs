@@ -18,6 +18,11 @@ public class LeagueSystem : MonoBehaviour
         ReadTeamsFromFile();
     }
 
+    private void Start()
+    {
+        Navigation.Instance.GoToScreen(false, Navigation.Instance.GetCanvas(CanvasKey.Standings), _teams);
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.S))

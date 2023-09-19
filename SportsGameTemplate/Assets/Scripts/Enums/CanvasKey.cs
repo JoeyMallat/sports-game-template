@@ -5,5 +5,8 @@ using UnityEngine;
 public enum CanvasKey
 {
     Team,
-    Player
+    Player,
+    Standings,
+    Draft,
+    Trade
 }

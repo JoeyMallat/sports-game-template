@@ -27,6 +27,23 @@ public class Team
         InitializeAvailableMatchdays();
     }
 
+    public string GetTeamAbbreviation()
+    {
+        string[] parts = _teamName.Split(" ");
+
+        string abbreviation = "";
+
+        if (parts.Length == 1)
+            return _teamName.Substring(0, 1);
+
+        foreach (string part in parts)
+        {
+            abbreviation += part.Substring(0, 1);
+        }
+
+        return abbreviation;
+    }
+
     public int GetAverageTeamRating()
     {
         int rating = 0;
@@ -128,6 +145,11 @@ public class Team
         }
 
         return total;
+    }
+
+    public Sprite GetTeamLogo()
+    {
+        return Resources.Load<Sprite>($"Logos/{_teamID}");
     }
 
     public void DebugShowStats()
