@@ -28,6 +28,8 @@ public class LeagueSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S))
         {
             SimulateSeason();
+
+            Navigation.Instance.GoToScreen(false, Navigation.Instance.GetCanvas(CanvasKey.Standings), _teams);
         }
     }
 
@@ -120,7 +122,6 @@ public class LeagueSystem : MonoBehaviour
                 else index++;
             }
         }
-
     }
 
     public void SimulateSeason()
@@ -130,9 +131,11 @@ public class LeagueSystem : MonoBehaviour
             ConfigManager.Instance.GetCurrentConfig().MatchSimulator.SimulateMatch(match);
         }
 
-        foreach (Team team in _teams)
-        {
-            team.DebugShowStats();
-        }
+        SortStandings();
+    }
+
+    private void SortStandings()
+    {
+        _teams = _teams.OrderByDescending(x => x.GetCurrentSeasonStats().GetWinPercentage()).ToList();
     }
 }

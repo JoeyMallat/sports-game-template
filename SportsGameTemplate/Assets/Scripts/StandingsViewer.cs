@@ -12,11 +12,12 @@ public class StandingsViewer : MonoBehaviour, ISettable
     {
         List<Team> teamList = item as List<Team>;
         List<TeamItem> teamItems = _teamItemsRoot.GetComponentsInChildren<TeamItem>().ToList();
-        teamList = teamList.OrderByDescending(x => x.GetAverageTeamRating()).ToList();
+        teamList = teamList.OrderByDescending(x => x.GetCurrentSeasonStats().GetWinPercentage()).ToList();
+        int mostWins = teamList[0].GetCurrentSeasonStats().GetWins();
 
         for (int i = 0; i < teamList.Count; i++)
         {
-            teamItems[i].SetTeamDetails(i + 1, teamList[i]);
+            teamItems[i].SetTeamDetails(i + 1, teamList[i], mostWins);
         }
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(_teamItemsRoot);

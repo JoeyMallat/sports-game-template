@@ -15,15 +15,17 @@ public class TeamItem : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI _teamLogo;
 
-    public void SetTeamDetails(int place, Team team)
+    public void SetTeamDetails(int place, Team team, int mostWins)
     {
+        TeamSeason teamSeason = team.GetCurrentSeasonStats();
+
         _placeText.text = place.ToString();
         _teamLogo.text = team.GetTeamAbbreviation().ToUpper();
         _teamNameText.text = team.GetTeamName();
-        _winsText.text = 0.ToString();
-        _lossesText.text = 0.ToString();
-        _percentageText.text = "0.000";
-        _gamesBackText.text = "-";
+        _winsText.text = teamSeason.GetWins().ToString();
+        _lossesText.text = teamSeason.GetLosses().ToString();
+        _percentageText.text = teamSeason.GetWinPercentage().ToString("F3");
+        _gamesBackText.text = (mostWins - teamSeason.GetWins()).ToString();
 
         SetButton(team);
     }

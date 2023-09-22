@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using System;
 
 [System.Serializable]
 public class Match
@@ -14,12 +15,16 @@ public class Match
     [SerializeField] int _homeTeamPoints;
     [SerializeField] int _awayTeamPoints;
 
+    public static event Action<Match> OnMatchPlayed;
+
     public Match (int id, int week, int homeID, int awayID)
     {
         _matchID = id;
         _week = week;
         _homeTeamID = homeID;
         _awayTeamID = awayID;
+
+        OnMatchPlayed?.Invoke(this);
     }
 
     public int GetWeek()
@@ -40,7 +45,10 @@ public class Match
     public void SetResult(int homeTeamPoints, int awayTeamPoints)
     {
         _homeTeamPoints = homeTeamPoints;
+        LeagueSystem.Instance.GetTeam(_homeTeamID).GetCurrentSeasonStats().AddResult(homeTeamPoints, awayTeamPoints);
+
         _awayTeamPoints = awayTeamPoints;
+        LeagueSystem.Instance.GetTeam(_awayTeamID).GetCurrentSeasonStats().AddResult(awayTeamPoints, homeTeamPoints);
     }
 
     public bool IsHomeTeam(int teamID)

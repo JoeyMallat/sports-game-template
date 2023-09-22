@@ -15,6 +15,7 @@ public class Team
     List<DraftPick> _draftPicks;
     List<int> _matchdays;
     List<int> _availableMatchdays;
+    [SerializeField] TeamSeason _seasonStats;
 
     public Team(int id, string name, int rating, List<Player> players)
     {
@@ -42,6 +43,15 @@ public class Team
         }
 
         return abbreviation;
+    }
+
+    public TeamSeason GetCurrentSeasonStats()
+    {
+        if (_seasonStats == null)
+        {
+            return _seasonStats = new TeamSeason();
+        }
+        return _seasonStats;
     }
 
     public int GetAverageTeamRating()
