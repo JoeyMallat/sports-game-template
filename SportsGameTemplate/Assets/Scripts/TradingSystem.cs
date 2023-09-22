@@ -14,16 +14,11 @@ public class TradingSystem : MonoBehaviour
 
     private void Awake()
     {
-        
+        Player.OnAddedToTrade += AddAssetToTrade;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            DebugAddRandomPlayerToTradingAssets();
-        }
-
         if (Input.GetKeyDown(KeyCode.O))
         {
             DebugCounterOffer();
@@ -60,8 +55,8 @@ public class TradingSystem : MonoBehaviour
 
     public void ClearTrades()
     {
-        _teamATradingAssets.Clear();
-        _teamBTradingAssets.Clear();
+        _teamATradingAssets = new List<ITradeable>();
+        _teamBTradingAssets = new List<ITradeable>();
     }
 
     private void TradePlayer(int currentTeamID, int newTeamID, Player player)
@@ -76,15 +71,6 @@ public class TradingSystem : MonoBehaviour
         LeagueSystem.Instance.GetTeam(newTeamID).AddDraftPick(pick);
     }
 
-    public void DebugAddRandomPlayerToTradingAssets()
-    {
-        _teamATradingAssets = new();
-        _teamBTradingAssets = new();
-
-        AddAssetToTrade(0, FindAnyObjectByType<LeagueSystem>().GetTeams()[0].GetPlayersFromTeam()[0]);
-        AddAssetToTrade(0, FindAnyObjectByType<LeagueSystem>().GetTeams()[0].GetPlayersFromTeam()[10]);
-    }
-
     public void DebugCounterOffer()
     {
         _teamBTradingAssets = GetOffer(1);
@@ -92,8 +78,25 @@ public class TradingSystem : MonoBehaviour
 
     public void AddAssetToTrade(int team, ITradeable assetToAdd)
     {
-        if (team == 0) _teamATradingAssets.Add(assetToAdd);
-        if (team == 1) _teamBTradingAssets.Add(assetToAdd);
+        if (_teamAID == team)
+        {
+            if (_teamATradingAssets.Contains(assetToAdd)) return;
+
+            _teamATradingAssets.Add(assetToAdd);
+        }
+        else if (_teamBID == team || _teamBTradingAssets.Count <= 0)
+        {
+            if (_teamBTradingAssets.Contains(assetToAdd)) return;
+
+            _teamBTradingAssets.Add(assetToAdd);
+            _teamBID = team;
+        }
+        else
+        {
+            ClearTrades();
+            _teamATradingAssets.Add(assetToAdd);
+            _teamAID = team;
+        }
     }
 
     public void GenerateRandomAITrade()

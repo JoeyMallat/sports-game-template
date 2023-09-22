@@ -11769,6 +11769,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _upcomingDraftClass:
     _playersInDraftClass: []
+  _teamPicks: 
 --- !u!1001 &1494646546
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15920,6 +15921,7 @@ MonoBehaviour:
   _team: {fileID: 1001029225}
   _contract: {fileID: 1088233429}
   _position: {fileID: 256992914}
+  _addToTradeButton: {fileID: 670990620}
 --- !u!1 &2010414536
 GameObject:
   m_ObjectHideFlags: 0

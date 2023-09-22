@@ -22,6 +22,8 @@ public class Player : ITradeable
 
     [SerializeField] Contract _contract;
 
+    public static event Action<int, Player> OnAddedToTrade;
+
     [Header("Appearance Settings")]
     [SerializeField] int _portraitID;
 
@@ -55,6 +57,11 @@ public class Player : ITradeable
 
         _portraitID = UnityEngine.Random.Range(0, Resources.LoadAll<Sprite>("Faces/").Length);
         _teamID = -1;
+    }
+
+    public void AddToTrade()
+    {
+        OnAddedToTrade?.Invoke(_teamID, this);
     }
 
     public void ChangeTeam(int teamID)

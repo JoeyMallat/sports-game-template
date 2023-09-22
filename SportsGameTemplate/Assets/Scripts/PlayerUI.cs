@@ -15,6 +15,8 @@ public class PlayerUI : MonoBehaviour, ISettable
     [SerializeField] TextMeshProUGUI _contract;
     [SerializeField] TextMeshProUGUI _position;
 
+    [SerializeField] Button _addToTradeButton;
+
     public void SetDetails<T>(T itemDetails) where T : class
     {
         Player player = itemDetails as Player;
@@ -26,5 +28,13 @@ public class PlayerUI : MonoBehaviour, ISettable
         _team.text = LeagueSystem.Instance.GetTeam(player.GetTeamID()).GetTeamName();
         _contract.text = $"{player.GetContract().GetYearlySalary().ConvertToMonetaryString()}\n{player.GetContract().GetYearsOnContract()} YRS";
         _position.text = player.GetPosition();
+
+        SetButtons(player);
+    }
+
+    private void SetButtons(Player player)
+    {
+        _addToTradeButton.onClick.RemoveAllListeners();
+        _addToTradeButton.onClick.AddListener(() => player.AddToTrade());
     }
 }
