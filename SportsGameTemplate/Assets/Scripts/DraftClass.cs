@@ -14,5 +14,18 @@ public class DraftClass
 
         _playersInDraftClass = squadCreator.CreateDraftClass(rating);
         _playersInDraftClass = _playersInDraftClass.OrderByDescending(x => x.CalculateTradeValue()).ToList();
-    }   
+    }
+
+    public List<Player> GetPlayers()
+    {
+        return _playersInDraftClass;
+    }
+
+    public Player PickPlayerAtID(int id, Team team, int pickNumber)
+    {
+        Player chosenPlayer = _playersInDraftClass[id];
+        _playersInDraftClass.RemoveAt(id);
+        team.AddPlayer(chosenPlayer, pickNumber);
+        return chosenPlayer;
+    }
 }

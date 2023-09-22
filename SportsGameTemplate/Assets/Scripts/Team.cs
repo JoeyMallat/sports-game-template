@@ -81,6 +81,13 @@ public class Team
     public void AddPlayer(Player player)
     {
         _players.Add(player);
+        player.ChangeTeam(_teamID);
+    }
+
+    public void AddPlayer(Player player, int pick)
+    {
+        _players.Add(player);
+        player.ChangeTeam(_teamID, pick);
     }
 
     public void RemoveDraftPick(DraftPick draftPick)

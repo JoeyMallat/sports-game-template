@@ -18,7 +18,7 @@ public class Contract
     {
         if (pick >= 30) pick = 30;
 
-        _yearlySalary = Mathf.RoundToInt(10000000 * ConfigManager.Instance.GetCurrentConfig().RookieSalaryScale.Evaluate(pick / 30));
+        _yearlySalary = Mathf.RoundToInt(10000000 * ConfigManager.Instance.GetCurrentConfig().RookieSalaryScale.Evaluate(pick / 30f));
         _yearsOnContract = 2;
     }
 

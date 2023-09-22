@@ -27,4 +27,9 @@ public class Config : ScriptableObject
     [Header("Calculations")]
     public AnimationCurve ContractLengthImpactOnTradeValue;
     public AnimationCurve DistributionOfPotential;
+
+    public int GetTotalDraftPicks()
+    {
+        return DraftRounds * PlayersPerDraftRound;
+    }
 }

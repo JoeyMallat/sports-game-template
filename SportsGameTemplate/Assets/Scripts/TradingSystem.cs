@@ -12,6 +12,11 @@ public class TradingSystem : MonoBehaviour
     [SerializeField] int _teamBID = 10;
     [SerializeReference] List<ITradeable> _teamBTradingAssets;
 
+    private void Awake()
+    {
+        
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))
@@ -51,6 +56,12 @@ public class TradingSystem : MonoBehaviour
                 TradePick(currentTeamID, newTeamID, draftPick);
             }
         }
+    }
+
+    public void ClearTrades()
+    {
+        _teamATradingAssets.Clear();
+        _teamBTradingAssets.Clear();
     }
 
     private void TradePlayer(int currentTeamID, int newTeamID, Player player)
@@ -145,4 +156,6 @@ public class TradingSystem : MonoBehaviour
 
         return team.GetTotalSalaryAmount() + totalSalary < ConfigManager.Instance.GetCurrentConfig().SalaryCap;
     }
+
+
 }

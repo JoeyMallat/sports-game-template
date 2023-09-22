@@ -10,7 +10,6 @@ public class DraftPick : ITradeable
     [SerializeField][ReadOnly] int _tradeValue;
     [SerializeField] int _round;
     [SerializeField] int _pickNumber;
-    // TODO: Add season to draft pick to add future draft picks
 
     public DraftPick(int round, int number)
     {
@@ -22,13 +21,16 @@ public class DraftPick : ITradeable
         CalculateTradeValue();
     }
 
-    private int GetTotalPickNumber()
+    public int GetTotalPickNumber()
     {
         return (_round - 1) * ConfigManager.Instance.GetCurrentConfig().PlayersPerDraftRound + _pickNumber;
     }
 
     private int GetFirstPickValue()
     {
+        // 30 is the minimum value for the draft picks
+        // TODO: Base the value of off the upcoming draft class
+
         return 30 + ConfigManager.Instance.GetCurrentConfig().PlayersPerDraftRound * ConfigManager.Instance.GetCurrentConfig().DraftRounds * 30;
     }
 

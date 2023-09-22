@@ -57,6 +57,17 @@ public class Player : ITradeable
         _teamID = -1;
     }
 
+    public void ChangeTeam(int teamID)
+    {
+        _teamID = teamID;
+    }
+
+    public void ChangeTeam(int teamID, int pick)
+    {
+        _teamID = teamID;
+        _contract = new Contract(pick);
+    }
+
     public string GetFullName()
     {
         return $"{_firstName} {_lastName}".Replace("\r", "");
