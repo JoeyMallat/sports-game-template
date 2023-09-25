@@ -13,7 +13,7 @@ public class AITrader
 
         foreach (ITradeable asset in assetsToUse)
         {
-            if (valueOfAssetsPicked <= tradeValue * Random.Range(0.65f, 1.05f))
+            if (valueOfAssetsPicked <= tradeValue * Random.Range(0.65f, 1.05f) && assets.Count < 5)
             {
                 assets.Add(asset);
                 valueOfAssetsPicked += asset.CalculateTradeValue();

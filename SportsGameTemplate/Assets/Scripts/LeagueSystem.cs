@@ -57,8 +57,8 @@ public class LeagueSystem : MonoBehaviour
         }
 
         DistributeDraftPicks();
-        _seasonMatches = ConfigManager.Instance.GetCurrentConfig().ScheduleGenerator.GenerateSchedule(_teams);
-        _seasonMatches = _seasonMatches.OrderBy(x => x.GetWeek()).ToList();
+        //_seasonMatches = ConfigManager.Instance.GetCurrentConfig().ScheduleGenerator.GenerateSchedule(_teams);
+        //_seasonMatches = _seasonMatches.OrderBy(x => x.GetWeek()).ToList();
     }
 
     public List<Match> GetMatchesForTeam(Team team)

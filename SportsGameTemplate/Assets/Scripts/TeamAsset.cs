@@ -108,7 +108,6 @@ public class TeamAsset : MonoBehaviour
             _playerProfileButton.gameObject.SetActive(false);
 
         _removeFromTradeButton.onClick.AddListener(() => OnRemoveFromTrade(_teamAssetParent.GetTeamIndex(), item as ITradeable));
-        _removeFromTradeButton.onClick.AddListener(() => Debug.Log($"Player {(item as Player).GetFullName()} removed from trade, from team ID {_teamAssetParent}"));
         _removeFromTradeButton.onClick.AddListener(() => ToggleOverlay(false));
 
         _closeOverlayButton.onClick.AddListener(() => ToggleOverlay(false));
