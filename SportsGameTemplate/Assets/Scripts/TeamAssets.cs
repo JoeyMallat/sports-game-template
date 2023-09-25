@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TeamAssets : MonoBehaviour
 {
-    [SerializeField] int _teamID;
+    [SerializeField] int _teamIndex;
+    int _teamID;
+    [SerializeField] TextMeshProUGUI _teamName;
     List<TeamAsset> _teamAssets;
 
     private void Awake()
@@ -13,16 +17,19 @@ public class TeamAssets : MonoBehaviour
         TradingSystem.OnAssetsUpdated += UpdateTeamAssets;
     }
 
-    public void UpdateTeamAssets(int teamID, List<ITradeable> tradeAssets)
+    public void UpdateTeamAssets(int teamIndex, int teamID, List<ITradeable> tradeAssets)
     {
         Navigation.Instance.GoToScreen(false, Navigation.Instance.GetCanvas(CanvasKey.Trade));
 
-        if (teamID != _teamID) return;
+        if (teamIndex != _teamIndex) return;
 
         if (_teamAssets == null)
         {
             _teamAssets = GetComponentsInChildren<TeamAsset>().ToList();
         }
+
+        _teamID = teamID;
+        _teamName.text = LeagueSystem.Instance.GetTeam(_teamID).GetTeamName();
 
         int tradeAssetsAmount = tradeAssets.Count;
 
@@ -31,7 +38,20 @@ public class TeamAssets : MonoBehaviour
             if (i < tradeAssetsAmount)
             {
                 _teamAssets[i].SetAssetDetails(tradeAssets[i]);
+            } else
+            {
+                _teamAssets[i].SetAssetDetails();
             }
         }
+    }
+
+    public int GetTeamID()
+    {
+        return _teamID;
+    }
+
+    public int GetTeamIndex()
+    {
+        return _teamIndex;
     }
 }

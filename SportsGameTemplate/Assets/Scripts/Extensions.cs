@@ -20,9 +20,7 @@ public static class Extensions
 
     public static void RemoveByPickID(this List<DraftPick> picks, string pickID)
     {
-        Debug.Log(pickID);
         List<DraftPick> picksToRemove = picks.Where(x => x.GetPickID() == pickID).ToList();
-
 
         if (picksToRemove.Any())
         {

@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class TradingSystem : MonoBehaviour
 {
@@ -13,11 +15,17 @@ public class TradingSystem : MonoBehaviour
     [SerializeField] int _teamBID = 10;
     [SerializeReference] List<ITradeable> _teamBTradingAssets;
 
-    public static event Action<int, List<ITradeable>> OnAssetsUpdated;
+    [Header("Trade confirmation UI")]
+    [SerializeField] TextMeshProUGUI _willAcceptText;
+    [SerializeField] Button _confirmTradeButton;
+
+    public static event Action<int, int, List<ITradeable>> OnAssetsUpdated;
 
     private void Awake()
     {
         Player.OnAddedToTrade += AddAssetToTrade;
+        TeamAsset.OnRemoveFromTrade += RemoveFromTrade;
+        OnAssetsUpdated += CheckTradeWillingness;
     }
 
     private void Update()
@@ -61,8 +69,8 @@ public class TradingSystem : MonoBehaviour
         _teamATradingAssets = new List<ITradeable>();
         _teamBTradingAssets = new List<ITradeable>();
 
-        OnAssetsUpdated?.Invoke(0, _teamATradingAssets);
-        OnAssetsUpdated?.Invoke(1, _teamBTradingAssets);
+        OnAssetsUpdated?.Invoke(0, _teamAID, _teamATradingAssets);
+        OnAssetsUpdated?.Invoke(1, _teamBID, _teamBTradingAssets);
     }
 
     private void TradePlayer(int currentTeamID, int newTeamID, Player player)
@@ -90,7 +98,7 @@ public class TradingSystem : MonoBehaviour
 
             _teamATradingAssets.Add(assetToAdd);
 
-            OnAssetsUpdated?.Invoke(0, _teamATradingAssets);
+            OnAssetsUpdated?.Invoke(0, _teamAID, _teamATradingAssets);
 
         }
         else if (_teamBID == team || _teamBTradingAssets.Count <= 0)
@@ -100,7 +108,7 @@ public class TradingSystem : MonoBehaviour
             _teamBTradingAssets.Add(assetToAdd);
             _teamBID = team;
 
-            OnAssetsUpdated?.Invoke(1, _teamBTradingAssets);
+            OnAssetsUpdated?.Invoke(1, _teamBID, _teamBTradingAssets);
         }
         else
         {
@@ -110,14 +118,31 @@ public class TradingSystem : MonoBehaviour
         }
     }
 
+    private void RemoveFromTrade(int teamID, ITradeable asset)
+    {
+        if (teamID == 0)
+        {
+            _teamATradingAssets.Remove(asset);
+            OnAssetsUpdated?.Invoke(0, _teamAID, _teamATradingAssets);
+        }
+        else if (teamID == 1)
+        {
+            _teamBTradingAssets.Remove(asset);
+            OnAssetsUpdated?.Invoke(1, _teamBID, _teamBTradingAssets);
+        }
+    }
+
     public void GenerateRandomAITrade()
     {
         _teamAID = UnityEngine.Random.Range(0, LeagueSystem.Instance.GetTeams().Count - 1);
         AITrader aiTrader = new AITrader();
-        _teamATradingAssets = aiTrader.GenerateOffer(UnityEngine.Random.Range(300, 2500), LeagueSystem.Instance.GetTeam(_teamAID).GetTradeAssets());
+        _teamATradingAssets = aiTrader.GenerateOffer(UnityEngine.Random.Range(100, 450), LeagueSystem.Instance.GetTeam(_teamAID).GetTradeAssets());
 
         _teamBID = UnityEngine.Random.Range(0, LeagueSystem.Instance.GetTeams().Count - 1);
         _teamBTradingAssets = GetOffer(1);
+
+        OnAssetsUpdated?.Invoke(0, _teamAID, _teamATradingAssets);
+        OnAssetsUpdated?.Invoke(1, _teamBID, _teamBTradingAssets);
     }
 
     public int GetTotalTradeValue(List<ITradeable> assets)
@@ -148,18 +173,31 @@ public class TradingSystem : MonoBehaviour
         return null;
     }
 
-    public bool CheckTradeEligibility(int teamID, List<ITradeable> assets)
+    public bool CheckTradeEligibility(int teamID, List<ITradeable> assetsToReceive, List<ITradeable> assetsToSendAway)
     {
-        int totalSalary = 0;
+        int totalSalaryToAdd = 0;
 
-        foreach (ITradeable asset in assets)
+        foreach (ITradeable asset in assetsToReceive)
         {
             if (asset.GetType() == typeof(Player))
             {
                 Player player = (Player)asset;
-                totalSalary += player.GetContract().GetYearlySalary();
+                totalSalaryToAdd += player.GetContract().GetYearlySalary();
             }
         }
+
+        int totalSalaryToReceive = 0;
+
+        foreach (ITradeable asset in assetsToSendAway)
+        {
+            if (asset.GetType() == typeof(Player))
+            {
+                Player player = (Player)asset;
+                totalSalaryToReceive += player.GetContract().GetYearlySalary();
+            }
+        }
+
+        int totalSalary = totalSalaryToAdd - totalSalaryToReceive;
 
         return CheckSalaryForSalaryCap(teamID, totalSalary);
     }
@@ -171,5 +209,41 @@ public class TradingSystem : MonoBehaviour
         return team.GetTotalSalaryAmount() + totalSalary < ConfigManager.Instance.GetCurrentConfig().SalaryCap;
     }
 
+    public void CheckTradeWillingness(int teamIndex, int teamID, List<ITradeable> assets)
+    {
+        if (!CheckTradeEligibility(_teamBID, _teamATradingAssets, _teamBTradingAssets))
+        {
+            Debug.Log("Salary cap issues");
+            UpdateAcceptButtonAndText(false);
+            return;
+        }
 
+        if (GetTotalTradeValue(_teamATradingAssets) < GetTotalTradeValue(_teamBTradingAssets))
+        {
+            Debug.Log("Trade value issues");
+            UpdateAcceptButtonAndText(false);
+            return;
+        }
+        else
+        {
+            Debug.Log("Will accept!");
+            UpdateAcceptButtonAndText(true);
+            return;
+        }
+    }
+
+    private void UpdateAcceptButtonAndText(bool willAccept)
+    {
+        string teamName = LeagueSystem.Instance.GetTeam(_teamBID).GetTeamName();
+        if (willAccept)
+        {
+            _confirmTradeButton.enabled = true;
+            _willAcceptText.text = $"{teamName} will <#0EC800>accept</color> this trade.";
+        }
+        else
+        {
+            _confirmTradeButton.enabled = false;
+            _willAcceptText.text = $"{teamName} will <#FF0E0B>not accept</color> this trade.";
+        }
+    }
 }
