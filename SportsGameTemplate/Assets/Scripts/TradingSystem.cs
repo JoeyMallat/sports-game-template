@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,8 @@ public class TradingSystem : MonoBehaviour
     [InfoBox("@GetTotalTradeValue(_teamBTradingAssets)")]
     [SerializeField] int _teamBID = 10;
     [SerializeReference] List<ITradeable> _teamBTradingAssets;
+
+    public static event Action<int, List<ITradeable>> OnAssetsUpdated;
 
     private void Awake()
     {
@@ -57,6 +60,9 @@ public class TradingSystem : MonoBehaviour
     {
         _teamATradingAssets = new List<ITradeable>();
         _teamBTradingAssets = new List<ITradeable>();
+
+        OnAssetsUpdated?.Invoke(0, _teamATradingAssets);
+        OnAssetsUpdated?.Invoke(1, _teamBTradingAssets);
     }
 
     private void TradePlayer(int currentTeamID, int newTeamID, Player player)
@@ -83,6 +89,9 @@ public class TradingSystem : MonoBehaviour
             if (_teamATradingAssets.Contains(assetToAdd)) return;
 
             _teamATradingAssets.Add(assetToAdd);
+
+            OnAssetsUpdated?.Invoke(0, _teamATradingAssets);
+
         }
         else if (_teamBID == team || _teamBTradingAssets.Count <= 0)
         {
@@ -90,6 +99,8 @@ public class TradingSystem : MonoBehaviour
 
             _teamBTradingAssets.Add(assetToAdd);
             _teamBID = team;
+
+            OnAssetsUpdated?.Invoke(1, _teamBTradingAssets);
         }
         else
         {

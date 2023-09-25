@@ -26,6 +26,11 @@ public class DraftPick : ITradeable
         return (_round - 1) * ConfigManager.Instance.GetCurrentConfig().PlayersPerDraftRound + _pickNumber;
     }
 
+    public (int, int) GetPickData()
+    {
+        return (_round, _pickNumber);
+    }
+
     private int GetFirstPickValue()
     {
         // 30 is the minimum value for the draft picks

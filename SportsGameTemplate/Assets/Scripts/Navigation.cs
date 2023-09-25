@@ -62,6 +62,14 @@ public class Navigation : SerializedMonoBehaviour
         }
     }
 
+    public void GoToScreen(bool overlay, Canvas canvas)
+    {
+        if (!overlay)
+            DisableAllCanvasses();
+
+        canvas.enabled = true;
+    }
+
     public void CloseCanvas(Canvas canvas)
     {
         canvas.enabled = false;

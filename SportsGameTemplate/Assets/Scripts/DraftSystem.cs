@@ -14,7 +14,7 @@ public class DraftSystem : MonoBehaviour
         _upcomingDraftClass = new DraftClass(UnityEngine.Random.Range(50, 80));
         _teamPicks = GetDraftOrder();
 
-        SimulateDraft();
+        //SimulateDraft();
     }
 
     private List<int> GetDraftOrder()
@@ -39,7 +39,6 @@ public class DraftSystem : MonoBehaviour
         {
             Team team = LeagueSystem.Instance.GetTeam(teamID);
             Player player = DecidePick(team, currentPickNumber);
-            Debug.Log($"{team.GetTeamName()} picks {player.GetFullName()}");
             currentPickNumber++;
         }
     }
