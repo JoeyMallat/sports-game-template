@@ -88,7 +88,8 @@ public class TeamAsset : MonoBehaviour
         _playerAssetOverlay.SetActive(false);
         _pickAssetOverlay.SetActive(true);
 
-        _pickNumberText.text = $"Round {pick.GetPickData().Item1} - Pick {pick.GetPickData().Item2}";
+        _pickNumberText.text = pick.GetPickDataString();
+        // TODO: Pick season
 
         SetButtons(pick);
     }

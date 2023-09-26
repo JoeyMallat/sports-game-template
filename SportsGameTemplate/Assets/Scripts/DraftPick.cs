@@ -31,6 +31,11 @@ public class DraftPick : ITradeable
         return (_round, _pickNumber);
     }
 
+    public string GetPickDataString()
+    {
+        return $"Round {_round} - Pick {_pickNumber}";
+    }
+
     private int GetFirstPickValue()
     {
         // 30 is the minimum value for the draft picks

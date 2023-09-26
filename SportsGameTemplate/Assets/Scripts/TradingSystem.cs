@@ -72,8 +72,7 @@ public class TradingSystem : MonoBehaviour
         _teamATradingAssets = new List<ITradeable>();
         _teamBTradingAssets = new List<ITradeable>();
 
-        OnAssetsUpdated?.Invoke(0, _teamAID, _teamATradingAssets);
-        OnAssetsUpdated?.Invoke(1, _teamBID, _teamBTradingAssets);
+        UpdateBothTeamsAssets();
     }
 
     private void TradePlayer(int currentTeamID, int newTeamID, Player player)
@@ -101,8 +100,6 @@ public class TradingSystem : MonoBehaviour
 
             _teamATradingAssets.Add(assetToAdd);
 
-            OnAssetsUpdated?.Invoke(0, _teamAID, _teamATradingAssets);
-
         }
         else if (_teamBID == team || _teamBTradingAssets.Count <= 0)
         {
@@ -110,8 +107,6 @@ public class TradingSystem : MonoBehaviour
 
             _teamBTradingAssets.Add(assetToAdd);
             _teamBID = team;
-
-            OnAssetsUpdated?.Invoke(1, _teamBID, _teamBTradingAssets);
         }
         else
         {
@@ -119,6 +114,8 @@ public class TradingSystem : MonoBehaviour
             _teamATradingAssets.Add(assetToAdd);
             _teamAID = team;
         }
+
+        UpdateBothTeamsAssets();
     }
 
     private void RemoveFromTrade(int teamID, ITradeable asset)
@@ -126,12 +123,12 @@ public class TradingSystem : MonoBehaviour
         if (teamID == 0)
         {
             _teamATradingAssets.Remove(asset);
-            OnAssetsUpdated?.Invoke(0, _teamAID, _teamATradingAssets);
+            UpdateBothTeamsAssets();
         }
         else if (teamID == 1)
         {
             _teamBTradingAssets.Remove(asset);
-            OnAssetsUpdated?.Invoke(1, _teamBID, _teamBTradingAssets);
+            UpdateBothTeamsAssets();
         }
     }
 
@@ -144,8 +141,7 @@ public class TradingSystem : MonoBehaviour
         _teamBID = UnityEngine.Random.Range(0, LeagueSystem.Instance.GetTeams().Count - 1);
         _teamBTradingAssets = GetOffer(1);
 
-        OnAssetsUpdated?.Invoke(0, _teamAID, _teamATradingAssets);
-        OnAssetsUpdated?.Invoke(1, _teamBID, _teamBTradingAssets);
+        UpdateBothTeamsAssets();
     }
 
     public int GetTotalTradeValue(List<ITradeable> assets)
@@ -248,5 +244,11 @@ public class TradingSystem : MonoBehaviour
         {
             _confirmTradeButton.enabled = false;
         }
+    }
+
+    private void UpdateBothTeamsAssets()
+    {
+        OnAssetsUpdated?.Invoke(0, _teamAID, _teamATradingAssets);
+        OnAssetsUpdated?.Invoke(1, _teamBID, _teamBTradingAssets);
     }
 }
