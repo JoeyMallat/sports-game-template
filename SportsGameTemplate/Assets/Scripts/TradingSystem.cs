@@ -16,6 +16,9 @@ public class TradingSystem : MonoBehaviour
     [SerializeReference] List<ITradeable> _teamBTradingAssets;
 
     [Header("Trade confirmation UI")]
+    [SerializeField] string _tradeValueTooLowString;
+    [SerializeField] string _overSalaryCapString;
+    [SerializeField] string _willAcceptString;
     [SerializeField] TextMeshProUGUI _willAcceptText;
     [SerializeField] Button _confirmTradeButton;
 
@@ -214,36 +217,36 @@ public class TradingSystem : MonoBehaviour
         if (!CheckTradeEligibility(_teamBID, _teamATradingAssets, _teamBTradingAssets))
         {
             Debug.Log("Salary cap issues");
-            UpdateAcceptButtonAndText(false);
+            UpdateAcceptButtonAndText(false, _overSalaryCapString);
             return;
         }
 
         if (GetTotalTradeValue(_teamATradingAssets) < GetTotalTradeValue(_teamBTradingAssets))
         {
             Debug.Log("Trade value issues");
-            UpdateAcceptButtonAndText(false);
+            UpdateAcceptButtonAndText(false, _tradeValueTooLowString);
             return;
         }
         else
         {
             Debug.Log("Will accept!");
-            UpdateAcceptButtonAndText(true);
+            UpdateAcceptButtonAndText(true, _willAcceptString);
             return;
         }
     }
 
-    private void UpdateAcceptButtonAndText(bool willAccept)
+    private void UpdateAcceptButtonAndText(bool willAccept, string text)
     {
         string teamName = LeagueSystem.Instance.GetTeam(_teamBID).GetTeamName();
+        _willAcceptText.text = text.Replace("{{TEAMNAME}}", teamName);
+
         if (willAccept)
         {
             _confirmTradeButton.enabled = true;
-            _willAcceptText.text = $"{teamName} will <#0EC800>accept</color> this trade.";
         }
         else
         {
             _confirmTradeButton.enabled = false;
-            _willAcceptText.text = $"{teamName} will <#FF0E0B>not accept</color> this trade.";
         }
     }
 }

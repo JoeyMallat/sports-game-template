@@ -157,6 +157,11 @@ public class Player : ITradeable
         return skillRating;
     }
 
+    public List<PlayerSkill> GetSkills()
+    {
+        return _skills;
+    }
+
     public string GetPlayerID()
     {
         return _playerID;

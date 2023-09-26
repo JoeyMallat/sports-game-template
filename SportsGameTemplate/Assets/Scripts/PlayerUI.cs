@@ -29,6 +29,7 @@ public class PlayerUI : MonoBehaviour, ISettable
         _contract.text = $"{player.GetContract().GetYearlySalary().ConvertToMonetaryString()}\n{player.GetContract().GetYearsOnContract()} YRS";
         _position.text = player.GetPosition();
 
+        SetSkills(player);
         SetButtons(player);
     }
 
@@ -36,5 +37,28 @@ public class PlayerUI : MonoBehaviour, ISettable
     {
         _addToTradeButton.onClick.RemoveAllListeners();
         _addToTradeButton.onClick.AddListener(() => player.AddToTrade());
+    }
+
+    private void SetSkills(Player player)
+    {
+        SkillBar[] skillBars = GetComponentsInChildren<SkillBar>();
+        List<PlayerSkill> playerSkills = player.GetSkills();
+        int skillCount = playerSkills.Count;
+
+        // Set the overall as the top bar
+        skillBars[0].gameObject.SetActive(true);
+        skillBars[0].SetSkillBar("Overall", player.CalculateRatingForPosition());
+
+        for (int i = 1; i < skillBars.Length; i++)
+        {
+            if (i < skillCount)
+            {
+                skillBars[i].gameObject.SetActive(true);
+                skillBars[i].SetSkillBar(playerSkills[i]);
+            } else
+            {
+                skillBars[i].gameObject.SetActive(false);
+            }
+        }
     }
 }
