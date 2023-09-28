@@ -20,7 +20,8 @@ public class LeagueSystem : MonoBehaviour
 
     private void Start()
     {
-        Navigation.Instance.GoToScreen(false, Navigation.Instance.GetCanvas(CanvasKey.Standings), _teams);
+        Debug.Log(_teams[0].GetTeamName());
+        Navigation.Instance.GoToScreen(false, Navigation.Instance.GetCanvas(CanvasKey.MainMenu), _teams[0]);
     }
 
     private void Update()

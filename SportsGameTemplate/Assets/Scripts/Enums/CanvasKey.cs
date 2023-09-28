@@ -8,5 +8,6 @@ public enum CanvasKey
     Player,
     Standings,
     Draft,
-    Trade
+    Trade,
+    MainMenu
 }

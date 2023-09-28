@@ -2,6 +2,7 @@ using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +20,7 @@ public class Player : ITradeable
     [ReadOnly][SerializeField] int _rating;
     [ReadOnly][SerializeField] int _tradeValue;
     [SerializeField] List<PlayerSkill> _skills;
+    [SerializeField] List<PlayerSeason> _seasonStats;
 
     [SerializeField] Contract _contract;
 
@@ -41,6 +43,9 @@ public class Player : ITradeable
         _contract = new Contract(CalculateRatingForPosition(), _age);
         _potential = SetPotential();
         _portraitID = UnityEngine.Random.Range(0, Resources.LoadAll<Sprite>("Faces/").Length);
+
+        _seasonStats = new List<PlayerSeason>();
+        _seasonStats.Add(new PlayerSeason(0, _teamID));
     }
 
     public Player(bool rookie, string firstname, string lastname, Position position, int averageRating)
@@ -93,6 +98,11 @@ public class Player : ITradeable
     public string GetPosition()
     {
         return _position;
+    }
+
+    public PlayerSeason GetLatestSeason()
+    {
+        return _seasonStats.Last();
     }
 
     private Potential SetPotential()
