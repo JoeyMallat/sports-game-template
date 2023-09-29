@@ -19,6 +19,7 @@ public class Player : ITradeable
     [SerializeField] float _percentageScouted;
     [ReadOnly][SerializeField] int _rating;
     [ReadOnly][SerializeField] int _tradeValue;
+    [SerializeField] bool _onTradingBlock;
     [SerializeField] List<PlayerSkill> _skills;
     [SerializeField] List<PlayerSeason> _seasonStats;
     [SerializeField] List<TradeOffer> _tradeOffers;
@@ -67,6 +68,16 @@ public class Player : ITradeable
         _teamID = -1;
     }
 
+    public void ToggleTradingBlockStatus()
+    {
+        _onTradingBlock = !_onTradingBlock;
+    }
+
+    public bool GetTradingBlockStatus()
+    {
+        return _onTradingBlock;
+    }
+
     public void AddToTrade()
     {
         OnAddedToTrade?.Invoke(_teamID, this);
@@ -76,6 +87,16 @@ public class Player : ITradeable
     {
         _tradeOffers.Add(tradeOffer);
         OnTradeOfferReceived?.Invoke(this);
+    }
+
+    public List<TradeOffer> GetTradeOffers()
+    {
+        if (_tradeOffers.Count == 0)
+        {
+            return null;
+        }
+
+        return _tradeOffers;
     }
 
     public void ChangeTeam(int teamID)

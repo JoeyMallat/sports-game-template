@@ -14,6 +14,11 @@ public class TradeOffer
         _tradeAssetsOffered = new List<TradeAssetWrapper>();
     }
 
+    public int GetOfferingTeamID()
+    {
+        return _teamID;
+    }
+
     public void AddAsset(ITradeable asset)
     {
         AssetType assetType = asset.GetType() == typeof(Player) ? AssetType.Player : AssetType.DraftPick;

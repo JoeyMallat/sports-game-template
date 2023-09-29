@@ -14,7 +14,8 @@ public class MainMenuViewer : MonoBehaviour, ISettable
         ISettable _teamSettable = _teamTab.GetComponent<ISettable>();
         _teamSettable.SetDetails((item as Team).GetPlayersFromTeam());
 
-        //ISettable _tradeSettable = _tradeTab.GetComponent<ISettable>();
+        ISettable _tradeSettable = _tradeTab.GetComponent<ISettable>();
+        _tradeSettable.SetDetails(item as Team);
         //ISettable _officeSettable = _officeTab.GetComponent<ISettable>();
         //ISettable _leagueSettable = _leagueTab.GetComponent<ISettable>();
     }

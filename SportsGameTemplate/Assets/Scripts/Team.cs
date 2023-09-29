@@ -169,6 +169,22 @@ public class Team
         return Resources.Load<Sprite>($"Logos/{_teamID}");
     }
 
+    public List<(TradeOffer, string)> GetAllTradeOffers()
+    {
+        List<(TradeOffer, string)> tradeOffers = new List<(TradeOffer, string)>();
+        foreach (Player player in _players)
+        {
+            if (player.GetTradeOffers() == null) continue;
+
+            foreach (TradeOffer tradeOffer in player.GetTradeOffers())
+            {
+                tradeOffers.Add((tradeOffer, player.GetTradeableID()));
+            }
+        }
+
+        return tradeOffers;
+    }
+
     public void DebugShowStats()
     {
         List<Match> matches = LeagueSystem.Instance.GetMatchesForTeam(this);

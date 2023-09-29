@@ -27,9 +27,9 @@ public class LeagueSystem : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.S))
         {
-            SimulateSeason();
+            //SimulateSeason();
 
-            Navigation.Instance.GoToScreen(false, Navigation.Instance.GetCanvas(CanvasKey.Standings), _teams);
+            Navigation.Instance.GoToScreen(false, Navigation.Instance.GetCanvas(CanvasKey.MainMenu), _teams[0]);
         }
     }
 
