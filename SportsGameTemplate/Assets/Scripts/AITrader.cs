@@ -25,4 +25,22 @@ public class AITrader
 
         return assets;
     }
+
+    public TradeOffer GenerateOffer(List<ITradeable> players, int offeringTeamID, int tradeValue, List<ITradeable> assetsToUse)
+    {
+        TradeOffer tradeOffer = new TradeOffer(offeringTeamID);
+
+        List<ITradeable> assets = GenerateOffer(tradeValue, assetsToUse);
+
+        foreach (ITradeable tradeable in assets)
+        {
+            tradeOffer.AddAsset(tradeable);
+        }
+
+        foreach (Player player in players)
+        {
+            player.AddTradeOffer(tradeOffer);
+        }
+        return tradeOffer;
+    }
 }

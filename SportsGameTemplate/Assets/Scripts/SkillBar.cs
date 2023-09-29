@@ -12,12 +12,12 @@ public class SkillBar : MonoBehaviour
     public void SetSkillBar(PlayerSkill skill)
     {
         _skillTitleText.text = $"{skill.GetSkill()}   <b><color=\"white\">{skill.GetRatingForSkill()}</color></b>";
-        _skillBarFill.fillAmount = skill.GetRatingForSkill() / 100f;
+        _skillBarFill.fillAmount = skill.GetRatingForSkill() / 99f;
     }
 
     public void SetSkillBar(string skill, int rating)
     {
         _skillTitleText.text = $"{skill}   <b><color=\"white\">{rating}</color></b>";
-        _skillBarFill.fillAmount = rating / 100f;
+        _skillBarFill.fillAmount = rating / 99f;
     }
 }

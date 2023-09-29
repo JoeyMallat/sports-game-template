@@ -6,4 +6,5 @@ using Sirenix.OdinInspector;
 public interface ITradeable
 {
     public int CalculateTradeValue();
+    public string GetTradeableID();
 }

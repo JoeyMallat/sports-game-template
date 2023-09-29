@@ -50,7 +50,7 @@ public class DraftPick : ITradeable
         return _tradeValue;
     }
 
-    public string GetPickID()
+    public string GetTradeableID()
     {
         return _pickID;
     }

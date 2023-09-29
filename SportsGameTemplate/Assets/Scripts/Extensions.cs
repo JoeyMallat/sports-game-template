@@ -8,20 +8,20 @@ public static class Extensions
 {
     public static void RemoveByPlayerID(this List<Player> players, string playerID)
     {
-        List<Player> playersToRemove = players.Where(x => x.GetPlayerID() == playerID).ToList();
+        List<Player> playersToRemove = players.Where(x => x.GetTradeableID() == playerID).ToList();
 
         if (playersToRemove.Any())
         {
             players.Remove(playersToRemove[0]);
         } else
         {
-            Debug.LogWarning($"No player found with id {playersToRemove[0].GetPlayerID()}");
+            Debug.LogWarning($"No player found with id {playersToRemove[0].GetTradeableID()}");
         }
     }
 
     public static void RemoveByPickID(this List<DraftPick> picks, string pickID)
     {
-        List<DraftPick> picksToRemove = picks.Where(x => x.GetPickID() == pickID).ToList();
+        List<DraftPick> picksToRemove = picks.Where(x => x.GetTradeableID() == pickID).ToList();
 
         if (picksToRemove.Any())
         {
@@ -29,7 +29,7 @@ public static class Extensions
         }
         else
         {
-            Debug.LogWarning($"No draft pick found with id {picksToRemove[0].GetPickID()}");
+            Debug.LogWarning($"No draft pick found with id {picksToRemove[0].GetTradeableID()}");
         }
     }
 

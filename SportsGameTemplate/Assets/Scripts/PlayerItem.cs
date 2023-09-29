@@ -11,14 +11,18 @@ public class PlayerItem : MonoBehaviour
     [SerializeField] TextMeshProUGUI _playerPosition;
     [SerializeField] TextMeshProUGUI _playerRating;
 
-    public void SetPlayerDetails(Player player)
+    public void SetPlayerDetails(Player player, bool withLink = true, bool withPosition = true)
     {
         _playerPortrait.sprite = player.GetPlayerPortrait();
         _playerName.text = player.GetFullName();
-        _playerPosition.text = player.GetPosition();
+
+        if (withPosition)
+            _playerPosition.text = player.GetPosition();
+
         _playerRating.text = player.CalculateRatingForPosition().ToString();
 
-        SetButton(player);
+        if (withLink)
+            SetButton(player);
     }
 
     private void SetButton(Player player)

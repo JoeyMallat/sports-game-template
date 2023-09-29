@@ -21,10 +21,12 @@ public class Player : ITradeable
     [ReadOnly][SerializeField] int _tradeValue;
     [SerializeField] List<PlayerSkill> _skills;
     [SerializeField] List<PlayerSeason> _seasonStats;
+    [SerializeField] List<TradeOffer> _tradeOffers;
 
     [SerializeField] Contract _contract;
 
     public static event Action<int, Player> OnAddedToTrade;
+    public static event Action<Player> OnTradeOfferReceived;
 
     [Header("Appearance Settings")]
     [SerializeField] int _portraitID;
@@ -46,6 +48,7 @@ public class Player : ITradeable
 
         _seasonStats = new List<PlayerSeason>();
         _seasonStats.Add(new PlayerSeason(0, _teamID));
+        _tradeOffers = new List<TradeOffer>();
     }
 
     public Player(bool rookie, string firstname, string lastname, Position position, int averageRating)
@@ -67,6 +70,12 @@ public class Player : ITradeable
     public void AddToTrade()
     {
         OnAddedToTrade?.Invoke(_teamID, this);
+    }
+
+    public void AddTradeOffer(TradeOffer tradeOffer)
+    {
+        _tradeOffers.Add(tradeOffer);
+        OnTradeOfferReceived?.Invoke(this);
     }
 
     public void ChangeTeam(int teamID)
@@ -172,7 +181,7 @@ public class Player : ITradeable
         return _skills;
     }
 
-    public string GetPlayerID()
+    public string GetTradeableID()
     {
         return _playerID;
     }

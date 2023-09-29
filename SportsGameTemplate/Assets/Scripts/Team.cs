@@ -85,7 +85,7 @@ public class Team
 
     public void RemovePlayer(Player player)
     {
-        _players.RemoveByPlayerID(player.GetPlayerID());
+        _players.RemoveByPlayerID(player.GetTradeableID());
     }
 
     public void AddPlayer(Player player)
@@ -102,7 +102,7 @@ public class Team
 
     public void RemoveDraftPick(DraftPick draftPick)
     {
-        _draftPicks.RemoveByPickID(draftPick.GetPickID());
+        _draftPicks.RemoveByPickID(draftPick.GetTradeableID());
     }
 
     public void AddDraftPick(DraftPick draftPick)

@@ -134,14 +134,19 @@ public class TradingSystem : MonoBehaviour
 
     public void GenerateRandomAITrade()
     {
-        _teamAID = UnityEngine.Random.Range(0, LeagueSystem.Instance.GetTeams().Count - 1);
-        AITrader aiTrader = new AITrader();
-        _teamATradingAssets = aiTrader.GenerateOffer(UnityEngine.Random.Range(100, 450), LeagueSystem.Instance.GetTeam(_teamAID).GetTradeAssets());
+        _teamAID = 0;
+        _teamATradingAssets = new List<ITradeable>() { LeagueSystem.Instance.GetTeam(0).GetPlayersFromTeam()[0] };
 
         _teamBID = UnityEngine.Random.Range(0, LeagueSystem.Instance.GetTeams().Count - 1);
-        _teamBTradingAssets = GetOffer(1);
+        _teamBTradingAssets = GetTradeOffer(_teamBID).GetAssets();
 
         UpdateBothTeamsAssets();
+    }
+
+    private TradeOffer GetTradeOffer(int teamID)
+    {
+        AITrader aiTrader = new AITrader();
+        return aiTrader.GenerateOffer(_teamATradingAssets, teamID, GetTotalTradeValue(_teamATradingAssets), LeagueSystem.Instance.GetTeam(_teamBID).GetTradeAssets());
     }
 
     public int GetTotalTradeValue(List<ITradeable> assets)
