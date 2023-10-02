@@ -33,7 +33,7 @@ public class PlayerItem : MonoBehaviour
         {
             button.onClick.RemoveAllListeners();
 
-            button.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, Navigation.Instance.GetCanvas(CanvasKey.Player), player));
+            button.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, true, CanvasKey.Player, player));
         }
     }
 }

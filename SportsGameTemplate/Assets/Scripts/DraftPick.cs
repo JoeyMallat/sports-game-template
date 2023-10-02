@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,9 @@ public class DraftPick : ITradeable
     [SerializeField][ReadOnly] int _tradeValue;
     [SerializeField] int _round;
     [SerializeField] int _pickNumber;
+
+    public static event Action<int, ITradeable> OnAddedToTrade;
+    public static event Action<ITradeable> OnTradeOfferReceived;
 
     public DraftPick(int round, int number)
     {
@@ -53,5 +57,10 @@ public class DraftPick : ITradeable
     public string GetTradeableID()
     {
         return _pickID;
+    }
+
+    public void AddToTrade(int teamID)
+    {
+        OnAddedToTrade?.Invoke(teamID, this);
     }
 }

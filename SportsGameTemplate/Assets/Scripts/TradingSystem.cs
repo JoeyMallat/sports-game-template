@@ -27,8 +27,10 @@ public class TradingSystem : MonoBehaviour
     private void Awake()
     {
         Player.OnAddedToTrade += AddAssetToTrade;
+        DraftPick.OnAddedToTrade += AddAssetToTrade;
         TeamAsset.OnRemoveFromTrade += RemoveFromTrade;
         OnAssetsUpdated += CheckTradeWillingness;
+        TradeOfferItem.OnNewTradeOpened += ClearTrades;
     }
 
     private void Update()
@@ -94,26 +96,29 @@ public class TradingSystem : MonoBehaviour
 
     public void AddAssetToTrade(int team, ITradeable assetToAdd)
     {
-        if (_teamAID == team)
+        // TODO: Change teamA ID to chosen team
+
+        if (team == 0)
         {
             if (_teamATradingAssets.Contains(assetToAdd)) return;
 
             _teamATradingAssets.Add(assetToAdd);
 
         }
-        else if (_teamBID == team || _teamBTradingAssets.Count <= 0)
+        else if (team != 0)
         {
             if (_teamBTradingAssets.Contains(assetToAdd)) return;
 
+            Debug.Log("Asset added to team B");
             _teamBTradingAssets.Add(assetToAdd);
             _teamBID = team;
-        }
+        } /*
         else
         {
             ClearTrades();
             _teamATradingAssets.Add(assetToAdd);
             _teamAID = team;
-        }
+        } */
 
         UpdateBothTeamsAssets();
     }
@@ -135,10 +140,10 @@ public class TradingSystem : MonoBehaviour
     public void GenerateRandomAITrade()
     {
         _teamAID = 0;
-        _teamATradingAssets = new List<ITradeable>() { LeagueSystem.Instance.GetTeam(0).GetPlayersFromTeam()[0] };
+        _teamATradingAssets = new List<ITradeable>() { LeagueSystem.Instance.GetTeam(0).GetPlayersFromTeam()[0], LeagueSystem.Instance.GetTeam(0).GetDraftPicks()[0] };
 
         _teamBID = UnityEngine.Random.Range(0, LeagueSystem.Instance.GetTeams().Count - 1);
-        _teamBTradingAssets = GetTradeOffer(_teamBID).GetAssets();
+        _teamBTradingAssets = GetTradeOffer(_teamBID).GetAssets().Item2;
 
         UpdateBothTeamsAssets();
     }

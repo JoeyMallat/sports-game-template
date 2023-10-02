@@ -19,7 +19,7 @@ public class TeamAssets : MonoBehaviour
 
     public void UpdateTeamAssets(int teamIndex, int teamID, List<ITradeable> tradeAssets)
     {
-        Navigation.Instance.GoToScreen(false, Navigation.Instance.GetCanvas(CanvasKey.Trade));
+        Navigation.Instance.GoToScreen(true, true, CanvasKey.Trade);
 
         if (teamIndex != _teamIndex) return;
 

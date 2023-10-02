@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,7 +25,7 @@ public class AITrader
         return assets;
     }
 
-    public TradeOffer GenerateOffer(List<ITradeable> players, int offeringTeamID, int tradeValue, List<ITradeable> assetsToUse)
+    public TradeOffer GenerateOffer(List<ITradeable> teamAssets, int offeringTeamID, int tradeValue, List<ITradeable> assetsToUse)
     {
         TradeOffer tradeOffer = new TradeOffer(offeringTeamID);
 
@@ -37,10 +36,14 @@ public class AITrader
             tradeOffer.AddAsset(tradeable);
         }
 
-        foreach (Player player in players)
+        foreach (ITradeable asset in teamAssets)
         {
-            player.AddTradeOffer(tradeOffer);
+            tradeOffer.AddTeammate(asset);
         }
+
+        Player player = teamAssets[0] as Player;
+        player.AddTradeOffer(tradeOffer);
+
         return tradeOffer;
     }
 }

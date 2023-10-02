@@ -38,7 +38,7 @@ public class TeamItem : MonoBehaviour
         {
             button.onClick.RemoveAllListeners();
 
-            button.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, Navigation.Instance.GetCanvas(CanvasKey.Team), team));
+            button.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, true, CanvasKey.Team, team));
         }
     }
 }

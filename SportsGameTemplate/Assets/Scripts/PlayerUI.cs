@@ -15,6 +15,8 @@ public class PlayerUI : MonoBehaviour, ISettable
     [SerializeField] TextMeshProUGUI _contract;
     [SerializeField] TextMeshProUGUI _position;
 
+    [SerializeField] Button _extendContractButton;
+    [SerializeField] Button _addToTradingBlock;
     [SerializeField] Button _addToTradeButton;
 
     public void SetDetails<T>(T itemDetails) where T : class
@@ -35,8 +37,13 @@ public class PlayerUI : MonoBehaviour, ISettable
 
     private void SetButtons(Player player)
     {
+        _addToTradingBlock.onClick.RemoveAllListeners();
+        _addToTradingBlock.onClick.AddListener(() => player.ToggleTradingBlockStatus());
+        // TODO: Change Trading block status indicator
+        _addToTradingBlock.onClick.AddListener(() => { _playerName.text = player.GetTradingBlockStatus() == true ? $"{player.GetFullName()}*" : player.GetFullName(); });
+
         _addToTradeButton.onClick.RemoveAllListeners();
-        _addToTradeButton.onClick.AddListener(() => player.AddToTrade());
+        _addToTradeButton.onClick.AddListener(() => player.AddToTrade(player.GetTeamID()));
     }
 
     private void SetSkills(Player player)

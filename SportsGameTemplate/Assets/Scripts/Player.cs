@@ -78,7 +78,7 @@ public class Player : ITradeable
         return _onTradingBlock;
     }
 
-    public void AddToTrade()
+    public void AddToTrade(int teamID)
     {
         OnAddedToTrade?.Invoke(_teamID, this);
     }

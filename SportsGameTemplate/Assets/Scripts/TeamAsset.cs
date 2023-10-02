@@ -62,7 +62,7 @@ public class TeamAsset : MonoBehaviour
         _pickAssetOverlay.SetActive(false);
 
         _addAssetButton.onClick.RemoveAllListeners();
-        _addAssetButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, Navigation.Instance.GetCanvas(CanvasKey.Team), LeagueSystem.Instance.GetTeam(_teamAssetParent.GetTeamID())));
+        _addAssetButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, true, CanvasKey.Team, LeagueSystem.Instance.GetTeam(_teamAssetParent.GetTeamID())));
     }
 
     private void SetPlayerAssetDetails(Player player)
@@ -102,7 +102,7 @@ public class TeamAsset : MonoBehaviour
 
         if (item.GetType() == typeof(Player))
         {
-            _playerProfileButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, Navigation.Instance.GetCanvas(CanvasKey.Player), item as Player));
+            _playerProfileButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, true, CanvasKey.Player, item as Player));
             _playerProfileButton.onClick.AddListener(() => ToggleOverlay(false));
         }
         else

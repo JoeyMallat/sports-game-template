@@ -6,17 +6,25 @@ using UnityEngine;
 public class TradeOffer
 {
     [SerializeField] int _teamID;
+    [SerializeField] List<TradeAssetWrapper> _includedTeammates;
     [SerializeField] List<TradeAssetWrapper> _tradeAssetsOffered;
 
     public TradeOffer (int teamID)
     {
         _teamID = teamID;
         _tradeAssetsOffered = new List<TradeAssetWrapper>();
+        _includedTeammates = new List<TradeAssetWrapper>();
     }
 
     public int GetOfferingTeamID()
     {
         return _teamID;
+    }
+
+    public void AddTeammate(ITradeable teammate)
+    {
+        AssetType assetType = teammate.GetType() == typeof(Player) ? AssetType.Player : AssetType.DraftPick;
+        _includedTeammates.Add(new TradeAssetWrapper(assetType, teammate.GetTradeableID()));
     }
 
     public void AddAsset(ITradeable asset)
@@ -25,8 +33,15 @@ public class TradeOffer
         _tradeAssetsOffered.Add(new TradeAssetWrapper(assetType, asset.GetTradeableID()));
     }
 
-    public List<ITradeable> GetAssets()
+    public (List<ITradeable>, List<ITradeable>) GetAssets()
     {
+        List<ITradeable> teammates = new List<ITradeable>();
+
+        foreach (TradeAssetWrapper teammate in _includedTeammates)
+        {
+            teammates.Add(teammate.GetTradeable(0));
+        }
+
         List<ITradeable> assets = new List<ITradeable>();
 
         foreach (TradeAssetWrapper asset in _tradeAssetsOffered)
@@ -34,6 +49,6 @@ public class TradeOffer
             assets.Add(asset.GetTradeable(_teamID));
         }
 
-        return assets;
+        return (teammates, assets);
     }
 }
