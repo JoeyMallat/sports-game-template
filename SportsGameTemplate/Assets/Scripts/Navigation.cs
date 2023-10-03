@@ -23,6 +23,8 @@ public class Navigation : SerializedMonoBehaviour
             Destroy(this);
 
         _openedCanvasses = new List<Canvas>();
+
+        Application.targetFrameRate = 120;
     }
 
     public void GoToScreen(bool overlay, CanvasKey canvasKey, Player player)
