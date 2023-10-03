@@ -22,7 +22,7 @@ public class TradingSystem : MonoBehaviour
     [SerializeField] TextMeshProUGUI _willAcceptText;
     [SerializeField] Button _confirmTradeButton;
 
-    public static event Action<int, int, List<ITradeable>> OnAssetsUpdated;
+    public static event Action<int, int, List<ITradeable>, bool> OnAssetsUpdated;
 
     private void Awake()
     {
@@ -51,6 +51,9 @@ public class TradingSystem : MonoBehaviour
     {
         TradeAssets(_teamAID, _teamBID, _teamATradingAssets);
         TradeAssets(_teamBID, _teamAID, _teamBTradingAssets);
+
+        Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(0));
+        Navigation.Instance.GoToScreen(true, CanvasKey.Team, LeagueSystem.Instance.GetTeam(0));
     }
 
     private void TradeAssets(int currentTeamID, int newTeamID, List<ITradeable> assets)
@@ -69,12 +72,12 @@ public class TradingSystem : MonoBehaviour
         }
     }
 
-    public void ClearTrades()
+    public void ClearTrades(bool toTradeScreen)
     {
         _teamATradingAssets = new List<ITradeable>();
         _teamBTradingAssets = new List<ITradeable>();
 
-        UpdateBothTeamsAssets();
+        UpdateBothTeamsAssets(toTradeScreen);
     }
 
     private void TradePlayer(int currentTeamID, int newTeamID, Player player)
@@ -87,6 +90,11 @@ public class TradingSystem : MonoBehaviour
     {
         LeagueSystem.Instance.GetTeam(currentTeamID).RemoveDraftPick(pick);
         LeagueSystem.Instance.GetTeam(newTeamID).AddDraftPick(pick);
+    }
+
+    public void StartNewTrade()
+    {
+        Navigation.Instance.GoToScreen(true, CanvasKey.Standings, LeagueSystem.Instance.GetTeamsWithoutTeam(0));
     }
 
     public void DebugCounterOffer()
@@ -120,7 +128,7 @@ public class TradingSystem : MonoBehaviour
             _teamAID = team;
         } */
 
-        UpdateBothTeamsAssets();
+        UpdateBothTeamsAssets(true);
     }
 
     private void RemoveFromTrade(int teamID, ITradeable asset)
@@ -128,12 +136,12 @@ public class TradingSystem : MonoBehaviour
         if (teamID == 0)
         {
             _teamATradingAssets.Remove(asset);
-            UpdateBothTeamsAssets();
+            UpdateBothTeamsAssets(true);
         }
         else if (teamID == 1)
         {
             _teamBTradingAssets.Remove(asset);
-            UpdateBothTeamsAssets();
+            UpdateBothTeamsAssets(true);
         }
     }
 
@@ -145,7 +153,7 @@ public class TradingSystem : MonoBehaviour
         _teamBID = UnityEngine.Random.Range(0, LeagueSystem.Instance.GetTeams().Count - 1);
         _teamBTradingAssets = GetTradeOffer(_teamBID).GetAssets().Item2;
 
-        UpdateBothTeamsAssets();
+        UpdateBothTeamsAssets(true);
     }
 
     private TradeOffer GetTradeOffer(int teamID)
@@ -218,7 +226,7 @@ public class TradingSystem : MonoBehaviour
         return team.GetTotalSalaryAmount() + totalSalary < ConfigManager.Instance.GetCurrentConfig().SalaryCap;
     }
 
-    public void CheckTradeWillingness(int teamIndex, int teamID, List<ITradeable> assets)
+    public void CheckTradeWillingness(int teamIndex, int teamID, List<ITradeable> assets, bool reloadScreen)
     {
         if (!CheckTradeEligibility(_teamBID, _teamATradingAssets, _teamBTradingAssets))
         {
@@ -256,9 +264,9 @@ public class TradingSystem : MonoBehaviour
         }
     }
 
-    private void UpdateBothTeamsAssets()
+    private void UpdateBothTeamsAssets(bool reloadScreen)
     {
-        OnAssetsUpdated?.Invoke(0, _teamAID, _teamATradingAssets);
-        OnAssetsUpdated?.Invoke(1, _teamBID, _teamBTradingAssets);
+        OnAssetsUpdated?.Invoke(0, _teamAID, _teamATradingAssets, reloadScreen);
+        OnAssetsUpdated?.Invoke(1, _teamBID, _teamBTradingAssets, reloadScreen);
     }
 }

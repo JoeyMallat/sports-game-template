@@ -1,6 +1,7 @@
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +11,7 @@ public class Navigation : SerializedMonoBehaviour
 
     [SerializeField] Button _backButton;
 
-    Canvas _currentCanvas;
+    [SerializeField] List<Canvas> _openedCanvasses;
 
     public Dictionary<CanvasKey, Canvas> CanvasDatabase;
 
@@ -20,11 +21,13 @@ public class Navigation : SerializedMonoBehaviour
             Instance = this;
         else
             Destroy(this);
+
+        _openedCanvasses = new List<Canvas>();
     }
 
-    public void GoToScreen(bool overlay, bool showBack, CanvasKey canvasKey, Player player)
+    public void GoToScreen(bool overlay, CanvasKey canvasKey, Player player)
     {
-        _currentCanvas = GetCanvas(canvasKey);
+        AddToOpenCanvasses(GetCanvas(canvasKey));
         Canvas canvas = GetCanvas(canvasKey);
 
         if (!overlay)
@@ -39,47 +42,12 @@ public class Navigation : SerializedMonoBehaviour
             settable.SetDetails(player);
         }
 
-        if (showBack)
-        {
-            SetBackButton(overlay, canvasKey);
-            _backButton.gameObject.SetActive(true);
-        }
-        else
-        {
-            _backButton.gameObject.SetActive(false);
-        }
-    }
-
-    public void GoToScreen(bool overlay, bool showBack, CanvasKey canvasKey, Team team)
-    {
-        _currentCanvas = GetCanvas(canvasKey);
-        Canvas canvas = GetCanvas(canvasKey);
-
-        if (!overlay)
-            DisableAllCanvasses();
-
-        canvas.enabled = true;
-
-        ISettable settable = canvas.gameObject.GetComponent<ISettable>();
-        
-        if (settable != null)
-        {
-            settable.SetDetails(team);
-        }
-
-        if (showBack){
-            SetBackButton(overlay, canvasKey);
-            _backButton.gameObject.SetActive(true);
-        }
-        else
-        {
-            _backButton.gameObject.SetActive(false);
-        }
+        SetBackButton();
     }
 
     public void GoToScreen(bool overlay, CanvasKey canvasKey, Team team)
     {
-        _currentCanvas = GetCanvas(canvasKey);
+        AddToOpenCanvasses(GetCanvas(canvasKey));
         Canvas canvas = GetCanvas(canvasKey);
 
         if (!overlay)
@@ -93,11 +61,13 @@ public class Navigation : SerializedMonoBehaviour
         {
             settable.SetDetails(team);
         }
+
+        SetBackButton();
     }
 
-    public void GoToScreen(bool overlay, bool showBack, CanvasKey canvasKey, List<Team> teams)
+    public void GoToScreen(bool overlay, CanvasKey canvasKey, List<Team> teams)
     {
-        _currentCanvas = GetCanvas(canvasKey);
+        AddToOpenCanvasses(GetCanvas(canvasKey));
         Canvas canvas = GetCanvas(canvasKey);
 
         if (!overlay)
@@ -112,19 +82,27 @@ public class Navigation : SerializedMonoBehaviour
             settable.SetDetails(teams);
         }
 
-        if (showBack){
-            SetBackButton(overlay, canvasKey);
-            _backButton.gameObject.SetActive(true);
-        }
-        else
-        {
-            _backButton.gameObject.SetActive(false);
-        }
+        SetBackButton();
     }
 
-    public void GoToScreen(bool overlay, bool showBack, CanvasKey canvasKey)
+    private void AddToOpenCanvasses(Canvas canvas)
     {
-        _currentCanvas = GetCanvas(canvasKey);
+        if (_openedCanvasses.Contains(canvas) || canvas == GetCanvas(CanvasKey.MainMenu))
+        {
+            foreach (Canvas c in _openedCanvasses)
+            {
+                c.enabled = false;
+            }
+
+            _openedCanvasses = new List<Canvas>();
+        }
+
+        _openedCanvasses.Add(canvas);
+    }
+
+    public void GoToScreen(bool overlay, CanvasKey canvasKey)
+    {
+        AddToOpenCanvasses(GetCanvas(canvasKey));
         Canvas canvas = GetCanvas(canvasKey);
 
         if (!overlay)
@@ -132,15 +110,7 @@ public class Navigation : SerializedMonoBehaviour
 
         canvas.enabled = true;
 
-        if (showBack)
-        {
-            SetBackButton(overlay, canvasKey);
-            _backButton.gameObject.SetActive(true);
-        }
-        else
-        {
-            _backButton.gameObject.SetActive(false);
-        }
+        SetBackButton();
     }
 
     public void CloseCanvas(Canvas canvas)
@@ -161,21 +131,22 @@ public class Navigation : SerializedMonoBehaviour
         return canvas;
     }
 
-    private void SetBackButton(bool wasOverlay, CanvasKey canvasKey)
+    private void SetBackButton()
     {
-        _backButton.onClick.RemoveAllListeners();
+        _backButton.GetComponentInParent<Canvas>().enabled = true;
 
-        if (wasOverlay)
+        if (_openedCanvasses.Count > 1)
         {
-            _backButton.onClick.AddListener(() => CloseCanvas(_currentCanvas));
-        }
+            _backButton.gameObject.SetActive(true);
 
-        if (canvasKey != CanvasKey.MainMenu)
+            _backButton.onClick.RemoveAllListeners();
+            _backButton.onClick.AddListener(() => CloseCanvas(_openedCanvasses.Last()));
+            _backButton.onClick.AddListener(() => _openedCanvasses.RemoveAt(_openedCanvasses.Count - 1));
+            _backButton.onClick.AddListener(() => SetBackButton());
+
+        } else 
         {
-            _backButton.onClick.AddListener(() => _backButton.gameObject.SetActive(false));
-        } else
-        {
-            _backButton.onClick.AddListener(() => _backButton.gameObject.SetActive(true));
+            _backButton.gameObject.SetActive(false);
         }
     }
 
@@ -187,8 +158,5 @@ public class Navigation : SerializedMonoBehaviour
         {
             canvas.enabled = false;
         }
-
-        // Always enable back button canvas
-        _backButton.GetComponentInParent<Canvas>().enabled = true;
     }
 }

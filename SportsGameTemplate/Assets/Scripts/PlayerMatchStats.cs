@@ -1,64 +1,63 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 [System.Serializable]
-public class PlayerMatchStats
+public class PlayerMatchStats : SerializedUnityObject
 {
-    [SerializeField] int _minutes;
-    [SerializeField] int _assists;
-    [SerializeField] int _steals;
-    [SerializeField] int _rebounds;
-    [SerializeField] int _blocks;
-    [SerializeField] int _freeThrowsAttempted;
-    [SerializeField] int _freeThrowsMade;
-    [SerializeField] int _twoPointersAttempted;
-    [SerializeField] int _twoPointersMade;
-    [SerializeField] int _threePointersAttempted;
-    [SerializeField] int _threePointersMade;
+    Dictionary<string, int> _stats;
 
     public PlayerMatchStats()
     {
-        _minutes = 0;
-        _assists = 0;
-        _steals = 0;
-        _rebounds = 0;
-        _blocks = 0;
-        _freeThrowsAttempted = 0;
-        _freeThrowsMade = 0;
-        _twoPointersAttempted = 0;
-        _twoPointersMade = 0;
-        _threePointersAttempted = 0;
-        _threePointersMade = 0;
+        _stats = new Dictionary<string, int>();
+
+        _stats["minutes"] = 0;
+        _stats["assists"] = 0;
+        _stats["steals"] = 0;
+        _stats["rebounds"] = 0;
+        _stats["blocks"] = 0;
+        _stats["freeThrowsAttempted"] = 0;
+        _stats["freeThrowsMade"] = 0;
+        _stats["twoPointersAttempted"] = 0;
+        _stats["twoPointersMade"] = 0;
+        _stats["threePointersAttempted"] = 0;
+        _stats["threePointersMade"] = 0;
     }
 
     public PlayerMatchStats(int minutes, int assists, int steals, int rebounds, int blocks, int ftAttempts, int ftMade, int twoAttempts, int twoMade, int threeAttempts, int threeMade)
     {
-        _minutes = minutes;
-        _assists = assists;
-        _steals = steals;
-        _rebounds = rebounds;
-        _blocks = blocks;
-        _freeThrowsAttempted = ftAttempts;
-        _freeThrowsMade = ftMade;
-        _twoPointersAttempted = ftAttempts;
-        _twoPointersMade = ftMade;
-        _threePointersAttempted = threeAttempts;
-        _threePointersMade = threeMade;
+        _stats = new Dictionary<string, int>();
+
+        _stats["minutes"] = minutes;
+        _stats["assists"] = assists;
+        _stats["steals"] = steals;
+        _stats["rebounds"] = rebounds;
+        _stats["blocks"] = blocks;
+        _stats["freeThrowsAttempted"] = ftAttempts;
+        _stats["freeThrowsMade"] = ftMade;
+        _stats["twoPointersAttempted"] = twoAttempts;
+        _stats["twoPointersMade"] = twoMade;
+        _stats["twoPointersPoints"] = twoMade * 2;
+        _stats["threePointersAttempted"] = threeAttempts;
+        _stats["threePointersMade"] = threeMade;
+        _stats["threePointersPoints"] = threeMade * 3;
     }
 
-    public int GetPoints()
+    public int GetTotal(string stat)
     {
-        return _freeThrowsMade + (_twoPointersMade * 2) + (_threePointersMade * 3);
+        return _stats[stat];
     }
 
-    public int GetAssists()
+    public int GetTotal(List<string> stats)
     {
-        return _assists;
-    }
+        int total = 0;
 
-    public int GetRebounds()
-    {
-        return _rebounds;
+        foreach (string key in stats)
+        {
+            total += _stats[key];
+        }
+
+        return total;
     }
 }

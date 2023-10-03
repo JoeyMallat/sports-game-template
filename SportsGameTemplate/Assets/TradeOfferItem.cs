@@ -11,7 +11,7 @@ public class TradeOfferItem : MonoBehaviour
     [SerializeField] TextMeshProUGUI _tradeOfferText;
     [SerializeField] Button _tradeOfferButton;
 
-    public static event Action OnNewTradeOpened;
+    public static event Action<bool> OnNewTradeOpened;
 
     public void SetTradeOffer((TradeOffer, string) tradeOffer)
     {
@@ -36,7 +36,7 @@ public class TradeOfferItem : MonoBehaviour
         onClickAction = AddAssetsToTrade;
 
         _tradeOfferButton.onClick.RemoveAllListeners();
-        _tradeOfferButton.onClick.AddListener(() => OnNewTradeOpened?.Invoke());
+        _tradeOfferButton.onClick.AddListener(() => OnNewTradeOpened?.Invoke(true));
         _tradeOfferButton.onClick.AddListener(() => onClickAction(tradeOffer));
     }
 

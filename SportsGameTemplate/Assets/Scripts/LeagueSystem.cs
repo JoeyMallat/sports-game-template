@@ -20,16 +20,16 @@ public class LeagueSystem : MonoBehaviour
 
     private void Start()
     {
-        Navigation.Instance.GoToScreen(false, false, CanvasKey.MainMenu, _teams[0]);
+        Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, _teams[0]);
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.S))
         {
-            //SimulateSeason();
+            SimulateSeason();
 
-            Navigation.Instance.GoToScreen(false, false, CanvasKey.MainMenu, _teams[0]);
+            Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, _teams[0]);
         }
     }
 
@@ -57,8 +57,8 @@ public class LeagueSystem : MonoBehaviour
         }
 
         DistributeDraftPicks();
-        //_seasonMatches = ConfigManager.Instance.GetCurrentConfig().ScheduleGenerator.GenerateSchedule(_teams);
-        //_seasonMatches = _seasonMatches.OrderBy(x => x.GetWeek()).ToList();
+        _seasonMatches = ConfigManager.Instance.GetCurrentConfig().ScheduleGenerator.GenerateSchedule(_teams);
+        _seasonMatches = _seasonMatches.OrderBy(x => x.GetWeek()).ToList();
     }
 
     public List<Match> GetMatchesForTeam(Team team)
@@ -90,6 +90,11 @@ public class LeagueSystem : MonoBehaviour
         return _teams;
     }
 
+    public List<Team> GetTeamsWithoutTeam(int teamID)
+    {
+        return _teams.Where(x => x.GetTeamID() != teamID).ToList();
+    }
+
     public List<Player> GetAllPlayers()
     {
         List<Player> players = new();
@@ -99,6 +104,21 @@ public class LeagueSystem : MonoBehaviour
             players.AddRange(team.GetPlayersFromTeam());
         }
 
+        return players;
+    }
+
+    public List<Player> GetTopListOfStat(string stat, int amount)
+    {
+        List<Player> players = GetAllPlayers();
+        players = players.OrderByDescending(x => x.GetLatestSeason().GetPercentageOfStat(stat)).Take(amount).ToList();
+        return players;
+    }
+    
+
+    public List<Player> GetTopListOfStat(List<string> stats, int amount)
+    {
+        List<Player> players = GetAllPlayers();
+        players = players.OrderByDescending(x => x.GetLatestSeason().GetPercentageOfStat(stats)).Take(amount).ToList();
         return players;
     }
 

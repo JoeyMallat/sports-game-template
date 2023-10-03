@@ -7,7 +7,7 @@ public class PlayerSeason
 {
     [SerializeField] int _season;
     [SerializeField] int _teamID;
-    [SerializeField] List<PlayerMatchStats> _matchStats;
+    List<PlayerMatchStats> _matchStats;
     
     public PlayerSeason(int season, int teamID)
     {
@@ -43,35 +43,35 @@ public class PlayerSeason
         _matchStats.Add(match);
     }
 
-    public float GetPointsPerGame()
+    public float GetPercentageOfStat(List<string> stats)
     {
         if (_matchStats.Count == 0) { return 0; }
 
-        float totalPoints = 0;
+        float total = 0;
 
         foreach (PlayerMatchStats match in _matchStats)
         {
-            totalPoints += match.GetPoints();
+            total += match.GetTotal(stats);
         }
 
-        float ppg = totalPoints / _matchStats.Count;
+        float percentage = total / _matchStats.Count;
 
-        return ppg;
+        return percentage;
     }
 
-    public float GetAssistsPerGame()
+    public float GetPercentageOfStat(string stat)
     {
         if (_matchStats.Count == 0) { return 0; }
 
-        float totalAssists = 0;
+        float total = 0;
 
         foreach (PlayerMatchStats match in _matchStats)
         {
-            totalAssists += match.GetAssists();
+            total += match.GetTotal(stat);
         }
 
-        float apg = totalAssists / _matchStats.Count;
+        float percentage = total / _matchStats.Count;
 
-        return apg;
+        return percentage;
     }
 }

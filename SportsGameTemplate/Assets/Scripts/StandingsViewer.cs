@@ -15,9 +15,16 @@ public class StandingsViewer : MonoBehaviour, ISettable
         teamList = teamList.OrderByDescending(x => x.GetCurrentSeasonStats().GetWinPercentage()).ToList();
         int mostWins = teamList[0].GetCurrentSeasonStats().GetWins();
 
-        for (int i = 0; i < teamList.Count; i++)
+        for (int i = 0; i < teamItems.Count; i++)
         {
-            teamItems[i].SetTeamDetails(i + 1, teamList[i], mostWins);
+            if (i < teamList.Count)
+            {
+                teamItems[i].gameObject.SetActive(true);
+                teamItems[i].SetTeamDetails(i + 1, teamList[i], mostWins);
+            } else
+            {
+                teamItems[i].gameObject.SetActive(false);
+            }
         }
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(_teamItemsRoot);
