@@ -17,7 +17,7 @@ MonoBehaviour:
   ScheduleGenerator:
     rid: 7850772540815572992
   MatchSimulator:
-    rid: 4319223881481322496
+    rid: 960799562269458433
   AverageSquadSize: 16
   AverageAgeInLeague: 25
   LeagueFile: {fileID: 4900000, guid: 522c45c2c290a0a428cdf6c80f684299, type: 3}
@@ -137,10 +137,197 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 4319223881481322496
+    - rid: 960799562269458433
       type: {class: BasketballMatchSimulator, ns: , asm: Assembly-CSharp}
       data:
         _scoringRate: 0
+        _nextMoves:
+        - _move: 0
+          _occurencePerSecond:
+            serializedVersion: 2
+            m_Curve:
+            - serializedVersion: 3
+              time: 0
+              value: 100
+              inSlope: 0.77565616
+              outSlope: 0.77565616
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0
+              outWeight: 0.13110884
+            - serializedVersion: 3
+              time: 24
+              value: 0
+              inSlope: 0
+              outSlope: 0
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0
+              outWeight: 0
+            m_PreInfinity: 2
+            m_PostInfinity: 2
+            m_RotationOrder: 4
+        - _move: 1
+          _occurencePerSecond:
+            serializedVersion: 2
+            m_Curve:
+            - serializedVersion: 3
+              time: 0
+              value: 0
+              inSlope: 0.77565616
+              outSlope: 0.77565616
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0
+              outWeight: 0.13110884
+            - serializedVersion: 3
+              time: 18
+              value: 100
+              inSlope: -1.5340608
+              outSlope: -1.5340608
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0.33333334
+              outWeight: 0.5205272
+            - serializedVersion: 3
+              time: 24
+              value: 0
+              inSlope: -62.134373
+              outSlope: -62.134373
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0.01876227
+              outWeight: 0
+            m_PreInfinity: 2
+            m_PostInfinity: 2
+            m_RotationOrder: 4
+        - _move: 2
+          _occurencePerSecond:
+            serializedVersion: 2
+            m_Curve:
+            - serializedVersion: 3
+              time: 0
+              value: 0
+              inSlope: 0.77565616
+              outSlope: 0.77565616
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0
+              outWeight: 0.13110884
+            - serializedVersion: 3
+              time: 18
+              value: 100
+              inSlope: 0.022733707
+              outSlope: 0.022733707
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0.33333334
+              outWeight: 1
+            - serializedVersion: 3
+              time: 24
+              value: 0
+              inSlope: Infinity
+              outSlope: Infinity
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0
+              outWeight: 0
+            m_PreInfinity: 2
+            m_PostInfinity: 2
+            m_RotationOrder: 4
+        - _move: 3
+          _occurencePerSecond:
+            serializedVersion: 2
+            m_Curve:
+            - serializedVersion: 3
+              time: 0
+              value: 0
+              inSlope: 0.77565616
+              outSlope: 0.77565616
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0
+              outWeight: 0.13110884
+            - serializedVersion: 3
+              time: 14
+              value: 100
+              inSlope: -1.1712837
+              outSlope: -1.1712837
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0.33333334
+              outWeight: 0.35929292
+            - serializedVersion: 3
+              time: 24
+              value: 0
+              inSlope: -6.399294
+              outSlope: -6.399294
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0.10753257
+              outWeight: 0
+            m_PreInfinity: 2
+            m_PostInfinity: 2
+            m_RotationOrder: 4
+        - _move: 4
+          _occurencePerSecond:
+            serializedVersion: 2
+            m_Curve:
+            - serializedVersion: 3
+              time: 0
+              value: 0
+              inSlope: 0.77565616
+              outSlope: 0.77565616
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0
+              outWeight: 0.13110884
+            - serializedVersion: 3
+              time: 18
+              value: 100
+              inSlope: -1.5340608
+              outSlope: -1.5340608
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0.33333334
+              outWeight: 0.5205272
+            - serializedVersion: 3
+              time: 24
+              value: 0
+              inSlope: -62.134373
+              outSlope: -62.134373
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0.01876227
+              outWeight: 0
+            m_PreInfinity: 2
+            m_PostInfinity: 2
+            m_RotationOrder: 4
+        - _move: 5
+          _occurencePerSecond:
+            serializedVersion: 2
+            m_Curve:
+            - serializedVersion: 3
+              time: 0
+              value: 100
+              inSlope: 0.77565616
+              outSlope: 0.77565616
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0
+              outWeight: 0.13110884
+            - serializedVersion: 3
+              time: 24
+              value: 0
+              inSlope: 0
+              outSlope: 0
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0
+              outWeight: 0
+            m_PreInfinity: 2
+            m_PostInfinity: 2
+            m_RotationOrder: 4
     - rid: 7850772540815572992
       type: {class: BasketballScheduleGenerator, ns: , asm: Assembly-CSharp}
       data: 
