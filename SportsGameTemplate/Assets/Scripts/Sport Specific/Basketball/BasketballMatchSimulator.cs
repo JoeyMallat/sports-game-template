@@ -29,6 +29,8 @@ public class BasketballMatchSimulator : MatchSimulator
         Team homeTeam = LeagueSystem.Instance.GetTeam(match.GetHomeTeamID());
         Team awayTeam = LeagueSystem.Instance.GetTeam(match.GetAwayTeamID());
 
+        Team teamInPossession = homeTeam;
+
         for (int i = 1; i < _numberOfPeriods + 1; i++)
         {
             int secondsLeftInPeriod = _secondsPerPeriod;
@@ -36,9 +38,10 @@ public class BasketballMatchSimulator : MatchSimulator
             while (secondsLeftInPeriod > .1)
             {
                 (int, PossessionResult) possession = SimulatePossession(homeTeam, awayTeam, _shotClock);
+                teamInPossession = teamInPossession == homeTeam ? awayTeam : homeTeam;
                 Debug.Log($"Period {i} - {secondsLeftInPeriod} seconds left: {possession.Item2.GetPlayer().GetFullName()} with {possession.Item2.GetPossessionResult()}");
                 secondsLeftInPeriod -= possession.Item1;
-                match.AddPossessionResult(possession.Item2);
+                match.AddPossessionResult(possession.Item2, teamInPossession);
             }
 
             match.EndMatch();
@@ -115,7 +118,7 @@ public class BasketballMatchSimulator : MatchSimulator
     {
         // TODO: Normalize to average success chance
         float averageSkillRating = (skillRating / amountOfSkills) / 100f;
-        float random = UnityEngine.Random.Range(0f, averageSkillRating / (averageSucceedingChance / UnityEngine.Random.Range(1f, 1.4f)));
+        float random = UnityEngine.Random.Range(0f, averageSkillRating / (averageSucceedingChance / 1.25f));
 
         if (averageSkillRating * averageSucceedingChance >= random)
         {

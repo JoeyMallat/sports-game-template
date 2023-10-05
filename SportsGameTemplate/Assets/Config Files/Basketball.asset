@@ -141,6 +141,12 @@ MonoBehaviour:
       type: {class: BasketballMatchSimulator, ns: , asm: Assembly-CSharp}
       data:
         _scoringRate: 0
+        _passSuccessRate: 0.99
+        _twoPointSuccessRate: 0.45
+        _threePointSuccessRate: 0.38
+        _dunkSuccessRate: 0.85
+        _layupSuccessRate: 0.8
+        _dribbleSuccessRate: 0.95
         _nextMoves:
         - _move: 0
           _occurencePerSecond:

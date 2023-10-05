@@ -43,15 +43,53 @@ public class Match
         return _awayTeamID;
     }
 
-    public void AddPossessionResult(PossessionResult possessionResult)
+    public void AddPossessionResult(PossessionResult possessionResult, Team team)
     {
         _possessionResults.Add(possessionResult);
+
+        switch (possessionResult.GetPossessionResult())
+        {
+            case ResultAction.TwoPointerMade:
+                if (IsHomeTeam(team.GetTeamID()))
+                {
+                    _homeTeamPoints += 2;
+                } else
+                {
+                    _awayTeamPoints += 2;
+                }
+                break;
+            case ResultAction.ThreePointerMade:
+                if (IsHomeTeam(team.GetTeamID()))
+                {
+                    _homeTeamPoints += 3;
+                }
+                else
+                {
+                    _awayTeamPoints += 3;
+                }
+                break;
+            case ResultAction.FreeThrowMade:
+                if (IsHomeTeam(team.GetTeamID()))
+                {
+                    _homeTeamPoints += 1;
+                }
+                else
+                {
+                    _awayTeamPoints += 1;
+                }
+                break;
+            default:
+                break;
+        }
+
+        Debug.Log($"{_homeTeamPoints} - {_awayTeamPoints}");
     }
 
     public void EndMatch()
     {
         OnMatchPlayed?.Invoke(this);
 
+        
         int totalTwoPointers = 0;
         int madeTwoPointers = 0;
         foreach (var result in _possessionResults)
