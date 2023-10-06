@@ -16,7 +16,7 @@ public class TeamSeason
 
     public void AddResult(int points, int pointsAgainst)
     {
-        if (points > pointsAgainst)
+        if (points >= pointsAgainst)
         {
             _wins++;
         } else

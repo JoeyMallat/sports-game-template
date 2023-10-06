@@ -42,43 +42,45 @@ public class BasketballMatchSimulator : MatchSimulator
                 (int, PossessionResult) possession = SimulatePossession(match.GetMatchID(), homeTeam, awayTeam, _shotClock);
                 Team teamNotInPossession = teamInPossession == homeTeam ? awayTeam : homeTeam;
                 secondsLeftInPeriod -= possession.Item1;
-                teamInPossession = DecideNextPossession(possession.Item2, teamInPossession, teamNotInPossession);
-
                 match.AddPossessionResult(possession.Item2, teamInPossession);
+
+                teamInPossession = DecideNextPossession(match.GetMatchID(), possession.Item2, teamInPossession, teamNotInPossession);
             }
         }
         match.EndMatch();
     }
 
-    private Team DecideNextPossession(PossessionResult possession, Team currentTeamInPossession, Team otherTeam)
+    private Team DecideNextPossession(int matchID, PossessionResult possession, Team currentTeamInPossession, Team otherTeam)
     {
         switch (possession.GetPossessionResult())
         {
             case ResultAction.TwoPointerMissed:
-                return DecideReboundingTeam(currentTeamInPossession, otherTeam);
+                return DecideReboundingTeam(matchID, currentTeamInPossession, otherTeam);
             case ResultAction.ThreePointerMissed:
-                return DecideReboundingTeam(currentTeamInPossession, otherTeam);
+                return DecideReboundingTeam(matchID, currentTeamInPossession, otherTeam);
             case ResultAction.FreeThrowMissed:
-                return DecideReboundingTeam(currentTeamInPossession, otherTeam);
+                return DecideReboundingTeam(matchID, currentTeamInPossession, otherTeam);
             default:
                 return otherTeam;
         }
     }
 
-    private Team DecideReboundingTeam(Team teamOne, Team teamTwo)
+    private Team DecideReboundingTeam(int matchID, Team teamOne, Team teamTwo)
     {
         // TODO: Add the lineup of the team
-        Player teamOneRebounder = teamOne.GetPlayersFromTeam().OrderByDescending(x => x.GetSkills()[11].GetRatingForSkill() * UnityEngine.Random.Range(0.9f, 1.1f)).ToList()[0];
-        Player teamTwoRebounder = teamTwo.GetPlayersFromTeam().OrderByDescending(x => x.GetSkills()[11].GetRatingForSkill() * UnityEngine.Random.Range(0.9f, 1.1f)).ToList()[0];
+        Player teamOneRebounder = teamOne.GetPlayersFromTeam().OrderByDescending(x => x.GetSkills()[11].GetRatingForSkill() * UnityEngine.Random.Range(0.5f, 1.5f)).ToList()[0];
+        Player teamTwoRebounder = teamTwo.GetPlayersFromTeam().OrderByDescending(x => x.GetSkills()[11].GetRatingForSkill() * UnityEngine.Random.Range(0.5f, 1.5f)).ToList()[0];
 
         float teamOneRebounderChance = teamOneRebounder.GetSkills()[11].GetRatingForSkill();
         float total = teamOneRebounder.GetSkills()[11].GetRatingForSkill() + teamTwoRebounder.GetSkills()[11].GetRatingForSkill();
 
         if (UnityEngine.Random.Range(0f, total) > teamOneRebounderChance)
         {
+            AssignActionToPlayer(matchID, ResultAction.Rebound, teamTwoRebounder);
             return teamTwo;
         } else
         {
+            AssignActionToPlayer(matchID, ResultAction.Rebound, teamOneRebounder);
             return teamOne;
         }
     }
@@ -93,7 +95,7 @@ public class BasketballMatchSimulator : MatchSimulator
         while (inPossession)
         {
             // TODO: Add the lineup of the team
-            List<Player> best = teamInPossession.GetPlayersFromTeam().Shuffle().Take(5).ToList();
+            List<Player> best = teamInPossession.GetPlayersFromTeam().OrderByDescending(x => x.CalculateRatingForPosition() * UnityEngine.Random.Range(0.8f, 1.2f)).Take(5).ToList();
             playerWithBall = best[UnityEngine.Random.Range(0, 5)];
             Move move = DecideNextMove(secondsSpent);
             secondsSpent += UnityEngine.Random.Range(2, 5);
@@ -198,7 +200,9 @@ public class BasketballMatchSimulator : MatchSimulator
         switch (resultAction)
         {
             case ResultAction.Pass:
-                player.GetLatestSeason().UpdateMatch(matchID, new List<(string, int)>() { ("assists", 1 ) });
+                int[] passOutcome = new int[4] { 0, 0, 0, 1};
+                int random = UnityEngine.Random.Range(0, 4);
+                player.GetLatestSeason().UpdateMatch(matchID, new List<(string, int)>() { ("assists", passOutcome[random] ) });
                 break;
             case ResultAction.Rebound:
                 player.GetLatestSeason().UpdateMatch(matchID, new List<(string, int)>() { ("rebounds", 1) });

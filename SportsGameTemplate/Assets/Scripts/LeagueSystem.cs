@@ -20,7 +20,7 @@ public class LeagueSystem : MonoBehaviour
 
     private void Start()
     {
-        Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, _teams[0]);
+        Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(0));
     }
 
     private void Update()
@@ -29,7 +29,7 @@ public class LeagueSystem : MonoBehaviour
         {
             SimulateSeason();
 
-            Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, _teams[0]);
+            Navigation.Instance.GoToScreen(false, CanvasKey.Standings, GetTeams());
         }
     }
 

@@ -18,7 +18,7 @@ public class MM_LeagueView : MonoBehaviour, ISettable
         int position = league.IndexOf(LeagueSystem.Instance.GetTeam(0));
 
         List<TeamItem> teamItems = _leaguePreviewRoot.GetComponentsInChildren<TeamItem>().ToList();
-        SetTopScorers(_topScorersRoot.GetComponentsInChildren<StatObject>().ToList(), LeagueSystem.Instance.GetTopListOfStat(new List<string>() { "twoPointersPoints", "threePointersPoints" }, 3));
+        SetTopScorers(_topScorersRoot.GetComponentsInChildren<StatObject>().ToList(), LeagueSystem.Instance.GetTopListOfStat(new List<string>() { "freeThrowsMade", "twoPointersPoints", "threePointersPoints" }, 3));
         SetTopAssisters(_topAssistersRoot.GetComponentsInChildren<StatObject>().ToList(), LeagueSystem.Instance.GetTopListOfStat("assists", 3));
 
         SetLeaguePreview(teamItems, league, position);
@@ -28,7 +28,7 @@ public class MM_LeagueView : MonoBehaviour, ISettable
     {
         for (int i = 0; i < topObjects.Count; i++)
         {
-            topObjects[i].SetDetails(new StatObjectWrapper($"{topPlayers[i].GetFullName()} - <color=#FF9900>{LeagueSystem.Instance.GetTeam(topPlayers[i].GetTeamID()).GetTeamName()}", new List<float> { topPlayers[i].GetLatestSeason().GetAverageOfStat(new List<string>() { "twoPointersPoints", "threePointersPoints" }) }));
+            topObjects[i].SetDetails(new StatObjectWrapper($"{topPlayers[i].GetFullName()} - <color=#FF9900>{LeagueSystem.Instance.GetTeam(topPlayers[i].GetTeamID()).GetTeamName()}", new List<float> { topPlayers[i].GetLatestSeason().GetAverageOfStat(new List<string>() { "freeThrowsMade", "twoPointersPoints", "threePointersPoints" }) }));
         }
     }
 

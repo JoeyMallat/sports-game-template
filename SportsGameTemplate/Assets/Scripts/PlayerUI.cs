@@ -59,7 +59,10 @@ public class PlayerUI : MonoBehaviour, ISettable
 
     private void SetStats(Player player)
     {
-        _seasonMinutes.text = player.GetLatestSeason().GetAverageOfStat();
+        _seasonMinutes.text = player.GetLatestSeason().GetAverageOfStat("minutes").ToString("F1");
+        _seasonPoints.text = player.GetLatestSeason().GetAveragePoints().ToString("F1");
+        _seasonAssists.text = player.GetLatestSeason().GetAverageOfStat("assists").ToString("F1");
+        _seasonRebounds.text = player.GetLatestSeason().GetAverageOfStat("rebounds").ToString("F1");
     }
 
     private void SetSkills(Player player)
