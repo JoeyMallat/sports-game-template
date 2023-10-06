@@ -21,6 +21,8 @@ public class BasketballMatchSimulator : MatchSimulator
     [SerializeField] Vector2 _dunkSuccessRate;
     [SerializeField] Vector2 _layupSuccessRate;
     [SerializeField] Vector2 _dribbleSuccessRate;
+    [SerializeField] Vector2 _blockSuccessRate;
+    [SerializeField] Vector2 _stealSuccessRate;
 
     [SerializeField] List<NextMove> _nextMoves;
 
@@ -37,18 +39,51 @@ public class BasketballMatchSimulator : MatchSimulator
 
             while (secondsLeftInPeriod > .1)
             {
-                (int, PossessionResult) possession = SimulatePossession(homeTeam, awayTeam, _shotClock);
-                teamInPossession = teamInPossession == homeTeam ? awayTeam : homeTeam;
-                Debug.Log($"Period {i} - {secondsLeftInPeriod} seconds left: {possession.Item2.GetPlayer().GetFullName()} with {possession.Item2.GetPossessionResult()}");
+                (int, PossessionResult) possession = SimulatePossession(match.GetMatchID(), homeTeam, awayTeam, _shotClock);
+                Team teamNotInPossession = teamInPossession == homeTeam ? awayTeam : homeTeam;
                 secondsLeftInPeriod -= possession.Item1;
+                teamInPossession = DecideNextPossession(possession.Item2, teamInPossession, teamNotInPossession);
+
                 match.AddPossessionResult(possession.Item2, teamInPossession);
             }
+        }
+        match.EndMatch();
+    }
 
-            match.EndMatch();
+    private Team DecideNextPossession(PossessionResult possession, Team currentTeamInPossession, Team otherTeam)
+    {
+        switch (possession.GetPossessionResult())
+        {
+            case ResultAction.TwoPointerMissed:
+                return DecideReboundingTeam(currentTeamInPossession, otherTeam);
+            case ResultAction.ThreePointerMissed:
+                return DecideReboundingTeam(currentTeamInPossession, otherTeam);
+            case ResultAction.FreeThrowMissed:
+                return DecideReboundingTeam(currentTeamInPossession, otherTeam);
+            default:
+                return otherTeam;
         }
     }
 
-    private (int, PossessionResult) SimulatePossession(Team teamInPossession, Team defendingTeam, int maxSeconds)
+    private Team DecideReboundingTeam(Team teamOne, Team teamTwo)
+    {
+        // TODO: Add the lineup of the team
+        Player teamOneRebounder = teamOne.GetPlayersFromTeam().OrderByDescending(x => x.GetSkills()[11].GetRatingForSkill() * UnityEngine.Random.Range(0.9f, 1.1f)).ToList()[0];
+        Player teamTwoRebounder = teamTwo.GetPlayersFromTeam().OrderByDescending(x => x.GetSkills()[11].GetRatingForSkill() * UnityEngine.Random.Range(0.9f, 1.1f)).ToList()[0];
+
+        float teamOneRebounderChance = teamOneRebounder.GetSkills()[11].GetRatingForSkill();
+        float total = teamOneRebounder.GetSkills()[11].GetRatingForSkill() + teamTwoRebounder.GetSkills()[11].GetRatingForSkill();
+
+        if (UnityEngine.Random.Range(0f, total) > teamOneRebounderChance)
+        {
+            return teamTwo;
+        } else
+        {
+            return teamOne;
+        }
+    }
+
+    private (int, PossessionResult) SimulatePossession(int matchID, Team teamInPossession, Team defendingTeam, int maxSeconds)
     {
         int secondsSpent = 0;
         bool inPossession = true;
@@ -64,8 +99,12 @@ public class BasketballMatchSimulator : MatchSimulator
             secondsSpent += UnityEngine.Random.Range(2, 5);
             DecideResult(playerWithBall, move, out bool possessionKept, out ResultAction resultAction);
 
+            AssignActionToPlayer(matchID, resultAction, playerWithBall);
+
             resultOfPossession = resultAction;
             inPossession = possessionKept;
+
+            if (secondsSpent >= maxSeconds) inPossession = false;
         } 
 
         PossessionResult result = new PossessionResult(playerWithBall, resultOfPossession);
@@ -152,6 +191,44 @@ public class BasketballMatchSimulator : MatchSimulator
         }
 
         return Move.TwoPointer;
-        
+    }
+
+    public void AssignActionToPlayer(int matchID, ResultAction resultAction, Player player)
+    {
+        switch (resultAction)
+        {
+            case ResultAction.Pass:
+                player.GetLatestSeason().UpdateMatch(matchID, new List<(string, int)>() { ("assists", 1 ) });
+                break;
+            case ResultAction.Rebound:
+                player.GetLatestSeason().UpdateMatch(matchID, new List<(string, int)>() { ("rebounds", 1) });
+                break;
+            case ResultAction.Steal:
+                player.GetLatestSeason().UpdateMatch(matchID, new List<(string, int)>() { ("steals", 1) });
+                break;
+            case ResultAction.Block:
+                player.GetLatestSeason().UpdateMatch(matchID, new List<(string, int)>() { ("rebounds", 1) });
+                break;
+            case ResultAction.TwoPointerMade:
+                player.GetLatestSeason().UpdateMatch(matchID, new List<(string, int)>() { ("twoPointersMade", 1), ("twoPointersAttempted", 1), ("twoPointersPoints", 2) });
+                break;
+            case ResultAction.TwoPointerMissed:
+                player.GetLatestSeason().UpdateMatch(matchID, new List<(string, int)>() { ("twoPointersAttempted", 1) });
+                break;
+            case ResultAction.ThreePointerMade:
+                player.GetLatestSeason().UpdateMatch(matchID, new List<(string, int)>() { ("threePointersMade", 1), ("threePointersAttempted", 1), ("threePointersPoints", 3) });
+                break;
+            case ResultAction.ThreePointerMissed:
+                player.GetLatestSeason().UpdateMatch(matchID, new List<(string, int)>() { ("threePointersAttempted", 1) });
+                break;
+            case ResultAction.FreeThrowMade:
+                player.GetLatestSeason().UpdateMatch(matchID, new List<(string, int)>() { ("freeThrowsMade", 1), ("freeThrowsAttempted", 1) });
+                break;
+            case ResultAction.FreeThrowMissed:
+                player.GetLatestSeason().UpdateMatch(matchID, new List<(string, int)>() { ("freeThrowsAttempted", 1) });
+                break;
+            default:
+                break;
+        }
     }
 }

@@ -6,10 +6,12 @@ using Sirenix.OdinInspector;
 [System.Serializable]
 public class PlayerMatchStats : SerializedUnityObject
 {
+    [SerializeField] int _matchID;
     Dictionary<string, int> _stats;
 
-    public PlayerMatchStats()
+    public PlayerMatchStats(int matchID)
     {
+        _matchID = matchID;
         _stats = new Dictionary<string, int>();
 
         _stats["minutes"] = 0;
@@ -21,12 +23,15 @@ public class PlayerMatchStats : SerializedUnityObject
         _stats["freeThrowsMade"] = 0;
         _stats["twoPointersAttempted"] = 0;
         _stats["twoPointersMade"] = 0;
+        _stats["twoPointersPoints"] = 0;
         _stats["threePointersAttempted"] = 0;
         _stats["threePointersMade"] = 0;
+        _stats["threePointersPoints"] = 0;
     }
 
-    public PlayerMatchStats(int minutes, int assists, int steals, int rebounds, int blocks, int ftAttempts, int ftMade, int twoAttempts, int twoMade, int threeAttempts, int threeMade)
+    public PlayerMatchStats(int matchID, int minutes, int assists, int steals, int rebounds, int blocks, int ftAttempts, int ftMade, int twoAttempts, int twoMade, int threeAttempts, int threeMade)
     {
+        _matchID = matchID;
         _stats = new Dictionary<string, int>();
 
         _stats["minutes"] = minutes;
@@ -44,6 +49,11 @@ public class PlayerMatchStats : SerializedUnityObject
         _stats["threePointersPoints"] = threeMade * 3;
     }
 
+    public int GetPoints()
+    {
+        return _stats["freeThrowsMade"] + _stats["twoPointersMade"] * 2 + _stats["threePointersMade"] * 3;
+    }
+
     public int GetTotal(string stat)
     {
         return _stats[stat];
@@ -59,5 +69,18 @@ public class PlayerMatchStats : SerializedUnityObject
         }
 
         return total;
+    }
+
+    public void AddStat(List<(string, int)> stats)
+    {
+        foreach (var stat in stats)
+        {
+            _stats[stat.Item1] += stat.Item2;
+        }
+    }
+
+    public int GetMatchID()
+    {
+        return _matchID;
     }
 }

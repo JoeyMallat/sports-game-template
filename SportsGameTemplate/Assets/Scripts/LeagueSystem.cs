@@ -148,10 +148,10 @@ public class LeagueSystem : MonoBehaviour
     {
         foreach (Match match in _seasonMatches)
         {
-            //ConfigManager.Instance.GetCurrentConfig().MatchSimulator.SimulateMatch(match);
+            ConfigManager.Instance.GetCurrentConfig().MatchSimulator.SimulateMatch(match);
         }
 
-        ConfigManager.Instance.GetCurrentConfig().MatchSimulator.SimulateMatch(_seasonMatches[0]);
+        //ConfigManager.Instance.GetCurrentConfig().MatchSimulator.SimulateMatch(_seasonMatches[0]);
 
         SortStandings();
     }

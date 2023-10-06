@@ -43,6 +43,11 @@ public class Match
         return _awayTeamID;
     }
 
+    public int GetMatchID()
+    {
+        return _matchID;
+    }
+
     public void AddPossessionResult(PossessionResult possessionResult, Team team)
     {
         _possessionResults.Add(possessionResult);
@@ -81,15 +86,15 @@ public class Match
             default:
                 break;
         }
-
-        Debug.Log($"{_homeTeamPoints} - {_awayTeamPoints}");
     }
 
     public void EndMatch()
     {
-        OnMatchPlayed?.Invoke(this);
+        SetResult(_homeTeamPoints, _awayTeamPoints);
 
-        
+        //OnMatchPlayed?.Invoke(this);
+
+        /*
         int totalTwoPointers = 0;
         int madeTwoPointers = 0;
         foreach (var result in _possessionResults)
@@ -122,7 +127,7 @@ public class Match
             }
         }
 
-        Debug.Log($"Three pointers shooting percentage: {(float)madeThreePointers / (float)totalThreePointers}");
+        Debug.Log($"Three pointers shooting percentage: {(float)madeThreePointers / (float)totalThreePointers}"); */
     }
 
     public void SetResult(int homeTeamPoints, int awayTeamPoints)

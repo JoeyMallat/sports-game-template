@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [System.Serializable]
@@ -16,7 +18,7 @@ public class PlayerSeason
 
         _matchStats = new List<PlayerMatchStats>();
 
-        DebugRandomSeason();
+        //DebugRandomSeason();
     }
 
     private void DebugRandomSeason()
@@ -34,7 +36,27 @@ public class PlayerSeason
             int twoMade = UnityEngine.Random.Range(0, twoAttempts);
             int threeAttempts = UnityEngine.Random.Range(0, 20);
             int threeMade = UnityEngine.Random.Range(0, threeAttempts);
-            _matchStats.Add(new PlayerMatchStats(min, ass, stl, reb, blck, ftAttempts, ftMade, twoAttempts, twoMade, threeAttempts, threeMade));
+            //_matchStats.Add(new PlayerMatchStats(min, ass, stl, reb, blck, ftAttempts, ftMade, twoAttempts, twoMade, threeAttempts, threeMade));
+        }
+    }
+
+    public List<PlayerMatchStats> GetMatchStats()
+    {
+        return _matchStats;
+    }
+
+    public void UpdateMatch(int matchID, List<(string, int)> stats)
+    {
+        var singleMatch = _matchStats.Where(x => x.GetMatchID() == matchID).ToList();
+
+        if (singleMatch.Count == 0)
+        {
+            PlayerMatchStats newMatch = new PlayerMatchStats(matchID);
+            _matchStats.Add(newMatch);
+            newMatch.AddStat(stats);
+        } else
+        {
+            singleMatch.FirstOrDefault().AddStat(stats);
         }
     }
 
@@ -43,7 +65,7 @@ public class PlayerSeason
         _matchStats.Add(match);
     }
 
-    public float GetPercentageOfStat(List<string> stats)
+    public float GetAverageOfStat(List<string> stats)
     {
         if (_matchStats.Count == 0) { return 0; }
 
@@ -59,7 +81,7 @@ public class PlayerSeason
         return percentage;
     }
 
-    public float GetPercentageOfStat(string stat)
+    public float GetAverageOfStat(string stat)
     {
         if (_matchStats.Count == 0) { return 0; }
 

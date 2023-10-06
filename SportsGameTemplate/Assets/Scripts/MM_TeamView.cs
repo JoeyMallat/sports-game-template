@@ -16,8 +16,8 @@ public class MM_TeamView : MonoBehaviour, ISettable
     {
         List<Player> players = item as List<Player>;
 
-        List<Player> topScoring = players.OrderByDescending(x => x.GetLatestSeason().GetPercentageOfStat(new List<string>() { "twoPointersPoints", "threePointersPoints" })).Take(3).ToList();
-        List<Player> topAssists = players.OrderByDescending(x => x.GetLatestSeason().GetPercentageOfStat("assists")).Take(3).ToList();
+        List<Player> topScoring = players.OrderByDescending(x => x.GetLatestSeason().GetAverageOfStat(new List<string>() { "twoPointersPoints", "threePointersPoints" })).Take(3).ToList();
+        List<Player> topAssists = players.OrderByDescending(x => x.GetLatestSeason().GetAverageOfStat("assists")).Take(3).ToList();
         List<Player> topPlayers = players.OrderByDescending(x => x.CalculateRatingForPosition()).Take(5).ToList();
 
         SetTopScorers(_topScoringObjectsRoot.GetComponentsInChildren<StatObject>().ToList(), topScoring);
@@ -33,7 +33,7 @@ public class MM_TeamView : MonoBehaviour, ISettable
     {
         for (int i = 0; i < topObjects.Count; i++)
         {
-            topObjects[i].SetDetails(new StatObjectWrapper(topPlayers[i].GetFullName(), new List<float> { topPlayers[i].GetLatestSeason().GetPercentageOfStat(new List<string>() { "twoPointersPoints", "threePointersPoints" }) }));
+            topObjects[i].SetDetails(new StatObjectWrapper(topPlayers[i].GetFullName(), new List<float> { topPlayers[i].GetLatestSeason().GetAverageOfStat(new List<string>() { "twoPointersPoints", "threePointersPoints" }) }));
         }
     }
 
@@ -41,7 +41,7 @@ public class MM_TeamView : MonoBehaviour, ISettable
     {
         for (int i = 0; i < topObjects.Count; i++)
         {
-            topObjects[i].SetDetails(new StatObjectWrapper(topPlayers[i].GetFullName(), new List<float> { topPlayers[i].GetLatestSeason().GetPercentageOfStat("assists" )}));
+            topObjects[i].SetDetails(new StatObjectWrapper(topPlayers[i].GetFullName(), new List<float> { topPlayers[i].GetLatestSeason().GetAverageOfStat("assists" )}));
         }
     }
 

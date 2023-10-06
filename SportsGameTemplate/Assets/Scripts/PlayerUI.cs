@@ -15,6 +15,16 @@ public class PlayerUI : MonoBehaviour, ISettable
     [SerializeField] TextMeshProUGUI _contract;
     [SerializeField] TextMeshProUGUI _position;
 
+    [Header("Stats")]
+    [SerializeField] TextMeshProUGUI _careerMinutes;
+    [SerializeField] TextMeshProUGUI _careerPoints;
+    [SerializeField] TextMeshProUGUI _careerAssists;
+    [SerializeField] TextMeshProUGUI _careerRebounds;
+    [SerializeField] TextMeshProUGUI _seasonMinutes;
+    [SerializeField] TextMeshProUGUI _seasonPoints;
+    [SerializeField] TextMeshProUGUI _seasonAssists;
+    [SerializeField] TextMeshProUGUI _seasonRebounds;
+
     [SerializeField] Button _extendContractButton;
     [SerializeField] Button _addToTradingBlock;
     [SerializeField] Button _addToTradeButton;
@@ -32,6 +42,7 @@ public class PlayerUI : MonoBehaviour, ISettable
         _position.text = player.GetPosition();
 
         SetSkills(player);
+        SetStats(player);
         SetButtons(player);
     }
 
@@ -44,6 +55,11 @@ public class PlayerUI : MonoBehaviour, ISettable
 
         _addToTradeButton.onClick.RemoveAllListeners();
         _addToTradeButton.onClick.AddListener(() => player.AddToTrade(player.GetTeamID()));
+    }
+
+    private void SetStats(Player player)
+    {
+        _seasonMinutes.text = player.GetLatestSeason().GetAverageOfStat();
     }
 
     private void SetSkills(Player player)
