@@ -15,12 +15,12 @@ public class BasketballMatchSimulator : MatchSimulator
 
     [Header("Match simulation settings")]
     [SerializeField] float _scoringRate;
-    [SerializeField] float _passSuccessRate;
-    [SerializeField] float _twoPointSuccessRate;
-    [SerializeField] float _threePointSuccessRate;
-    [SerializeField] float _dunkSuccessRate;
-    [SerializeField] float _layupSuccessRate;
-    [SerializeField] float _dribbleSuccessRate;
+    [SerializeField] Vector2 _passSuccessRate;
+    [SerializeField] Vector2 _twoPointSuccessRate;
+    [SerializeField] Vector2 _threePointSuccessRate;
+    [SerializeField] Vector2 _dunkSuccessRate;
+    [SerializeField] Vector2 _layupSuccessRate;
+    [SerializeField] Vector2 _dribbleSuccessRate;
 
     [SerializeField] List<NextMove> _nextMoves;
 
@@ -58,7 +58,7 @@ public class BasketballMatchSimulator : MatchSimulator
         while (inPossession)
         {
             // TODO: Add the lineup of the team
-            List<Player> best = teamInPossession.GetPlayersFromTeam().OrderByDescending(x => x.GetSkills()[3].GetRatingForSkill()).Take(5).ToList();
+            List<Player> best = teamInPossession.GetPlayersFromTeam().Shuffle().Take(5).ToList();
             playerWithBall = best[UnityEngine.Random.Range(0, 5)];
             Move move = DecideNextMove(secondsSpent);
             secondsSpent += UnityEngine.Random.Range(2, 5);
@@ -114,13 +114,13 @@ public class BasketballMatchSimulator : MatchSimulator
         }
     }
 
-    private (bool, ResultAction) GetResult(float averageSucceedingChance, int amountOfSkills, float skillRating, bool keepPossessionWhenSucceeded, ResultAction actionSucceeded, ResultAction actionFailed)
+    private (bool, ResultAction) GetResult(Vector2 averageSucceedingChance, int amountOfSkills, float skillRating, bool keepPossessionWhenSucceeded, ResultAction actionSucceeded, ResultAction actionFailed)
     {
-        // TODO: Normalize to average success chance
-        float averageSkillRating = (skillRating / amountOfSkills) / 100f;
-        float random = UnityEngine.Random.Range(0f, averageSkillRating / (averageSucceedingChance / 1.25f));
+        float averageSkillRating = skillRating / (amountOfSkills * 99f);
+        float chanceOfSucceeding = Mathf.Lerp(averageSucceedingChance.x, averageSucceedingChance.y, averageSkillRating);
+        float random = UnityEngine.Random.Range(0f, 1f);
 
-        if (averageSkillRating * averageSucceedingChance >= random)
+        if (random < chanceOfSucceeding)
         {
             return (keepPossessionWhenSucceeded, actionSucceeded);
         }
