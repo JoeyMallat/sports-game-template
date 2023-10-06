@@ -28,7 +28,7 @@ public class MM_LeagueView : MonoBehaviour, ISettable
     {
         for (int i = 0; i < topObjects.Count; i++)
         {
-            topObjects[i].SetDetails(new StatObjectWrapper($"{topPlayers[i].GetFullName()} - <color=#FF9900>{LeagueSystem.Instance.GetTeam(topPlayers[i].GetTeamID()).GetTeamName()}", new List<float> { topPlayers[i].GetLatestSeason().GetPercentageOfStat(new List<string>() { "twoPointersPoints", "threePointersPoints" }) }));
+            topObjects[i].SetDetails(new StatObjectWrapper($"{topPlayers[i].GetFullName()} - <color=#FF9900>{LeagueSystem.Instance.GetTeam(topPlayers[i].GetTeamID()).GetTeamName()}", new List<float> { topPlayers[i].GetLatestSeason().GetAverageOfStat(new List<string>() { "twoPointersPoints", "threePointersPoints" }) }));
         }
     }
 
@@ -36,7 +36,7 @@ public class MM_LeagueView : MonoBehaviour, ISettable
     {
         for (int i = 0; i < topObjects.Count; i++)
         {
-            topObjects[i].SetDetails(new StatObjectWrapper($"{topPlayers[i].GetFullName()} - <color=#FF9900>{LeagueSystem.Instance.GetTeam(topPlayers[i].GetTeamID()).GetTeamName()}", new List<float> { topPlayers[i].GetLatestSeason().GetPercentageOfStat("assists")}));
+            topObjects[i].SetDetails(new StatObjectWrapper($"{topPlayers[i].GetFullName()} - <color=#FF9900>{LeagueSystem.Instance.GetTeam(topPlayers[i].GetTeamID()).GetTeamName()}", new List<float> { topPlayers[i].GetLatestSeason().GetAverageOfStat("assists")}));
         }
     }
 

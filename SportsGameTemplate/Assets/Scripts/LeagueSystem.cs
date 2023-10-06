@@ -110,7 +110,7 @@ public class LeagueSystem : MonoBehaviour
     public List<Player> GetTopListOfStat(string stat, int amount)
     {
         List<Player> players = GetAllPlayers();
-        players = players.OrderByDescending(x => x.GetLatestSeason().GetPercentageOfStat(stat)).Take(amount).ToList();
+        players = players.OrderByDescending(x => x.GetLatestSeason().GetAverageOfStat(stat)).Take(amount).ToList();
         return players;
     }
     
@@ -118,7 +118,7 @@ public class LeagueSystem : MonoBehaviour
     public List<Player> GetTopListOfStat(List<string> stats, int amount)
     {
         List<Player> players = GetAllPlayers();
-        players = players.OrderByDescending(x => x.GetLatestSeason().GetPercentageOfStat(stats)).Take(amount).ToList();
+        players = players.OrderByDescending(x => x.GetLatestSeason().GetAverageOfStat(stats)).Take(amount).ToList();
         return players;
     }
 
