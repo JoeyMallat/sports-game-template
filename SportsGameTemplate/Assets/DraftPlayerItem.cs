@@ -22,19 +22,7 @@ public class DraftPlayerItem : MonoBehaviour
         _nameText.text = player.GetFullName();
         _positionText.text = player.GetPosition();
 
-        UnityEngine.Random.InitState(player.GetFullName().GetHashCode());
-
-        if (player.GetScoutingPercentage() < 0.2f)
-        {
-            _ratingText.text = "?";
-        } else
-        {
-            int trueRating = player.CalculateRatingForPosition();
-            int minRating = trueRating + Mathf.RoundToInt(UnityEngine.Random.Range(-10 * (1f - player.GetScoutingPercentage()), 0));
-            int maxRating = trueRating + Mathf.RoundToInt(UnityEngine.Random.Range(1, 10 * (1f - player.GetScoutingPercentage())));
-            _ratingText.text = $"{minRating} - {maxRating}";
-        }
-
+        _ratingText.text = player.CalculateRatingForPosition().GetRatingRange(player.GetScoutingPercentage(), player.GetFullName().GetHashCode());
         _ageText.text = player.GetAge().ToString();
         _potentialText.text = player.GetPotential().GetPotentialRange(player.GetScoutingPercentage(), player.GetFullName().GetHashCode());
         SetButton(player);
@@ -43,6 +31,6 @@ public class DraftPlayerItem : MonoBehaviour
     private void SetButton(Player player)
     {
         _button.onClick.RemoveAllListeners();
-        _button.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Player, player));
+        _button.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Draft_Player, player));
     }
 }

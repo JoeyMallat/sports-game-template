@@ -28,6 +28,7 @@ public class Player : ITradeable
 
     public static event Action<int, Player> OnAddedToTrade;
     public static event Action<Player> OnTradeOfferReceived;
+    public static event Action<Player> OnPlayerScouted;
 
     [Header("Appearance Settings")]
     [SerializeField] int _portraitID;
@@ -66,6 +67,15 @@ public class Player : ITradeable
 
         _portraitID = UnityEngine.Random.Range(0, Resources.LoadAll<Sprite>("Faces/").Length);
         _teamID = -1;
+    }
+
+    public void ScoutPlayer()
+    {
+        if (_percentageScouted == 1) return;
+
+        _percentageScouted += 0.2f;
+
+        OnPlayerScouted?.Invoke(this);
     }
 
     public void ToggleTradingBlockStatus()

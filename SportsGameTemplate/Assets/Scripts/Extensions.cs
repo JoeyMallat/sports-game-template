@@ -83,7 +83,7 @@ public static class Extensions
         if (accuracy < 100)
         {
             UnityEngine.Random.InitState(seed);
-            potential -= UnityEngine.Random.Range(-1, 1);
+            potential -= UnityEngine.Random.Range(Mathf.RoundToInt(-1f / accuracy), (Mathf.RoundToInt(1 * accuracy)));
         }
 
         switch (potential)
@@ -100,6 +100,31 @@ public static class Extensions
                 return "F";
             default:
                 return "?";
+        }
+    }
+
+    public static (int, int) GetRatingRangeNumbers(this int rating, float accuracy, int seed)
+    {
+        UnityEngine.Random.InitState(seed);
+
+        int minRating = rating + Mathf.RoundToInt(UnityEngine.Random.Range(-10 * (1f - accuracy), 0));
+        int maxRating = rating + Mathf.RoundToInt(UnityEngine.Random.Range(1, 10 * (1f - accuracy)));
+        return (minRating, maxRating);
+    }
+
+    public static string GetRatingRange(this int rating, float accuracy, int seed)
+    {
+        if (accuracy < 0.2f)
+        {
+            return "?";
+        }
+        else if (accuracy == 1)
+        {
+            return rating.ToString();
+        }
+        else
+        {
+            return $"{rating.GetRatingRangeNumbers(accuracy, seed).Item1} - " + $"{rating.GetRatingRangeNumbers(accuracy, seed).Item2}";
         }
     }
 }

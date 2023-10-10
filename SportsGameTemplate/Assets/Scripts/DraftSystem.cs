@@ -21,6 +21,8 @@ public class DraftSystem : MonoBehaviour
 
     private void Start()
     {
+        Player.OnPlayerScouted += UpdateDraftClass;
+
         _currentPick = 0;
         GenerateDraftClass();
         _teamPicks = GetDraftOrder(LeagueSystem.Instance.GetTeams());
@@ -39,11 +41,15 @@ public class DraftSystem : MonoBehaviour
         RunClock();
     }
 
+    private void UpdateDraftClass(Player player)
+    {
+        OnDraftClassUpdated?.Invoke(_upcomingDraftClass);
+    }
+
     private void GenerateDraftClass()
     {
         _upcomingDraftClass = new DraftClass(UnityEngine.Random.Range(40, 70));
-        OnDraftClassUpdated?.Invoke(_upcomingDraftClass) ;
-
+        OnDraftClassUpdated?.Invoke(_upcomingDraftClass);
     }
 
     private void RunClock()
