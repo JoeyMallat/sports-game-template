@@ -28,4 +28,10 @@ public class DraftClass
         team.AddPlayer(chosenPlayer, pickNumber);
         return chosenPlayer;
     }
+
+    public void PickPlayer(Player player, Team team, int pickNumber)
+    {
+        _playersInDraftClass.Remove(player);
+        team.AddPlayer(player, pickNumber);
+    }
 }

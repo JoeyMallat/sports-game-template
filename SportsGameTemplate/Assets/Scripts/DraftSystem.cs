@@ -22,6 +22,8 @@ public class DraftSystem : MonoBehaviour
     private void Start()
     {
         Player.OnPlayerScouted += UpdateDraftClass;
+        DraftPlayerUI.OnPlayerDrafted += PickPlayer;
+        DraftPlayerUI.OnPlayerDrafted += UpdateDraftClass;
 
         _currentPick = 0;
         GenerateDraftClass();
@@ -134,6 +136,17 @@ public class DraftSystem : MonoBehaviour
         OnDraftClassUpdated?.Invoke(_upcomingDraftClass);
         ResetClock();
         return pickedPlayer;
+    }
+
+    public void PickPlayer(Player player)
+    {
+        _currentPick++;
+        _teamPicks.RemoveAt(0);
+
+        _upcomingDraftClass.PickPlayer(player, LeagueSystem.Instance.GetTeam(0), _currentPick);
+        OnPlayerPicked?.Invoke(player, LeagueSystem.Instance.GetTeam(0), _currentPick);
+        OnDraftClassUpdated?.Invoke(_upcomingDraftClass);
+        ResetClock();
     }
 
     private void ResetClock()

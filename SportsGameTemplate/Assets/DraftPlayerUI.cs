@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -17,6 +18,8 @@ public class DraftPlayerUI : MonoBehaviour, ISettable
 
     [SerializeField] Button _scoutButton;
     [SerializeField] Button _draftButton;
+
+    public static event Action<Player> OnPlayerDrafted;
 
     public void SetDetails<T>(T itemDetails) where T : class
     {
@@ -40,6 +43,10 @@ public class DraftPlayerUI : MonoBehaviour, ISettable
         _scoutButton.onClick.RemoveAllListeners();
         _scoutButton.onClick.AddListener(() => player.ScoutPlayer());
         _scoutButton.onClick.AddListener(() => SetDetails(player));
+
+        _draftButton.onClick.RemoveAllListeners();
+        _draftButton.onClick.AddListener(() => OnPlayerDrafted?.Invoke(player));
+        _draftButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(false, CanvasKey.Draft));
     }
 
     private void SetSkills(Player player)
