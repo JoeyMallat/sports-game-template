@@ -152,7 +152,8 @@ public class DraftSystem : MonoBehaviour
     private void ResetClock()
     {
         _timeLeft = _timerForDraft;
-        _simPickOnSecond = new Vector2(UnityEngine.Random.Range(0, _timerForDraft.x - 1), UnityEngine.Random.Range(1, _timerForDraft.y - 1));
+        _simPickOnSecond = new Vector2(Mathf.RoundToInt(UnityEngine.Random.Range(0, _timerForDraft.x - 1)), Mathf.RoundToInt(UnityEngine.Random.Range(1, _timerForDraft.y - 1)));
+        Debug.Log(_simPickOnSecond);
         OnDraftClockUpdated?.Invoke(_timeLeft.x, _timeLeft.y);
     }
 }
