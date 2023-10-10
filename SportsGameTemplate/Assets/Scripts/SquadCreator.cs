@@ -34,7 +34,7 @@ public class SquadCreator
     {
         List<Player> draftClass = new();
         List<Position> positions = ConfigManager.Instance.GetCurrentConfig().PositionConfig.GetPositions();
-        int playersInDraftClass = ConfigManager.Instance.GetCurrentConfig().DraftRounds * ConfigManager.Instance.GetCurrentConfig().PlayersPerDraftRound;
+        int playersInDraftClass = Mathf.RoundToInt(ConfigManager.Instance.GetCurrentConfig().DraftRounds * ConfigManager.Instance.GetCurrentConfig().PlayersPerDraftRound * 1.5f);
         for (int i = 0; i < playersInDraftClass; i++)
         {
             Player player = CreatePlayer(true, positions[UnityEngine.Random.Range(0, positions.Count)], rating, -1);

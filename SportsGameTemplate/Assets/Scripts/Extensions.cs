@@ -72,4 +72,34 @@ public static class Extensions
         );
         return result;
     }
+
+    public static string GetPotentialRange(this Potential potential, float accuracy, int seed)
+    {
+        if (accuracy == 0)
+        {
+            return "?";
+        }
+
+        if (accuracy < 100)
+        {
+            UnityEngine.Random.InitState(seed);
+            potential -= UnityEngine.Random.Range(-1, 1);
+        }
+
+        switch (potential)
+        {
+            case Potential.Elite:
+                return "A+";
+            case Potential.WorldClass:
+                return "B-A";
+            case Potential.Starter:
+                return "C-B";
+            case Potential.Bench:
+                return "D-C";
+            case Potential.Filler:
+                return "F";
+            default:
+                return "?";
+        }
+    }
 }

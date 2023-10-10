@@ -59,7 +59,7 @@ public class Player : ITradeable
         _lastName = lastname;
         _position = position.GetPositionName();
         _age = UnityEngine.Random.Range(20, 22);
-        _percentageScouted = 0;
+        _percentageScouted = 0f;
 
         SetRandomSkills(averageRating, position.GetPositionStats());
         _potential = SetPotential();
@@ -153,6 +153,16 @@ public class Player : ITradeable
             default:
                 return Potential.Elite;
         }
+    }
+
+    public Potential GetPotential()
+    {
+        return _potential;
+    }
+
+    public float GetScoutingPercentage()
+    {
+        return _percentageScouted;
     }
 
     public int CalculateTradeValue()

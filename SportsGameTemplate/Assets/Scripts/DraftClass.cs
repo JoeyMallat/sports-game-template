@@ -13,7 +13,7 @@ public class DraftClass
         SquadCreator squadCreator = new SquadCreator();
 
         _playersInDraftClass = squadCreator.CreateDraftClass(rating);
-        _playersInDraftClass = _playersInDraftClass.OrderByDescending(x => x.CalculateTradeValue()).ToList();
+        _playersInDraftClass = _playersInDraftClass.OrderByDescending(x => x.CalculateTradeValue() * UnityEngine.Random.Range(0.8f, 1.2f)).ToList();
     }
 
     public List<Player> GetPlayers()
