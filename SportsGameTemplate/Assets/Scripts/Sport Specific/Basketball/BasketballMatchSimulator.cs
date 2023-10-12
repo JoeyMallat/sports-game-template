@@ -126,13 +126,13 @@ public class BasketballMatchSimulator : MatchSimulator
                 (possessionKept, resultAction) = GetResult(_passSuccessRate, 2, passingSkill1 + passingSkill2, true, ResultAction.Pass, ResultAction.Steal);
                 break;
             case Move.TwoPointer:
-                float twoPointerSkill1 = playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.ShortRangeShooting).ToList()[0].GetRatingForSkill();
-                float twoPointerSkill2 = playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.MidRangeShooting).ToList()[0].GetRatingForSkill();
+                float twoPointerSkill1 = playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Short_Range_Shooting).ToList()[0].GetRatingForSkill();
+                float twoPointerSkill2 = playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Mid_Range_Shooting).ToList()[0].GetRatingForSkill();
                 (possessionKept, resultAction) = GetResult(_twoPointSuccessRate, 2, twoPointerSkill1 + twoPointerSkill2, false, ResultAction.TwoPointerMade, ResultAction.TwoPointerMissed);
                 break;
             case Move.ThreePointer:
-                float threePointerSkill1 = playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.MidRangeShooting).ToList()[0].GetRatingForSkill();
-                float threePointerSkill2 = playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.ThreePointShooting).ToList()[0].GetRatingForSkill();
+                float threePointerSkill1 = playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Mid_Range_Shooting).ToList()[0].GetRatingForSkill();
+                float threePointerSkill2 = playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Three_Point_Shooting).ToList()[0].GetRatingForSkill();
                 (possessionKept, resultAction) = GetResult(_threePointSuccessRate, 2, threePointerSkill1 + threePointerSkill2, false, ResultAction.ThreePointerMade, ResultAction.ThreePointerMissed);
                 break;
             case Move.Dunk:

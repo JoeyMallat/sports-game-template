@@ -20,16 +20,14 @@ public class LeagueSystem : MonoBehaviour
 
     private void Start()
     {
-        Navigation.Instance.GoToScreen(false, CanvasKey.Draft, GetTeams());
+        //Navigation.Instance.GoToScreen(false, CanvasKey.Draft, GetTeams());
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.M))
         {
             SimulateSeason();
-
-            Navigation.Instance.GoToScreen(false, CanvasKey.Standings, GetTeams());
         }
     }
 
@@ -146,14 +144,26 @@ public class LeagueSystem : MonoBehaviour
 
     public void SimulateSeason()
     {
-        foreach (Match match in _seasonMatches)
-        {
-            ConfigManager.Instance.GetCurrentConfig().MatchSimulator.SimulateMatch(match);
-        }
+        StartCoroutine(SimulateSeasonWithProgress());
 
         //ConfigManager.Instance.GetCurrentConfig().MatchSimulator.SimulateMatch(_seasonMatches[0]);
+    }
 
+    IEnumerator SimulateSeasonWithProgress()
+    {
+        MatchSimulator matchSimulator = ConfigManager.Instance.GetCurrentConfig().MatchSimulator;
+        for (int i = 0; i < _seasonMatches.Count; i++)
+        {
+            Match match = _seasonMatches[i];
+            matchSimulator.SimulateMatch(match);
+
+            float progress = (float)(i + 1) / _seasonMatches.Count;
+            Debug.Log((int)(100 * progress) + "%");
+
+            yield return null;
+        }
         SortStandings();
+        Navigation.Instance.GoToScreen(false, CanvasKey.Standings, GetTeams());
     }
 
     private void SortStandings()

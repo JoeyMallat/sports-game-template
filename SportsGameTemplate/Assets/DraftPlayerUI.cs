@@ -57,18 +57,45 @@ public class DraftPlayerUI : MonoBehaviour, ISettable
 
         // Set the overall as the top bar
         skillBars[0].gameObject.SetActive(true);
-        skillBars[0].SetSkillBar("Overall", player.CalculateRatingForPosition());
+        float accuracy = player.GetScoutingPercentage();
 
-        for (int i = 1; i < skillBars.Length; i++)
+        if (accuracy < 1f)
         {
-            if (i < skillCount)
+            int overall = player.CalculateRatingForPosition();
+            int seed = player.GetFullName().GetHashCode();
+
+            skillBars[0].SetSkillBar("Overall", overall.GetRatingRangeNumbers(accuracy, seed).Item1, overall.GetRatingRangeNumbers(accuracy, seed).Item2);
+
+            for (int i = 1; i < skillBars.Length; i++)
             {
-                skillBars[i].gameObject.SetActive(true);
-                skillBars[i].SetSkillBar(playerSkills[i]);
+                int index = i;
+                if (i < skillCount)
+                {
+                    skillBars[i].gameObject.SetActive(true);
+                    skillBars[i].SetSkillBar(playerSkills[index].GetSkill().ToString(), playerSkills[index].GetRatingForSkill().GetRatingRangeNumbers(accuracy, seed).Item1, playerSkills[index].GetRatingForSkill().GetRatingRangeNumbers(accuracy, seed).Item2);
+                }
+                else
+                {
+                    skillBars[i].gameObject.SetActive(false);
+                }
             }
-            else
+        } else
+        {
+            int overall = player.CalculateRatingForPosition();
+            skillBars[0].SetSkillBar("Overall", overall);
+
+            for (int i = 1; i < skillBars.Length; i++)
             {
-                skillBars[i].gameObject.SetActive(false);
+                int index = i;
+                if (i < skillCount)
+                {
+                    skillBars[i].gameObject.SetActive(true);
+                    skillBars[i].SetSkillBar(playerSkills[index]);
+                }
+                else
+                {
+                    skillBars[i].gameObject.SetActive(false);
+                }
             }
         }
     }

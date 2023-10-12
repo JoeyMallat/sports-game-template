@@ -77,10 +77,11 @@ public class PlayerUI : MonoBehaviour, ISettable
 
         for (int i = 1; i < skillBars.Length; i++)
         {
+            int index = i;
             if (i < skillCount)
             {
                 skillBars[i].gameObject.SetActive(true);
-                skillBars[i].SetSkillBar(playerSkills[i]);
+                skillBars[i].SetSkillBar(playerSkills[index]);
             } else
             {
                 skillBars[i].gameObject.SetActive(false);

@@ -6,9 +6,9 @@ public enum Skill
 {
     // Basketball Skills
     [InspectorName("Misc/Speed")] Speed,
-    [InspectorName("Basketball/Short-range Shooting")] ShortRangeShooting,
-    [InspectorName("Basketball/Mid-range Shooting")] MidRangeShooting,
-    [InspectorName("Basketball/Three-point Shooting")] ThreePointShooting,
+    [InspectorName("Basketball/Short-range Shooting")] Short_Range_Shooting,
+    [InspectorName("Basketball/Mid-range Shooting")] Mid_Range_Shooting,
+    [InspectorName("Basketball/Three-point Shooting")] Three_Point_Shooting,
     [InspectorName("Basketball/Dunking")] Dunking,
     [InspectorName("Basketball/Layups")] Layups,
     [InspectorName("Misc/Stealing")] Stealing,
