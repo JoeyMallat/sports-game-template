@@ -140,12 +140,12 @@ public class DraftSystem : MonoBehaviour
 
     public void PickPlayer(Player player)
     {
-        _currentPick++;
         _teamPicks.RemoveAt(0);
 
         _upcomingDraftClass.PickPlayer(player, LeagueSystem.Instance.GetTeam(0), _currentPick);
         OnPlayerPicked?.Invoke(player, LeagueSystem.Instance.GetTeam(0), _currentPick);
         OnDraftClassUpdated?.Invoke(_upcomingDraftClass);
+        _currentPick++;
         ResetClock();
     }
 
