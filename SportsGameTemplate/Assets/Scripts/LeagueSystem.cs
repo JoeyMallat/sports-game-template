@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ public class LeagueSystem : MonoBehaviour
 
     [SerializeField] List<Team> _teams;
     [SerializeField] List<Match> _seasonMatches;
+
+    public static event Action<List<Team>> OnRegularSeasonFinished;
 
     private void Awake()
     {
@@ -164,6 +167,7 @@ public class LeagueSystem : MonoBehaviour
         }
         SortStandings();
         Navigation.Instance.GoToScreen(false, CanvasKey.Standings, GetTeams());
+        OnRegularSeasonFinished?.Invoke(_teams);
     }
 
     private void SortStandings()

@@ -15,6 +15,8 @@ public class Match
     [SerializeField] int _homeTeamPoints;
     [SerializeField] int _awayTeamPoints;
 
+    [SerializeField] bool _matchPlayed;
+
     [SerializeField] List<PossessionResult> _possessionResults;
 
     public static event Action<Match> OnMatchPlayed;
@@ -46,6 +48,11 @@ public class Match
     public int GetMatchID()
     {
         return _matchID;
+    }
+
+    public bool GetMatchStatus()
+    {
+        return _matchPlayed;
     }
 
     public void AddPossessionResult(PossessionResult possessionResult, Team team)
@@ -90,6 +97,7 @@ public class Match
 
     public void EndMatch()
     {
+        _matchPlayed = true;
         SetResult(_homeTeamPoints, _awayTeamPoints);
 
         //OnMatchPlayed?.Invoke(this);
