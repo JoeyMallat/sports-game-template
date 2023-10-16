@@ -154,14 +154,15 @@ public class LeagueSystem : MonoBehaviour
 
     IEnumerator SimulateSeasonWithProgress()
     {
+        int matches = _seasonMatches.Count;
         MatchSimulator matchSimulator = ConfigManager.Instance.GetCurrentConfig().MatchSimulator;
-        for (int i = 0; i < _seasonMatches.Count; i++)
+        for (int i = 0; i < matches; i++)
         {
             Match match = _seasonMatches[i];
             matchSimulator.SimulateMatch(match);
 
-            float progress = (float)(i + 1) / _seasonMatches.Count;
-            Debug.Log((int)(100 * progress) + "%");
+            float progress = (float)(i + 1) / matches;
+            //Debug.Log((int)(100 * progress) + "%");
 
             yield return null;
         }

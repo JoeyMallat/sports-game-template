@@ -14,8 +14,14 @@ public class PlayoffMatchup
     [SerializeField] int _awayTeamWins;
     [SerializeField] List<Match> _matches;
     [SerializeField] bool _matchupCompleted = false;
+    int _seriesWinner = -1;
 
-    public static event Action<int> OnMatchupCompleted;
+    public static event Action<PlayoffMatchup, int> OnMatchupCompleted;
+
+    public int GetSeriesWinner()
+    {
+        return _seriesWinner;
+    }
 
     public int GetHomeTeamID()
     {
@@ -88,29 +94,40 @@ public class PlayoffMatchup
             }
         }
 
-        if (CheckForSeriesWinner() == -1)
+        int winner = CheckForSeriesWinner();
+        if (winner == -1)
         {
-            Debug.Log($"No winner after {_matches.Count} games");
+            //Debug.Log($"No winner after {_matches.Count} games");
             SimulateSeries();
         } else
         {
-            Debug.Log($"{LeagueSystem.Instance.GetTeam(CheckForSeriesWinner()).GetTeamName()} has won the series after {_matches.Count}!");
+            //Debug.Log($"{LeagueSystem.Instance.GetTeam(CheckForSeriesWinner()).GetTeamName()} has won the series after {_matches.Count}!");
+            _matchupCompleted = true;
+            OnMatchupCompleted?.Invoke(this, winner);
+            
         }
     }
 
-    private int CheckForSeriesWinner()
+    public bool GetMatchupStatus()
+    {
+        return _matchupCompleted;
+    }
+
+    public int CheckForSeriesWinner()
     {
         int homeWins = _homeTeamWins;
         int awayWins = _awayTeamWins;
 
         if (homeWins >= (ConfigManager.Instance.GetCurrentConfig().BestOfAmountInPlayoffs + 1) / 2)
         {
-            OnMatchupCompleted?.Invoke(_homeTeamID);
+            OnMatchupCompleted?.Invoke(this, _homeTeamID);
+            _seriesWinner = _homeTeamID;
             return _homeTeamID;
         }
         if (awayWins >= (ConfigManager.Instance.GetCurrentConfig().BestOfAmountInPlayoffs + 1) / 2)
         {
-            OnMatchupCompleted?.Invoke(_awayTeamID);
+            OnMatchupCompleted?.Invoke(this, _awayTeamID);
+            _seriesWinner = _awayTeamID;
             return _awayTeamID;
         }
 
