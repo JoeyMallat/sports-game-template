@@ -23,7 +23,7 @@ public class LeagueSystem : MonoBehaviour
 
     private void Start()
     {
-        //Navigation.Instance.GoToScreen(false, CanvasKey.Draft, GetTeams());
+        Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID()));
     }
 
     private void Update()
@@ -162,7 +162,7 @@ public class LeagueSystem : MonoBehaviour
             matchSimulator.SimulateMatch(match);
 
             float progress = (float)(i + 1) / matches;
-            //Debug.Log((int)(100 * progress) + "%");
+            Debug.Log((int)(100 * progress) + "%");
 
             yield return null;
         }

@@ -26,7 +26,7 @@ public class MM_TeamView : MonoBehaviour, ISettable
 
         _teamManagementButton.onClick.RemoveAllListeners();
         // TODO: Change to player chosen team
-        _teamManagementButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Team, LeagueSystem.Instance.GetTeam(0)));
+        _teamManagementButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Team, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID())));
     }
 
     private void SetTopScorers(List<StatObject> topObjects, List<Player> topPlayers)

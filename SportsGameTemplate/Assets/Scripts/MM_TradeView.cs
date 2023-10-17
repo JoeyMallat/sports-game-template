@@ -26,7 +26,7 @@ public class MM_TradeView : MonoBehaviour, ISettable
 
         SetPlayersOnTradingBlock(_tradingBlockRoot.GetComponentsInChildren<PlayerItem>(true).ToList(), playersOnBlock);
 
-        SetTradeOffers(_tradeOffersRoot.GetComponentsInChildren<TradeOfferItem>().ToList(), LeagueSystem.Instance.GetTeam(0).GetAllTradeOffers());
+        SetTradeOffers(_tradeOffersRoot.GetComponentsInChildren<TradeOfferItem>().ToList(), LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()).GetAllTradeOffers());
     }
 
     private void SetPlayersOnTradingBlock(List<PlayerItem> playerItems, List<Player> playersOnBlock)

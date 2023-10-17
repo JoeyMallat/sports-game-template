@@ -15,7 +15,7 @@ public class MM_LeagueView : MonoBehaviour, ISettable
     {
         List<Team> league = item as List<Team>;
 
-        int position = league.IndexOf(LeagueSystem.Instance.GetTeam(0));
+        int position = league.IndexOf(LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
 
         List<TeamItem> teamItems = _leaguePreviewRoot.GetComponentsInChildren<TeamItem>().ToList();
         SetTopScorers(_topScorersRoot.GetComponentsInChildren<StatObject>().ToList(), LeagueSystem.Instance.GetTopListOfStat(new List<string>() { "freeThrowsMade", "twoPointersPoints", "threePointersPoints" }, 3));
