@@ -23,7 +23,7 @@ public class LeagueSystem : MonoBehaviour
 
     private void Start()
     {
-        Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID()));
+        //Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID()));
     }
 
     private void Update()
@@ -163,6 +163,8 @@ public class LeagueSystem : MonoBehaviour
 
             float progress = (float)(i + 1) / matches;
             Debug.Log((int)(100 * progress) + "%");
+
+            Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID()));
 
             yield return null;
         }

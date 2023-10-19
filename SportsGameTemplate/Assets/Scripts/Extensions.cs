@@ -127,4 +127,21 @@ public static class Extensions
             return $"{rating.GetRatingRangeNumbers(accuracy, seed).Item1} - " + $"{rating.GetRatingRangeNumbers(accuracy, seed).Item2}";
         }
     }
+
+    public static string GetMediaExpectation(this int index)
+    {
+        switch (index)
+        {
+            case < 1:
+                return "Championship favorite";
+            case < 6:
+                return "Championship contender";
+            case < 16:
+                return "Playoff team";
+            case < 25:
+                return "Mid-tier contender";
+            default:
+                return "Underdog challenger";
+        }
+    }
 }
