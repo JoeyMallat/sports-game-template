@@ -29,6 +29,10 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+    private string GetTeamName()
+    {
+        return LeagueSystem.Instance.GetTeam(_selectedTeamID).GetTeamName();
+    }
 
     public int GetTeamID()
     {
@@ -37,6 +41,8 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        TeamSelection.OnSelectedTeam += ((x) => _selectedTeamID = x.GetTeamID());
+
         if (Instance == null)
         {
             Instance = this;
@@ -44,10 +50,5 @@ public class GameManager : MonoBehaviour
         {
             Destroy(this);
         }
-    }
-
-    private string GetTeamName()
-    {
-        return LeagueSystem.Instance.GetTeam(_selectedTeamID).GetTeamName();
     }
 }

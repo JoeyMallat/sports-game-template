@@ -16,6 +16,8 @@ public class SetupScreenViewer : MonoBehaviour, ISettable
     [SerializeField] TextMeshProUGUI _draftPickOneText;
     [SerializeField] TextMeshProUGUI _draftPickTwoText;
 
+    [SerializeField] Button _startGameButton;
+
     private void Awake()
     {
         TeamSelection.OnSelectedTeam += SetDetails;
@@ -48,5 +50,8 @@ public class SetupScreenViewer : MonoBehaviour, ISettable
             int index = i;
             playerItems[i].SetPlayerDetails(topPlayers[index], false, false);
         }
+
+        _startGameButton.onClick.RemoveAllListeners();
+        _startGameButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, team));
     }
 }
