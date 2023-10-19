@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,7 +11,17 @@ public class GameManager : MonoBehaviour
     [InfoBox("@GetTeamName()")]
     [SerializeField][Range(0, 29)] int _selectedTeamID;
 
+    public static event Action<SeasonStage, int> OnAdvance;
+
     public static GameManager Instance;
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Advance();
+        }
+    }
 
     public void ChangeSeasonStage(SeasonStage newSeasonStage)
     {
@@ -29,6 +40,14 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+
+    public void Advance()
+    {
+        _currentWeek++;
+
+        OnAdvance?.Invoke(_currentSeasonStage, _currentWeek);
+    }
+
     private string GetTeamName()
     {
         return LeagueSystem.Instance.GetTeam(_selectedTeamID).GetTeamName();

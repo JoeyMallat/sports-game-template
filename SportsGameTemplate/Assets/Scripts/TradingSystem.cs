@@ -94,6 +94,7 @@ public class TradingSystem : MonoBehaviour
 
     public void StartNewTrade()
     {
+        _teamAID = GameManager.Instance.GetTeamID();
         Navigation.Instance.GoToScreen(true, CanvasKey.Standings, LeagueSystem.Instance.GetTeamsWithoutTeam(0));
     }
 
@@ -147,7 +148,7 @@ public class TradingSystem : MonoBehaviour
 
     public void GenerateRandomAITrade()
     {
-        _teamAID = 0;
+        _teamAID = GameManager.Instance.GetTeamID();
         _teamATradingAssets = new List<ITradeable>() { LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()).GetPlayersFromTeam()[0], LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()).GetDraftPicks()[0] };
 
         _teamBID = UnityEngine.Random.Range(0, LeagueSystem.Instance.GetTeams().Count - 1);

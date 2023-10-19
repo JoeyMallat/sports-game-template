@@ -19,6 +19,8 @@ public class LeagueSystem : MonoBehaviour
         else { Destroy(this); }
 
         ReadTeamsFromFile();
+
+        GameManager.OnAdvance += SimulateGameweek;
     }
 
     private void Start()
@@ -79,6 +81,23 @@ public class LeagueSystem : MonoBehaviour
         }
 
         return matchesForTeam;
+    }
+
+    public List<Match> GetMatchesFromWeek(int week)
+    {
+        List<Match> matches = new List<Match>();
+
+        foreach (var match in _seasonMatches)
+        {
+            if (match.GetWeek() > week) return matches;
+
+            if (match.GetWeek() == week)
+            {
+                matches.Add(match);
+            }
+        }
+
+        return matches;
     }
 
     public Team GetTeam(int id)
@@ -147,18 +166,19 @@ public class LeagueSystem : MonoBehaviour
 
     public void SimulateSeason()
     {
-        StartCoroutine(SimulateSeasonWithProgress());
+        StartCoroutine(SimulateMatchesWithProgress(_seasonMatches));
 
         //ConfigManager.Instance.GetCurrentConfig().MatchSimulator.SimulateMatch(_seasonMatches[0]);
     }
 
-    IEnumerator SimulateSeasonWithProgress()
+    IEnumerator SimulateMatchesWithProgress(List<Match> matchesToSim)
     {
-        int matches = _seasonMatches.Count;
+        int matches = matchesToSim.Count;
+        Debug.Log($"Simming {matches} matches");
         MatchSimulator matchSimulator = ConfigManager.Instance.GetCurrentConfig().MatchSimulator;
         for (int i = 0; i < matches; i++)
         {
-            Match match = _seasonMatches[i];
+            Match match = matchesToSim[i];
             matchSimulator.SimulateMatch(match);
 
             float progress = (float)(i + 1) / matches;
@@ -168,13 +188,31 @@ public class LeagueSystem : MonoBehaviour
 
             yield return null;
         }
+
         SortStandings();
-        Navigation.Instance.GoToScreen(false, CanvasKey.Standings, GetTeams());
-        OnRegularSeasonFinished?.Invoke(_teams);
+        Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID()));
+        Navigation.Instance.GoToScreen(true, CanvasKey.Standings, GetTeams());
+        //OnRegularSeasonFinished?.Invoke(_teams);
     }
 
     private void SortStandings()
     {
         _teams = _teams.OrderByDescending(x => x.GetCurrentSeasonStats().GetWinPercentage()).ToList();
+    }
+
+    private void SimulateGameweek(SeasonStage seasonStage, int week)
+    {
+        switch (seasonStage)
+        {
+            case SeasonStage.RegularSeason:
+                StartCoroutine(SimulateMatchesWithProgress(GetMatchesFromWeek(week)));
+                break;
+            case SeasonStage.Playoffs:
+                break;
+            case SeasonStage.OffSeason:
+                break;
+            default:
+                break;
+        }
     }
 }

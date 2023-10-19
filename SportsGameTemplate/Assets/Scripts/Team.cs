@@ -132,7 +132,7 @@ public class Team
     {
         _availableMatchdays = new List<int>();
 
-        for (int i = 0; i < ConfigManager.Instance.GetCurrentConfig().GamesPerTeamInRegularSeason * 2.5f; i++)
+        for (int i = 1; i < ConfigManager.Instance.GetCurrentConfig().GamesPerTeamInRegularSeason * 2.5f; i++)
         {
             _availableMatchdays.Add(i);
         }
