@@ -107,14 +107,14 @@ public class TradingSystem : MonoBehaviour
     {
         // TODO: Change teamA ID to chosen team
 
-        if (team == 0)
+        if (team == GameManager.Instance.GetTeamID())
         {
             if (_teamATradingAssets.Contains(assetToAdd)) return;
 
             _teamATradingAssets.Add(assetToAdd);
 
         }
-        else if (team != 0)
+        else if (team != GameManager.Instance.GetTeamID())
         {
             if (_teamBTradingAssets.Contains(assetToAdd)) return;
 

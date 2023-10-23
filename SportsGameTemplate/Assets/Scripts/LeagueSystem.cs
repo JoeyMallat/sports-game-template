@@ -191,7 +191,7 @@ public class LeagueSystem : MonoBehaviour
 
         SortStandings();
         Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID()));
-        Navigation.Instance.GoToScreen(true, CanvasKey.Standings, GetTeams());
+        //Navigation.Instance.GoToScreen(true, CanvasKey.Standings, GetTeams());
         //OnRegularSeasonFinished?.Invoke(_teams);
     }
 
