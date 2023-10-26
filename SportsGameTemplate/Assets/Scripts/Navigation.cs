@@ -25,6 +25,15 @@ public class Navigation : SerializedMonoBehaviour
         _openedCanvasses = new List<Canvas>();
 
         Application.targetFrameRate = 120;
+
+        GameManager.OnAdvance += RefreshMainMenu;
+        GameManager.OnGameStarted += RefreshMainMenu;
+    }
+
+    public void RefreshMainMenu(SeasonStage seasonStage, int week)
+    {
+        Canvas canvas = GetCanvas(CanvasKey.MainMenu);
+        canvas.GetComponent<ISettable>().SetDetails(LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
     }
 
     public void GoToScreen(bool overlay, CanvasKey canvasKey, Player player)
@@ -158,7 +167,10 @@ public class Navigation : SerializedMonoBehaviour
 
         foreach (Canvas canvas in canvasses)
         {
-            canvas.enabled = false;
+            if (!canvas.CompareTag("AlwaysEnabled"))
+            {
+                canvas.enabled = false;
+            }
         }
     }
 }

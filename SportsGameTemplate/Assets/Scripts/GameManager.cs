@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField][Range(0, 29)] int _selectedTeamID;
 
     public static event Action<SeasonStage, int> OnAdvance;
+    public static event Action<SeasonStage, int> OnGameStarted;
 
     public static GameManager Instance;
 
@@ -21,6 +22,12 @@ public class GameManager : MonoBehaviour
         {
             Advance();
         }
+    }
+
+    public void StartSeason()
+    {
+        TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(_selectedTeamID)));
+        OnGameStarted?.Invoke(SeasonStage.RegularSeason, 0);
     }
 
     public void ChangeSeasonStage(SeasonStage newSeasonStage)
