@@ -10,6 +10,9 @@ public class MM_LeagueView : MonoBehaviour, ISettable
     [SerializeField] GameObject _leaguePreviewRoot;
     [SerializeField] GameObject _topScorersRoot;
     [SerializeField] GameObject _topAssistersRoot;
+    [SerializeField] Button _standingsButton;
+    [SerializeField] Button _playoffsButton;
+    [SerializeField] Button _statsCenterButton;
 
     public void SetDetails<T>(T item) where T : class
     {
@@ -22,6 +25,13 @@ public class MM_LeagueView : MonoBehaviour, ISettable
         SetTopAssisters(_topAssistersRoot.GetComponentsInChildren<StatObject>().ToList(), LeagueSystem.Instance.GetTopListOfStat("assists", 3));
 
         SetLeaguePreview(teamItems, league, position);
+
+        _standingsButton.onClick.RemoveAllListeners();
+        _standingsButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Standings, league));
+
+        _playoffsButton.enabled = GameManager.Instance.GetSeasonStage() != SeasonStage.RegularSeason;
+        _playoffsButton.onClick.RemoveAllListeners();
+        _playoffsButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Playoffs));
     }
 
     private void SetTopScorers(List<StatObject> topObjects, List<Player> topPlayers)

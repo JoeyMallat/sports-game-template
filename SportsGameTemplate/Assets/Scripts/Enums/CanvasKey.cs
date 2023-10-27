@@ -10,5 +10,6 @@ public enum CanvasKey
     Draft,
     Trade,
     MainMenu,
-    Draft_Player
+    Draft_Player,
+    Playoffs
 }

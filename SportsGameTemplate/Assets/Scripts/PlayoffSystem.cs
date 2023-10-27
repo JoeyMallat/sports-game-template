@@ -13,7 +13,7 @@ public class PlayoffSystem : MonoBehaviour
         PlayoffRound.OnPlayoffRoundFinished += InitializeNextRound;
     }
 
-    private void GetPlayoffTeams(List<Team> standings)
+    private void GetPlayoffTeams(List<Team> standings, SeasonStage seasonStage)
     {
         List<Team> _playoffTeams = new List<Team>();
 
@@ -58,6 +58,6 @@ public class PlayoffSystem : MonoBehaviour
             _playoffRounds[round].AddMatchup(0, teamsInRound[0].GetTeamID(), 0, teamsInRound[1].GetTeamID(), 0);
         }
 
-        _playoffRounds[round].SimMatches();
+        //_playoffRounds[round].SimMatches();
     }
 }

@@ -17,8 +17,13 @@ public class MM_PlayView : MonoBehaviour, ISettable
         Team team = item as Team;
 
         Match nextMatch = LeagueSystem.Instance.GetNextMatchData();
+        Team homeTeam = LeagueSystem.Instance.GetTeam(nextMatch.GetHomeTeamID());
+        Team awayTeam = LeagueSystem.Instance.GetTeam(nextMatch.GetAwayTeamID());
 
-        _homeTeamText.text = LeagueSystem.Instance.GetTeam(nextMatch.GetHomeTeamID()).GetTeamName();
-        _awayTeamText.text = LeagueSystem.Instance.GetTeam(nextMatch.GetAwayTeamID()).GetTeamName();
+        _homeTeamText.text = homeTeam.GetTeamName();
+        _homeTeamImage.sprite = homeTeam.GetTeamLogo();
+
+        _awayTeamText.text = awayTeam.GetTeamName();
+        _awayTeamImage.sprite = awayTeam.GetTeamLogo();
     }
 }

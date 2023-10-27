@@ -24,13 +24,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        LeagueSystem.OnRegularSeasonFinished += ChangeSeasonStage;
+    }
+
     public void StartSeason()
     {
         TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(_selectedTeamID)));
         OnGameStarted?.Invoke(SeasonStage.RegularSeason, 0);
     }
 
-    public void ChangeSeasonStage(SeasonStage newSeasonStage)
+    public void ChangeSeasonStage(List<Team> teams, SeasonStage newSeasonStage)
     {
         _currentWeek = 0;
         _currentSeasonStage = newSeasonStage;
@@ -40,6 +45,7 @@ public class GameManager : MonoBehaviour
             case SeasonStage.RegularSeason:
                 break;
             case SeasonStage.Playoffs:
+                Navigation.Instance.GoToScreen(true, CanvasKey.Playoffs);
                 break;
             case SeasonStage.OffSeason:
                 break;
@@ -53,6 +59,11 @@ public class GameManager : MonoBehaviour
         _currentWeek++;
 
         OnAdvance?.Invoke(_currentSeasonStage, _currentWeek);
+    }
+
+    public SeasonStage GetSeasonStage()
+    {
+        return _currentSeasonStage;
     }
 
     private string GetTeamName()

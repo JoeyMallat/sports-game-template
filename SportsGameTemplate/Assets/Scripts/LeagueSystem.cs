@@ -13,7 +13,7 @@ public class LeagueSystem : MonoBehaviour
 
     [SerializeField] int _nextMatchIndex;
 
-    public static event Action<List<Team>> OnRegularSeasonFinished;
+    public static event Action<List<Team>, SeasonStage> OnRegularSeasonFinished;
 
     private void Awake()
     {
@@ -25,19 +25,6 @@ public class LeagueSystem : MonoBehaviour
         GameManager.OnAdvance += SimulateGameweek;
         GameManager.OnAdvance += GetNextGame;
         GameManager.OnGameStarted += GetNextGame;
-    }
-
-    private void Start()
-    {
-        //Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID()));
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            SimulateSeason();
-        }
     }
 
     private void ReadTeamsFromFile()
@@ -215,7 +202,7 @@ public class LeagueSystem : MonoBehaviour
                     StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { Debug.Log("All matches have been simmed"); }, SimulateMatchesWithProgress(matches)));
                 } else
                 {
-                    GameManager.Instance.ChangeSeasonStage(SeasonStage.Playoffs);
+                    OnRegularSeasonFinished?.Invoke(_teams, SeasonStage.Playoffs);
                 }
                 break;
             case SeasonStage.Playoffs:

@@ -7,6 +7,7 @@ using System.Linq;
 
 public class SetupScreenViewer : MonoBehaviour, ISettable
 {
+    [SerializeField] Image _teamLogo;
     [SerializeField] GameObject _teamDataObject;
     [SerializeField] GameObject _bestPlayersRoot;
     [SerializeField] TextMeshProUGUI _teamNameText;
@@ -28,6 +29,7 @@ public class SetupScreenViewer : MonoBehaviour, ISettable
 
         Team team = item as Team;
 
+        _teamLogo.sprite = team.GetTeamLogo();
         int rating = team.GetAverageTeamRating();
         string salary = team.GetTotalSalaryAmount().ConvertToMonetaryString();
         string mediaExpectation = LeagueSystem.Instance.GetTeams().OrderByDescending(x => x.GetAverageTeamRating()).ToList().IndexOf(team).GetMediaExpectation();
