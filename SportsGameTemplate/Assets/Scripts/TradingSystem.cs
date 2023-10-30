@@ -95,7 +95,7 @@ public class TradingSystem : MonoBehaviour
     public void StartNewTrade()
     {
         _teamAID = GameManager.Instance.GetTeamID();
-        Navigation.Instance.GoToScreen(true, CanvasKey.Standings, LeagueSystem.Instance.GetTeamsWithoutTeam(0));
+        Navigation.Instance.GoToScreen(true, CanvasKey.TeamOverview, LeagueSystem.Instance.GetTeamsSortedByID());
     }
 
     public void DebugCounterOffer()

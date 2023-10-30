@@ -17,10 +17,13 @@ public class SetupScreenViewer : MonoBehaviour, ISettable
     [SerializeField] TextMeshProUGUI _draftPickOneText;
     [SerializeField] TextMeshProUGUI _draftPickTwoText;
 
+    [SerializeField] Button _selectTeamButton;
+
     private void Awake()
     {
         TeamSelection.OnSelectedTeam += SetDetails;
         _teamDataObject.SetActive(false);
+        _selectTeamButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.TeamOverview, LeagueSystem.Instance.GetTeamsSortedByID()));
     }
 
     public void SetDetails<T>(T item) where T : class

@@ -96,14 +96,21 @@ public class LeagueSystem : MonoBehaviour
         return _teams.Where(x => x.GetTeamID() == id).ToList()[0];
     }
 
+    public List<Team> GetTeamsSortedByID()
+    {
+        _teams = _teams.OrderBy(x => x.GetTeamID()).ToList();
+        return _teams;
+    }
+
     public List<Team> GetTeams()
     {
+        _teams = _teams.OrderByDescending(x => x.GetCurrentSeasonStats().GetWinPercentage()).ToList();
         return _teams;
     }
 
     public List<Team> GetTeamsWithoutTeam(int teamID)
     {
-        return _teams.Where(x => x.GetTeamID() != teamID).ToList();
+        return GetTeamsSortedByID().Where(x => x.GetTeamID() != teamID).ToList();
     }
 
     public List<Player> GetAllPlayers()

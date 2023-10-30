@@ -63,7 +63,7 @@ public class TeamAsset : MonoBehaviour
 
         _addAssetButton.onClick.RemoveAllListeners();
         if (_teamAssetParent.GetTeamID() == -1)
-            _addAssetButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Standings, LeagueSystem.Instance.GetTeams()));
+            _addAssetButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.TeamOverview, LeagueSystem.Instance.GetTeamsSortedByID()));
         else
             _addAssetButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Team, LeagueSystem.Instance.GetTeam(_teamAssetParent.GetTeamID())));
     }
