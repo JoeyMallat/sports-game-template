@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayoffViewer : MonoBehaviour, ISettable
 {
@@ -18,6 +19,8 @@ public class PlayoffViewer : MonoBehaviour, ISettable
 
     public void SetDetails<T>(T item) where T : class
     {
+        gameObject.SetActive(false);
+
         PlayoffRound playoffRound = item as PlayoffRound;
 
         int round = playoffRound.GetPlayoffRoundNumber();
@@ -47,5 +50,7 @@ public class PlayoffViewer : MonoBehaviour, ISettable
             int index = i;
             matchupItems[i].SetMatchup(matchups[index]);
         }
+
+        gameObject.SetActive(true);
     }
 }

@@ -13,7 +13,7 @@ public class SkillBar : MonoBehaviour
     public void SetSkillBar(PlayerSkill skill)
     {
         _skillBarSecondaryFill.enabled = false;
-        _skillTitleText.text = $"{skill.GetSkill()}   <b><color=\"white\">{skill.GetRatingForSkill()}</color></b>";
+        _skillTitleText.text = $"{skill.GetSkill().ToString().Replace("_", " ")}   <b><color=\"white\">{skill.GetRatingForSkill()}</color></b>";
         _skillBarFill.fillAmount = skill.GetRatingForSkill() / 99f;
     }
 

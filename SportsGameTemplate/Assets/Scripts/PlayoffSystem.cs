@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,8 @@ public class PlayoffSystem : MonoBehaviour
 {
     [SerializeField] int _currentRound;
     [SerializeField] List<PlayoffRound> _playoffRounds;
+
+    public static event Action<List<Team>, SeasonStage> OnPlayoffsFinished;
 
     private void Awake()
     {
@@ -25,16 +28,18 @@ public class PlayoffSystem : MonoBehaviour
 
     private void InitializeNextRound(List<Team> advancingTeams)
     {
-        if (_currentRound < 4)
+        if (_currentRound < 3)
         {
+            _currentRound++;
             SetTeamsInRound(_currentRound, advancingTeams);
+        } else
+        {
+            OnPlayoffsFinished?.Invoke(new List<Team>(), SeasonStage.OffSeason);
         }
     }
 
     private void SetTeamsInRound(int round, List<Team> teamsInRound)
     {
-        _currentRound++;
-
         if (round == 0)
         {
             int lastIndex = teamsInRound.Count;
@@ -59,5 +64,10 @@ public class PlayoffSystem : MonoBehaviour
         }
 
         //_playoffRounds[round].SimMatches();
+    }
+
+    public void SimulateGameweekInPlayoffRound()
+    {
+        _playoffRounds[_currentRound].SimMatches();
     }
 }

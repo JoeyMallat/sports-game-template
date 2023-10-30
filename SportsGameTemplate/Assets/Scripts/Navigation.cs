@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,8 @@ public class Navigation : SerializedMonoBehaviour
 
         GameManager.OnAdvance += RefreshMainMenu;
         GameManager.OnGameStarted += RefreshMainMenu;
+
+        GoToScreen(false, CanvasKey.Setup);
     }
 
     public void RefreshMainMenu(SeasonStage seasonStage, int week)
@@ -127,6 +130,13 @@ public class Navigation : SerializedMonoBehaviour
     public void CloseCanvas(Canvas canvas)
     {
         canvas.enabled = false;
+
+        if (_openedCanvasses.Contains(canvas)) 
+        {
+            _openedCanvasses.Remove(canvas);
+        }
+
+        SetBackButton();
     }
 
     public Canvas GetCanvas(CanvasKey key)
@@ -152,7 +162,6 @@ public class Navigation : SerializedMonoBehaviour
 
             _backButton.onClick.RemoveAllListeners();
             _backButton.onClick.AddListener(() => CloseCanvas(_openedCanvasses.Last()));
-            _backButton.onClick.AddListener(() => _openedCanvasses.RemoveAt(_openedCanvasses.Count - 1));
             _backButton.onClick.AddListener(() => SetBackButton());
 
         } else 

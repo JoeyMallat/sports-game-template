@@ -7,6 +7,7 @@ using TMPro;
 public class PlayerUI : MonoBehaviour, ISettable
 {
     [SerializeField] Image _playerPortrait;
+    [SerializeField] Image _teamLogo;
     [SerializeField] TextMeshProUGUI _playerName;
     [SerializeField] TextMeshProUGUI _age;
     [SerializeField] TextMeshProUGUI _rating;
@@ -38,6 +39,7 @@ public class PlayerUI : MonoBehaviour, ISettable
         _rating.text = player.CalculateRatingForPosition().ToString();
         _height.text = $"6\'{UnityEngine.Random.Range(1, 11)}\"";
         _team.text = LeagueSystem.Instance.GetTeam(player.GetTeamID()).GetTeamName();
+        _teamLogo.sprite = LeagueSystem.Instance.GetTeam(player.GetTeamID()).GetTeamLogo();
         _contract.text = $"{player.GetContract().GetYearlySalary().ConvertToMonetaryString()}\n{player.GetContract().GetYearsOnContract()} YRS";
         _position.text = player.GetPosition();
 

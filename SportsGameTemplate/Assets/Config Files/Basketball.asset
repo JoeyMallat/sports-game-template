@@ -22,7 +22,7 @@ MonoBehaviour:
   AverageAgeInLeague: 25
   LeagueFile: {fileID: 4900000, guid: 522c45c2c290a0a428cdf6c80f684299, type: 3}
   GamesPerTeamInRegularSeason: 2
-  SalaryCap: 136000000
+  SalaryCap: 154000000
   BestOfAmountInPlayoffs: 7
   WeightedDraftLottery: 0
   DraftRounds: 2

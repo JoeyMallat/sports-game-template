@@ -82,6 +82,23 @@ public class PlayoffMatchup
         return _matches;
     }
 
+    public void SimulateNextGameInSeries()
+    {
+        if (_matchupCompleted) return;
+
+        foreach (var match in _matches)
+        {
+            if (!match.GetMatchStatus())
+            {
+                ConfigManager.Instance.GetCurrentConfig().MatchSimulator.SimulateMatch(match);
+                _homeTeamWins += match.GetWinStatForTeam(_homeTeamID).Item1;
+                _awayTeamWins += match.GetWinStatForTeam(_awayTeamID).Item1;
+                CheckForSeriesWinner();
+                return;
+            }
+        }
+    }
+
     public void SimulateSeries()
     {
         foreach (var match in _matches)
@@ -104,7 +121,6 @@ public class PlayoffMatchup
             //Debug.Log($"{LeagueSystem.Instance.GetTeam(CheckForSeriesWinner()).GetTeamName()} has won the series after {_matches.Count}!");
             _matchupCompleted = true;
             OnMatchupCompleted?.Invoke(this, winner);
-            
         }
     }
 
@@ -118,16 +134,21 @@ public class PlayoffMatchup
         int homeWins = _homeTeamWins;
         int awayWins = _awayTeamWins;
 
+        Debug.Log($"{homeWins} < {(ConfigManager.Instance.GetCurrentConfig().BestOfAmountInPlayoffs + 1) / 2}");
+        Debug.Log($"{awayWins} < {(ConfigManager.Instance.GetCurrentConfig().BestOfAmountInPlayoffs + 1) / 2}");
+
         if (homeWins >= (ConfigManager.Instance.GetCurrentConfig().BestOfAmountInPlayoffs + 1) / 2)
         {
-            OnMatchupCompleted?.Invoke(this, _homeTeamID);
+            _matchupCompleted = true;
             _seriesWinner = _homeTeamID;
+            OnMatchupCompleted?.Invoke(this, _homeTeamID);
             return _homeTeamID;
         }
         if (awayWins >= (ConfigManager.Instance.GetCurrentConfig().BestOfAmountInPlayoffs + 1) / 2)
         {
-            OnMatchupCompleted?.Invoke(this, _awayTeamID);
+            _matchupCompleted = true;
             _seriesWinner = _awayTeamID;
+            OnMatchupCompleted?.Invoke(this, _awayTeamID);
             return _awayTeamID;
         }
 

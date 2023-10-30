@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] int _currentWeek;
     [InfoBox("@GetTeamName()")]
     [SerializeField][Range(0, 29)] int _selectedTeamID;
+    [SerializeField] bool _teamPicked;
 
     public static event Action<SeasonStage, int> OnAdvance;
     public static event Action<SeasonStage, int> OnGameStarted;
@@ -27,6 +28,13 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         LeagueSystem.OnRegularSeasonFinished += ChangeSeasonStage;
+        PlayoffSystem.OnPlayoffsFinished += ChangeSeasonStage;
+        OnGameStarted += SetTeam;
+    }
+
+    private void SetTeam(SeasonStage seasonStage, int week)
+    {
+        _teamPicked = true;
     }
 
     public void StartSeason()
@@ -35,10 +43,16 @@ public class GameManager : MonoBehaviour
         OnGameStarted?.Invoke(SeasonStage.RegularSeason, 0);
     }
 
+    public bool GetTeamPickedStatus()
+    {
+        return _teamPicked;
+    }
+
     public void ChangeSeasonStage(List<Team> teams, SeasonStage newSeasonStage)
     {
         _currentWeek = 0;
         _currentSeasonStage = newSeasonStage;
+        Debug.Log($"Season stage changed to {newSeasonStage}");
 
         switch (_currentSeasonStage)
         {

@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 3440
     height: 1357
   m_ShowMode: 4
-  m_Title: Console
+  m_Title: Inspector
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 131
+  controlID: 117
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -790,9 +790,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 555.45135, y: 942.21716, z: -4.0532155}
+    m_Target: {x: 260.6008, y: 696.21173, z: -31.972954}
     speed: 2
-    m_Value: {x: 555.45135, y: 942.21716, z: -4.0532155}
+    m_Value: {x: 260.6008, y: 696.21173, z: -31.972954}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -842,9 +842,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 998.59357
+    m_Target: 1629.4227
     speed: 2
-    m_Value: 998.59357
+    m_Value: 1629.4227
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -907,10 +907,10 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: aa8a0000
-      m_LastClickedID: 35498
-      m_ExpandedIDs: 6c55ffff7455ffff8855ffff9855ffff9e55ffffac55ffff1258ffffda62ffffb063ffffeef8ffff50680000f6710000d07a00007c850000aa8a000032900000029d000000bd0000dcbe00001ebf0000
+      scrollPos: {x: 0, y: 70}
+      m_SelectedIDs: f6800000
+      m_LastClickedID: 33014
+      m_ExpandedIDs: 9ccef3ffd0d7f3ffda67f9ff9afaffff02fbffff366a0000106d00007c6d000062720000dc750000a07900002a7a00005a7a00008a7d0000f68000004a860000d486000070870000188a0000408b00008c8b0000d68b00002a8c0000408c00005e910000829100008e920000d89a0000fc9a0000a29e000014a90000f8b0000004b1000000b700004ab8000006c20000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -981,7 +981,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts
+    - Assets/Config Files
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -991,16 +991,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scripts
+  - Assets/Config Files
   m_LastFoldersGridSize: -1
   m_LastProjectPath: D:\Github\SportsGameTemplate\sports-game-template\SportsGameTemplate
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 4cc60000
-    m_LastClickedID: 50764
-    m_ExpandedIDs: 0000000016c6000018c6000000ca9a3b
+    m_SelectedIDs: 182b0100
+    m_LastClickedID: 76568
+    m_ExpandedIDs: 0000000032ca000034ca000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1028,7 +1028,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000016c6000018c60000
+    m_ExpandedIDs: 0000000032ca000034ca0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1053,8 +1053,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: ac55ffff
-    m_LastClickedInstanceID: -43604
+    m_SelectedInstanceIDs: 
+    m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c62300009065000000000000b2a40600
     m_RenameOverlay:
@@ -1080,7 +1080,7 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 511}
+    m_ScrollPosition: {x: 0, y: 0}
     m_GridSize: 64
   m_SkipHiddenPackages: 0
   m_DirectoriesAreaWidth: 129

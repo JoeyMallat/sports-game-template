@@ -76,6 +76,7 @@ public class TradingSystem : MonoBehaviour
     {
         _teamATradingAssets = new List<ITradeable>();
         _teamBTradingAssets = new List<ITradeable>();
+        _teamBID = -1;
 
         UpdateBothTeamsAssets(toTradeScreen);
     }

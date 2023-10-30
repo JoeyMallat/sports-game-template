@@ -67,6 +67,8 @@ public class PlayerSeason
 
     public float GetAveragePoints()
     {
+        if (_matchStats.Count == 0) { return 0; }
+
         float total = 0;
         foreach (PlayerMatchStats match in _matchStats)
         {

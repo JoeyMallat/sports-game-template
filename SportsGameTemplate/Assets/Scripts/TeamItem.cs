@@ -13,14 +13,14 @@ public class TeamItem : MonoBehaviour
     [SerializeField] TextMeshProUGUI _percentageText;
     [SerializeField] TextMeshProUGUI _gamesBackText;
 
-    [SerializeField] TextMeshProUGUI _teamLogo;
+    [SerializeField] Image _teamLogo;
 
     public void SetTeamDetails(int place, Team team, int mostWins)
     {
         TeamSeason teamSeason = team.GetCurrentSeasonStats();
 
         _placeText.text = place.ToString();
-        _teamLogo.text = team.GetTeamAbbreviation().ToUpper();
+        _teamLogo.sprite = team.GetTeamLogo();
         _teamNameText.text = team.GetTeamName();
         _winsText.text = teamSeason.GetWins().ToString();
         _lossesText.text = teamSeason.GetLosses().ToString();

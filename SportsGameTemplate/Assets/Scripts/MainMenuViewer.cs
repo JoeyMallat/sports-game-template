@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenuViewer : MonoBehaviour, ISettable
 {
+    [SerializeField] Image _teamLogo;
+
     [SerializeField] GameObject _teamTab;
     [SerializeField] GameObject _tradeTab;
     [SerializeField] GameObject _officeTab;
@@ -12,6 +15,8 @@ public class MainMenuViewer : MonoBehaviour, ISettable
 
     public void SetDetails<T>(T item) where T : class
     {
+        _teamLogo.sprite = (item as Team).GetTeamLogo();
+
         ISettable _teamSettable = _teamTab.GetComponent<ISettable>();
         _teamSettable.SetDetails((item as Team).GetPlayersFromTeam());
 

@@ -141,10 +141,13 @@ public class Match
     public void SetResult(int homeTeamPoints, int awayTeamPoints)
     {
         _homeTeamPoints = homeTeamPoints;
-        LeagueSystem.Instance.GetTeam(_homeTeamID).GetCurrentSeasonStats().AddResult(homeTeamPoints, awayTeamPoints);
-
         _awayTeamPoints = awayTeamPoints;
-        LeagueSystem.Instance.GetTeam(_awayTeamID).GetCurrentSeasonStats().AddResult(awayTeamPoints, homeTeamPoints);
+
+        if (GameManager.Instance.GetSeasonStage() == SeasonStage.RegularSeason)
+        {
+            LeagueSystem.Instance.GetTeam(_homeTeamID).GetCurrentSeasonStats().AddResult(homeTeamPoints, awayTeamPoints);
+            LeagueSystem.Instance.GetTeam(_awayTeamID).GetCurrentSeasonStats().AddResult(awayTeamPoints, homeTeamPoints);
+        }
     }
 
     public bool IsHomeTeam(int teamID)

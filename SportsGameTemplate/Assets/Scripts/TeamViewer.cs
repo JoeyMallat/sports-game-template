@@ -26,19 +26,19 @@ public class TeamViewer : MonoBehaviour, ISettable
         List<DraftPickItem> pickItems = _pickRoot.GetComponentsInChildren<DraftPickItem>().ToList();
 
         SetPlayers(players, playerItems);
-        SetDraftPicks(draftPicks, pickItems);
+        SetDraftPicks(_currentShowedTeam, draftPicks, pickItems);
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(_playerRoot);
     }
 
-    private void SetDraftPicks(List<DraftPick> draftPicks, List<DraftPickItem> pickItems)
+    private void SetDraftPicks(int teamID, List<DraftPick> draftPicks, List<DraftPickItem> pickItems)
     {
         for (int i = 0; i < pickItems.Count; i++)
         {
             if (i < draftPicks.Count)
             {
                 pickItems[i].gameObject.SetActive(true);
-                pickItems[i].SetPickDetails(draftPicks[i]);
+                pickItems[i].SetPickDetails(draftPicks[i], teamID);
             }
             else
             {

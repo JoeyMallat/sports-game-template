@@ -213,8 +213,10 @@ public class LeagueSystem : MonoBehaviour
                 }
                 break;
             case SeasonStage.Playoffs:
+                GetComponent<PlayoffSystem>().SimulateGameweekInPlayoffRound();
                 break;
             case SeasonStage.OffSeason:
+                Debug.Log("We are now in the offseason");
                 break;
             default:
                 break;

@@ -20,7 +20,7 @@ public class TeamOverview : MonoBehaviour, ISettable
             {
                 int index = i;
                 teamItems[i].gameObject.SetActive(true);
-                teamItems[i].SetTeamDetails(teams[index], () => { FindFirstObjectByType<TeamSelection>().SelectTeam(index); Navigation.Instance.CloseCanvas(GetComponent<Canvas>()); });
+                teamItems[i].SetTeamDetails(teams[index], () => { TeamOverviewActions(index); });
             }
             else
             {
@@ -29,5 +29,17 @@ public class TeamOverview : MonoBehaviour, ISettable
         }
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(_teamItemsRoot);
+    }
+
+    private void TeamOverviewActions(int index)
+    {
+        if (!GameManager.Instance.GetTeamPickedStatus())
+        {
+            FindFirstObjectByType<TeamSelection>().SelectTeam(index);
+            Navigation.Instance.CloseCanvas(GetComponent<Canvas>());
+        } else
+        {
+            Navigation.Instance.GoToScreen(true, CanvasKey.Team, LeagueSystem.Instance.GetTeam(index));
+        }
     }
 }
