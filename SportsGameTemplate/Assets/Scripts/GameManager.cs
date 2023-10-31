@@ -25,6 +25,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public int GetCurrentWeek()
+    {
+        return _currentWeek;
+    }
+
     private void Start()
     {
         LeagueSystem.OnRegularSeasonFinished += ChangeSeasonStage;

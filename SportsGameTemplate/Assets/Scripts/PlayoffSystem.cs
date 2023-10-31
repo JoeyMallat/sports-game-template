@@ -1,12 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayoffSystem : MonoBehaviour
 {
+    public static PlayoffSystem Instance;
+
     [SerializeField] int _currentRound;
     [SerializeField] List<PlayoffRound> _playoffRounds;
+
+    List<Team> _playoffTeams;
+    PlayoffMatchup _nextMatchup;
 
     public static event Action<List<Team>, SeasonStage> OnPlayoffsFinished;
 
@@ -14,16 +20,29 @@ public class PlayoffSystem : MonoBehaviour
     {
         LeagueSystem.OnRegularSeasonFinished += GetPlayoffTeams;
         PlayoffRound.OnPlayoffRoundFinished += InitializeNextRound;
+
+        if (Instance == null)
+        {
+            Instance = this;
+        } else
+        {
+            Destroy(this);
+        }
     }
 
     private void GetPlayoffTeams(List<Team> standings, SeasonStage seasonStage)
     {
-        List<Team> _playoffTeams = new List<Team>();
+        _playoffTeams = new List<Team>();
 
         _playoffTeams.AddRange(standings.GetRange(0, 16));
 
         _currentRound = 0;
         SetTeamsInRound(_currentRound, _playoffTeams);
+    }
+
+    public bool IsTeamInPlayoffs()
+    {
+        return _playoffRounds[_currentRound].GetMatchups().Where(x => x.GetHomeTeamID() == GameManager.Instance.GetTeamID() || x.GetAwayTeamID() == GameManager.Instance.GetTeamID()).ToList().Count > 0;
     }
 
     private void InitializeNextRound(List<Team> advancingTeams)
@@ -63,11 +82,31 @@ public class PlayoffSystem : MonoBehaviour
             _playoffRounds[round].AddMatchup(0, teamsInRound[0].GetTeamID(), 0, teamsInRound[1].GetTeamID(), 0);
         }
 
+        SetNextMatch();
         //_playoffRounds[round].SimMatches();
     }
 
-    public void SimulateGameweekInPlayoffRound()
+    public IEnumerator SimulateGameweekInPlayoffRound()
     {
         _playoffRounds[_currentRound].SimMatches();
+        SetNextMatch();
+        Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
+        yield return null;
+    }
+
+    private void SetNextMatch()
+    {
+        int teamID = GameManager.Instance.GetTeamID();
+
+        Debug.Log(!IsTeamInPlayoffs());
+
+        if (!IsTeamInPlayoffs()) return;
+
+        _nextMatchup = _playoffRounds[_currentRound].GetMatchups().Where(x => (x.GetHomeTeamID() == teamID || x.GetAwayTeamID() == teamID)).ToList()[0];
+    }
+
+    public PlayoffMatchup GetNextMatchData()
+    {
+        return _nextMatchup;
     }
 }

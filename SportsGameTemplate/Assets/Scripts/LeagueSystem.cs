@@ -23,7 +23,7 @@ public class LeagueSystem : MonoBehaviour
         ReadTeamsFromFile();
 
         GameManager.OnAdvance += SimulateGameweek;
-        GameManager.OnAdvance += GetNextGame;
+        //GameManager.OnAdvance += GetNextGame;
         GameManager.OnGameStarted += GetNextGame;
     }
 
@@ -206,14 +206,14 @@ public class LeagueSystem : MonoBehaviour
                 List<Match> matches = GetMatchesFromWeek(week);
                 if (matches.Count > 0)
                 {
-                    StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { Debug.Log("All matches have been simmed"); }, SimulateMatchesWithProgress(matches)));
+                    StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { GetNextGame(seasonStage, week); }, SimulateMatchesWithProgress(matches)));
                 } else
                 {
                     OnRegularSeasonFinished?.Invoke(_teams, SeasonStage.Playoffs);
                 }
                 break;
             case SeasonStage.Playoffs:
-                GetComponent<PlayoffSystem>().SimulateGameweekInPlayoffRound();
+                StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { }, PlayoffSystem.Instance.SimulateGameweekInPlayoffRound()));
                 break;
             case SeasonStage.OffSeason:
                 Debug.Log("We are now in the offseason");
@@ -223,22 +223,22 @@ public class LeagueSystem : MonoBehaviour
         }
     }
 
+    public bool HasNextGame()
+    {
+        int myTeamID = GameManager.Instance.GetTeamID();
+        return _seasonMatches.Where(x => x.GetWeek() == GameManager.Instance.GetCurrentWeek() + 1 && (x.GetHomeTeamID() == myTeamID || x.GetAwayTeamID() == myTeamID)).ToList().Count > 0;
+    }
+
     private void GetNextGame(SeasonStage seasonStage, int week)
     {
-        switch (seasonStage)
+        if (seasonStage != SeasonStage.RegularSeason) return;
+        if (!HasNextGame()) return;
+
+        if (week < _seasonMatches.Last().GetWeek() - 1)
         {
-            case SeasonStage.RegularSeason:
-                if (week < _seasonMatches.Last().GetWeek() - 1)
-                {
-                    int myTeamID = GameManager.Instance.GetTeamID();
-                    Match match = _seasonMatches.Where(x => x.GetWeek() == week + 1 && (x.GetHomeTeamID() == myTeamID || x.GetAwayTeamID() == myTeamID)).ToList()[0];
-                    _nextMatchIndex = _seasonMatches.IndexOf(match);
-                }
-                break;
-            case SeasonStage.Playoffs:
-                break;
-            case SeasonStage.OffSeason:
-                break;
+            int myTeamID = GameManager.Instance.GetTeamID();
+            Match match = _seasonMatches.Where(x => x.GetWeek() == week + 1 && (x.GetHomeTeamID() == myTeamID || x.GetAwayTeamID() == myTeamID)).ToList()[0];
+            _nextMatchIndex = _seasonMatches.IndexOf(match);
         }
     }
 

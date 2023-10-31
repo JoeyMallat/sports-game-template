@@ -33,19 +33,6 @@ public class TradingSystem : MonoBehaviour
         TradeOfferItem.OnNewTradeOpened += ClearTrades;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            DebugCounterOffer();
-        }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            GenerateRandomAITrade();
-        }
-    }
-
     [Button(ButtonSizes.Large)]
     public void ConfirmTrade()
     {
@@ -54,6 +41,8 @@ public class TradingSystem : MonoBehaviour
 
         Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
         Navigation.Instance.GoToScreen(true, CanvasKey.Team, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
+
+        ClearTrades(false);
     }
 
     private void TradeAssets(int currentTeamID, int newTeamID, List<ITradeable> assets)
@@ -74,9 +63,10 @@ public class TradingSystem : MonoBehaviour
 
     public void ClearTrades(bool toTradeScreen)
     {
+        _teamAID = GameManager.Instance.GetTeamID();
         _teamATradingAssets = new List<ITradeable>();
         _teamBTradingAssets = new List<ITradeable>();
-        _teamBID = -1;
+        _teamBID = 0;
 
         UpdateBothTeamsAssets(toTradeScreen);
     }
@@ -106,7 +96,7 @@ public class TradingSystem : MonoBehaviour
 
     public void AddAssetToTrade(int team, ITradeable assetToAdd)
     {
-        // TODO: Change teamA ID to chosen team
+        _teamAID = GameManager.Instance.GetTeamID();
 
         if (team == GameManager.Instance.GetTeamID())
         {

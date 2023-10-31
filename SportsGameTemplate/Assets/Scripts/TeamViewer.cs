@@ -22,8 +22,8 @@ public class TeamViewer : MonoBehaviour, ISettable
         List<Player> players = team.GetPlayersFromTeam().OrderBy(x => x.GetPosition()).ToList();
         List<DraftPick> draftPicks = team.GetDraftPicks().OrderBy(x => x.GetTotalPickNumber()).ToList();
 
-        List<PlayerItem> playerItems = _playerRoot.GetComponentsInChildren<PlayerItem>().ToList();
-        List<DraftPickItem> pickItems = _pickRoot.GetComponentsInChildren<DraftPickItem>().ToList();
+        List<PlayerItem> playerItems = _playerRoot.GetComponentsInChildren<PlayerItem>(true).ToList();
+        List<DraftPickItem> pickItems = _pickRoot.GetComponentsInChildren<DraftPickItem>(true).ToList();
 
         SetPlayers(players, playerItems);
         SetDraftPicks(_currentShowedTeam, draftPicks, pickItems);

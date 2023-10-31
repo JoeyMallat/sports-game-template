@@ -48,6 +48,11 @@ public class PlayoffMatchup
         return (_homeTeamWins, _awayTeamWins);
     }
 
+    public List<Match> GetMatches()
+    {
+        return _matches;
+    }
+
     public PlayoffMatchup(int homeID, int homeSeed, int awayID, int awaySeed)
     {
         _homeTeamID = homeID;
