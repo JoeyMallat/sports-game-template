@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 3440
     height: 1357
   m_ShowMode: 4
-  m_Title: Inspector
+  m_Title: Hierarchy
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 117
+  controlID: 131
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -139,7 +139,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1122
+    width: 1626
     height: 1307
   m_MinSize: {x: 201, y: 221}
   m_MaxSize: {x: 4001, y: 4021}
@@ -163,9 +163,9 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 1122
+    x: 1626
     y: 0
-    width: 1225
+    width: 721
     height: 1307
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
@@ -337,7 +337,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 73
-    width: 1121
+    width: 1625
     height: 1286
   m_SerializedDataModeController:
     m_DataMode: 0
@@ -790,9 +790,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 260.6008, y: 696.21173, z: -31.972954}
+    m_Target: {x: 613.8431, y: 915.1737, z: -8.12594}
     speed: 2
-    m_Value: {x: 260.6008, y: 696.21173, z: -31.972954}
+    m_Value: {x: 613.8431, y: 915.1737, z: -8.12594}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -842,9 +842,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 1629.4227
+    m_Target: 1190.2623
     speed: 2
-    m_Value: 1629.4227
+    m_Value: 1190.2623
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -907,10 +907,10 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 70}
-      m_SelectedIDs: f6800000
-      m_LastClickedID: 33014
-      m_ExpandedIDs: 9ccef3ffd0d7f3ffda67f9ff9afaffff02fbffff366a0000106d00007c6d000062720000dc750000a07900002a7a00005a7a00008a7d0000f68000004a860000d486000070870000188a0000408b00008c8b0000d68b00002a8c0000408c00005e910000829100008e920000d89a0000fc9a0000a29e000014a90000f8b0000004b1000000b700004ab8000006c20000
+      scrollPos: {x: 0, y: 0}
+      m_SelectedIDs: 54b9faff
+      m_LastClickedID: -345772
+      m_ExpandedIDs: 54b9faff3a48fbff584dfbfff854fbffb4bffbff02fbfffff4ffffff846a000022c50000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -926,7 +926,7 @@ MonoBehaviour:
         m_IsRenaming: 0
         m_OriginalEventType: 11
         m_IsRenamingFilename: 0
-        m_ClientGUIView: {fileID: 9}
+        m_ClientGUIView: {fileID: 6}
       m_SearchString: 
     m_ExpandedScenes: []
     m_CurrenRootInstanceID: 0
@@ -981,7 +981,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Config Files
+    - Assets
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -991,16 +991,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Config Files
+  - Assets
   m_LastFoldersGridSize: -1
   m_LastProjectPath: D:\Github\SportsGameTemplate\sports-game-template\SportsGameTemplate
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 182b0100
-    m_LastClickedID: 76568
-    m_ExpandedIDs: 0000000032ca000034ca000000ca9a3b
+    m_SelectedIDs: 4acd0000
+    m_LastClickedID: 52554
+    m_ExpandedIDs: 000000004acd00004ccd00003af609004af6090000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1028,7 +1028,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000032ca000034ca0000
+    m_ExpandedIDs: 000000004acd00004ccd0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1053,8 +1053,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 
-    m_LastClickedInstanceID: 0
+    m_SelectedInstanceIDs: 54b9faff
+    m_LastClickedInstanceID: -345772
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c62300009065000000000000b2a40600
     m_RenameOverlay:
@@ -1154,9 +1154,9 @@ MonoBehaviour:
     m_TextWithWhitespace: "Game\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 1122
+    x: 1626
     y: 73
-    width: 1223
+    width: 719
     height: 1286
   m_SerializedDataModeController:
     m_DataMode: 0
@@ -1172,7 +1172,7 @@ MonoBehaviour:
   m_SerializedViewNames:
   - UnityEditor.DeviceSimulation.SimulatorWindow
   m_SerializedViewValues:
-  - /Users/joeymallat/Documents/GitHub/sports-game-template/SportsGameTemplate/Library/PlayModeViewStates/df8d3a29dbe4a4e2b893f3fb1eeaf65c
+  - D:\Github\SportsGameTemplate\sports-game-template\SportsGameTemplate\Library\PlayModeViewStates\e4fc23582dcf0b34781860e4ad90456a
   m_PlayModeViewName: GameView
   m_ShowGizmos: 0
   m_TargetDisplay: 0
@@ -1213,23 +1213,23 @@ MonoBehaviour:
       serializedVersion: 2
       x: 0
       y: 21
-      width: 1223
+      width: 719
       height: 1265
-    m_Scale: {x: 0.6588542, y: 0.6588542}
-    m_Translation: {x: 611.5, y: 632.5}
+    m_Scale: {x: 0.65885425, y: 0.6588542}
+    m_Translation: {x: 359.5, y: 632.5}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -928.12646
+      x: -545.6442
       y: -960
-      width: 1856.2529
+      width: 1091.2885
       height: 1920
     m_MinimalGUI: 1
   m_defaultScale: 0.6588542
-  m_LastWindowPixelSize: {x: 1223, y: 1286}
+  m_LastWindowPixelSize: {x: 719, y: 1286}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 01000001000000000000
