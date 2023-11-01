@@ -13,5 +13,6 @@ public enum CanvasKey
     Draft_Player,
     Playoffs,
     TeamOverview,
-    Setup
+    Setup,
+    BallGame
 }
