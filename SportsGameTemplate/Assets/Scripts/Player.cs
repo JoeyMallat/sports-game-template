@@ -93,6 +93,11 @@ public class Player : ITradeable
         OnAddedToTrade?.Invoke(_teamID, this);
     }
 
+    public void SignContract(int newSalary, int newLength)
+    {
+        _contract.SetNewContract(newSalary, newLength);
+    }
+
     public void AddTradeOffer(TradeOffer tradeOffer)
     {
         _tradeOffers.Add(tradeOffer);

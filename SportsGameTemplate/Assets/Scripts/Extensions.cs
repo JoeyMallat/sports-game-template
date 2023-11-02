@@ -57,7 +57,17 @@ public static class Extensions
         if (number < 1000000)
             character = "K";
 
-        number = Mathf.RoundToInt(number / 1000000f);
+        float floatNumber = (float)Mathf.RoundToInt((float)number / 100000f) / 10f; 
+        return $"{floatNumber.ToString("F1")}{character}";
+    }
+
+    public static string ConvertToMonetaryString(this float number)
+    {
+        string character = "M";
+        if (number < 1000000)
+            character = "K";
+
+        number = (float)(Mathf.RoundToInt(number / 100000f) / 10f);
         return $"{number.ToString("F1")}{character}";
     }
 

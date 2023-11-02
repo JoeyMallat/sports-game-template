@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,5 +36,11 @@ public class Contract
     public int GetTotalContractValue()
     {
         return _yearsOnContract * _yearlySalary;
+    }
+
+    public void SetNewContract(int newSalary, int newLength)
+    {
+        _yearlySalary = newSalary;
+        _yearsOnContract = newLength;
     }
 }

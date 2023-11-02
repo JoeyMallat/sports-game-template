@@ -57,6 +57,9 @@ public class PlayerUI : MonoBehaviour, ISettable
 
         _addToTradeButton.onClick.RemoveAllListeners();
         _addToTradeButton.onClick.AddListener(() => player.AddToTrade(player.GetTeamID()));
+
+        _extendContractButton.onClick.RemoveAllListeners();
+        _extendContractButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.ContractNegotiations, player));
     }
 
     private void SetStats(Player player)

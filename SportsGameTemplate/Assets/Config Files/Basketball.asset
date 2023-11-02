@@ -23,6 +23,7 @@ MonoBehaviour:
   LeagueFile: {fileID: 4900000, guid: 522c45c2c290a0a428cdf6c80f684299, type: 3}
   GamesPerTeamInRegularSeason: 5
   SalaryCap: 154000000
+  MinimumSalary: 640000
   BestOfAmountInPlayoffs: 7
   WeightedDraftLottery: 0
   DraftRounds: 2

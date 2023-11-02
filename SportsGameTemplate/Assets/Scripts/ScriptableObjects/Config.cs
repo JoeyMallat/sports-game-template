@@ -17,6 +17,7 @@ public class Config : ScriptableObject
     public TextAsset LeagueFile;
     public int GamesPerTeamInRegularSeason;
     public int SalaryCap;
+    public int MinimumSalary;
     public int BestOfAmountInPlayoffs;
 
     [Header("Draft Settings")]
