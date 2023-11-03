@@ -15,5 +15,6 @@ public enum CanvasKey
     TeamOverview,
     Setup,
     BallGame,
-    ContractNegotiations
+    ContractNegotiations,
+    Rewards
 }

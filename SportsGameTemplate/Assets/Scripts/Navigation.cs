@@ -41,12 +41,11 @@ public class Navigation : SerializedMonoBehaviour
 
     public void GoToScreen(bool overlay, CanvasKey canvasKey, Player player)
     {
-        AddToOpenCanvasses(GetCanvas(canvasKey));
-        Canvas canvas = GetCanvas(canvasKey);
-
         if (!overlay)
             DisableAllCanvasses();
 
+        AddToOpenCanvasses(GetCanvas(canvasKey));
+        Canvas canvas = GetCanvas(canvasKey);
         canvas.enabled = true;
 
         ISettable settable = canvas.gameObject.GetComponent<ISettable>();
@@ -61,12 +60,11 @@ public class Navigation : SerializedMonoBehaviour
 
     public void GoToScreen(bool overlay, CanvasKey canvasKey, Team team)
     {
-        AddToOpenCanvasses(GetCanvas(canvasKey));
-        Canvas canvas = GetCanvas(canvasKey);
-
         if (!overlay)
             DisableAllCanvasses();
 
+        AddToOpenCanvasses(GetCanvas(canvasKey));
+        Canvas canvas = GetCanvas(canvasKey);
         canvas.enabled = true;
 
         ISettable settable = canvas.gameObject.GetComponent<ISettable>();
@@ -81,12 +79,11 @@ public class Navigation : SerializedMonoBehaviour
 
     public void GoToScreen(bool overlay, CanvasKey canvasKey, List<Team> teams)
     {
-        AddToOpenCanvasses(GetCanvas(canvasKey));
-        Canvas canvas = GetCanvas(canvasKey);
-
         if (!overlay)
             DisableAllCanvasses();
 
+        AddToOpenCanvasses(GetCanvas(canvasKey));
+        Canvas canvas = GetCanvas(canvasKey);
         canvas.enabled = true;
 
         ISettable settable = canvas.gameObject.GetComponent<ISettable>();
@@ -94,6 +91,25 @@ public class Navigation : SerializedMonoBehaviour
         if (settable != null)
         {
             settable.SetDetails(teams);
+        }
+
+        SetBackButton();
+    }
+
+    public void GoToScreen(bool overlay, CanvasKey canvasKey, BallItem pickedBall)
+    {
+        if (!overlay)
+            DisableAllCanvasses();
+
+        AddToOpenCanvasses(GetCanvas(canvasKey));
+        Canvas canvas = GetCanvas(canvasKey);
+        canvas.enabled = true;
+
+        ISettable settable = canvas.gameObject.GetComponent<ISettable>();
+
+        if (settable != null)
+        {
+            settable.SetDetails(pickedBall);
         }
 
         SetBackButton();
@@ -116,12 +132,11 @@ public class Navigation : SerializedMonoBehaviour
 
     public void GoToScreen(bool overlay, CanvasKey canvasKey)
     {
-        AddToOpenCanvasses(GetCanvas(canvasKey));
-        Canvas canvas = GetCanvas(canvasKey);
-
         if (!overlay)
             DisableAllCanvasses();
 
+        AddToOpenCanvasses(GetCanvas(canvasKey));
+        Canvas canvas = GetCanvas(canvasKey);
         canvas.enabled = true;
 
         SetBackButton();
@@ -181,5 +196,7 @@ public class Navigation : SerializedMonoBehaviour
                 canvas.enabled = false;
             }
         }
+
+        _openedCanvasses = new List<Canvas>();
     }
 }

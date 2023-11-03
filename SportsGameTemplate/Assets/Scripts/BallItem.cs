@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 public class BallItem : MonoBehaviour
 {
@@ -48,7 +49,12 @@ public class BallItem : MonoBehaviour
     private void SetSpeed(float speed)
     {
         _originalSpeed = speed;
-        _ballSpeed = speed;
+        _ballSpeed = 0.05f;
+    }
+
+    public Sprite GetBallImage()
+    {
+        return GetComponent<SpriteRenderer>().sprite;
     }
 
     public void StartSpin()
@@ -70,6 +76,11 @@ public class BallItem : MonoBehaviour
 
     private void MoveBall()
     {
+        if (_spinning && _ballSpeed <= _originalSpeed && !_stopping)
+        {
+            _ballSpeed *= 1.035f;
+        }
+
         if (_spinning && _ballSpeed > 0.05f)
         {
             transform.position = new Vector3(transform.position.x - _ballSpeed * Time.deltaTime, 0, 0);
