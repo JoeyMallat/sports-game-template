@@ -152,7 +152,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      spinwheel (1)_0: -901689803096353266
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

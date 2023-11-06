@@ -24,7 +24,16 @@ public class SkillBar : MonoBehaviour
         _skillBarFill.fillAmount = rating / 99f;
     }
 
-    public void SetSkillBar(string skill, int minRating, int maxRating)
+    public void SetSkillBar(string skill, int rating, int boost)
+    {
+        _skillBarSecondaryFill.enabled = true;
+        _skillTitleText.text = $"{skill.Replace("_", " ")}   <b><color=\"white\">{Mathf.Clamp(rating + boost, 0, 99)} (+{boost})</color></b>";
+        _skillBarFill.fillAmount = rating / 99f;
+        _skillBarSecondaryFill.fillAmount = (rating + boost) / 99f;
+    }
+
+
+    public void SetSkillBarWithRange(string skill, int minRating, int maxRating)
     {
         _skillBarSecondaryFill.enabled = true;
         _skillTitleText.text = $"{skill.Replace("_", " ")}   <b><color=\"white\">{minRating} - {maxRating}</color></b>";

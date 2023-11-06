@@ -60,6 +60,7 @@ public class Player : ITradeable
         _equippedItems = new List<OwnedGameItem>();
 
         _equippedItems.Add(new OwnedGameItem(4, 20));
+        _equippedItems.Add(new OwnedGameItem(1, 30));
 
         GameManager.OnAdvance += UpgradeDowngrade;
     }

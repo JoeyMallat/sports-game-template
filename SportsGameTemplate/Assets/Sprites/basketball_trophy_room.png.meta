@@ -152,7 +152,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      basketball_trophy_room_0: 4192014303339389420
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

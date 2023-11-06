@@ -124,17 +124,36 @@ public class PlayerUI : MonoBehaviour, ISettable
         skillBars[0].gameObject.SetActive(true);
         skillBars[0].SetSkillBar("Overall", player.CalculateRatingForPosition());
 
+        // Get the boosts for items
+        List<OwnedGameItem> equippedItems = player.GetEquippedItems();
+        List<SkillBoost> skillBoosts = new List<SkillBoost>();
+
+        equippedItems.ForEach((x) => skillBoosts.AddRange(ItemDatabase.Instance.GetGameItemByID(x.GetItemID()).GetSkillBoosts()));
+
         for (int i = 1; i < skillBars.Length; i++)
         {
             int index = i;
             if (i < skillCount)
             {
+                int boost = GetTotalBoost(skillBoosts, playerSkills[index].GetSkill());
                 skillBars[i].gameObject.SetActive(true);
-                skillBars[i].SetSkillBar(playerSkills[index]);
+                if (boost == 0)
+                    skillBars[i].SetSkillBar(playerSkills[index]);
+                else
+                    skillBars[i].SetSkillBar(playerSkills[index].GetSkill().ToString(), playerSkills[index].GetRatingForSkill(), boost);
             } else
             {
                 skillBars[i].gameObject.SetActive(false);
             }
         }
+    }
+
+    private int GetTotalBoost(List<SkillBoost> skillBoosts, Skill skill)
+    {
+        int total = 0;
+
+        skillBoosts.ForEach((x) => { if (x.GetSkill() == skill) { total += x.GetBoost(); }; });
+
+        return total;
     }
 }

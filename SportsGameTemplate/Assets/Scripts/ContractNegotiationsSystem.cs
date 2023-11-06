@@ -54,13 +54,8 @@ public class ContractNegotiationsSystem : MonoBehaviour
         float ageImpactOnLength = _contractLengthCurve.Evaluate(_currentPlayer.GetAge() / 40f);
         float ageImpactOnSalary = _contractAmountCurve.Evaluate(_currentPlayer.GetAge() / 40f);
 
-        Debug.Log(Mathf.Lerp(0f, 3f, ageImpactOnSalary));
-        Debug.Log(_currentPlayer.GetContract().GetYearlySalary());
-
         float lowestAcceptingAmount = Mathf.Clamp(_currentPlayer.GetContract().GetYearlySalary() * (float)Mathf.Lerp(0f, 3f, ageImpactOnSalary), ConfigManager.Instance.GetCurrentConfig().MinimumSalary, Mathf.Infinity);
         float shortestAcceptedContract = Mathf.Clamp(Mathf.Lerp(1f, 5f, ageImpactOnLength), 1, 5);
-
-        Debug.Log($"Player will accept {lowestAcceptingAmount.ConvertToMonetaryString()} on a minimum {shortestAcceptedContract} year contract");
 
         OnPlayerDecisionMade?.Invoke(_currentPlayer, _offeredAmount >= lowestAcceptingAmount, _offeredLength >= shortestAcceptedContract);
     }
