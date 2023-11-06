@@ -154,6 +154,15 @@ public class Navigation : SerializedMonoBehaviour
         SetBackButton();
     }
 
+    public void CloseCanvas()
+    {
+        _openedCanvasses.Last().enabled = false;
+
+        _openedCanvasses.Remove(_openedCanvasses.Last());
+
+        SetBackButton();
+    }
+
     public Canvas GetCanvas(CanvasKey key)
     {
         Canvas canvas = CanvasDatabase.GetValueOrDefault(key);

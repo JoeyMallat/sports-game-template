@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class ItemSlot : MonoBehaviour
 {
@@ -17,7 +18,11 @@ public class ItemSlot : MonoBehaviour
     [SerializeField] TextMeshProUGUI _gamesRemaining;
     [SerializeField] TextMeshProUGUI _addItemText;
 
-    public void SetSlot(OwnedGameItem item)
+    [SerializeField] Button _addItemButton;
+
+    public static event Action<bool, ItemType> OnFilterUpdated;
+
+    public void SetSlot(Player player, OwnedGameItem item)
     {
         if (item != null)
         {
@@ -27,19 +32,18 @@ public class ItemSlot : MonoBehaviour
             GameItem itemDetails = ItemDatabase.Instance.GetGameItemByID(item.GetItemID());
             _itemImage.sprite = itemDetails.GetItemImage();
             _itemName.text = itemDetails.GetItemName();
-
-            _itemDetails.text = "";
-            foreach (SkillBoost boost in itemDetails.GetSkillBoosts())
-            {
-                _itemDetails.text += $"<color=\"white\">+{boost.GetBoost()} {boost.GetSkill()}</color>\n";
-            }
-
-            _gamesRemaining.text = $"{item.GetGamesRemaining()} games left";
+            _itemDetails.text = itemDetails.GetSkillBoostsString();
+            _gamesRemaining.text = item.GetGamesRemainingString();
         } else
         {
             _usedSlotOverlay.SetActive(false);
             _unusedSlotOverlay.SetActive(true);
+
             _addItemText.text = $"Add {_itemTypeSlot}";
+
+            _addItemButton.onClick.RemoveAllListeners();
+            _addItemButton.onClick.AddListener(() => OnFilterUpdated?.Invoke(true, _itemTypeSlot));
+            _addItemButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.ItemInventory, player));
         }
     }
 

@@ -22,4 +22,9 @@ public class OwnedGameItem
     {
         return _gamesRemaining;
     }
+
+    public string GetGamesRemainingString()
+    {
+        return $"<sprite name=\"Time\"> {_gamesRemaining} games";
+    }
 }

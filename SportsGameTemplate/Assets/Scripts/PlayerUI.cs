@@ -84,10 +84,10 @@ public class PlayerUI : MonoBehaviour, ISettable
 
             if (gameItem.Count == 0)
             {
-                _itemSlots[i].SetSlot(null);
+                _itemSlots[i].SetSlot(player, null);
             } else
             {
-                _itemSlots[i].SetSlot(gameItem[0]);
+                _itemSlots[i].SetSlot(player, gameItem[0]);
             }
         }
     }

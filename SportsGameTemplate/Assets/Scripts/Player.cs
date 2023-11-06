@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -59,9 +60,6 @@ public class Player : ITradeable
         _tradeOffers = new List<TradeOffer>();
         _equippedItems = new List<OwnedGameItem>();
 
-        _equippedItems.Add(new OwnedGameItem(4, 20));
-        _equippedItems.Add(new OwnedGameItem(1, 30));
-
         GameManager.OnAdvance += UpgradeDowngrade;
     }
 
@@ -86,6 +84,11 @@ public class Player : ITradeable
         _equippedItems = new List<OwnedGameItem>();
 
         GameManager.OnAdvance += UpgradeDowngrade;
+    }
+
+    public void AssignItem(OwnedGameItem item)
+    {
+        _equippedItems.Add(item);
     }
 
     private void UpgradeDowngrade(SeasonStage seasonStage, int week)

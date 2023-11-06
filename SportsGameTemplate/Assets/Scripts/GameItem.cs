@@ -25,6 +25,17 @@ public class GameItem
         _gamesRemaining = 10 * UnityEngine.Random.Range(1, 8);
     }
 
+    public string GetSkillBoostsString()
+    {
+        string text = "";
+        foreach (SkillBoost boost in _skillBoosts)
+        {
+            text += $"<color=\"white\">+{boost.GetBoost()} {boost.GetSkill()}</color>\n";
+        }
+
+        return text;
+    }
+
     public int GetItemID()
     {
         return _itemID;

@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [InfoBox("@GetTeamName()")]
     [SerializeField][Range(0, 29)] int _selectedTeamID;
     [SerializeField] bool _teamPicked;
+    [SerializeField] List<OwnedGameItem> _ownedGameItems;
 
     public static event Action<SeasonStage, int> OnAdvance;
     public static event Action<SeasonStage, int> OnGameStarted;
@@ -32,9 +33,17 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        _ownedGameItems = new List<OwnedGameItem>();
+        _ownedGameItems.Add(new OwnedGameItem(0, 20));
+
         LeagueSystem.OnRegularSeasonFinished += ChangeSeasonStage;
         PlayoffSystem.OnPlayoffsFinished += ChangeSeasonStage;
         OnGameStarted += SetTeam;
+    }
+
+    public List<OwnedGameItem> GetItems()
+    {
+        return _ownedGameItems;
     }
 
     private void SetTeam(SeasonStage seasonStage, int week)
