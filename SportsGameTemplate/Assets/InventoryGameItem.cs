@@ -12,7 +12,7 @@ public class InventoryGameItem : MonoBehaviour
     [SerializeField] TextMeshProUGUI _gamesRemaining;
     [SerializeField] Button _assignButton;
 
-    public void SetItem(Player player, OwnedGameItem item, bool showButton)
+    public void SetItem(Player player, OwnedGameItem item)
     {
         GameItem details = ItemDatabase.Instance.GetGameItemByID(item.GetItemID());
 
@@ -20,13 +20,6 @@ public class InventoryGameItem : MonoBehaviour
         _itemName.text = details.GetItemName();
         _itemBoosts.text = details.GetSkillBoostsString();
         _gamesRemaining.text = item.GetGamesRemainingString();
-
-        
-        if (!showButton)
-        {
-            _assignButton.gameObject.SetActive(false);
-            return;
-        }
 
         _assignButton.gameObject.SetActive(true);
 
@@ -37,5 +30,17 @@ public class InventoryGameItem : MonoBehaviour
         _assignButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Player, player));
 
         // TODO: Remove item from inventory
+    }
+
+    public void SetItem(OwnedGameItem item)
+    {
+        GameItem details = ItemDatabase.Instance.GetGameItemByID(item.GetItemID());
+
+        _itemImage.sprite = details.GetItemImage();
+        _itemName.text = details.GetItemName();
+        _itemBoosts.text = details.GetSkillBoostsString();
+        _gamesRemaining.text = item.GetGamesRemainingString();
+
+        _assignButton.gameObject.SetActive(false);
     }
 }
