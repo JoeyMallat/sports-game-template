@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class GameItem
     [SerializeField] int _itemImageID;
     [SerializeField] string _itemName;
     [SerializeField] List<SkillBoost> _skillBoosts;
+    [SerializeField] int _gamesRemaining;
 
     public GameItem(ItemType type, BallType ballType, int id, int imageID, string name, List<SkillBoost> skillBoosts)
     {
@@ -20,11 +22,27 @@ public class GameItem
         _itemImageID = imageID;
         _itemName = name;
         _skillBoosts = skillBoosts;
+        _gamesRemaining = 10 * UnityEngine.Random.Range(1, 8);
+    }
+
+    public int GetItemID()
+    {
+        return _itemID;
+    }
+
+    public int GetGamesRemaining()
+    {
+        return _gamesRemaining;
     }
 
     public BallType GetBallType()
     {
         return _ballType;
+    }
+
+    public ItemType GetItemType()
+    {
+        return _itemType;
     }
 
     public string GetItemName()
@@ -47,7 +65,6 @@ public enum ItemType
 {
     Shoes,
     ArmSleeves,
-    Glasses,
     Sweatbands,
     Undershirt
 }

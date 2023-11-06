@@ -18,12 +18,17 @@ public class Player : ITradeable
     [SerializeField] Potential _potential;
     [SerializeField] float _percentageScouted;
     [ReadOnly][SerializeField] int _rating;
+    [ReadOnly][SerializeField] int _startSeasonRating;
     [ReadOnly][SerializeField] int _tradeValue;
     [SerializeField] bool _onTradingBlock;
     [SerializeField] List<PlayerSkill> _skills;
     [SerializeField] List<PlayerSeason> _seasonStats;
     [SerializeField] List<TradeOffer> _tradeOffers;
 
+    [Header("Player Items")]
+    [SerializeField] List<OwnedGameItem> _equippedItems;
+
+    [Header("Contract")]
     [SerializeField] Contract _contract;
 
     public static event Action<int, Player> OnAddedToTrade;
@@ -43,6 +48,7 @@ public class Player : ITradeable
         _teamID = teamID;
 
         SetRandomSkills(teamRating, position.GetPositionStats());
+        _startSeasonRating = _rating;
 
         _contract = new Contract(CalculateRatingForPosition(), _age);
         _potential = SetPotential();
@@ -51,6 +57,11 @@ public class Player : ITradeable
         _seasonStats = new List<PlayerSeason>();
         _seasonStats.Add(new PlayerSeason(0, _teamID));
         _tradeOffers = new List<TradeOffer>();
+        _equippedItems = new List<OwnedGameItem>();
+
+        _equippedItems.Add(new OwnedGameItem(4, 20));
+
+        GameManager.OnAdvance += UpgradeDowngrade;
     }
 
     public Player(bool rookie, string firstname, string lastname, Position position, int averageRating)
@@ -61,12 +72,54 @@ public class Player : ITradeable
         _position = position.GetPositionName();
         _age = UnityEngine.Random.Range(20, 22);
         _percentageScouted = 0f;
+        _startSeasonRating = _rating;
 
         SetRandomSkills(averageRating, position.GetPositionStats());
         _potential = SetPotential();
 
         _portraitID = UnityEngine.Random.Range(0, Resources.LoadAll<Sprite>("Faces/").Length);
         _teamID = -1;
+
+        _seasonStats = new List<PlayerSeason>();
+        _tradeOffers = new List<TradeOffer>();
+        _equippedItems = new List<OwnedGameItem>();
+
+        GameManager.OnAdvance += UpgradeDowngrade;
+    }
+
+    private void UpgradeDowngrade(SeasonStage seasonStage, int week)
+    {
+        float random = UnityEngine.Random.Range(0f, 1f);
+
+        if (0.1f < UnityEngine.Random.Range(0f, 1f))
+        {
+            float chanceOfRatingUpgrade = Mathf.Lerp(0f, 0.5f, ((40 - _age) / 40f) * (5 - (int)_potential) / 5);
+
+            if (chanceOfRatingUpgrade > random)
+            {
+                _skills[UnityEngine.Random.Range(0, _skills.Count)].EditRating(1);
+                CalculateRatingForPosition();
+            }
+        } else
+        {
+            float chanceOfRatingDowngrade = Mathf.Lerp(0f, 0.5f, _age / 40f);
+
+            if (chanceOfRatingDowngrade > random)
+            {
+                _skills[UnityEngine.Random.Range(0, _skills.Count)].EditRating(-1);
+                CalculateRatingForPosition();
+            }
+        }
+    }
+
+    public List<OwnedGameItem> GetEquippedItems()
+    {
+        return _equippedItems;
+    }
+
+    public int GetSeasonImprovement()
+    {
+        return _rating - _startSeasonRating;
     }
 
     public void ScoutPlayer()

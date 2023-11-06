@@ -23,6 +23,11 @@ public class ItemDatabase : MonoBehaviour
         InitializeItemDatabase();
     }
 
+    public GameItem GetGameItemByID(int id)
+    {
+        return _gameItems.Where(x => x.GetItemID() == id).ToList()[0];
+    }
+
     private void InitializeItemDatabase()
     {
         _gameItems = new List<GameItem>();

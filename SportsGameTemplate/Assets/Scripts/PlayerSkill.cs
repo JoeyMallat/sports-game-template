@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,5 +23,10 @@ public class PlayerSkill
     public int GetRatingForSkill()
     {
         return _skillRating;
+    }
+
+    internal void EditRating(int amount)
+    {
+        _skillRating += amount;
     }
 }
