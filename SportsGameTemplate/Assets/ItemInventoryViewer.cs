@@ -12,6 +12,7 @@ public class ItemInventoryViewer : MonoBehaviour, ISettable
     [SerializeField] ItemType _typeFilter;
 
     [SerializeField] GameObject _itemRoot;
+    [SerializeField] InventoryGameItem _itemPrefab;
 
     private void Awake()
     {
@@ -49,6 +50,13 @@ public class ItemInventoryViewer : MonoBehaviour, ISettable
         }
 
         List<InventoryGameItem> inventoryGameItems = _itemRoot.GetComponentsInChildren<InventoryGameItem>(true).ToList();
+
+        int prefabsToSpawn = items.Count - inventoryGameItems.Count;
+
+        for (int i = 0; i < prefabsToSpawn; i++)
+        {
+            inventoryGameItems.Add(Instantiate(_itemPrefab, _itemRoot.transform));
+        }
 
         for (int i = 0; i < inventoryGameItems.Count; i++)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using System;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,12 +12,39 @@ public class GameManager : MonoBehaviour
     [InfoBox("@GetTeamName()")]
     [SerializeField][Range(0, 29)] int _selectedTeamID;
     [SerializeField] bool _teamPicked;
-    [SerializeField] List<OwnedGameItem> _ownedGameItems;
 
     public static event Action<SeasonStage, int> OnAdvance;
     public static event Action<SeasonStage, int> OnGameStarted;
 
     public static GameManager Instance;
+
+    [SerializeField] List<OwnedGameItem> _ownedGameItems;
+    [SerializeField] int _gems;
+    public static event Action<CloudSaveData> OnGemsUpdated;
+    public static event Action<CloudSaveData> OnInventoryUpdated;
+
+    public void SetGems(int gems)
+    {
+        _gems = gems;
+    }
+
+    public void EditGems(int gemsToEdit)
+    {
+        _gems += gemsToEdit;
+        OnGemsUpdated.Invoke(new CloudSaveData(_gems, _ownedGameItems));
+    }
+
+    public void SetInventory(List<CloudInventoryItem> ownedGameItems)
+    {
+        if (ownedGameItems == null) return;
+
+        _ownedGameItems = new List<OwnedGameItem>();
+        foreach (CloudInventoryItem item in ownedGameItems)
+        {
+            _ownedGameItems.Add(item.ConvertToOwnedGameItem(item));
+        }
+        
+    }
 
     private void Update()
     {
@@ -34,7 +62,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         _ownedGameItems = new List<OwnedGameItem>();
-        _ownedGameItems.Add(new OwnedGameItem(0, 20));
 
         LeagueSystem.OnRegularSeasonFinished += ChangeSeasonStage;
         PlayoffSystem.OnPlayoffsFinished += ChangeSeasonStage;
@@ -80,6 +107,21 @@ public class GameManager : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public void AddItem(GameItem reward)
+    {
+        int amount = _ownedGameItems.Where(x => x.GetItemID() == reward.GetItemID()).Count();
+
+        if (amount == 0)
+        {
+            _ownedGameItems.Add(new OwnedGameItem(reward.GetItemID(), reward.GetGamesRemaining(), amount + 1));
+        } else
+        {
+            _ownedGameItems.Where(x => x.GetItemID() == reward.GetItemID()).ToList()[0].UpdateAmount(1);
+        }
+
+        OnInventoryUpdated?.Invoke(new CloudSaveData(_gems, _ownedGameItems));
     }
 
     public void Advance()

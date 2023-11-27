@@ -62,23 +62,36 @@ public class BallSystem : MonoBehaviour
         _spawnedBalls.Add(ballItem);
     }
 
-    private void Start()
-    {
-        _ballItems.ForEach(x => _totalOdds += x.GetOdds());
-    }
-
-    private void OnEnable()
+    public void SetStartingState()
     {
         if (_totalOdds == 0)
         {
             _ballItems.ForEach(x => _totalOdds += x.GetOdds());
         }
 
-        _spawnedBalls = new List<BallItem>();
+        if (_spawnedBalls != null)
+        {
+            _spawnedBalls.ForEach(x => Destroy(x.gameObject));
+            _spawnedBalls = new List<BallItem>();
+        }
+        else
+        {
+            _spawnedBalls = new List<BallItem>();
+        }
+
         SpawnBalls();
+        _closestBall = null;
+        transform.position = Vector3.zero;
 
         _startSpinButton.gameObject.SetActive(true);
         _stopSpinButton.gameObject.SetActive(false);
+        
+        _elapsedTime = 0;
+    }
+
+    private void OnEnable()
+    {
+        SetStartingState();
     }
 
     public void StartSpinning()
@@ -91,11 +104,6 @@ public class BallSystem : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            StopBalls();
-        }
-
         if (_closestBall != null && _moveToWinningBall)
         {
             _elapsedTime += Time.deltaTime;
@@ -151,5 +159,6 @@ public class BallSystem : MonoBehaviour
     {
         _spawnedBalls.ForEach(x => x.StopSpin());
         _crosshair.TogglePulse();
+        _stopSpinButton.gameObject.SetActive(false);
     }
 }

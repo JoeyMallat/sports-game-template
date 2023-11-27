@@ -10,6 +10,8 @@ public class InventoryGameItem : MonoBehaviour
     [SerializeField] TextMeshProUGUI _itemName;
     [SerializeField] TextMeshProUGUI _itemBoosts;
     [SerializeField] TextMeshProUGUI _gamesRemaining;
+    [SerializeField] TextMeshProUGUI _amountInInventory;
+    [SerializeField] GameObject _amountInInventoryObject;
     [SerializeField] Button _assignButton;
 
     public void SetItem(Player player, OwnedGameItem item)
@@ -20,6 +22,15 @@ public class InventoryGameItem : MonoBehaviour
         _itemName.text = details.GetItemName();
         _itemBoosts.text = details.GetSkillBoostsString();
         _gamesRemaining.text = item.GetGamesRemainingString();
+
+        if (item.GetAmountInInventory() > 1)
+        {
+            _amountInInventoryObject.SetActive(true);
+            _amountInInventory.text = $"{item.GetAmountInInventory()}x";
+        } else
+        {
+            _amountInInventoryObject.SetActive(false);
+        }
 
         _assignButton.gameObject.SetActive(true);
 

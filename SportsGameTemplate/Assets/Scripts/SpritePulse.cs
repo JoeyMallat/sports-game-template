@@ -26,16 +26,8 @@ public class SpritePulse : MonoBehaviour
             });
         } else
         {
-            //LeanTween.cancelAll(gameObject);
+            LeanTween.cancel(gameObject);
             _spriteRenderer.color = new Color(color.r, color.g, color.b, 0);
-        }
-    }
-
-    void Update()
-    {
-        if (_isPulsing)
-        {
-            
         }
     }
 }

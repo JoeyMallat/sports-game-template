@@ -8,7 +8,7 @@ public class ItemDatabase : MonoBehaviour
 {
     public static ItemDatabase Instance;
 
-    [SerializeField] List<GameItem> _gameItems;
+    List<GameItem> _gameItems;
 
     private void Awake()
     {
