@@ -8,13 +8,20 @@ using UnityEngine.UI;
 public class TeamAssets : MonoBehaviour
 {
     [SerializeField] int _teamIndex;
-    int _teamID;
+    [SerializeField] int _teamID;
     [SerializeField] TextMeshProUGUI _teamName;
     List<TeamAsset> _teamAssets;
 
     private void Awake()
     {
         TradingSystem.OnAssetsUpdated += UpdateTeamAssets;
+        TradingSystem.OnTradeCompleted += SetTeamID;
+    }
+
+    private void SetTeamID()
+    {
+        _teamID = -1;
+        UpdateTeamAssets(1, -1, new List<ITradeable>(), false);
     }
 
     public void UpdateTeamAssets(int teamIndex, int teamID, List<ITradeable> tradeAssets, bool reloadScreen)
@@ -30,7 +37,6 @@ public class TeamAssets : MonoBehaviour
         }
 
         _teamID = teamID;
-        _teamName.text = LeagueSystem.Instance.GetTeam(_teamID).GetTeamName();
 
         int tradeAssetsAmount = tradeAssets.Count;
 
@@ -44,6 +50,8 @@ public class TeamAssets : MonoBehaviour
                 _teamAssets[i].SetAssetDetails();
             }
         }
+
+        _teamName.text = _teamID == -1 ? "" : LeagueSystem.Instance.GetTeam(_teamID).GetTeamName();
     }
 
     public int GetTeamID()

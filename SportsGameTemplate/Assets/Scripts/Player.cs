@@ -239,7 +239,7 @@ public class Player : ITradeable
 
     public int CalculateTradeValue()
     {
-        _tradeValue = CalculateRatingForPosition() * (40 - _age);
+        _tradeValue = (25 * CalculateRatingForPosition()) * (40 - _age);
         float contractLengthMultiplier = ConfigManager.Instance.GetCurrentConfig().ContractLengthImpactOnTradeValue.Evaluate(_age / 40);
 
         _tradeValue = Mathf.RoundToInt(_tradeValue * contractLengthMultiplier / ((float)_potential + 1));

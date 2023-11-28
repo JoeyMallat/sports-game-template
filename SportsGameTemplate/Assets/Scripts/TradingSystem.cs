@@ -23,6 +23,7 @@ public class TradingSystem : MonoBehaviour
     [SerializeField] Button _confirmTradeButton;
 
     public static event Action<int, int, List<ITradeable>, bool> OnAssetsUpdated;
+    public static event Action OnTradeCompleted;
 
     private void Awake()
     {
@@ -31,6 +32,7 @@ public class TradingSystem : MonoBehaviour
         TeamAsset.OnRemoveFromTrade += RemoveFromTrade;
         OnAssetsUpdated += CheckTradeWillingness;
         TradeOfferItem.OnNewTradeOpened += ClearTrades;
+        GameManager.OnAdvance += GenerateTradeForPlayer;
     }
 
     [Button(ButtonSizes.Large)]
@@ -43,6 +45,18 @@ public class TradingSystem : MonoBehaviour
         Navigation.Instance.GoToScreen(true, CanvasKey.Team, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
 
         ClearTrades(false);
+        UpdateAcceptButtonAndText(false, "");
+        OnTradeCompleted?.Invoke();
+    }
+
+    private void GenerateTradeForPlayer(SeasonStage seasonStage, int week)
+    {
+        int teamOne = GameManager.Instance.GetTeamID();
+
+        int teamTwo = UnityEngine.Random.Range(0, LeagueSystem.Instance.GetTeams().Count - 1);
+
+        AITrader aiTrader = new AITrader();
+        aiTrader.GenerateOffer(LeagueSystem.Instance.GetTeam(teamOne).GetTradeAssets(), teamOne, GetTotalTradeValue(LeagueSystem.Instance.GetTeam(teamOne).GetTradeAssets()), LeagueSystem.Instance.GetTeam(teamTwo).GetTradeAssets());
     }
 
     private void TradeAssets(int currentTeamID, int newTeamID, List<ITradeable> assets)
@@ -66,8 +80,6 @@ public class TradingSystem : MonoBehaviour
         _teamAID = GameManager.Instance.GetTeamID();
         _teamATradingAssets = new List<ITradeable>();
         _teamBTradingAssets = new List<ITradeable>();
-        _teamBID = 0;
-
         UpdateBothTeamsAssets(toTradeScreen);
     }
 
@@ -134,6 +146,12 @@ public class TradingSystem : MonoBehaviour
         {
             _teamBTradingAssets.Remove(asset);
             UpdateBothTeamsAssets(true);
+
+            if (_teamBTradingAssets.Count == 0)
+            {
+                OnTradeCompleted?.Invoke();
+                UpdateAcceptButtonAndText(false, "");
+            }
         }
     }
 
@@ -220,6 +238,8 @@ public class TradingSystem : MonoBehaviour
 
     public void CheckTradeWillingness(int teamIndex, int teamID, List<ITradeable> assets, bool reloadScreen)
     {
+        if (_teamBID == -1) return;
+
         if (!CheckTradeEligibility(_teamBID, _teamATradingAssets, _teamBTradingAssets))
         {
             Debug.Log("Salary cap issues");
@@ -248,11 +268,11 @@ public class TradingSystem : MonoBehaviour
 
         if (willAccept)
         {
-            _confirmTradeButton.enabled = true;
+            _confirmTradeButton.gameObject.SetActive(true);
         }
         else
         {
-            _confirmTradeButton.enabled = false;
+            _confirmTradeButton.gameObject.SetActive(false);
         }
     }
 

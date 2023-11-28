@@ -26,12 +26,25 @@ public class GameManager : MonoBehaviour
     public void SetGems(int gems)
     {
         _gems = gems;
+        OnGemsUpdated?.Invoke(new CloudSaveData(_gems, _ownedGameItems));
     }
 
     public void EditGems(int gemsToEdit)
     {
         _gems += gemsToEdit;
         OnGemsUpdated.Invoke(new CloudSaveData(_gems, _ownedGameItems));
+    }
+
+    public bool CheckBuyItem(int cost)
+    {
+        if (cost <= _gems)
+        {
+            EditGems(-cost);
+            return true;
+        } else
+        {
+            return false;
+        }
     }
 
     public void SetInventory(List<CloudInventoryItem> ownedGameItems)
@@ -139,6 +152,11 @@ public class GameManager : MonoBehaviour
     private string GetTeamName()
     {
         return LeagueSystem.Instance.GetTeam(_selectedTeamID).GetTeamName();
+    }
+
+    public int GetGems()
+    {
+        return _gems;
     }
 
     public int GetTeamID()

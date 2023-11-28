@@ -29,13 +29,16 @@ public class AITrader
     {
         TradeOffer tradeOffer = new TradeOffer(offeringTeamID);
 
+        // Generate a starting set of players from list of assets
         List<ITradeable> assets = GenerateOffer(tradeValue, assetsToUse);
 
+        // Add these assets to trade offer
         foreach (ITradeable tradeable in assets)
         {
             tradeOffer.AddAsset(tradeable);
         }
 
+        // TODO: FIX!!!!!!!!!
         foreach (ITradeable asset in teamAssets)
         {
             tradeOffer.AddTeammate(asset);

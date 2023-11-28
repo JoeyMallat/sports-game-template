@@ -24,8 +24,8 @@ public class CloudSaveManager : MonoBehaviour
 
         if (saveData == null) return;
 
-        GameManager.Instance.SetGems(saveData.GemAmount);
         GameManager.Instance.SetInventory(saveData.Inventory);
+        GameManager.Instance.SetGems(saveData.GemAmount);
     }
 
     private async void SaveAll(CloudSaveData cloudSaveData)

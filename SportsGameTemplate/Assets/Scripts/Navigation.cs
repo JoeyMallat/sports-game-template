@@ -117,7 +117,7 @@ public class Navigation : SerializedMonoBehaviour
 
     private void AddToOpenCanvasses(Canvas canvas)
     {
-        if (_openedCanvasses.Contains(canvas) || canvas == GetCanvas(CanvasKey.MainMenu))
+        if (canvas == GetCanvas(CanvasKey.MainMenu))
         {
             foreach (Canvas c in _openedCanvasses)
             {
@@ -127,7 +127,20 @@ public class Navigation : SerializedMonoBehaviour
             _openedCanvasses = new List<Canvas>();
         }
 
+        if (_openedCanvasses.Contains(canvas))
+        {
+            _openedCanvasses.Remove(canvas);
+        }
+
         _openedCanvasses.Add(canvas);
+
+
+        for (int i = 0; i < _openedCanvasses.Count; i++)
+        {
+            int index = i;
+            _openedCanvasses[i].sortingOrder = index;
+            Debug.Log($"Sorting order of {_openedCanvasses[i].gameObject.name} is {index}");
+        }
     }
 
     public void GoToScreen(bool overlay, CanvasKey canvasKey)
@@ -142,9 +155,32 @@ public class Navigation : SerializedMonoBehaviour
         SetBackButton();
     }
 
+    public void GoToScreen(bool overlay, CanvasKey canvasKey, int coinsNeeded)
+    {
+        if (coinsNeeded > GameManager.Instance.GetGems())
+        {
+            GoToScreen(true, CanvasKey.Store);
+            return;
+        } else
+        {
+            // Subtract the gems off your current balance
+            GameManager.Instance.EditGems(-coinsNeeded);
+        }
+
+        if (!overlay)
+            DisableAllCanvasses();
+
+        AddToOpenCanvasses(GetCanvas(canvasKey));
+        Canvas canvas = GetCanvas(canvasKey);
+        canvas.enabled = true;
+
+        SetBackButton();
+    }
+
     public void CloseCanvas(Canvas canvas)
     {
         canvas.enabled = false;
+        canvas.sortingOrder = 0;
 
         if (_openedCanvasses.Contains(canvas)) 
         {
