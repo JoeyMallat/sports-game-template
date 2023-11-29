@@ -11,6 +11,7 @@ public class DraftPick : ITradeable
     [SerializeField][ReadOnly] int _tradeValue;
     [SerializeField] int _round;
     [SerializeField] int _pickNumber;
+    [SerializeField] List<TradeOffer> _tradeOffers;
 
     public static event Action<int, ITradeable> OnAddedToTrade;
     public static event Action<ITradeable> OnTradeOfferReceived;
@@ -23,6 +24,8 @@ public class DraftPick : ITradeable
         _pickNumber = number;
 
         CalculateTradeValue();
+
+        _tradeOffers = new List<TradeOffer>();
     }
 
     public int GetTotalPickNumber()
@@ -62,5 +65,21 @@ public class DraftPick : ITradeable
     public void AddToTrade(int teamID)
     {
         OnAddedToTrade?.Invoke(teamID, this);
+    }
+
+    public void AddTradeOffer(TradeOffer tradeOffer)
+    {
+        _tradeOffers.Add(tradeOffer);
+        OnTradeOfferReceived?.Invoke(this);
+    }
+
+    public List<TradeOffer> GetTradeOffers()
+    {
+        return _tradeOffers;
+    }
+
+    public void RemoveTradeOffer(TradeOffer tradeOffer)
+    {
+        _tradeOffers.Remove(tradeOffer);
     }
 }

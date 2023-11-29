@@ -36,6 +36,8 @@ public class TradeOfferItem : MonoBehaviour
         onClickAction = AddAssetsToTrade;
 
         _tradeOfferButton.onClick.RemoveAllListeners();
+        // Remove trade offer from player when clicked on trade offer
+        _tradeOfferButton.onClick.AddListener(() => tradeOffer.GetAssets().Item1[0].RemoveTradeOffer(tradeOffer));
         _tradeOfferButton.onClick.AddListener(() => OnNewTradeOpened?.Invoke(true));
         _tradeOfferButton.onClick.AddListener(() => onClickAction(tradeOffer));
     }
@@ -44,8 +46,7 @@ public class TradeOfferItem : MonoBehaviour
     {
         foreach (ITradeable asset in tradeOffer.GetAssets().Item1)
         {
-            // TODO: Add teamID
-            asset.AddToTrade();
+            asset.AddToTrade(GameManager.Instance.GetTeamID());
         }
 
         foreach (ITradeable asset in tradeOffer.GetAssets().Item2)

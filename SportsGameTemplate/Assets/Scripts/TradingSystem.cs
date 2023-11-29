@@ -56,7 +56,7 @@ public class TradingSystem : MonoBehaviour
         int teamTwo = UnityEngine.Random.Range(0, LeagueSystem.Instance.GetTeams().Count - 1);
 
         AITrader aiTrader = new AITrader();
-        aiTrader.GenerateOffer(LeagueSystem.Instance.GetTeam(teamOne).GetTradeAssets(), teamOne, GetTotalTradeValue(LeagueSystem.Instance.GetTeam(teamOne).GetTradeAssets()), LeagueSystem.Instance.GetTeam(teamTwo).GetTradeAssets());
+        aiTrader.GenerateOffer(LeagueSystem.Instance.GetTeam(teamOne).GetTradeAssets(), teamTwo, UnityEngine.Random.Range(2000, 15000), LeagueSystem.Instance.GetTeam(teamTwo).GetTradeAssets());
     }
 
     private void TradeAssets(int currentTeamID, int newTeamID, List<ITradeable> assets)

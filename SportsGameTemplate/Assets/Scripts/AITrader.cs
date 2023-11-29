@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class AITrader
@@ -12,7 +13,7 @@ public class AITrader
 
         foreach (ITradeable asset in assetsToUse)
         {
-            if (valueOfAssetsPicked <= tradeValue * Random.Range(0.65f, 1.05f) && assets.Count < 5)
+            if (valueOfAssetsPicked <= tradeValue && assets.Count < 5)
             {
                 assets.Add(asset);
                 valueOfAssetsPicked += asset.CalculateTradeValue();
@@ -28,24 +29,34 @@ public class AITrader
     public TradeOffer GenerateOffer(List<ITradeable> teamAssets, int offeringTeamID, int tradeValue, List<ITradeable> assetsToUse)
     {
         TradeOffer tradeOffer = new TradeOffer(offeringTeamID);
+        tradeValue = Mathf.RoundToInt(tradeValue * Random.Range(0.65f, 1.05f));
 
         // Generate a starting set of players from list of assets
-        List<ITradeable> assets = GenerateOffer(tradeValue, assetsToUse);
+        List<ITradeable> myTeamAssets = GenerateOffer(tradeValue, teamAssets);
 
-        // Add these assets to trade offer
-        foreach (ITradeable tradeable in assets)
+        // Return null if no assets were added
+        if (myTeamAssets.Count == 0) return null;
+
+        // Add these assets to trade offer (include the first player as there is no other to add him to the trade
+        foreach (ITradeable tradeable in myTeamAssets)
         {
-            tradeOffer.AddAsset(tradeable);
+            tradeOffer.AddTeammate(tradeable);
         }
 
-        // TODO: FIX!!!!!!!!!
-        foreach (ITradeable asset in teamAssets)
+        // Generate an offer for the selected myTeamAssets
+        int totalValueOfMyAssets = 0;
+        myTeamAssets.ForEach(x => totalValueOfMyAssets += x.CalculateTradeValue());
+        List<ITradeable> offeredAssets = GenerateOffer(Mathf.RoundToInt(totalValueOfMyAssets * UnityEngine.Random.Range(0.2f, 0.9f)), assetsToUse);
+
+        if (offeredAssets.Count == 0) return null;
+
+        foreach (ITradeable asset in offeredAssets)
         {
-            tradeOffer.AddTeammate(asset);
+            tradeOffer.AddAsset(asset);
         }
 
-        Player player = teamAssets[0] as Player;
-        player.AddTradeOffer(tradeOffer);
+        // Find the first player and add the trade offer to him
+        myTeamAssets[0].AddTradeOffer(tradeOffer);
 
         return tradeOffer;
     }

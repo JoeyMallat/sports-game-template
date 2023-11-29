@@ -172,13 +172,13 @@ public class Team
     public List<(TradeOffer, string)> GetAllTradeOffers()
     {
         List<(TradeOffer, string)> tradeOffers = new List<(TradeOffer, string)>();
-        foreach (Player player in _players)
+        foreach (ITradeable asset in GetTradeAssets())
         {
-            if (player.GetTradeOffers() == null) continue;
+            if (asset.GetTradeOffers() == null) continue;
 
-            foreach (TradeOffer tradeOffer in player.GetTradeOffers())
+            foreach (TradeOffer tradeOffer in asset.GetTradeOffers())
             {
-                tradeOffers.Add((tradeOffer, player.GetTradeableID()));
+                tradeOffers.Add((tradeOffer, asset.GetTradeableID()));
             }
         }
 

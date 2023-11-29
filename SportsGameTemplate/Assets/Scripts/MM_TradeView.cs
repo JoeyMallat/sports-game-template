@@ -26,7 +26,7 @@ public class MM_TradeView : MonoBehaviour, ISettable
 
         SetPlayersOnTradingBlock(_tradingBlockRoot.GetComponentsInChildren<PlayerItem>(true).ToList(), playersOnBlock);
 
-        SetTradeOffers(_tradeOffersRoot.GetComponentsInChildren<TradeOfferItem>().ToList(), LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()).GetAllTradeOffers());
+        SetTradeOffers(_tradeOffersRoot.GetComponentsInChildren<TradeOfferItem>(true).ToList(), LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()).GetAllTradeOffers());
     }
 
     private void SetPlayersOnTradingBlock(List<PlayerItem> playerItems, List<Player> playersOnBlock)
@@ -59,6 +59,11 @@ public class MM_TradeView : MonoBehaviour, ISettable
         if (tradeOffers.Count <= 0)
         {
             _noTradeOffersText.gameObject.SetActive(true);
+
+            foreach (var tradeOfferItem in tradeOfferItems)
+            {
+                tradeOfferItem.gameObject.SetActive(false);
+            }
             return;
         }
 

@@ -171,6 +171,12 @@ public class Player : ITradeable
         return _tradeOffers;
     }
 
+    public void RemoveTradeOffer(TradeOffer tradeOffer)
+    {
+        _tradeOffers.Remove(tradeOffer);
+        Debug.Log("Trade offer removed");
+    }
+
     public void ChangeTeam(int teamID)
     {
         _teamID = teamID;

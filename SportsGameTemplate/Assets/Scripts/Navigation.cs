@@ -72,6 +72,7 @@ public class Navigation : SerializedMonoBehaviour
         if (settable != null)
         {
             settable.SetDetails(team);
+            Debug.Log("ISettable is being updated");
         }
 
         SetBackButton();
