@@ -30,6 +30,7 @@ public class ContractNegotiationsSystem : MonoBehaviour
 
         if (_currentPlayer.GetTeamID() != GameManager.Instance.GetTeamID())
         {
+            LeagueSystem.Instance.GetTeam(_currentPlayer.GetTeamID()).RemovePlayer(_currentPlayer);
             LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()).AddPlayer(_currentPlayer);
         }
 
@@ -62,10 +63,20 @@ public class ContractNegotiationsSystem : MonoBehaviour
 
     private void UpdateSalaryCapImpact(float offeredAmount)
     {
-        int currentSalaryAmount = LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()).GetTotalSalaryAmount();
-        int changeInPlayerSalary = (int)offeredAmount - _currentPlayer.GetContract().GetYearlySalary();
+        if (_currentPlayer.GetTeamID() == GameManager.Instance.GetTeamID())
+        {
+            int currentSalaryAmount = LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()).GetTotalSalaryAmount();
+            int changeInPlayerSalary = (int)offeredAmount - _currentPlayer.GetContract().GetYearlySalary();
 
-        OnNewSalaryAmountCalculated?.Invoke(currentSalaryAmount, changeInPlayerSalary);
+            OnNewSalaryAmountCalculated?.Invoke(currentSalaryAmount, changeInPlayerSalary);
+        } else
+        {
+            int currentSalaryAmount = LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()).GetTotalSalaryAmount();
+            int changeInPlayerSalary = (int)offeredAmount;
+
+            OnNewSalaryAmountCalculated?.Invoke(currentSalaryAmount, changeInPlayerSalary);
+        }
+
     }
 
     private void InitializeNegotiations(Player player)

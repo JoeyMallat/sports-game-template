@@ -39,13 +39,13 @@ public class ContractNegotiationsView : MonoBehaviour, ISettable
 
     private void ShowPlayerDecision(Player player, bool salary, bool length)
     {
-        _signContractButton.gameObject.SetActive(false);
+        _signContractButton.ToggleButtonStatus(false);
 
         if (salary)
         {
             if (length)
             {
-                _signContractButton.gameObject.SetActive(true);
+                _signContractButton.ToggleButtonStatus(true);
                 _playerAcceptingStatus.text = _playerWillAcceptText.Replace("{{PLAYERNAME}}", player.GetFullName());
                 SetButton();
             } else

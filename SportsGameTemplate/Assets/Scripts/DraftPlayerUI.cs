@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Services.RemoteConfig;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,9 +41,21 @@ public class DraftPlayerUI : MonoBehaviour, ISettable
 
     private void SetButtons(Player player)
     {
+        _scoutButton.ToggleButtonStatus(player.GetScoutingPercentage() <= .99f);
+
+        _scoutButton.GetComponentInChildren<TextMeshProUGUI>().text = $"Scout player <color=\"white\">\n{RemoteConfigService.Instance.appConfig.GetInt("scoutplayer_cost", 2)} <sprite name=\"Gem\">";
         _scoutButton.onClick.RemoveAllListeners();
-        _scoutButton.onClick.AddListener(() => player.ScoutPlayer());
-        _scoutButton.onClick.AddListener(() => SetDetails(player));
+        if (GameManager.Instance.CheckBuyItem(2))
+        {
+            _scoutButton.onClick.AddListener(() =>  player.ScoutPlayer());
+            _scoutButton.onClick.AddListener(() => SetDetails(player));
+        }
+        else
+        {
+            _scoutButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Store));
+        }
+
+        _draftButton.ToggleButtonStatus(FindAnyObjectByType<DraftSystem>().UserNowPicking());
 
         _draftButton.onClick.RemoveAllListeners();
         _draftButton.onClick.AddListener(() => OnPlayerDrafted?.Invoke(player));
@@ -64,7 +77,7 @@ public class DraftPlayerUI : MonoBehaviour, ISettable
             int overall = player.CalculateRatingForPosition();
             int seed = player.GetFullName().GetHashCode();
 
-            skillBars[0].SetSkillBar("Overall", overall.GetRatingRangeNumbers(accuracy, seed).Item1, overall.GetRatingRangeNumbers(accuracy, seed).Item2);
+            skillBars[0].SetSkillBarWithRange("Overall", overall.GetRatingRangeNumbers(accuracy, seed).Item1, overall.GetRatingRangeNumbers(accuracy, seed).Item2);
 
             for (int i = 1; i < skillBars.Length; i++)
             {
@@ -72,7 +85,7 @@ public class DraftPlayerUI : MonoBehaviour, ISettable
                 if (i < skillCount)
                 {
                     skillBars[i].gameObject.SetActive(true);
-                    skillBars[i].SetSkillBar(playerSkills[index].GetSkill().ToString(), playerSkills[index].GetRatingForSkill().GetRatingRangeNumbers(accuracy, seed).Item1, playerSkills[index].GetRatingForSkill().GetRatingRangeNumbers(accuracy, seed).Item2);
+                    skillBars[i].SetSkillBarWithRange(playerSkills[index].GetSkill().ToString(), playerSkills[index].GetRatingForSkill().GetRatingRangeNumbers(accuracy, seed).Item1, playerSkills[index].GetRatingForSkill().GetRatingRangeNumbers(accuracy, seed).Item2);
                 }
                 else
                 {

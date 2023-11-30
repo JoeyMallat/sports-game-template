@@ -24,18 +24,31 @@ public class DraftSystem : MonoBehaviour
         Player.OnPlayerScouted += UpdateDraftClass;
         DraftPlayerUI.OnPlayerDrafted += PickPlayer;
         DraftPlayerUI.OnPlayerDrafted += UpdateDraftClass;
+        GameManager.OnPostSeasonStarted += UpdateDraftOrder;
 
         _currentPick = 0;
         GenerateDraftClass();
-        _teamPicks = GetDraftOrder(LeagueSystem.Instance.GetTeams());
         _timeLeft = _timerForDraft;
-
-        //SimulateDraft(10);
     }
 
     private void Update()
     {
         //RunClock();
+    }
+
+    public bool UserNowPicking()
+    {
+        foreach (var draftPick in LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()).GetDraftPicks())
+        {
+            if (_currentPick+1 == draftPick.GetTotalPickNumber())
+                return true;
+        }
+        return false;
+    }
+
+    private void UpdateDraftOrder(SeasonStage seasonStage, int week)
+    {
+        _teamPicks = GetDraftOrder(LeagueSystem.Instance.GetTeams());
     }
 
     private void UpdateDraftClass(Player player)
@@ -45,7 +58,7 @@ public class DraftSystem : MonoBehaviour
 
     private void GenerateDraftClass()
     {
-        _upcomingDraftClass = new DraftClass(UnityEngine.Random.Range(40, 70));
+        _upcomingDraftClass = new DraftClass(UnityEngine.Random.Range(40, 85));
         OnDraftClassUpdated?.Invoke(_upcomingDraftClass);
     }
 
@@ -112,6 +125,24 @@ public class DraftSystem : MonoBehaviour
         for (int i = 0; i < picks; i++)
         {
             SimulatePick();
+        }
+    }
+
+    public void SimUntilUserPick()
+    {
+        Team team = LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID());
+
+        // If user has no picks, we can sim the entire draft
+        if (team.GetDraftPicks().Count == 0) SimEntireDraft();
+
+        for (int i = 0; i < team.GetDraftPicks().Count; i++)
+        {
+            DraftPick draftPick = team.GetDraftPicks()[i];
+            if (draftPick.GetTotalPickNumber() > _currentPick)
+            {
+                SimulateDraft(draftPick.GetTotalPickNumber() - _currentPick - 1);
+                return;
+            }
         }
     }
 

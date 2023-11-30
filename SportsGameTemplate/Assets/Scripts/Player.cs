@@ -35,6 +35,8 @@ public class Player : ITradeable
     public static event Action<int, Player> OnAddedToTrade;
     public static event Action<Player> OnTradeOfferReceived;
     public static event Action<Player> OnPlayerScouted;
+    public static event Action<Player> OnPlayerTeamChanged;
+    public static event Action<Player> OnPlayerContractSigned;
 
     [Header("Appearance Settings")]
     [SerializeField] int _portraitID;
@@ -153,6 +155,7 @@ public class Player : ITradeable
     public void SignContract(int newSalary, int newLength)
     {
         _contract.SetNewContract(newSalary, newLength);
+        OnPlayerContractSigned?.Invoke(this);
     }
 
     public void AddTradeOffer(TradeOffer tradeOffer)
@@ -180,12 +183,14 @@ public class Player : ITradeable
     public void ChangeTeam(int teamID)
     {
         _teamID = teamID;
+        OnPlayerTeamChanged?.Invoke(this);
     }
 
     public void ChangeTeam(int teamID, int pick)
     {
         _teamID = teamID;
         _contract = new Contract(pick);
+        OnPlayerTeamChanged?.Invoke(this);
     }
 
     public string GetFullName()

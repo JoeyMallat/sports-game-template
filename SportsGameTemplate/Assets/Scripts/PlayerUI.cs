@@ -94,6 +94,33 @@ public class PlayerUI : MonoBehaviour, ISettable
 
     private void SetButtons(Player player)
     {
+        int teamID = GameManager.Instance.GetTeamID();
+        
+        if (player.GetTeamID() == teamID)
+        {
+            _addToTradingBlock.gameObject.SetActive(true);
+            _addToTradeButton.gameObject.SetActive(true);
+            _extendContractButton.gameObject.SetActive(true);
+            _extendContractButton.GetComponentInChildren<TextMeshProUGUI>().text = "Offer extension";
+        }
+        else if (player.GetTeamID() != teamID && GameManager.Instance.GetSeasonStage() == SeasonStage.OffSeason)
+        {
+            _addToTradingBlock.gameObject.SetActive(false);
+            _addToTradeButton.gameObject.SetActive(false);
+            _extendContractButton.gameObject.SetActive(true);
+            _extendContractButton.GetComponentInChildren<TextMeshProUGUI>().text = "Offer contract";
+        } else
+        {
+            _addToTradingBlock.gameObject.SetActive(false);
+            _addToTradeButton.gameObject.SetActive(true);
+            _extendContractButton.gameObject.SetActive(false);
+        }
+
+        if (player.GetAge() >= 40)
+        {
+            _extendContractButton.gameObject.SetActive(false);
+        }
+
         _addToTradingBlock.onClick.RemoveAllListeners();
         _addToTradingBlock.onClick.AddListener(() => player.ToggleTradingBlockStatus());
         // TODO: Change Trading block status indicator

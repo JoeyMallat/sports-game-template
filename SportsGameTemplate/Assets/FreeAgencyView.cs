@@ -14,11 +14,20 @@ public class FreeAgencyView : MonoBehaviour
     private void Awake()
     {
         GameManager.OnPostSeasonStarted += LoadFreeAgents;
+        Player.OnPlayerContractSigned += LoadFreeAgents;
     }
 
     private void LoadFreeAgents(SeasonStage seasonStage, int week)
     {
-        List<Player> freeAgents = LeagueSystem.Instance.GetAllPlayers().Where(x => x.GetContract().GetYearsOnContract() == 1).ToList();
+        List<Player> freeAgents = LeagueSystem.Instance.GetAllPlayers().Where(x => x.GetContract().GetYearsOnContract() == 1 && x.GetAge() < 39).ToList();
+        List<FreeAgentItem> spawnedItems = _freeAgentRoot.GetComponentsInChildren<FreeAgentItem>(true).ToList();
+
+        ShowFreeAgents(freeAgents, spawnedItems);
+    }
+
+    private void LoadFreeAgents(Player player)
+    {
+        List<Player> freeAgents = LeagueSystem.Instance.GetAllPlayers().Where(x => x.GetContract().GetYearsOnContract() == 1 && x.GetAge() < 39).ToList();
         List<FreeAgentItem> spawnedItems = _freeAgentRoot.GetComponentsInChildren<FreeAgentItem>(true).ToList();
 
         ShowFreeAgents(freeAgents, spawnedItems);
@@ -35,14 +44,15 @@ public class FreeAgencyView : MonoBehaviour
 
         for (int i = 0; i < freeAgentItems.Count; i++)
         {
+            if (i >= players.Count)
+            {
+                freeAgentItems[i].gameObject.SetActive(false);
+                continue;
+            }
+
             int index = i;
             freeAgentItems[i].gameObject.SetActive(true);
             freeAgentItems[i].SetPlayerAssets(players[index]);
-
-            if (i > players.Count)
-            {
-                freeAgentItems[i].gameObject.SetActive(false);
-            }
         }
     }
 }
