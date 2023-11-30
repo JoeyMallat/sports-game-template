@@ -29,7 +29,7 @@ public class MM_LeagueView : MonoBehaviour, ISettable
         _standingsButton.onClick.RemoveAllListeners();
         _standingsButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Standings, league));
 
-        _playoffsButton.enabled = GameManager.Instance.GetSeasonStage() != SeasonStage.RegularSeason;
+        _playoffsButton.ToggleButtonStatus(GameManager.Instance.GetSeasonStage() != SeasonStage.RegularSeason);
         _playoffsButton.onClick.RemoveAllListeners();
         _playoffsButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Playoffs));
     }

@@ -18,10 +18,25 @@ public class TradeOfferItem : MonoBehaviour
         Team offeringTeam = LeagueSystem.Instance.GetTeam(tradeOffer.Item1.GetOfferingTeamID());
         if (tradeOffer.Item1.GetAssets().Item1.Count > 1)
         {
-            _tradeOfferText.text = $"{offeringTeam.GetTeamName()} trade offer for {LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()).GetPlayersFromTeam().Where(x => x.GetTradeableID() == tradeOffer.Item2).ToList()[0].GetFullName()} + more";
+            List<ITradeable> assets = LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()).GetTradeAssets().Where(x => x.GetTradeableID() == tradeOffer.Item2).ToList();
+            if (assets[0].GetType() == typeof(Player))
+            {
+                _tradeOfferText.text = $"{offeringTeam.GetTeamName()} trade offer for {(assets[0] as Player).GetFullName()} + more";
+            } else
+            {
+                _tradeOfferText.text = $"{offeringTeam.GetTeamName()} trade offer for pick #{(assets[0] as DraftPick).GetTotalPickNumber()} + more";
+            }
         } else
         {
-            _tradeOfferText.text = $"{offeringTeam.GetTeamName()} offer for {LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()).GetPlayersFromTeam().Where(x => x.GetTradeableID() == tradeOffer.Item2).ToList()[0].GetFullName()}";
+            List<ITradeable> assets = LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()).GetTradeAssets().Where(x => x.GetTradeableID() == tradeOffer.Item2).ToList();
+            if (assets[0].GetType() == typeof(Player))
+            {
+                _tradeOfferText.text = $"{offeringTeam.GetTeamName()} trade offer for {(assets[0] as Player).GetFullName()}";
+            }
+            else
+            {
+                _tradeOfferText.text = $"{offeringTeam.GetTeamName()} trade offer for pick #{(assets[0] as DraftPick).GetTotalPickNumber()}";
+            }
         }
 
         SetButton(tradeOffer.Item1);

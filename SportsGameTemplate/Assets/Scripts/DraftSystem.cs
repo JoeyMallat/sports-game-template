@@ -35,12 +35,7 @@ public class DraftSystem : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            SimulateDraft(1);
-        }
-
-        RunClock();
+        //RunClock();
     }
 
     private void UpdateDraftClass(Player player)

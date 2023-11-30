@@ -6,6 +6,8 @@ using TMPro;
 
 public class MM_PlayView : MonoBehaviour, ISettable
 {
+    [SerializeField] GameObject _simButtons;
+
     [Header("Regular Season")]
     [SerializeField] RegularSeasonPlayView _regularSeasonGameObject;
 
@@ -13,6 +15,9 @@ public class MM_PlayView : MonoBehaviour, ISettable
     [Header("Playoffs")]
     [SerializeField] PlayoffsPlayView _playoffsGameObject;
     [SerializeField] GameObject _noGameGameObject;
+
+    [Header("Off Season")]
+    [SerializeField] GameObject _freeAgencyGameObject;
 
 
     public void SetDetails<T>(T item) where T : class
@@ -22,6 +27,8 @@ public class MM_PlayView : MonoBehaviour, ISettable
         _regularSeasonGameObject.gameObject.SetActive(false);
         _playoffsGameObject.gameObject.SetActive(false);
         _noGameGameObject.SetActive(false);
+        _freeAgencyGameObject.SetActive(false);
+        _simButtons.SetActive(false);
 
 
         switch (GameManager.Instance.GetSeasonStage())
@@ -35,6 +42,7 @@ public class MM_PlayView : MonoBehaviour, ISettable
                 {
                     _noGameGameObject.gameObject.SetActive(true);
                 }
+                _simButtons.SetActive(true);
                 break;
             case SeasonStage.Playoffs:
                 if (PlayoffSystem.Instance.IsTeamInPlayoffs())
@@ -45,8 +53,10 @@ public class MM_PlayView : MonoBehaviour, ISettable
                 {
                     _noGameGameObject.gameObject.SetActive(true);
                 }
+                _simButtons.SetActive(true);
                 break;
             case SeasonStage.OffSeason:
+                _freeAgencyGameObject.SetActive(true);
                 break;
             default:
                 break;

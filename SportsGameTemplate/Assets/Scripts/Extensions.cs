@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -110,6 +111,21 @@ public static class Extensions
                 return "F";
             default:
                 return "?";
+        }
+    }
+
+    public static void ToggleButtonStatus(this Button button, bool status)
+    {
+        button.enabled = status;
+
+        if (status)
+        {
+            button.GetComponent<Image>().color = ColorManager.Instance.EnabledButtonColor;
+            button.GetComponentInChildren<TextMeshProUGUI>().color = ColorManager.Instance.EnabledButtonTextColor;
+        } else
+        {
+            button.GetComponent<Image>().color = ColorManager.Instance.DisabledButtonColor;
+            button.GetComponentInChildren<TextMeshProUGUI>().color = ColorManager.Instance.DisabledButtonTextColor;
         }
     }
 

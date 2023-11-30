@@ -209,7 +209,7 @@ public class LeagueSystem : MonoBehaviour
                     StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { GetNextGame(seasonStage, week); }, SimulateMatchesWithProgress(matches)));
                 } else
                 {
-                    OnRegularSeasonFinished?.Invoke(_teams, SeasonStage.Playoffs);
+                    OnRegularSeasonFinished?.Invoke(_teams, SeasonStage.OffSeason);
                 }
                 break;
             case SeasonStage.Playoffs:

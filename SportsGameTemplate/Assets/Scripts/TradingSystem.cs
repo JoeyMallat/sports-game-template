@@ -268,11 +268,11 @@ public class TradingSystem : MonoBehaviour
 
         if (willAccept)
         {
-            _confirmTradeButton.gameObject.SetActive(true);
+            _confirmTradeButton.ToggleButtonStatus(true);
         }
         else
         {
-            _confirmTradeButton.gameObject.SetActive(false);
+            _confirmTradeButton.ToggleButtonStatus(false);
         }
     }
 

@@ -9,12 +9,14 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] SeasonStage _currentSeasonStage;
     [SerializeField] int _currentWeek;
+    [SerializeField] bool _draftCompleted;
     [InfoBox("@GetTeamName()")]
     [SerializeField][Range(0, 29)] int _selectedTeamID;
     [SerializeField] bool _teamPicked;
 
     public static event Action<SeasonStage, int> OnAdvance;
     public static event Action<SeasonStage, int> OnGameStarted;
+    public static event Action<SeasonStage, int> OnPostSeasonStarted;
 
     public static GameManager Instance;
 
@@ -56,7 +58,6 @@ public class GameManager : MonoBehaviour
         {
             _ownedGameItems.Add(item.ConvertToOwnedGameItem(item));
         }
-        
     }
 
     private void Update()
@@ -70,6 +71,16 @@ public class GameManager : MonoBehaviour
     public int GetCurrentWeek()
     {
         return _currentWeek;
+    }
+
+    public bool GetDraftStatus()
+    {
+        return _draftCompleted;
+    }
+
+    public void SetDraftStatus(bool status)
+    {
+        _draftCompleted = status;
     }
 
     private void Start()
@@ -116,6 +127,7 @@ public class GameManager : MonoBehaviour
                 Navigation.Instance.GoToScreen(true, CanvasKey.Playoffs);
                 break;
             case SeasonStage.OffSeason:
+                OnPostSeasonStarted?.Invoke(_currentSeasonStage, _currentWeek);
                 break;
             default:
                 break;
