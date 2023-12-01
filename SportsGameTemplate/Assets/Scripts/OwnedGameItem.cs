@@ -41,4 +41,9 @@ public class OwnedGameItem
     {
         _amountInInventory += amountAdded;
     }
+
+    public void DecreaseGamesRemaining()
+    {
+        _gamesRemaining--;
+    }
 }

@@ -100,7 +100,7 @@ public class Match
         _matchPlayed = true;
         SetResult(_homeTeamPoints, _awayTeamPoints);
 
-        //OnMatchPlayed?.Invoke(this);
+        OnMatchPlayed?.Invoke(this);
 
         /*
         int totalTwoPointers = 0;

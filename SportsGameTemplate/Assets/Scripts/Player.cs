@@ -63,6 +63,7 @@ public class Player : ITradeable
         _equippedItems = new List<OwnedGameItem>();
 
         GameManager.OnAdvance += UpgradeDowngrade;
+        Match.OnMatchPlayed += OnMatchPlayed;
     }
 
     public Player(bool rookie, string firstname, string lastname, Position position, int averageRating)
@@ -72,7 +73,7 @@ public class Player : ITradeable
         _lastName = lastname;
         _position = position.GetPositionName();
         _age = UnityEngine.Random.Range(20, 22);
-        _percentageScouted = 0f;
+        _percentageScouted = 0.2f;
         _startSeasonRating = _rating;
 
         SetRandomSkills(averageRating, position.GetPositionStats());
@@ -85,12 +86,22 @@ public class Player : ITradeable
         _tradeOffers = new List<TradeOffer>();
         _equippedItems = new List<OwnedGameItem>();
 
+        Match.OnMatchPlayed += OnMatchPlayed;
         GameManager.OnAdvance += UpgradeDowngrade;
+    }
+
+    private void OnMatchPlayed(Match match)
+    {
+        if (match.GetHomeTeamID() == _teamID || match.GetAwayTeamID() == _teamID)
+        {
+            // TODO: Check if player played in the game
+            DecreaseItemGames();
+        }
     }
 
     public void AssignItem(OwnedGameItem item)
     {
-        _equippedItems.Add(item);
+        _equippedItems.Add(new OwnedGameItem(item.GetItemID(), item.GetGamesRemaining(), 1));
     }
 
     private void UpgradeDowngrade(SeasonStage seasonStage, int week)
@@ -121,6 +132,22 @@ public class Player : ITradeable
     public List<OwnedGameItem> GetEquippedItems()
     {
         return _equippedItems;
+    }
+
+    public void DecreaseItemGames()
+    {
+        List<OwnedGameItem> stillEquippedItems = new List<OwnedGameItem>();
+        foreach (OwnedGameItem item in _equippedItems)
+        {
+            item.DecreaseGamesRemaining();
+
+            if (item.GetGamesRemaining() > 50)
+            {
+                stillEquippedItems.Add(item);
+            }
+        }
+
+        _equippedItems = stillEquippedItems;
     }
 
     public int GetSeasonImprovement()

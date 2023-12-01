@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class PlayoffViewer : MonoBehaviour, ISettable
 {
+    [SerializeField] GameObject _playoffRoot;
     [SerializeField] GameObject _firstRoundRoot;
     [SerializeField] GameObject _secondRoundRoot;
     [SerializeField] GameObject _thirdRoundRoot;
@@ -27,6 +28,10 @@ public class PlayoffViewer : MonoBehaviour, ISettable
         List<PlayoffMatchup> matchups = playoffRound.GetMatchups();
 
         List<MatchupItem> matchupItems = new List<MatchupItem>();
+
+        matchupItems = _playoffRoot.GetComponentsInChildren<MatchupItem>(true).ToList();
+        SetMatchups(matchupItems, matchups, true);
+
         switch (round)
         {
             case 0:
@@ -45,12 +50,25 @@ public class PlayoffViewer : MonoBehaviour, ISettable
                 break;
         }
 
+        SetMatchups(matchupItems, matchups, false);
+
+        gameObject.SetActive(true);
+    }
+
+    private void SetMatchups(List<MatchupItem> matchupItems, List<PlayoffMatchup> matchups, bool empty)
+    {
         for (int i = 0; i < matchups.Count; i++)
         {
             int index = i;
-            matchupItems[i].SetMatchup(matchups[index]);
-        }
 
-        gameObject.SetActive(true);
+            if (empty)
+            {
+                matchupItems[i].EmptyMatchup();
+            }
+            else
+            {
+                matchupItems[i].SetMatchup(matchups[index]);
+            }
+        }
     }
 }

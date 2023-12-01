@@ -51,6 +51,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void RemoveItem(OwnedGameItem item)
+    {
+        if (item.GetAmountInInventory() > 1)
+        {
+            _ownedGameItems.Where(x => x.GetItemID() == item.GetItemID()).ToList()[0].UpdateAmount(-1);
+        } else
+        {
+            _ownedGameItems.Remove(item);
+        }
+
+        OnInventoryUpdated?.Invoke(new CloudSaveData(_gems, _ownedGameItems));
+    }
+
     public void SetInventory(List<CloudInventoryItem> ownedGameItems)
     {
         if (ownedGameItems == null) return;
@@ -114,6 +127,8 @@ public class GameManager : MonoBehaviour
         switch (_currentSeasonStage)
         {
             case SeasonStage.RegularSeason:
+                OnNewSeasonStarted?.Invoke();
+                _currentSeason++;
                 break;
             case SeasonStage.Playoffs:
                 Navigation.Instance.GoToScreen(true, CanvasKey.Playoffs);
@@ -129,8 +144,6 @@ public class GameManager : MonoBehaviour
     public void StartNewSeason()
     {
         ChangeSeasonStage(LeagueSystem.Instance.GetTeams(), SeasonStage.RegularSeason);
-        _currentSeason++;
-        OnNewSeasonStarted?.Invoke();
         TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(_selectedTeamID)));
     }
 
@@ -178,6 +191,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Application.targetFrameRate = 120;
         TeamSelection.OnSelectedTeam += ((x) => _selectedTeamID = x.GetTeamID());
 
         if (Instance == null)

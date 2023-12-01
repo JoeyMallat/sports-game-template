@@ -55,6 +55,13 @@ public class LeagueSystem : MonoBehaviour
         _seasonMatches = _seasonMatches.OrderBy(x => x.GetWeek()).ToList();
     }
 
+    public void StartNewSeason()
+    {
+        DistributeDraftPicks();
+        _seasonMatches = ConfigManager.Instance.GetCurrentConfig().ScheduleGenerator.GenerateSchedule(_teams);
+        _seasonMatches = _seasonMatches.OrderBy(x => x.GetWeek()).ToList();
+    }
+
     public void SetTeams(List<Team> teams)
     {
         _teams = teams;

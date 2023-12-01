@@ -36,6 +36,7 @@ public class InventoryGameItem : MonoBehaviour
 
         _assignButton.onClick.RemoveAllListeners();
         _assignButton.onClick.AddListener(() => player.AssignItem(item));
+        _assignButton.onClick.AddListener(() => GameManager.Instance.RemoveItem(item));
         _assignButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID())));
         _assignButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Team, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID())));
         _assignButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Player, player));

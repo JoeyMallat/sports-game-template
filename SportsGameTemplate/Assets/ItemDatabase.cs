@@ -70,8 +70,10 @@ public class ItemDatabase : MonoBehaviour
 
         foreach (string boostString in skillBoostsStrings)
         {
-            string skillString = boostString.Split(' ')[0];
-            string boostAmountString = boostString.Split(' ')[1];
+            if (string.IsNullOrEmpty(boostString.Trim())) return skillBoosts;
+
+            string skillString = boostString.Split(' ')[0].Trim();
+            string boostAmountString = boostString.Split(' ')[1].Trim();
 
             Skill skill = (Skill)Enum.Parse(typeof(Skill), skillString);
             int.TryParse(boostAmountString.Replace("+", string.Empty), out int boostAmount);

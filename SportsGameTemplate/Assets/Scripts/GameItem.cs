@@ -30,7 +30,7 @@ public class GameItem
         string text = "";
         foreach (SkillBoost boost in _skillBoosts)
         {
-            text += $"<color=\"white\">+{boost.GetBoost()} {boost.GetSkill()}</color>\n";
+            text += $"<color=\"white\">+{boost.GetBoost()} {boost.GetSkill().ToString().Replace("_", " ")}</color>\n";
         }
 
         return text;

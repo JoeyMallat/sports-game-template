@@ -21,25 +21,6 @@ public class PlayerSeason
         //DebugRandomSeason();
     }
 
-    private void DebugRandomSeason()
-    {
-        for (int i = 0; i < 82; i++)
-        {
-            int min = UnityEngine.Random.Range(0, 48);
-            int ass = UnityEngine.Random.Range(0, 16);
-            int stl = UnityEngine.Random.Range(0, 6);
-            int reb = UnityEngine.Random.Range(0, 16);
-            int blck = UnityEngine.Random.Range(0, 10);
-            int ftAttempts = UnityEngine.Random.Range(0, 10);
-            int ftMade = UnityEngine.Random.Range(0, ftAttempts);
-            int twoAttempts = UnityEngine.Random.Range(0, 20);
-            int twoMade = UnityEngine.Random.Range(0, twoAttempts);
-            int threeAttempts = UnityEngine.Random.Range(0, 20);
-            int threeMade = UnityEngine.Random.Range(0, threeAttempts);
-            //_matchStats.Add(new PlayerMatchStats(min, ass, stl, reb, blck, ftAttempts, ftMade, twoAttempts, twoMade, threeAttempts, threeMade));
-        }
-    }
-
     public List<PlayerMatchStats> GetMatchStats()
     {
         return _matchStats;

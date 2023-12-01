@@ -10,7 +10,7 @@ public class LocalSaveManager : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.OnAdvance += SaveGame;
+        //GameManager.OnAdvance += SaveGame;
     }
 
     private void Start()

@@ -15,17 +15,36 @@ public class Team
     List<DraftPick> _draftPicks;
     List<int> _matchdays;
     List<int> _availableMatchdays;
+    int _seed;
     [SerializeField] TeamSeason _seasonStats;
 
     public Team(int id, string name, int rating, List<Player> players)
     {
         _teamID = id;
+        _seed = id;
         _teamName = name;
         _teamRating = rating;
         _players = players;
         _draftPicks = new();
         _matchdays = new List<int>();
         InitializeAvailableMatchdays();
+
+        LeagueSystem.OnRegularSeasonFinished += SetSeed;
+    }
+
+    private void SetSeed(List<Team> teams, SeasonStage seasonStage)
+    {
+        SetSeed(teams.IndexOf(this) + 1);
+    }
+
+    public int GetSeed()
+    {
+        return _seed;
+    }
+
+    public void SetSeed(int seed)
+    {
+        _seed = seed;
     }
 
     public string GetTeamAbbreviation()

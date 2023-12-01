@@ -75,6 +75,7 @@ public class ChecklistView : MonoBehaviour
         _nextSeasonButton.onClick.RemoveAllListeners();
         _nextSeasonButton.onClick.AddListener(() => UncheckAllChecklistItems());
         _nextSeasonButton.onClick.AddListener(() => GameManager.Instance.StartNewSeason());
+        _nextSeasonButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()))));
     }
 
     private void UncheckAllChecklistItems()
