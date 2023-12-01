@@ -17,6 +17,7 @@ public class DraftOrderItem : MonoBehaviour
     
     public void SetDraftOrderItem(DraftOrderItemWrapper draftOrderItem)
     {
+        gameObject.SetActive(true);
         _pickNumberText.text = $"#{draftOrderItem.GetPickNumber()}";
         _teamNameText.text = draftOrderItem.GetTeamName();
 

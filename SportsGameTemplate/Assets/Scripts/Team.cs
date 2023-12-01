@@ -30,6 +30,25 @@ public class Team
         InitializeAvailableMatchdays();
 
         LeagueSystem.OnRegularSeasonFinished += SetSeed;
+        LeagueSystem.OnRegularSeasonFinished += ExtendContracts;
+        GameManager.OnNewSeasonStarted += ResetForNewSeason;
+        Player.OnContractExpired += RemovePlayersWithoutContract;
+    }
+
+    private void ResetForNewSeason()
+    {
+        _draftPicks = new();
+        _matchdays = new List<int>();
+        InitializeAvailableMatchdays();
+        _seasonStats = new TeamSeason();
+    }
+
+    private void RemovePlayersWithoutContract(Player player)
+    {
+        if (_players.Contains(player))
+        {
+            _players.Remove(player);
+        }
     }
 
     private void SetSeed(List<Team> teams, SeasonStage seasonStage)
@@ -117,6 +136,17 @@ public class Team
     {
         _players.Add(player);
         player.ChangeTeam(_teamID, pick);
+    }
+
+    private void ExtendContracts(List<Team> teams, SeasonStage seasonStage)
+    {
+        foreach (Player player in _players.Where(x => x.GetContract().GetYearsOnContract() == 1))
+        {
+            if (UnityEngine.Random.Range(0f, 1f) < 0.6f)
+            {
+                player.GetContract().SetNewContract(Mathf.RoundToInt(player.GetContract().GetYearlySalary() * UnityEngine.Random.Range(0.5f, 1.5f)), UnityEngine.Random.Range(2, 5));
+            }
+        }
     }
 
     public void RemoveDraftPick(DraftPick draftPick)

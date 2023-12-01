@@ -25,6 +25,7 @@ public class LeagueSystem : MonoBehaviour
         GameManager.OnAdvance += SimulateGameweek;
         //GameManager.OnAdvance += GetNextGame;
         GameManager.OnGameStarted += GetNextGame;
+        GameManager.OnNewSeasonStarted += StartNewSeason;
     }
 
     private void ReadTeamsFromFile()
@@ -154,13 +155,11 @@ public class LeagueSystem : MonoBehaviour
 
     private void DistributeDraftPicks()
     {
-        // TODO: Base off season standings and use weighted lottery if enabled
-
-        // Temporary solution
+        List<Team> teams = _teams.OrderByDescending(x => x.GetSeed()).ToList();
         int index = 1;
         for (int round = 1; round < ConfigManager.Instance.GetCurrentConfig().DraftRounds + 1; round++)
         {
-            foreach (Team team in _teams)
+            foreach (Team team in teams)
             {
                 team.AddDraftPick(new DraftPick(round, index));
 

@@ -22,6 +22,9 @@ public class DraftSystem : MonoBehaviour
         DraftPlayerUI.OnPlayerDrafted += PickPlayer;
         DraftPlayerUI.OnPlayerDrafted += UpdateDraftClass;
         GameManager.OnPostSeasonStarted += UpdateDraftOrder;
+        OnDraftEnded += RemoveDraftClass;
+        GameManager.OnNewSeasonStarted += GenerateDraftClass;
+        GameManager.OnNewSeasonStarted += ResetDraft;
 
         _currentPick = 0;
         GenerateDraftClass();
@@ -35,6 +38,16 @@ public class DraftSystem : MonoBehaviour
                 return true;
         }
         return false;
+    }
+
+    private void ResetDraft()
+    {
+        _currentPick = 0;
+    }
+
+    private void RemoveDraftClass()
+    {
+        _upcomingDraftClass = null;
     }
 
     private void UpdateDraftOrder(SeasonStage seasonStage, int week)
@@ -131,7 +144,7 @@ public class DraftSystem : MonoBehaviour
         Player pickedPlayer = _upcomingDraftClass.PickPlayerAtID(selection, team, currentPick);
         OnPlayerPicked?.Invoke(pickedPlayer, team, currentPick);
 
-        Debug.Log($"{pickedPlayer.GetFullName()} has been picked at pick {currentPick} for {team.GetTeamName()}");
+        //Debug.Log($"{pickedPlayer.GetFullName()} has been picked at pick {currentPick} for {team.GetTeamName()}");
 
         OnDraftClassUpdated?.Invoke(_upcomingDraftClass);
         return pickedPlayer;

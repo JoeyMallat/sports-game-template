@@ -68,11 +68,11 @@ public class BasketballMatchSimulator : MatchSimulator
     private Team DecideReboundingTeam(int matchID, Team teamOne, Team teamTwo)
     {
         // TODO: Add the lineup of the team
-        Player teamOneRebounder = teamOne.GetPlayersFromTeam().OrderByDescending(x => x.GetSkills()[11].GetRatingForSkill() * UnityEngine.Random.Range(0.5f, 1.5f)).ToList()[0];
-        Player teamTwoRebounder = teamTwo.GetPlayersFromTeam().OrderByDescending(x => x.GetSkills()[11].GetRatingForSkill() * UnityEngine.Random.Range(0.5f, 1.5f)).ToList()[0];
+        Player teamOneRebounder = teamOne.GetPlayersFromTeam().OrderByDescending(x => x.GetRatingForSkillWithItem(x.GetSkills()[11]) * UnityEngine.Random.Range(0.5f, 1.5f)).ToList()[0];
+        Player teamTwoRebounder = teamTwo.GetPlayersFromTeam().OrderByDescending(x => x.GetRatingForSkillWithItem(x.GetSkills()[11]) * UnityEngine.Random.Range(0.5f, 1.5f)).ToList()[0];
 
-        float teamOneRebounderChance = teamOneRebounder.GetSkills()[11].GetRatingForSkill();
-        float total = teamOneRebounder.GetSkills()[11].GetRatingForSkill() + teamTwoRebounder.GetSkills()[11].GetRatingForSkill();
+        float teamOneRebounderChance = teamOneRebounder.GetRatingForSkillWithItem(teamOneRebounder.GetSkills()[11]);
+        float total = teamOneRebounder.GetRatingForSkillWithItem(teamOneRebounder.GetSkills()[11]) + teamTwoRebounder.GetRatingForSkillWithItem(teamOneRebounder.GetSkills()[11]);
 
         if (UnityEngine.Random.Range(0f, total) > teamOneRebounderChance)
         {
@@ -121,33 +121,33 @@ public class BasketballMatchSimulator : MatchSimulator
         switch (move)
         {
             case Move.Pass:
-                float passingSkill1 = playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Passing).ToList()[0].GetRatingForSkill();
-                float passingSkill2 = playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Playmaking).ToList()[0].GetRatingForSkill();
+                float passingSkill1 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Passing).ToList()[0]);
+                float passingSkill2 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Playmaking).ToList()[0]);
                 (possessionKept, resultAction) = GetResult(_passSuccessRate, 2, passingSkill1 + passingSkill2, true, ResultAction.Pass, ResultAction.Steal);
                 break;
             case Move.TwoPointer:
-                float twoPointerSkill1 = playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Short_Range_Shooting).ToList()[0].GetRatingForSkill();
-                float twoPointerSkill2 = playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Mid_Range_Shooting).ToList()[0].GetRatingForSkill();
+                float twoPointerSkill1 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Short_Range_Shooting).ToList()[0]);
+                float twoPointerSkill2 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Mid_Range_Shooting).ToList()[0]);
                 (possessionKept, resultAction) = GetResult(_twoPointSuccessRate, 2, twoPointerSkill1 + twoPointerSkill2, false, ResultAction.TwoPointerMade, ResultAction.TwoPointerMissed);
                 break;
             case Move.ThreePointer:
-                float threePointerSkill1 = playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Mid_Range_Shooting).ToList()[0].GetRatingForSkill();
-                float threePointerSkill2 = playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Three_Point_Shooting).ToList()[0].GetRatingForSkill();
+                float threePointerSkill1 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Mid_Range_Shooting).ToList()[0]);
+                float threePointerSkill2 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Three_Point_Shooting).ToList()[0]);
                 (possessionKept, resultAction) = GetResult(_threePointSuccessRate, 2, threePointerSkill1 + threePointerSkill2, false, ResultAction.ThreePointerMade, ResultAction.ThreePointerMissed);
                 break;
             case Move.Dunk:
-                float dunkSkill1 = playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Dunking).ToList()[0].GetRatingForSkill();
+                float dunkSkill1 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Dunking).ToList()[0]);
                 (possessionKept, resultAction) = GetResult(_dunkSuccessRate, 1, dunkSkill1, false, ResultAction.TwoPointerMade, ResultAction.TwoPointerMissed);
                 break;
             case Move.Layup:
-                float layupSkill1 = playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Layups).ToList()[0].GetRatingForSkill();
-                float layupSkill2 = playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Speed).ToList()[0].GetRatingForSkill();
+                float layupSkill1 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Layups).ToList()[0]);
+                float layupSkill2 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Speed).ToList()[0]);
                 (possessionKept, resultAction) = GetResult(_layupSuccessRate, 2, layupSkill1 + layupSkill2, false, ResultAction.TwoPointerMade, ResultAction.TwoPointerMissed);
                 break;
             case Move.Dribble:
-                float dribbleSkill1 = playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Dribbling).ToList()[0].GetRatingForSkill();
-                float dribbleSkill2 = playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Speed).ToList()[0].GetRatingForSkill();
-                float dribbleSkill3 = playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Playmaking).ToList()[0].GetRatingForSkill();
+                float dribbleSkill1 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Dribbling).ToList()[0]);
+                float dribbleSkill2 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Speed).ToList()[0]);
+                float dribbleSkill3 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Playmaking).ToList()[0]);
                 (possessionKept, resultAction) = GetResult(_dribbleSuccessRate, 3, dribbleSkill1 + dribbleSkill2 + dribbleSkill3, true, ResultAction.Dribble, ResultAction.Steal);
                 break;
             default:

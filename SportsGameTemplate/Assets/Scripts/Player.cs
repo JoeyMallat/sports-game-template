@@ -37,6 +37,7 @@ public class Player : ITradeable
     public static event Action<Player> OnPlayerScouted;
     public static event Action<Player> OnPlayerTeamChanged;
     public static event Action<Player> OnPlayerContractSigned;
+    public static event Action<Player> OnContractExpired;
 
     [Header("Appearance Settings")]
     [SerializeField] int _portraitID;
@@ -55,15 +56,16 @@ public class Player : ITradeable
 
         _contract = new Contract(CalculateRatingForPosition(), _age);
         _potential = SetPotential();
-        _portraitID = UnityEngine.Random.Range(0, Resources.LoadAll<Sprite>("Faces/").Length);
+        _portraitID = UnityEngine.Random.Range(0, Resources.LoadAll<Sprite>("Faces/").Length); // TODO: Make more efficient
 
         _seasonStats = new List<PlayerSeason>();
         _seasonStats.Add(new PlayerSeason(0, _teamID));
         _tradeOffers = new List<TradeOffer>();
         _equippedItems = new List<OwnedGameItem>();
 
-        GameManager.OnAdvance += UpgradeDowngrade;
         Match.OnMatchPlayed += OnMatchPlayed;
+        GameManager.OnAdvance += UpgradeDowngrade;
+        GameManager.OnNewSeasonStarted += ResetForNewSeason;
     }
 
     public Player(bool rookie, string firstname, string lastname, Position position, int averageRating)
@@ -88,6 +90,29 @@ public class Player : ITradeable
 
         Match.OnMatchPlayed += OnMatchPlayed;
         GameManager.OnAdvance += UpgradeDowngrade;
+        GameManager.OnNewSeasonStarted += ResetForNewSeason;
+    }
+
+    private void ResetForNewSeason()
+    {
+        if (_teamID == -1)
+        {
+            Match.OnMatchPlayed -= OnMatchPlayed;
+            GameManager.OnAdvance -= UpgradeDowngrade;
+            GameManager.OnNewSeasonStarted -= ResetForNewSeason;
+            return;
+        }
+
+        _startSeasonRating = _rating;
+        _tradeOffers = new List<TradeOffer>();
+        _age++;
+        _contract.DecreaseYearsOnContract();
+        _seasonStats.Add(new PlayerSeason(0, _teamID));
+
+        if (_contract.GetYearsOnContract() == 0)
+        {
+            OnContractExpired?.Invoke(this);
+        }
     }
 
     private void OnMatchPlayed(Match match)
@@ -134,6 +159,30 @@ public class Player : ITradeable
         return _equippedItems;
     }
 
+    public int GetRatingForSkillWithItem(PlayerSkill playerSkill)
+    {
+        int baseRating = playerSkill.GetRatingForSkill();
+
+        List<SkillBoost> skillBoosts = new List<SkillBoost>();
+
+        foreach (OwnedGameItem item in _equippedItems)
+        {
+            GameItem gameItem = ItemDatabase.Instance.GetGameItemByID(item.GetItemID());
+
+            skillBoosts.AddRange(gameItem.GetSkillBoosts());
+        }
+
+        foreach (SkillBoost boost in skillBoosts)
+        {
+            if (playerSkill.GetSkill() == boost.GetSkill())
+            {
+                baseRating += boost.GetBoost();
+            }
+        }
+
+        return baseRating;
+    }
+
     public void DecreaseItemGames()
     {
         List<OwnedGameItem> stillEquippedItems = new List<OwnedGameItem>();
@@ -141,7 +190,7 @@ public class Player : ITradeable
         {
             item.DecreaseGamesRemaining();
 
-            if (item.GetGamesRemaining() > 50)
+            if (item.GetGamesRemaining() > 0)
             {
                 stillEquippedItems.Add(item);
             }

@@ -34,8 +34,8 @@ public class MatchupItem : MonoBehaviour
         _homeTeamLogo.enabled = false;
         _awayTeamLogo.enabled = false;
 
-        _homeTeamName.text = "";
-        _awayTeamName.text = "";
+        _homeTeamName.text = "TBD";
+        _awayTeamName.text = "TBD";
 
         _homeTeamWins.text = "";
         _awayTeamWins.text = "";

@@ -43,4 +43,9 @@ public class Contract
         _yearlySalary = newSalary;
         _yearsOnContract = newLength;
     }
+
+    public void DecreaseYearsOnContract()
+    {
+        _yearsOnContract--;
+    }
 }

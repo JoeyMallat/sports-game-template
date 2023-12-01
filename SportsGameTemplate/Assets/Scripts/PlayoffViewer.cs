@@ -29,26 +29,34 @@ public class PlayoffViewer : MonoBehaviour, ISettable
 
         List<MatchupItem> matchupItems = new List<MatchupItem>();
 
-        matchupItems = _playoffRoot.GetComponentsInChildren<MatchupItem>(true).ToList();
-        SetMatchups(matchupItems, matchups, true);
+        List<MatchupItem> allMatchupItems = _playoffRoot.GetComponentsInChildren<MatchupItem>(true).ToList();
 
         switch (round)
         {
             case 0:
                 matchupItems = _firstRoundRoot.GetComponentsInChildren<MatchupItem>().ToList();
+                allMatchupItems.RemoveRange(0, matchupItems.Count);
                 break;
             case 1:
                 matchupItems = _secondRoundRoot.GetComponentsInChildren<MatchupItem>().ToList();
+                allMatchupItems.RemoveRange(0, _firstRoundRoot.GetComponentsInChildren<MatchupItem>().ToList().Count);
+                allMatchupItems.RemoveRange(0, matchupItems.Count);
                 break;
             case 2:
                 matchupItems = _thirdRoundRoot.GetComponentsInChildren<MatchupItem>().ToList();
+                allMatchupItems.RemoveRange(0, _firstRoundRoot.GetComponentsInChildren<MatchupItem>().ToList().Count);
+                allMatchupItems.RemoveRange(0, _secondRoundRoot.GetComponentsInChildren<MatchupItem>().ToList().Count);
+                allMatchupItems.RemoveRange(0, matchupItems.Count);
                 break;
             case 3:
                 matchupItems = _fourthRoundRoot.GetComponentsInChildren<MatchupItem>().ToList();
+                allMatchupItems = new List<MatchupItem>();
                 break;
             default:
                 break;
         }
+
+        SetMatchups(allMatchupItems, matchups, true);
 
         SetMatchups(matchupItems, matchups, false);
 
@@ -57,7 +65,7 @@ public class PlayoffViewer : MonoBehaviour, ISettable
 
     private void SetMatchups(List<MatchupItem> matchupItems, List<PlayoffMatchup> matchups, bool empty)
     {
-        for (int i = 0; i < matchups.Count; i++)
+        for (int i = 0; i < matchupItems.Count; i++)
         {
             int index = i;
 

@@ -72,7 +72,6 @@ public class Navigation : SerializedMonoBehaviour
         if (settable != null)
         {
             settable.SetDetails(team);
-            Debug.Log("ISettable is being updated");
         }
 
         SetBackButton();
@@ -140,7 +139,6 @@ public class Navigation : SerializedMonoBehaviour
         {
             int index = i;
             _openedCanvasses[i].sortingOrder = index;
-            Debug.Log($"Sorting order of {_openedCanvasses[i].gameObject.name} is {index}");
         }
     }
 
