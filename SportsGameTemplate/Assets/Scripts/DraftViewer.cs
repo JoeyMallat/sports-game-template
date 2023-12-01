@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DraftViewer : MonoBehaviour, ISettable
 {
@@ -16,7 +17,8 @@ public class DraftViewer : MonoBehaviour, ISettable
     [SerializeField] TextMeshProUGUI _draftText;
     [SerializeField] TextMeshProUGUI _draftInfoText;
     [SerializeField] TextMeshProUGUI _roundText;
-    [SerializeField] TextMeshProUGUI _clockText;
+
+    [SerializeField] Button _closeDraftButton;
 
     [SerializeField][TextArea(2, 3)] string _textBeforeDraft;
     [SerializeField][TextArea(2, 3)] string _textAfterPick;
@@ -26,12 +28,13 @@ public class DraftViewer : MonoBehaviour, ISettable
     {
         DraftSystem.OnGetDraftOrder += SetDetails;
         DraftSystem.OnPlayerPicked += RefreshDraftView;
-        DraftSystem.OnDraftClockUpdated += UpdateClock;
         DraftSystem.OnDraftClassUpdated += SetDraftClassPlayers;
+        DraftSystem.OnDraftEnded += SetEndGraphics;
     }
 
     private void SetDraftClassPlayers(DraftClass draftClass)
     {
+        _closeDraftButton.ToggleButtonStatus(false);
         List<DraftPlayerItem> draftPlayerItems = _playersRoot.GetComponentsInChildren<DraftPlayerItem>().ToList();
         List<Player> players = draftClass.GetPlayers();
         int playerItemsToBeCreated = players.Count - draftPlayerItems.Count;
@@ -104,30 +107,14 @@ public class DraftViewer : MonoBehaviour, ISettable
         _roundText.text = $"Round {round}";
     }
 
-    private void UpdateClock(float minutes, float seconds)
-    {
-        int minutesInt = Mathf.RoundToInt(minutes);
-        int secondsInt  = Mathf.RoundToInt(seconds);
-
-        if (seconds >= 59)
-        {
-            secondsInt = 0;
-            minutesInt--;
-        }
-
-        if (seconds < 9.5f)
-        {
-            _clockText.text = $"0{minutesInt}:0{secondsInt}";
-        } else
-        {
-            _clockText.text = $"0{minutesInt}:{secondsInt}";
-        }
-    }
-
     private void SetEndGraphics()
     {
-        _clockText.text = "00:00";
         _draftInfoText.text = _textAfterDraft;
+        _closeDraftButton.ToggleButtonStatus(true);
+        _closeDraftButton.onClick.RemoveAllListeners();
+        _closeDraftButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID())));
+
+        _roundText.text = "";
     }
 }
 

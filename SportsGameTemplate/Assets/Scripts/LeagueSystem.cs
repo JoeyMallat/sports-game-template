@@ -55,6 +55,11 @@ public class LeagueSystem : MonoBehaviour
         _seasonMatches = _seasonMatches.OrderBy(x => x.GetWeek()).ToList();
     }
 
+    public void SetTeams(List<Team> teams)
+    {
+        _teams = teams;
+    }
+
     public List<Match> GetMatchesForTeam(Team team)
     {
         List<Match> matchesForTeam = new List<Match>();
@@ -206,10 +211,10 @@ public class LeagueSystem : MonoBehaviour
                 List<Match> matches = GetMatchesFromWeek(week);
                 if (matches.Count > 0)
                 {
-                    StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { GetNextGame(seasonStage, week); }, SimulateMatchesWithProgress(matches)));
+                    StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { GetNextGame(seasonStage, week); Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID())); }, SimulateMatchesWithProgress(matches)));
                 } else
                 {
-                    OnRegularSeasonFinished?.Invoke(_teams, SeasonStage.OffSeason);
+                    OnRegularSeasonFinished?.Invoke(_teams, SeasonStage.Playoffs);
                 }
                 break;
             case SeasonStage.Playoffs:
@@ -223,10 +228,13 @@ public class LeagueSystem : MonoBehaviour
         }
     }
 
-    public bool HasNextGame()
+    public bool HasNextGame(int week = 0)
     {
+        if (week == 0)
+            week = GameManager.Instance.GetCurrentWeek();
+
         int myTeamID = GameManager.Instance.GetTeamID();
-        return _seasonMatches.Where(x => x.GetWeek() == GameManager.Instance.GetCurrentWeek() + 1 && (x.GetHomeTeamID() == myTeamID || x.GetAwayTeamID() == myTeamID)).ToList().Count > 0;
+        return _seasonMatches.Where(x => x.GetWeek() == week + 1 && (x.GetHomeTeamID() == myTeamID || x.GetAwayTeamID() == myTeamID)).ToList().Count > 0;
     }
 
     private void GetNextGame(SeasonStage seasonStage, int week)
@@ -238,6 +246,7 @@ public class LeagueSystem : MonoBehaviour
         {
             int myTeamID = GameManager.Instance.GetTeamID();
             Match match = _seasonMatches.Where(x => x.GetWeek() == week + 1 && (x.GetHomeTeamID() == myTeamID || x.GetAwayTeamID() == myTeamID)).ToList()[0];
+            Debug.Log($"Match: {match.GetHomeTeamID()} vs {match.GetAwayTeamID()}");
             _nextMatchIndex = _seasonMatches.IndexOf(match);
         }
     }

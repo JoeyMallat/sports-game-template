@@ -13,6 +13,7 @@ public class ChecklistItem : MonoBehaviour
 
     public void SetChecklistItem(bool completed, string title, string subtitle, List<string> buttonTexts, List<Action> buttonActions)
     {
+        _checkmark.gameObject.SetActive(completed);
         _checkmark.enabled = completed;
 
         _checklistText.text = "";

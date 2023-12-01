@@ -183,6 +183,7 @@ public class Player : ITradeable
     public void ChangeTeam(int teamID)
     {
         _teamID = teamID;
+        _seasonStats.Add(new PlayerSeason(0, _teamID));
         OnPlayerTeamChanged?.Invoke(this);
     }
 
@@ -190,6 +191,7 @@ public class Player : ITradeable
     {
         _teamID = teamID;
         _contract = new Contract(pick);
+        _seasonStats.Add(new PlayerSeason(0, _teamID));
         OnPlayerTeamChanged?.Invoke(this);
     }
 

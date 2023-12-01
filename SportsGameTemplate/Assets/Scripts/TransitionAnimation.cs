@@ -58,9 +58,10 @@ public class TransitionAnimation : MonoBehaviour
         LeanTween.moveLocal(_leftSide, new Vector3(-270, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay);
         LeanTween.moveLocal(_rightSide, new Vector3(270, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay);
         LeanTween.moveLocal(_teamLogo, new Vector3(0, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay);
-        LeanTween.rotateAround(_teamLogo, Vector3.forward, 720, 10).setEase(_sidesAnimationCurve).setDelay(_startingDelay).setOnComplete(actionOnTransition);
+        LeanTween.rotateAround(_teamLogo, Vector3.forward, 720, 10).setEase(_sidesAnimationCurve).setDelay(_startingDelay);
         yield return new WaitForSeconds(_startingDelay + _sidesMoveSpeed);
         yield return StartCoroutine(waitForCompletion);
+        actionOnTransition?.Invoke();
         LeanTween.moveLocal(_leftSide, new Vector3(-895, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay + _sidesMoveSpeed + _logoTurnSpeed);
         LeanTween.moveLocal(_rightSide, new Vector3(895, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay + _sidesMoveSpeed + _logoTurnSpeed);
         LeanTween.moveLocal(_teamLogo, new Vector3(625, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay + _sidesMoveSpeed + _logoTurnSpeed).setOnComplete(() => _backgroundBlocker.enabled = false);

@@ -8,6 +8,7 @@ using System.Linq;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] SeasonStage _currentSeasonStage;
+    [SerializeField] int _currentSeason;
     [SerializeField] int _currentWeek;
     [SerializeField] bool _draftCompleted;
     [InfoBox("@GetTeamName()")]
@@ -24,6 +25,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] int _gems;
     public static event Action<CloudSaveData> OnGemsUpdated;
     public static event Action<CloudSaveData> OnInventoryUpdated;
+    public static event Action OnNewSeasonStarted;
 
     public void SetGems(int gems)
     {
@@ -71,16 +73,6 @@ public class GameManager : MonoBehaviour
     public int GetCurrentWeek()
     {
         return _currentWeek;
-    }
-
-    public bool GetDraftStatus()
-    {
-        return _draftCompleted;
-    }
-
-    public void SetDraftStatus(bool status)
-    {
-        _draftCompleted = status;
     }
 
     private void Start()
@@ -132,6 +124,14 @@ public class GameManager : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public void StartNewSeason()
+    {
+        ChangeSeasonStage(LeagueSystem.Instance.GetTeams(), SeasonStage.RegularSeason);
+        _currentSeason++;
+        OnNewSeasonStarted?.Invoke();
+        TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(_selectedTeamID)));
     }
 
     public void AddItem(GameItem reward)

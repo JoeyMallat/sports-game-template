@@ -30,7 +30,7 @@ public class Navigation : SerializedMonoBehaviour
         GameManager.OnAdvance += RefreshMainMenu;
         GameManager.OnGameStarted += RefreshMainMenu;
 
-        //GoToScreen(false, CanvasKey.Setup);
+        GoToScreen(false, CanvasKey.Setup);
     }
 
     public void RefreshMainMenu(SeasonStage seasonStage, int week)
