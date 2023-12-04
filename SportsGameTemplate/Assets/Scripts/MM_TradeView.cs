@@ -88,8 +88,14 @@ public class MM_TradeView : MonoBehaviour, ISettable
             {
                 index = i;
 
-                tradeOfferItems[i].gameObject.SetActive(true);
-                tradeOfferItems[i].SetTradeOffer(tradeOffers[index]);
+                if (tradeOffers[index].Item1.GetAssets().Item1.Count != 0 && tradeOffers[index].Item1.GetAssets().Item2.Count != 0)
+                {
+                    tradeOfferItems[i].gameObject.SetActive(true);
+                    tradeOfferItems[i].SetTradeOffer(tradeOffers[index]);
+                } else
+                {
+                    tradeOfferItems[i].gameObject.SetActive(false);
+                }
             } else
             {
                 tradeOfferItems[i].gameObject.SetActive(false);

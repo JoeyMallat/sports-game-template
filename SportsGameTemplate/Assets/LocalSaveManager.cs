@@ -10,18 +10,32 @@ public class LocalSaveManager : MonoBehaviour
 
     private void Awake()
     {
-        //GameManager.OnAdvance += SaveGame;
+        GameManager.OnAdvance += SaveGame;
     }
 
     private void Start()
     {
-        //LoadGame();
+        LoadGame();
     }
 
     public void SaveGame(SeasonStage seasonStage, int week)
     {
-        byte[] bytes = SerializationUtility.SerializeValue(LeagueSystem.Instance.GetTeams(), DataFormat.JSON);
-        File.WriteAllBytes(Application.persistentDataPath + _filePath, bytes);
+        try
+        {
+            LocalSaveData localSaveData = new LocalSaveData();
+            localSaveData.Teams = LeagueSystem.Instance.GetTeams();
+            localSaveData.SeasonStage = seasonStage;
+            localSaveData.CurrentSeason = GameManager.Instance.GetCurrentSeason();
+            localSaveData.CurrentWeek = week;
+            localSaveData.TeamID = GameManager.Instance.GetTeamID();
+
+            byte[] bytes = SerializationUtility.SerializeValue(localSaveData, DataFormat.JSON);
+            File.WriteAllBytes(Application.persistentDataPath + _filePath, bytes);
+        } catch
+        {
+            Debug.LogWarning("Data was not saved!");
+        }
+
     }
 
     public void LoadGame()
@@ -29,8 +43,21 @@ public class LocalSaveManager : MonoBehaviour
         if (File.Exists(Application.persistentDataPath + _filePath))
         {
             byte[] bytes = File.ReadAllBytes(Application.persistentDataPath + _filePath);
-            List<Team> teams = SerializationUtility.DeserializeValue<List<Team>>(bytes, DataFormat.JSON);
-            LeagueSystem.Instance.SetTeams(teams);
+            LocalSaveData data = SerializationUtility.DeserializeValue<LocalSaveData>(bytes, DataFormat.JSON);
+            LeagueSystem.Instance.SetTeams(data.Teams);
+            GameManager.Instance.SetLoadData(data.SeasonStage, data.CurrentSeason, data.CurrentWeek, data.TeamID);
+
+            Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(data.TeamID));
         }
     }
+}
+
+[System.Serializable]
+public class LocalSaveData
+{
+    public int TeamID;
+    public SeasonStage SeasonStage;
+    public int CurrentWeek;
+    public int CurrentSeason;
+    public List<Team> Teams;
 }

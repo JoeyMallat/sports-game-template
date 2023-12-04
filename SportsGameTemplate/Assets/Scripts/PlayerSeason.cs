@@ -9,7 +9,7 @@ public class PlayerSeason
 {
     [SerializeField] int _season;
     [SerializeField] int _teamID;
-    List<PlayerMatchStats> _matchStats;
+    [SerializeField] List<PlayerMatchStats> _matchStats;
     
     public PlayerSeason(int season, int teamID)
     {

@@ -105,6 +105,7 @@ public class TeamAsset : MonoBehaviour
 
         if (item.GetType() == typeof(Player))
         {
+            _playerProfileButton.gameObject.SetActive(true);
             _playerProfileButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Player, item as Player));
             _playerProfileButton.onClick.AddListener(() => ToggleOverlay(false));
         }

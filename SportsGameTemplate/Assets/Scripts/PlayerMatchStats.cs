@@ -4,10 +4,10 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 
 [System.Serializable]
-public class PlayerMatchStats : SerializedUnityObject
+public class PlayerMatchStats
 {
     [SerializeField] int _matchID;
-    Dictionary<string, int> _stats;
+    [SerializeField] Dictionary<string, int> _stats;
 
     public PlayerMatchStats(int matchID)
     {

@@ -240,6 +240,11 @@ public class Player : ITradeable
         OnTradeOfferReceived?.Invoke(this);
     }
 
+    public void RemoveTradeOffers()
+    {
+        _tradeOffers = new List<TradeOffer>();
+    }
+
     public List<TradeOffer> GetTradeOffers()
     {
         if (_tradeOffers.Count == 0)

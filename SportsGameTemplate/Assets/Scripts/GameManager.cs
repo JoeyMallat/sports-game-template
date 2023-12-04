@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour
     public static event Action<SeasonStage, int> OnAdvance;
     public static event Action<SeasonStage, int> OnGameStarted;
     public static event Action<SeasonStage, int> OnPostSeasonStarted;
-
     public static GameManager Instance;
 
     [SerializeField] List<OwnedGameItem> _ownedGameItems;
@@ -75,17 +74,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Update()
+    public void SetLoadData(SeasonStage seasonStage, int season, int week, int teamID)
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Advance();
-        }
+        _currentSeasonStage = seasonStage;
+        _currentSeason = season;
+        _currentWeek = week;
+        _selectedTeamID = teamID;
+        _teamPicked = true;
     }
 
     public int GetCurrentWeek()
     {
         return _currentWeek;
+    }
+
+    public int GetCurrentSeason()
+    {
+        return _currentSeason;
     }
 
     private void Start()

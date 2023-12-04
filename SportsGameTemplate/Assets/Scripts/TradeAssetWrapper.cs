@@ -21,9 +21,13 @@ public class TradeAssetWrapper
 
         if (_assetType == AssetType.Player)
         {
+            if (team.GetPlayersFromTeam().Where(x => x.GetTradeableID() == _assetID).ToList().Count == 0) return null;
+
             return team.GetPlayersFromTeam().Where(x => x.GetTradeableID() == _assetID).ToList()[0];
         } else if (_assetType == AssetType.DraftPick)
         {
+            if (team.GetDraftPicks().Where(x => x.GetTradeableID() == _assetID).ToList().Count == 0) return null;
+
             return team.GetDraftPicks().Where(x => x.GetTradeableID() == _assetID).ToList()[0];
         }
 

@@ -40,7 +40,11 @@ public class TradeOffer
 
         foreach (TradeAssetWrapper teammate in _includedTeammates)
         {
-            teammates.Add(teammate.GetTradeable(GameManager.Instance.GetTeamID()));
+            ITradeable tradeable = teammate.GetTradeable(GameManager.Instance.GetTeamID());
+            if (tradeable != null)
+            {
+                teammates.Add(tradeable);
+            }
         }
 
         List<ITradeable> assets = new List<ITradeable>();

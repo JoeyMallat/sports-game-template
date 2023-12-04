@@ -73,6 +73,11 @@ public class DraftPick : ITradeable
         OnTradeOfferReceived?.Invoke(this);
     }
 
+    public void RemoveTradeOffers()
+    {
+        _tradeOffers = new List<TradeOffer>();
+    }
+
     public List<TradeOffer> GetTradeOffers()
     {
         return _tradeOffers;

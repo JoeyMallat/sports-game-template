@@ -41,12 +41,12 @@ public class TradingSystem : MonoBehaviour
         TradeAssets(_teamAID, _teamBID, _teamATradingAssets);
         TradeAssets(_teamBID, _teamAID, _teamBTradingAssets);
 
-        Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
-        Navigation.Instance.GoToScreen(true, CanvasKey.Team, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
-
         ClearTrades(false);
         UpdateAcceptButtonAndText(false, "");
         OnTradeCompleted?.Invoke();
+
+        Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
+        Navigation.Instance.GoToScreen(true, CanvasKey.Team, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
     }
 
     private void GenerateTradeForPlayer(SeasonStage seasonStage, int week)
@@ -72,6 +72,7 @@ public class TradingSystem : MonoBehaviour
                 DraftPick draftPick = (DraftPick)asset;
                 TradePick(currentTeamID, newTeamID, draftPick);
             }
+            asset.RemoveTradeOffers();
         }
     }
 

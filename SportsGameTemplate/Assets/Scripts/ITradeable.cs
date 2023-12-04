@@ -13,4 +13,5 @@ public interface ITradeable
     public void AddTradeOffer(TradeOffer tradeOffer);
     public List<TradeOffer> GetTradeOffers();
     public void RemoveTradeOffer(TradeOffer tradeOffer);
+    void RemoveTradeOffers();
 }

@@ -16,21 +16,47 @@ public class CloudSaveManager : MonoBehaviour
         GameManager.OnGemsUpdated += SaveAll;
         GameManager.OnInventoryUpdated += SaveAll;
         AuthenticationService.Instance.SignedIn += LoadAll;
+        MM_OfficeView.OnFreeSpin += SetFreeSpinTimer;
+    }
+
+    public async Task<TimeObject> LoadTime()
+    {
+        if (!AuthenticationService.Instance.IsSignedIn)
+        {
+            string data = await RetrieveSpecificData<string>("free_spin_timer");
+            TimeObject timeObject = JsonUtility.FromJson<TimeObject>(data);
+            return timeObject;
+        } else
+        {
+            return null;
+        }
     }
 
     private async void LoadAll()
     {
         CloudSaveData saveData = JsonUtility.FromJson<CloudSaveData>(await RetrieveSpecificData<CloudSaveData>("player_data"));
 
-        if (saveData == null) return;
-
-        GameManager.Instance.SetInventory(saveData.Inventory);
-        GameManager.Instance.SetGems(saveData.GemAmount);
+        if (saveData == null)
+        {
+            SaveAll(new CloudSaveData(GameManager.Instance.GetGems(), GameManager.Instance.GetItems()));
+            return;
+        }
+        else
+        {
+            GameManager.Instance.SetInventory(saveData.Inventory);
+            GameManager.Instance.SetGems(saveData.GemAmount);
+        }
     }
 
     private async void SaveAll(CloudSaveData cloudSaveData)
     {
         await ForceSaveSingleData("player_data", cloudSaveData);
+    }
+
+    private async void SetFreeSpinTimer()
+    {
+        TimeObject timeObject = new TimeObject(DateTime.Now);
+        await ForceSaveSingleData("free_spin_timer", timeObject);
     }
 
     private async Task ForceSaveSingleData(string key, object value)
@@ -39,7 +65,6 @@ public class CloudSaveManager : MonoBehaviour
         {
             Dictionary<string, object> oneElement = new Dictionary<string, object>();
             oneElement.Add(key, value);
-            Debug.Log(value.ToString());
 
             // Saving the data without write lock validation by passing the data as an object instead of a SaveItem
             Dictionary<string, string> result =
@@ -90,9 +115,50 @@ public class CloudSaveManager : MonoBehaviour
         }
         catch (CloudSaveException e)
         {
-            Debug.LogError(e);
+            Debug.LogWarning(e);
         }
 
         return default;
+    }
+}
+
+[System.Serializable]
+public class TimeObject
+{
+    public int Month;
+    public int Day;
+    public int Hour;
+    public int Minute;
+
+    public TimeObject(DateTime time)
+    {
+        Month = time.Month;
+        Day = time.Day;
+        Hour = time.Hour;
+        Minute = time.Minute;
+    }
+
+    public void SetTimeDetails(int month, int day, int hour, int minute)
+    {
+        Month = month;
+        Day = day;
+        Hour = hour;
+        Minute = minute;
+    }
+
+    public (int, int) TimeDifference(DateTime time)
+    {
+        int monthDifference = time.Month - Month;
+        int dayDifference = time.Day - Day;
+        int hourDifference = time.Hour - Hour;
+        int minuteDifference = time.Minute - Minute;
+        
+        if (monthDifference >= 1)
+        {
+            // If > month, return a big number
+            return (99, 99);
+        }
+
+        return ((dayDifference * 24 + hourDifference), minuteDifference);
     }
 }

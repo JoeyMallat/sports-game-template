@@ -1,4 +1,6 @@
+using System;
 using TMPro;
+using Unity.Services.Authentication;
 using Unity.Services.RemoteConfig;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,9 +20,12 @@ public class MM_OfficeView : MonoBehaviour, ISettable
     [SerializeField] Button _storeButton;
     [SerializeField] TextMeshProUGUI _paidSpinCostText;
 
-    private void Awake()
+    public static event Action OnFreeSpin;
+
+    private void Start()
     {
         GameManager.OnGemsUpdated += UpdateBalance;
+        AuthenticationService.Instance.SignedIn += SetFreeSpinButton;
     }
 
     public void SetDetails<T>(T item) where T : class
@@ -34,13 +39,11 @@ public class MM_OfficeView : MonoBehaviour, ISettable
 
         _increaseSalaryCapButton.onClick.RemoveAllListeners();
 
-
         _increaseSalaryCapText.text = $"Increase salary cap\n<color=\"white\"> {RemoteConfigService.Instance.appConfig.GetInt("increasesalarycap_cost", 46)} <sprite name=\"Gem\">";
 
         _currentBalanceText.text = $"Balance   <color=\"white\">{GameManager.Instance.GetGems()} <sprite name=\"Gem\">";
 
-        _freeSpinButton.onClick.RemoveAllListeners();
-        _freeSpinButton.onClick.AddListener(() => GoToBallGame());
+        SetFreeSpinButton();
 
         _paidSpinButton.onClick.RemoveAllListeners();
         _paidSpinButton.onClick.AddListener(() => GoToBallGame(RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12)));
@@ -48,6 +51,33 @@ public class MM_OfficeView : MonoBehaviour, ISettable
 
         _storeButton.onClick.RemoveAllListeners();
         _storeButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(true, CanvasKey.Store)));
+    }
+
+    private async void SetFreeSpinButton()
+    {
+        try
+        {
+            TimeObject timeObject = await FindFirstObjectByType<CloudSaveManager>().LoadTime();
+
+            Debug.Log(timeObject.TimeDifference(DateTime.Now).Item1);
+            Debug.Log(timeObject != null);
+
+            if (timeObject.TimeDifference(DateTime.Now).Item1 > 24 && timeObject != null)
+            {
+                _freeSpinButton.ToggleButtonStatus(true);
+                _freeSpinButton.onClick.RemoveAllListeners();
+                _freeSpinButton.onClick.AddListener(() => OnFreeSpin?.Invoke());
+                _freeSpinButton.onClick.AddListener(() => GoToBallGame());
+            }
+            else
+            {
+                _freeSpinButton.ToggleButtonStatus(false);
+            }
+        } catch
+        {
+            Debug.LogWarning("Not signed in yet");
+            _freeSpinButton.ToggleButtonStatus(false);
+        }
     }
 
     private void GoToBallGame(int cost = 0)

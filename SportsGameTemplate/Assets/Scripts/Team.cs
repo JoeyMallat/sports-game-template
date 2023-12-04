@@ -12,10 +12,10 @@ public class Team
     [SerializeField] string _teamName;
     [SerializeField] int _teamRating;
     [InfoBox("@GetTotalSalaryAmount().ToString(\"C0\")")][SerializeField] List<Player> _players;
-    List<DraftPick> _draftPicks;
-    List<int> _matchdays;
-    List<int> _availableMatchdays;
-    int _seed;
+    [SerializeField][HideInInspector] List<DraftPick> _draftPicks;
+    [SerializeField][HideInInspector]  List<int> _matchdays;
+    [SerializeField][HideInInspector] List<int> _availableMatchdays;
+    [SerializeField][HideInInspector] int _seed;
     [SerializeField] TeamSeason _seasonStats;
 
     public Team(int id, string name, int rating, List<Player> players)
@@ -128,6 +128,7 @@ public class Team
 
     public void AddPlayer(Player player)
     {
+        Debug.Log("Player moved!");
         _players.Add(player);
         player.ChangeTeam(_teamID);
     }
