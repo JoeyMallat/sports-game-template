@@ -20,7 +20,7 @@ public class MM_OfficeView : MonoBehaviour, ISettable
     [SerializeField] Button _storeButton;
     [SerializeField] TextMeshProUGUI _paidSpinCostText;
 
-    public static event Action OnFreeSpin;
+    public static event Action<DateTime> OnFreeSpin;
 
     private void Start()
     {
@@ -55,27 +55,19 @@ public class MM_OfficeView : MonoBehaviour, ISettable
 
     private async void SetFreeSpinButton()
     {
-        try
-        {
-            TimeObject timeObject = await FindFirstObjectByType<CloudSaveManager>().LoadTime();
+        TimeObject timeObject = await FindFirstObjectByType<CloudSaveManager>().LoadTime();
 
-            Debug.Log(timeObject.TimeDifference(DateTime.Now).Item1);
-            Debug.Log(timeObject != null);
+        Debug.Log((DateTime.Now - timeObject.FreeSpinTime).TotalHours);
 
-            if (timeObject.TimeDifference(DateTime.Now).Item1 > 24 && timeObject != null)
-            {
-                _freeSpinButton.ToggleButtonStatus(true);
-                _freeSpinButton.onClick.RemoveAllListeners();
-                _freeSpinButton.onClick.AddListener(() => OnFreeSpin?.Invoke());
-                _freeSpinButton.onClick.AddListener(() => GoToBallGame());
-            }
-            else
-            {
-                _freeSpinButton.ToggleButtonStatus(false);
-            }
-        } catch
+        if ((DateTime.Now - timeObject.FreeSpinTime).TotalHours > 24)
         {
-            Debug.LogWarning("Not signed in yet");
+            _freeSpinButton.ToggleButtonStatus(true);
+            _freeSpinButton.onClick.RemoveAllListeners();
+            _freeSpinButton.onClick.AddListener(() => OnFreeSpin?.Invoke(DateTime.Now));
+            _freeSpinButton.onClick.AddListener(() => GoToBallGame());
+        }
+        else
+        {
             _freeSpinButton.ToggleButtonStatus(false);
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Sirenix.Serialization;
 using Unity.Services.Authentication;
 using Unity.Services.CloudSave;
 using Unity.Services.CloudSave.Models;
@@ -16,20 +17,18 @@ public class CloudSaveManager : MonoBehaviour
         GameManager.OnGemsUpdated += SaveAll;
         GameManager.OnInventoryUpdated += SaveAll;
         AuthenticationService.Instance.SignedIn += LoadAll;
+        //AuthenticationService.Instance.SignedIn += SetFirstFreeSpinTimer;
         MM_OfficeView.OnFreeSpin += SetFreeSpinTimer;
     }
 
     public async Task<TimeObject> LoadTime()
     {
-        if (!AuthenticationService.Instance.IsSignedIn)
-        {
-            string data = await RetrieveSpecificData<string>("free_spin_timer");
-            TimeObject timeObject = JsonUtility.FromJson<TimeObject>(data);
-            return timeObject;
-        } else
-        {
-            return null;
-        }
+        string data = await RetrieveSpecificData<string>("free_spin_timer");
+        TimeObject loadedTime = JsonUtility.FromJson<TimeObject>(data);
+        DateTime.TryParse(loadedTime.FreeSpinTimeString, out DateTime freeSpinTime);
+        Debug.Log(freeSpinTime);
+        TimeObject timeObject = new TimeObject(freeSpinTime);
+        return timeObject;
     }
 
     private async void LoadAll()
@@ -53,9 +52,16 @@ public class CloudSaveManager : MonoBehaviour
         await ForceSaveSingleData("player_data", cloudSaveData);
     }
 
-    private async void SetFreeSpinTimer()
+    private async void SetFreeSpinTimer(DateTime timeToSet)
     {
-        TimeObject timeObject = new TimeObject(DateTime.Now);
+        TimeObject timeObject = new TimeObject(timeToSet);
+        Debug.Log($"New time set: {timeToSet}");
+        await ForceSaveSingleData("free_spin_timer", timeObject);
+    }
+
+    private async void SetFirstFreeSpinTimer()
+    {
+        TimeObject timeObject = new TimeObject(DateTime.MinValue);
         await ForceSaveSingleData("free_spin_timer", timeObject);
     }
 
@@ -125,40 +131,12 @@ public class CloudSaveManager : MonoBehaviour
 [System.Serializable]
 public class TimeObject
 {
-    public int Month;
-    public int Day;
-    public int Hour;
-    public int Minute;
+    public string FreeSpinTimeString;
+    public DateTime FreeSpinTime;
 
     public TimeObject(DateTime time)
     {
-        Month = time.Month;
-        Day = time.Day;
-        Hour = time.Hour;
-        Minute = time.Minute;
-    }
-
-    public void SetTimeDetails(int month, int day, int hour, int minute)
-    {
-        Month = month;
-        Day = day;
-        Hour = hour;
-        Minute = minute;
-    }
-
-    public (int, int) TimeDifference(DateTime time)
-    {
-        int monthDifference = time.Month - Month;
-        int dayDifference = time.Day - Day;
-        int hourDifference = time.Hour - Hour;
-        int minuteDifference = time.Minute - Minute;
-        
-        if (monthDifference >= 1)
-        {
-            // If > month, return a big number
-            return (99, 99);
-        }
-
-        return ((dayDifference * 24 + hourDifference), minuteDifference);
+        FreeSpinTime = time;
+        FreeSpinTimeString = time.ToString();
     }
 }
