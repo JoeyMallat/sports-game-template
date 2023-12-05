@@ -116,6 +116,12 @@ public class CloudSaveManager : MonoBehaviour
             else
             {
                 Debug.Log($"There is no such key as {key}!");
+
+                if (key == "free_spin_timer")
+                {
+                    SetFirstFreeSpinTimer();
+                    return await RetrieveSpecificData<string>("free_spin_timer");
+                }
             }
         }
         catch (CloudSaveValidationException e)
