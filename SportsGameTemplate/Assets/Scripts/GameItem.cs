@@ -22,7 +22,7 @@ public class GameItem
         _itemImageID = imageID;
         _itemName = name;
         _skillBoosts = skillBoosts;
-        _gamesRemaining = 10 * UnityEngine.Random.Range(1, 8);
+        _gamesRemaining = 50;
     }
 
     public string GetSkillBoostsString()

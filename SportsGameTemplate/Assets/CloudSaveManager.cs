@@ -23,12 +23,19 @@ public class CloudSaveManager : MonoBehaviour
 
     public async Task<TimeObject> LoadTime()
     {
-        string data = await RetrieveSpecificData<string>("free_spin_timer");
-        TimeObject loadedTime = JsonUtility.FromJson<TimeObject>(data);
-        DateTime.TryParse(loadedTime.FreeSpinTimeString, out DateTime freeSpinTime);
-        Debug.Log(freeSpinTime);
-        TimeObject timeObject = new TimeObject(freeSpinTime);
-        return timeObject;
+        try
+        {
+            string data = await RetrieveSpecificData<string>("free_spin_timer");
+            TimeObject loadedTime = JsonUtility.FromJson<TimeObject>(data);
+            DateTime.TryParse(loadedTime.FreeSpinTimeString, out DateTime freeSpinTime);
+            Debug.Log(freeSpinTime);
+            TimeObject timeObject = new TimeObject(freeSpinTime);
+            return timeObject;
+        } catch
+        {
+            Debug.LogWarning("Free Spin Timer not yet retrieved. Trying again.");
+            return null;
+        }
     }
 
     private async void LoadAll()

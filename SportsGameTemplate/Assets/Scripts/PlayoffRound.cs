@@ -60,4 +60,10 @@ public class PlayoffRound : MonoBehaviour
     {
         return _playoffRound;
     }
+
+    public void SetMatchup(int matchupIndex, PlayoffMatchup playoffMatchup)
+    {
+        _playoffMatchups[matchupIndex] = playoffMatchup;
+        OnPlayoffRoundUpdated?.Invoke(this);
+    }
 }

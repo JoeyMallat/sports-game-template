@@ -68,6 +68,10 @@ public class PlayoffViewer : MonoBehaviour, ISettable
         for (int i = 0; i < matchupItems.Count; i++)
         {
             int index = i;
+            if (matchups[index].GetHomeTeamID() == matchups[index].GetAwayTeamID())
+            {
+                empty = true;
+            }
 
             if (empty)
             {

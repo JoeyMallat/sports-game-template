@@ -63,9 +63,10 @@ public class LeagueSystem : MonoBehaviour
         _seasonMatches = _seasonMatches.OrderBy(x => x.GetWeek()).ToList();
     }
 
-    public void SetTeams(List<Team> teams)
+    public void SetTeams(List<Team> teams, int nextMatchIndex)
     {
         _teams = teams;
+        _nextMatchIndex = nextMatchIndex;
     }
 
     public List<Match> GetMatchesForTeam(Team team)

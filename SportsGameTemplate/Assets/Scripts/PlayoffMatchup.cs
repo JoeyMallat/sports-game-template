@@ -14,7 +14,7 @@ public class PlayoffMatchup
     [SerializeField] int _awayTeamWins;
     [SerializeField] List<Match> _matches;
     [SerializeField] bool _matchupCompleted = false;
-    int _seriesWinner = -1;
+    [SerializeField][HideInInspector] int _seriesWinner = -1;
 
     public static event Action<PlayoffMatchup, int> OnMatchupCompleted;
 

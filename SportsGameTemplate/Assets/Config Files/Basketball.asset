@@ -22,7 +22,7 @@ MonoBehaviour:
   AverageAgeInLeague: 23
   LeagueFile: {fileID: 4900000, guid: 522c45c2c290a0a428cdf6c80f684299, type: 3}
   ItemFile: {fileID: 4900000, guid: 74f2b415e8913a74e8559b16e00951cb, type: 3}
-  GamesPerTeamInRegularSeason: 82
+  GamesPerTeamInRegularSeason: 5
   SalaryCap: 132000000
   MinimumSalary: 640000
   BestOfAmountInPlayoffs: 7

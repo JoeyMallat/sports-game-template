@@ -18,6 +18,11 @@ public class LocalSaveManager : MonoBehaviour
         LoadGame();
     }
 
+    private void OnApplicationQuit()
+    {
+        SaveGame(GameManager.Instance.GetSeasonStage(), GameManager.Instance.GetCurrentWeek());
+    }
+
     public void SaveGame(SeasonStage seasonStage, int week)
     {
         try
@@ -28,6 +33,8 @@ public class LocalSaveManager : MonoBehaviour
             localSaveData.CurrentSeason = GameManager.Instance.GetCurrentSeason();
             localSaveData.CurrentWeek = week;
             localSaveData.TeamID = GameManager.Instance.GetTeamID();
+            localSaveData.PlayoffRound = PlayoffSystem.Instance.GetPlayoffRound();
+            localSaveData.PlayoffMatchups = PlayoffSystem.Instance.GetAllPlayoffsMatchups();
 
             byte[] bytes = SerializationUtility.SerializeValue(localSaveData, DataFormat.JSON);
             File.WriteAllBytes(Application.persistentDataPath + _filePath, bytes);
@@ -44,8 +51,9 @@ public class LocalSaveManager : MonoBehaviour
         {
             byte[] bytes = File.ReadAllBytes(Application.persistentDataPath + _filePath);
             LocalSaveData data = SerializationUtility.DeserializeValue<LocalSaveData>(bytes, DataFormat.JSON);
-            LeagueSystem.Instance.SetTeams(data.Teams);
+            LeagueSystem.Instance.SetTeams(data.Teams, data.NextMatchIndex);
             GameManager.Instance.SetLoadData(data.SeasonStage, data.CurrentSeason, data.CurrentWeek, data.TeamID);
+            PlayoffSystem.Instance.SetLoadData(data.PlayoffRound, data.PlayoffMatchups);
 
             Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(data.TeamID));
         }
@@ -59,5 +67,8 @@ public class LocalSaveData
     public SeasonStage SeasonStage;
     public int CurrentWeek;
     public int CurrentSeason;
+    public int NextMatchIndex;
     public List<Team> Teams;
+    public int PlayoffRound;
+    public List<PlayoffMatchup> PlayoffMatchups;
 }

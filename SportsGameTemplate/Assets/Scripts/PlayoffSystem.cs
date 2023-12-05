@@ -57,6 +57,11 @@ public class PlayoffSystem : MonoBehaviour
         }
     }
 
+    public int GetPlayoffRound()
+    {
+        return _currentRound;
+    }
+
     private void SetTeamsInRound(int round, List<Team> teamsInRound)
     {
         if (round == 0)
@@ -86,6 +91,24 @@ public class PlayoffSystem : MonoBehaviour
         //_playoffRounds[round].SimMatches();
     }
 
+    public void SetLoadData(int playoffRound, List<PlayoffMatchup> playoffMatchups)
+    {
+        _currentRound = playoffRound;
+
+        int startIndex = 0;
+
+        foreach (var round in _playoffRounds)
+        {
+            int matchupIndex = 0;
+            for (int i = startIndex; i < round.GetMatchups().Count + startIndex; i++)
+            {
+                round.SetMatchup(matchupIndex, playoffMatchups[i]);
+                matchupIndex++;
+            }
+            startIndex += round.GetMatchups().Count;
+        }
+    }
+
     public IEnumerator SimulateGameweekInPlayoffRound()
     {
         _playoffRounds[_currentRound].SimMatches();
@@ -108,5 +131,16 @@ public class PlayoffSystem : MonoBehaviour
     public PlayoffMatchup GetNextMatchData()
     {
         return _nextMatchup;
+    }
+
+    public List<PlayoffMatchup> GetAllPlayoffsMatchups()
+    {
+        List<PlayoffMatchup> matchups = new List<PlayoffMatchup>();
+        foreach (var round in _playoffRounds)
+        {
+            matchups.AddRange(round.GetMatchups());
+        }
+
+        return matchups;
     }
 }

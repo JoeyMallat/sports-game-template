@@ -57,7 +57,7 @@ public class MM_OfficeView : MonoBehaviour, ISettable
     {
         TimeObject timeObject = await FindFirstObjectByType<CloudSaveManager>().LoadTime();
 
-        Debug.Log((DateTime.Now - timeObject.FreeSpinTime).TotalHours);
+        if (timeObject == null) return;
 
         if ((DateTime.Now - timeObject.FreeSpinTime).TotalHours > 24)
         {
