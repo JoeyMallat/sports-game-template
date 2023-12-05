@@ -1,3 +1,4 @@
+using Firebase.Analytics;
 using System;
 using TMPro;
 using Unity.Services.Authentication;
@@ -47,6 +48,7 @@ public class MM_OfficeView : MonoBehaviour, ISettable
 
         _paidSpinButton.onClick.RemoveAllListeners();
         _paidSpinButton.onClick.AddListener(() => GoToBallGame(RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12)));
+        _paidSpinButton.onClick.AddListener(() => FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventSpendVirtualCurrency, new Parameter("gems_spent", RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12))));
         _paidSpinCostText.text = $"Spin wheel <color=\"white\">\n{RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12)} <sprite name=\"Gem\">";
 
         _storeButton.onClick.RemoveAllListeners();
@@ -64,6 +66,7 @@ public class MM_OfficeView : MonoBehaviour, ISettable
             _freeSpinButton.ToggleButtonStatus(true);
             _freeSpinButton.onClick.RemoveAllListeners();
             _freeSpinButton.onClick.AddListener(() => OnFreeSpin?.Invoke(DateTime.Now));
+            _freeSpinButton.onClick.AddListener(() => FirebaseAnalytics.LogEvent("free_spin_used"));
             _freeSpinButton.onClick.AddListener(() => GoToBallGame());
         }
         else

@@ -55,6 +55,22 @@ public class Match
         return _matchPlayed;
     }
 
+    public bool IsMyTeamMatch(int teamID)
+    {
+        if (GetHomeTeamID() == teamID || GetAwayTeamID() == teamID)
+        {
+            return true;
+        } else
+        {
+            return false;
+        }
+    }
+
+    public (int, int) GetScore()
+    {
+        return (_homeTeamPoints, _awayTeamPoints);
+    }
+
     public void AddPossessionResult(PossessionResult possessionResult, Team team)
     {
         _possessionResults.Add(possessionResult);

@@ -1,3 +1,4 @@
+using Firebase.Analytics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -47,7 +48,8 @@ public class DraftPlayerUI : MonoBehaviour, ISettable
         _scoutButton.onClick.RemoveAllListeners();
         if (GameManager.Instance.CheckBuyItem(2))
         {
-            _scoutButton.onClick.AddListener(() =>  player.ScoutPlayer());
+            _scoutButton.onClick.AddListener(() => player.ScoutPlayer());
+            _scoutButton.onClick.AddListener(() => FirebaseAnalytics.LogEvent("player_scouted", new Parameter("percentage_scouted", player.GetScoutingPercentage())));
             _scoutButton.onClick.AddListener(() => SetDetails(player));
         }
         else
@@ -59,6 +61,7 @@ public class DraftPlayerUI : MonoBehaviour, ISettable
 
         _draftButton.onClick.RemoveAllListeners();
         _draftButton.onClick.AddListener(() => OnPlayerDrafted?.Invoke(player));
+        _draftButton.onClick.AddListener(() => FirebaseAnalytics.LogEvent("player_drafted", new Parameter("percentage_scouted", player.GetScoutingPercentage())));
         _draftButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(false, CanvasKey.Draft));
     }
 

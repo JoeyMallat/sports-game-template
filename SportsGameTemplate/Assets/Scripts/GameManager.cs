@@ -4,6 +4,7 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using System;
 using System.Linq;
+using Firebase.Analytics;
 
 public class GameManager : MonoBehaviour
 {
@@ -112,9 +113,10 @@ public class GameManager : MonoBehaviour
         _teamPicked = true;
     }
 
-    public void StartSeason()
+    public void StartGame()
     {
         TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(_selectedTeamID)));
+        FirebaseAnalytics.LogEvent("team_picked", new Parameter("team", LeagueSystem.Instance.GetTeam(_selectedTeamID).GetTeamName()));
         OnGameStarted?.Invoke(SeasonStage.RegularSeason, 0);
     }
 
@@ -150,6 +152,7 @@ public class GameManager : MonoBehaviour
     {
         ChangeSeasonStage(LeagueSystem.Instance.GetTeams(), SeasonStage.RegularSeason);
         TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(_selectedTeamID)));
+        FirebaseAnalytics.LogEvent("new_season_started", new Parameter("season", _currentSeason));
     }
 
     public void AddItem(GameItem reward)

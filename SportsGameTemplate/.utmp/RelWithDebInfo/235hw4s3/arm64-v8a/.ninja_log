@@ -1,5 +1,5 @@
 # ninja log v5
-0	544	7231500747059553	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	ddb9939f8a13aee3
-546	769	7231500748376223	D:/Github/SportsGameTemplate/sports-game-template/SportsGameTemplate/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/235hw4s3/obj/arm64-v8a/libswappywrapper.so	db6ec3294fe4009e
 2	485	7231507446287062	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	ddb9939f8a13aee3
 485	1491	7231507455474470	D:/Github/SportsGameTemplate/sports-game-template/SportsGameTemplate/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/235hw4s3/obj/arm64-v8a/libswappywrapper.so	db6ec3294fe4009e
+54	1892	7234865679912291	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	ddb9939f8a13aee3
+1892	5228	7234865716421751	D:/Github/SportsGameTemplate/sports-game-template/SportsGameTemplate/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/235hw4s3/obj/arm64-v8a/libswappywrapper.so	db6ec3294fe4009e

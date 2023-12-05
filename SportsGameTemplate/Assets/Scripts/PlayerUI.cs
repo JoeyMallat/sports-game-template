@@ -135,6 +135,12 @@ public class PlayerUI : MonoBehaviour, ISettable
 
     private void SetStats(Player player)
     {
+        _careerMinutes.text = player.GetAllTimeStats("minutes").ToString("F1");
+        _careerPoints.text = player.GetAllTimePoints().ToString("F1");
+        _careerAssists.text = player.GetAllTimeStats("assists").ToString("F1");
+        _careerRebounds.text = player.GetAllTimeStats("rebounds").ToString("F1");
+
+
         _seasonMinutes.text = player.GetLatestSeason().GetAverageOfStat("minutes").ToString("F1");
         _seasonPoints.text = player.GetLatestSeason().GetAveragePoints().ToString("F1");
         _seasonAssists.text = player.GetLatestSeason().GetAverageOfStat("assists").ToString("F1");

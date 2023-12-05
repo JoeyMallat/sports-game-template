@@ -301,6 +301,36 @@ public class Player : ITradeable
         return _seasonStats.Last();
     }
 
+    public float GetAllTimeStats(string stat)
+    {
+        float total = 0;
+        int matches = 0;
+        foreach (var season in _seasonStats)
+        {
+            matches += season.GetMatchStats().Count;
+            total = matches * season.GetAverageOfStat(stat);
+        }
+
+        float average = total / matches;
+
+        return average;
+    }
+
+    public float GetAllTimePoints()
+    {
+        float total = 0;
+        int matches = 0;
+        foreach (var season in _seasonStats)
+        {
+            matches += season.GetMatchStats().Count;
+            total = matches * season.GetAveragePoints();
+        }
+
+        float average = total / matches;
+
+        return average;
+    }
+
     private Potential SetPotential()
     {
         float random = UnityEngine.Random.Range(0f, 1f);

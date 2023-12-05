@@ -1,3 +1,4 @@
+using Firebase.Analytics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -196,6 +197,7 @@ public class LeagueSystem : MonoBehaviour
 
             //Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID()));
 
+            CheckMyTeamResult(match);
             yield return null;
         }
 
@@ -203,6 +205,39 @@ public class LeagueSystem : MonoBehaviour
         Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID()));
         //Navigation.Instance.GoToScreen(true, CanvasKey.Standings, GetTeams());
         //OnRegularSeasonFinished?.Invoke(_teams);
+    }
+
+    private void CheckMyTeamResult(Match match)
+    {
+        int teamID = GameManager.Instance.GetTeamID();
+        if (!match.IsMyTeamMatch(teamID)) return;
+
+        FirebaseAnalytics.LogEvent("game_played");
+
+        if (match.IsHomeTeam(teamID))
+        {
+            (int, int) stat = match.GetWinStatForTeam(teamID);
+
+            if (stat.Item1 > 0)
+            {
+                FirebaseAnalytics.LogEvent("game_win", new Parameter("points_scored", match.GetScore().Item1), new Parameter("points_conceded", match.GetScore().Item2));
+            } else if (stat.Item2 > 0)
+            {
+                FirebaseAnalytics.LogEvent("game_loss", new Parameter("points_scored", match.GetScore().Item1), new Parameter("points_conceded", match.GetScore().Item2));
+            }
+        } else
+        {
+            (int, int) stat = match.GetWinStatForTeam(teamID);
+
+            if (stat.Item1 > 0)
+            {
+                FirebaseAnalytics.LogEvent("game_loss", new Parameter("points_scored", match.GetScore().Item2), new Parameter("points_conceded", match.GetScore().Item1));
+            }
+            else if (stat.Item2 > 0)
+            {
+                FirebaseAnalytics.LogEvent("game_win", new Parameter("points_scored", match.GetScore().Item2), new Parameter("points_conceded", match.GetScore().Item1));
+            }
+        }
     }
 
     private void SortStandings()

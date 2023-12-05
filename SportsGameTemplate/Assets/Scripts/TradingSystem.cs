@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Firebase.Analytics;
 
 public class TradingSystem : MonoBehaviour
 {
@@ -38,6 +39,8 @@ public class TradingSystem : MonoBehaviour
     [Button(ButtonSizes.Large)]
     public void ConfirmTrade()
     {
+        FirebaseAnalytics.LogEvent("trade_confirmed", new Parameter("value_sent", GetTotalTradeValue(_teamATradingAssets)), new Parameter("value_received", GetTotalTradeValue(_teamBTradingAssets)));
+
         TradeAssets(_teamAID, _teamBID, _teamATradingAssets);
         TradeAssets(_teamBID, _teamAID, _teamBTradingAssets);
 
