@@ -93,7 +93,9 @@ public class BasketballScheduleGenerator : ScheduleGenerator
     private int FindFreeMatchday(Team team, Team opponent)
     {
         List<int> availableTeam = team.GetAvailableMatchdays();
+        Debug.Log(availableTeam.Count);
         List<int> availableOpponent = opponent.GetAvailableMatchdays();
+        Debug.Log(availableOpponent.Count);
 
         return availableTeam.Intersect(availableOpponent).ToList()[0];
     }

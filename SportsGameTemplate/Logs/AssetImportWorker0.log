@@ -22,7 +22,7 @@ AssetImportWorker0
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-49755
+52729
 Successfully changed project path to: /Users/joeymallat/Documents/GitHub/sports-game-template/SportsGameTemplate
 /Users/joeymallat/Documents/GitHub/sports-game-template/SportsGameTemplate
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
@@ -56,12 +56,12 @@ Successfully changed project path to: /Users/joeymallat/Documents/GitHub/sports-
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Player connection [8357814400] Host "[IP] 192.168.178.28 [Port] 0 [Flags] 2 [Guid] 1638644505 [EditorId] 1638644505 [Version] 1048832 [Id] OSXEditor(0,MacBook-Pro-van-Joey.local) [Debug] 1 [PackageName] OSXEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
+Player connection [8357814400] Host "[IP] 192.168.178.28 [Port] 0 [Flags] 2 [Guid] 3344161326 [EditorId] 3344161326 [Version] 1048832 [Id] OSXEditor(0,MacBook-Pro-van-Joey.local) [Debug] 1 [PackageName] OSXEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
 
-Player connection [8357814400] Host "[IP] 192.168.178.28 [Port] 0 [Flags] 2 [Guid] 1638644505 [EditorId] 1638644505 [Version] 1048832 [Id] OSXEditor(0,MacBook-Pro-van-Joey.local) [Debug] 1 [PackageName] OSXEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [8357814400] Host "[IP] 192.168.178.28 [Port] 0 [Flags] 2 [Guid] 3344161326 [EditorId] 3344161326 [Version] 1048832 [Id] OSXEditor(0,MacBook-Pro-van-Joey.local) [Debug] 1 [PackageName] OSXEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
 
 [Physics::Module] Initialized MultithreadedJobDispatcher with 9 workers.
-Library Redirect Path: Library/Refreshing native plugins compatible for Editor in 40.47 ms, found 5 plugins.
+Library Redirect Path: Library/Refreshing native plugins compatible for Editor in 9.52 ms, found 5 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2023.1.9f1 (f3f94c8cdc49)
 [Subsystems] Discovering subsystems at path /Applications/Unity/Hub/Editor/2023.1.9f1/Unity.app/Contents/Resources/UnitySubsystems
@@ -76,7 +76,7 @@ Initialize mono
 Mono path[0] = '/Applications/Unity/Hub/Editor/2023.1.9f1/Unity.app/Contents/Managed'
 Mono path[1] = '/Applications/Unity/Hub/Editor/2023.1.9f1/Unity.app/Contents/MonoBleedingEdge/lib/mono/unityjit-macos'
 Mono config path = '/Applications/Unity/Hub/Editor/2023.1.9f1/Unity.app/Contents/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56483
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56583
 Begin MonoManager ReloadAssembly
 icall.c:1842:
 icall.c:1842:
@@ -92,21 +92,21 @@ Registering precompiled unity dll's ...
 Register platform support module: /Applications/Unity/Hub/Editor/2023.1.9f1/Unity.app/Contents/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
 Register platform support module: /Applications/Unity/Hub/Editor/2023.1.9f1/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
 Register platform support module: /Applications/Unity/Hub/Editor/2023.1.9f1/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll
-Registered in 0.003214 seconds.
-- Loaded All Assemblies, in  0.249 seconds
+Registered in 0.001182 seconds.
+- Loaded All Assemblies, in  0.220 seconds
 [usbmuxd] Start listen thread
 [usbmuxd] Listen thread started
 [usbmuxd] Send listen message
 Native extension for iOS target not found
 Native extension for Android target not found
-Android Extension - Scanning For ADB Devices 81 ms
+Android Extension - Scanning For ADB Devices 63 ms
 Native extension for OSXStandalone target not found
 Mono: successfully reloaded assembly
 icall.c:1842:
 icall.c:1842:
-- Finished resetting the current domain, in  0.391 seconds
-Domain Reload Profiling: 640ms
-	BeginReloadAssembly (69ms)
+- Finished resetting the current domain, in  0.367 seconds
+Domain Reload Profiling: 587ms
+	BeginReloadAssembly (45ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (0ms)
 		BackupInstance (0ms)
@@ -114,25 +114,25 @@ Domain Reload Profiling: 640ms
 		CreateAndSetChildDomain (0ms)
 	RebuildCommonClasses (24ms)
 	RebuildNativeTypeToScriptingClass (9ms)
-	initialDomainReloadingComplete (35ms)
-	LoadAllAssembliesAndSetupDomain (113ms)
-		LoadAssemblies (69ms)
+	initialDomainReloadingComplete (30ms)
+	LoadAllAssembliesAndSetupDomain (111ms)
+		LoadAssemblies (45ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (110ms)
+		AnalyzeDomain (109ms)
 			TypeCache.Refresh (109ms)
-				TypeCache.ScanAssembly (102ms)
+				TypeCache.ScanAssembly (101ms)
 			ScanForSourceGeneratedMonoScriptInfo (0ms)
 			ResolveRequiredComponents (0ms)
-	FinalizeReload (392ms)
+	FinalizeReload (367ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (356ms)
+		SetupLoadedEditorAssemblies (331ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (207ms)
+			InitializePlatformSupportModulesInManaged (184ms)
 			SetLoadedEditorAssemblies (3ms)
-			BeforeProcessingInitializeOnLoad (4ms)
-			ProcessInitializeOnLoadAttributes (94ms)
-			ProcessInitializeOnLoadMethodAttributes (47ms)
+			BeforeProcessingInitializeOnLoad (5ms)
+			ProcessInitializeOnLoadAttributes (93ms)
+			ProcessInitializeOnLoadMethodAttributes (46ms)
 			AfterProcessingInitializeOnLoad (0ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
@@ -156,8 +156,8 @@ icall.c:1842:
 Symbol file LoadedFromMemory doesn't match image /Users/joeymallat/Documents/GitHub/sports-game-template/SportsGameTemplate/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/YamlDotNet/Unity.VisualScripting.YamlDotNet.dll
 Symbol file LoadedFromMemory doesn't match image /Users/joeymallat/Documents/GitHub/sports-game-template/SportsGameTemplate/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/DotNetZip/Unity.VisualScripting.IonicZip.dll
 Symbol file LoadedFromMemory is not a mono symbol file
-- Loaded All Assemblies, in  0.717 seconds
-Refreshing native plugins compatible for Editor in 5.29 ms, found 5 plugins.
+- Loaded All Assemblies, in  0.618 seconds
+Refreshing native plugins compatible for Editor in 5.49 ms, found 5 plugins.
 icall.c:1842:
 icall.c:1842:
 icall.c:1842:
@@ -169,48 +169,213 @@ Native extension for iOS target not found
 Native extension for Android target not found
 Native extension for OSXStandalone target not found
 Launching external process: /Applications/Unity/Hub/Editor/2023.1.9f1/Unity.app/Contents/Tools/UnityShaderCompiler
-Launched and connected shader compiler UnityShaderCompiler after 0.07 seconds
+Launched and connected shader compiler UnityShaderCompiler after 0.05 seconds
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.916 seconds
-Domain Reload Profiling: 1636ms
-	BeginReloadAssembly (150ms)
+- Finished resetting the current domain, in  0.897 seconds
+Domain Reload Profiling: 1515ms
+	BeginReloadAssembly (144ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (3ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
 		CreateAndSetChildDomain (27ms)
 	RebuildCommonClasses (26ms)
-	RebuildNativeTypeToScriptingClass (8ms)
-	initialDomainReloadingComplete (28ms)
-	LoadAllAssembliesAndSetupDomain (508ms)
-		LoadAssemblies (282ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (27ms)
+	LoadAllAssembliesAndSetupDomain (412ms)
+		LoadAssemblies (193ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (251ms)
-			TypeCache.Refresh (231ms)
-				TypeCache.ScanAssembly (220ms)
-			ScanForSourceGeneratedMonoScriptInfo (16ms)
+		AnalyzeDomain (250ms)
+			TypeCache.Refresh (230ms)
+				TypeCache.ScanAssembly (219ms)
+			ScanForSourceGeneratedMonoScriptInfo (15ms)
 			ResolveRequiredComponents (4ms)
-	FinalizeReload (917ms)
+	FinalizeReload (898ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (776ms)
+		SetupLoadedEditorAssemblies (750ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (20ms)
+			InitializePlatformSupportModulesInManaged (22ms)
 			SetLoadedEditorAssemblies (3ms)
-			BeforeProcessingInitializeOnLoad (59ms)
-			ProcessInitializeOnLoadAttributes (486ms)
-			ProcessInitializeOnLoadMethodAttributes (208ms)
+			BeforeProcessingInitializeOnLoad (62ms)
+			ProcessInitializeOnLoadAttributes (483ms)
+			ProcessInitializeOnLoadMethodAttributes (179ms)
 			AfterProcessingInitializeOnLoad (1ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
 		AwakeInstancesAfterBackupRestoration (2ms)
-Refreshing native plugins compatible for Editor in 4.88 ms, found 5 plugins.
+Refreshing native plugins compatible for Editor in 4.56 ms, found 5 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 5535 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 162 unused Assets / (98.8 KB). Loaded Objects now: 6044.
-Memory consumption went from 209.9 MB to 209.8 MB.
-Total: 17.219125 ms (FindLiveObjects: 0.143458 ms CreateObjectMapping: 0.064875 ms MarkObjects: 16.816666 ms  DeleteObjects: 0.193041 ms)
+Unloading 162 unused Assets / (98.3 KB). Loaded Objects now: 6044.
+Memory consumption went from 210.1 MB to 210.0 MB.
+Total: 17.253416 ms (FindLiveObjects: 0.137917 ms CreateObjectMapping: 0.065041 ms MarkObjects: 16.894334 ms  DeleteObjects: 0.155291 ms)
 
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:AudioImporter_EditorPlatform: 3918e3fc78b5a79bad01e8451be0beb8 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:framework-osx-AVFoundation: e770b220cccbd017edd2c1fefb359320 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 175522.301989 seconds.
+  path: Assets/Sprites/Gem.png
+  artifactKey: Guid(b5e0cb882170c5742873a61ce75f0a6e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Gem.png using Guid(b5e0cb882170c5742873a61ce75f0a6e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a53cb176ecc97ebf9259fd8376dd838c') in 0.045036 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000056 seconds.
+  path: Assets/Sprites/crosshair.png
+  artifactKey: Guid(98dbe93dc4875ee4d9f5119ddc1c29e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/crosshair.png using Guid(98dbe93dc4875ee4d9f5119ddc1c29e9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '64e63192beded61fca000f386d9a6a1f') in 0.007592 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000074 seconds.
+  path: Assets/Sprites/Pixel.png
+  artifactKey: Guid(04928c72837f4534c8a9ddc30d75c624) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Pixel.png using Guid(04928c72837f4534c8a9ddc30d75c624) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'dab39d9e70483ce7cb73e705ebaae838') in 0.004515 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000087 seconds.
+  path: Assets/Sprites/basketball_trophy_room.png
+  artifactKey: Guid(8506f2de40fe4ce4498ba3bb0d05115c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/basketball_trophy_room.png using Guid(8506f2de40fe4ce4498ba3bb0d05115c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b2bf1c5cbdf90b3c608193399aa4c027') in 0.006902 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000119 seconds.
+  path: Assets/Sprites/silver_basketball-removebg-preview.png
+  artifactKey: Guid(df161ddb72073b144993c2354f2d5c2e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/silver_basketball-removebg-preview.png using Guid(df161ddb72073b144993c2354f2d5c2e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7e102458097fa18cf9a7143d2525f340') in 0.006793 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000104 seconds.
+  path: Assets/Sprites/ball.png
+  artifactKey: Guid(71db0f8ace14e1b42b7c260371bc6de1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/ball.png using Guid(71db0f8ace14e1b42b7c260371bc6de1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bcfaaefedff753eba6db77516b27acb7') in 0.006402 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000102 seconds.
+  path: Assets/Sprites/background.png
+  artifactKey: Guid(7ff814ae8df03c44bafe3ba5486ae2bd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/background.png using Guid(7ff814ae8df03c44bafe3ba5486ae2bd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd39e48cbcbdb1a7f400d1a49f2f1adff') in 0.006812 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000127 seconds.
+  path: Assets/Sprites/basketball-silhouette.png
+  artifactKey: Guid(4d53fc4131dae344ca767f43c7b514b6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/basketball-silhouette.png using Guid(4d53fc4131dae344ca767f43c7b514b6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b570475839bef1c2cfef8f4ff813823b') in 0.005994 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000087 seconds.
+  path: Assets/Sprites/player_background.png
+  artifactKey: Guid(e8df752ebcb85384ea4ba9f3c461c4f5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/player_background.png using Guid(e8df752ebcb85384ea4ba9f3c461c4f5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '02b09cb2d7128785c1e391b3362e7f3c') in 0.007679 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000164 seconds.
+  path: Assets/Sprites/Ellipse 3.png
+  artifactKey: Guid(20b23a922b10d2f42acfac2c62e88337) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Ellipse 3.png using Guid(20b23a922b10d2f42acfac2c62e88337) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6f3a51f46575c147b18115fb6caf3aec') in 0.004856 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000112 seconds.
+  path: Assets/Sprites/gold_basketball-removebg-preview.png
+  artifactKey: Guid(0f6bbf736bb90a84e8378b7433e5fa96) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/gold_basketball-removebg-preview.png using Guid(0f6bbf736bb90a84e8378b7433e5fa96) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2fa189306f33196c5354d49d2e27fbad') in 0.009683 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000107 seconds.
+  path: Assets/Sprites/TimeRemainingIcon.png
+  artifactKey: Guid(2e8e5484a19c1114e92f6693f62f3455) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/TimeRemainingIcon.png using Guid(2e8e5484a19c1114e92f6693f62f3455) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ee8f4c6f95f3e6953ee4f4de4736c55f') in 0.007369 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000104 seconds.
+  path: Assets/Sprites/spinwheel (1).png
+  artifactKey: Guid(e805f7961ee7bed41a36d786d1156ca9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/spinwheel (1).png using Guid(e805f7961ee7bed41a36d786d1156ca9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3debb8344918723b1df3f559c177236f') in 0.007023 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000154 seconds.
+  path: Assets/Sprites/flame.png
+  artifactKey: Guid(7c754d1eab91eb140a11822e756f88a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/flame.png using Guid(7c754d1eab91eb140a11822e756f88a0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '59833f0816b3f3c4304e24853cd206ca') in 0.007186 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000069 seconds.
+  path: Assets/Sprites/basketball_trophy_room2.png
+  artifactKey: Guid(6ca2c9e7a36932342b8edf1b16a3c1c8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/basketball_trophy_room2.png using Guid(6ca2c9e7a36932342b8edf1b16a3c1c8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4095b9a18856a6497efbabd47c8a44a1') in 0.006130 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000115 seconds.
+  path: Assets/Sprites/basketball-silhouette2.png
+  artifactKey: Guid(ae91d443791a26c42af5faed6a3b42e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/basketball-silhouette2.png using Guid(ae91d443791a26c42af5faed6a3b42e7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b701d274f3ce9ee4152057461ed52059') in 0.005424 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 11.044685 seconds.
+  path: Assets/Scripts/Sport Specific/Basketball/BasketballScheduleGenerator.cs
+  artifactKey: Guid(6b3f22ca90c2c40d0baec670f980de99) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/Sport Specific/Basketball/BasketballScheduleGenerator.cs using Guid(6b3f22ca90c2c40d0baec670f980de99) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c19cb698bee44610a754de752e0432b4') in 0.000327 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 2.157889 seconds.
+  path: Assets/Scripts/Sport Specific/Basketball/BasketballMatchSimulator.cs
+  artifactKey: Guid(7e37f5e7d68f2b747b037577d498fe9e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/Sport Specific/Basketball/BasketballMatchSimulator.cs using Guid(7e37f5e7d68f2b747b037577d498fe9e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f6dc9e0c886bed03c166310136a54ca1') in 0.000323 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Prepare
+Refreshing native plugins compatible for Editor in 19.19 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 1 unused Assets / (0.8 KB). Loaded Objects now: 6056.
+Memory consumption went from 117.3 MB to 117.3 MB.
+Total: 19.813500 ms (FindLiveObjects: 0.176125 ms CreateObjectMapping: 0.067083 ms MarkObjects: 19.548208 ms  DeleteObjects: 0.021584 ms)
+
+Prepare: number of updated asset objects reloaded= 0
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
   custom:SearchIndexIgnoredProperties: e643bd26f0fe6173181afceb89e7c659 -> 
@@ -226,9 +391,95 @@ AssetImportParameters requested are different than current active one (requested
   custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
 ========================================================================
 Received Import Request.
-  Time since last request: 169236.342654 seconds.
-  path: Assets/Sprites/joeymallat_a_half_leather_half_green_gem_basketball._white_back_8824b332-94dc-4f7b-a3b1-e28c52486631-removebg-preview.png
-  artifactKey: Guid(c796be8dcc165f64c900c035b2f9a3ae) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Sprites/joeymallat_a_half_leather_half_green_gem_basketball._white_back_8824b332-94dc-4f7b-a3b1-e28c52486631-removebg-preview.png using Guid(c796be8dcc165f64c900c035b2f9a3ae) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1c60230bcc778bc9eb7e4649765aa9cf') in 0.050027 seconds
+  Time since last request: 59.334805 seconds.
+  path: Assets/Config Files/Basketball.asset
+  artifactKey: Guid(ca48488cb839112449df7db64b657f04) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Config Files/Basketball.asset using Guid(ca48488cb839112449df7db64b657f04) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '724397690abd0ea03998a901ce0799ed') in 0.006383 seconds
 Number of updated asset objects reloaded before import = 0
-Number of asset objects unloaded after import = 3
+Number of asset objects unloaded after import = 9
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+Thread 0x2af2cb000 may have been prematurely finalized
+icall.c:1842:
+icall.c:1842:
+icall.c:1842:
+icall.c:1842:
+icall.c:1842:
+icall.c:1842:
+icall.c:1842:
+icall.c:1842:
+icall.c:1842:
+icall.c:1842:
+icall.c:1842:
+icall.c:1842:
+Symbol file LoadedFromMemory doesn't match image /Users/joeymallat/Documents/GitHub/sports-game-template/SportsGameTemplate/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/YamlDotNet/Unity.VisualScripting.YamlDotNet.dll
+Symbol file LoadedFromMemory doesn't match image /Users/joeymallat/Documents/GitHub/sports-game-template/SportsGameTemplate/Library/PackageCache/com.unity.visualscripting@1.8.0/Editor/VisualScripting.Core/Dependencies/DotNetZip/Unity.VisualScripting.IonicZip.dll
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.550 seconds
+Refreshing native plugins compatible for Editor in 4.61 ms, found 5 plugins.
+Native extension for iOS target not found
+Native extension for Android target not found
+Native extension for OSXStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  1.112 seconds
+Domain Reload Profiling: 1661ms
+	BeginReloadAssembly (122ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (10ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (57ms)
+	RebuildCommonClasses (24ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (16ms)
+	LoadAllAssembliesAndSetupDomain (378ms)
+		LoadAssemblies (199ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (208ms)
+			TypeCache.Refresh (204ms)
+				TypeCache.ScanAssembly (194ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
+			ResolveRequiredComponents (4ms)
+	FinalizeReload (1112ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (594ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (20ms)
+			SetLoadedEditorAssemblies (3ms)
+			BeforeProcessingInitializeOnLoad (59ms)
+			ProcessInitializeOnLoadAttributes (415ms)
+			ProcessInitializeOnLoadMethodAttributes (97ms)
+			AfterProcessingInitializeOnLoad (1ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (3ms)
+icall.c:1842:
+icall.c:1842:
+icall.c:1842:
+icall.c:1842:
+icall.c:1842:
+icall.c:1842:
+icall.c:1842:
+Refreshing native plugins compatible for Editor in 4.78 ms, found 5 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 5497 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 133 unused Assets / (81.4 KB). Loaded Objects now: 6058.
+Memory consumption went from 215.7 MB to 215.7 MB.
+Total: 16.568208 ms (FindLiveObjects: 0.139916 ms CreateObjectMapping: 0.066584 ms MarkObjects: 16.252083 ms  DeleteObjects: 0.108500 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:SearchIndexIgnoredProperties: e643bd26f0fe6173181afceb89e7c659 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:AudioImporter_EditorPlatform: 3918e3fc78b5a79bad01e8451be0beb8 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:framework-osx-AVFoundation: e770b220cccbd017edd2c1fefb359320 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:CustomObjectIndexerAttribute: 756ad292c208cfabdd7b50bc23989ffe -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 

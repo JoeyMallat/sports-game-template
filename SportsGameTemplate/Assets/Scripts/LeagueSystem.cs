@@ -29,6 +29,11 @@ public class LeagueSystem : MonoBehaviour
         GameManager.OnNewSeasonStarted += StartNewSeason;
     }
 
+    public List<Match> GetMatches()
+    {
+        return _seasonMatches;
+    }
+
     private void ReadTeamsFromFile()
     {
         _teams = new List<Team>();
@@ -52,9 +57,10 @@ public class LeagueSystem : MonoBehaviour
             id++;
         }
 
+        // TODO: Only perform this when starting a new save!
         DistributeDraftPicks();
-        _seasonMatches = ConfigManager.Instance.GetCurrentConfig().ScheduleGenerator.GenerateSchedule(_teams);
-        _seasonMatches = _seasonMatches.OrderBy(x => x.GetWeek()).ToList();
+        //_seasonMatches = ConfigManager.Instance.GetCurrentConfig().ScheduleGenerator.GenerateSchedule(_teams);
+        //_seasonMatches = _seasonMatches.OrderBy(x => x.GetWeek()).ToList();
     }
 
     public void StartNewSeason()
@@ -64,10 +70,11 @@ public class LeagueSystem : MonoBehaviour
         _seasonMatches = _seasonMatches.OrderBy(x => x.GetWeek()).ToList();
     }
 
-    public void SetTeams(List<Team> teams, int nextMatchIndex)
+    public void SetTeams(List<Team> teams, int nextMatchIndex, List<Match> matches)
     {
         _teams = teams;
         _nextMatchIndex = nextMatchIndex;
+        _seasonMatches = matches;
     }
 
     public List<Match> GetMatchesForTeam(Team team)

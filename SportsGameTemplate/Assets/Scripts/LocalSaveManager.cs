@@ -29,6 +29,7 @@ public class LocalSaveManager : MonoBehaviour
         {
             LocalSaveData localSaveData = new LocalSaveData();
             localSaveData.Teams = LeagueSystem.Instance.GetTeams();
+            localSaveData.Matches = LeagueSystem.Instance.GetMatches();
             localSaveData.SeasonStage = seasonStage;
             localSaveData.CurrentSeason = GameManager.Instance.GetCurrentSeason();
             localSaveData.CurrentWeek = week;
@@ -51,7 +52,7 @@ public class LocalSaveManager : MonoBehaviour
         {
             byte[] bytes = File.ReadAllBytes(Application.persistentDataPath + _filePath);
             LocalSaveData data = SerializationUtility.DeserializeValue<LocalSaveData>(bytes, DataFormat.JSON);
-            LeagueSystem.Instance.SetTeams(data.Teams, data.NextMatchIndex);
+            LeagueSystem.Instance.SetTeams(data.Teams, data.NextMatchIndex, data.Matches);
             GameManager.Instance.SetLoadData(data.SeasonStage, data.CurrentSeason, data.CurrentWeek, data.TeamID);
             PlayoffSystem.Instance.SetLoadData(data.PlayoffRound, data.PlayoffMatchups);
 
@@ -69,6 +70,7 @@ public class LocalSaveData
     public int CurrentSeason;
     public int NextMatchIndex;
     public List<Team> Teams;
+    public List<Match> Matches;
     public int PlayoffRound;
     public List<PlayoffMatchup> PlayoffMatchups;
 }
