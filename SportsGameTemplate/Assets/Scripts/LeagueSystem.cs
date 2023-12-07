@@ -59,15 +59,15 @@ public class LeagueSystem : MonoBehaviour
 
         // TODO: Only perform this when starting a new save!
         DistributeDraftPicks();
-        //_seasonMatches = ConfigManager.Instance.GetCurrentConfig().ScheduleGenerator.GenerateSchedule(_teams);
-        //_seasonMatches = _seasonMatches.OrderBy(x => x.GetWeek()).ToList();
+        _seasonMatches = ConfigManager.Instance.GetCurrentConfig().ScheduleGenerator.GenerateSchedule(_teams);
+        _seasonMatches = _seasonMatches.OrderBy(x => x.GetWeek()).ToList();
     }
 
     public void StartNewSeason()
     {
-        DistributeDraftPicks();
-        _seasonMatches = ConfigManager.Instance.GetCurrentConfig().ScheduleGenerator.GenerateSchedule(_teams);
-        _seasonMatches = _seasonMatches.OrderBy(x => x.GetWeek()).ToList();
+        //DistributeDraftPicks();
+        //_seasonMatches = ConfigManager.Instance.GetCurrentConfig().ScheduleGenerator.GenerateSchedule(_teams);
+        //_seasonMatches = _seasonMatches.OrderBy(x => x.GetWeek()).ToList();
     }
 
     public void SetTeams(List<Team> teams, int nextMatchIndex, List<Match> matches)
@@ -295,7 +295,7 @@ public class LeagueSystem : MonoBehaviour
         {
             int myTeamID = GameManager.Instance.GetTeamID();
             Match match = _seasonMatches.Where(x => x.GetWeek() == week + 1 && (x.GetHomeTeamID() == myTeamID || x.GetAwayTeamID() == myTeamID)).ToList()[0];
-            Debug.Log($"Match: {match.GetHomeTeamID()} vs {match.GetAwayTeamID()}");
+            //Debug.Log($"Match: {match.GetHomeTeamID()} vs {match.GetAwayTeamID()}");
             _nextMatchIndex = _seasonMatches.IndexOf(match);
         }
     }

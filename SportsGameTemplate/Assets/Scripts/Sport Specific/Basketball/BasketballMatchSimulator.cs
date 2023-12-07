@@ -35,6 +35,9 @@ public class BasketballMatchSimulator : MatchSimulator
 
         for (int i = 1; i < _numberOfPeriods + 1; i++)
         {
+            SetLineupAndMinutes(homeTeam, match.GetMatchID());
+            SetLineupAndMinutes(awayTeam, match.GetMatchID());
+
             int secondsLeftInPeriod = _secondsPerPeriod;
 
             while (secondsLeftInPeriod > .1)
@@ -67,9 +70,8 @@ public class BasketballMatchSimulator : MatchSimulator
 
     private Team DecideReboundingTeam(int matchID, Team teamOne, Team teamTwo)
     {
-        // TODO: Add the lineup of the team
-        Player teamOneRebounder = teamOne.GetPlayersFromTeam().OrderByDescending(x => x.GetRatingForSkillWithItem(x.GetSkills()[11]) * UnityEngine.Random.Range(0.5f, 1.5f)).ToList()[0];
-        Player teamTwoRebounder = teamTwo.GetPlayersFromTeam().OrderByDescending(x => x.GetRatingForSkillWithItem(x.GetSkills()[11]) * UnityEngine.Random.Range(0.5f, 1.5f)).ToList()[0];
+        Player teamOneRebounder = GetCurrentLineup(teamOne.GetLineup(), teamOne.GetTeamID()).OrderByDescending(x => x.GetRatingForSkillWithItem(x.GetSkills()[11]) * UnityEngine.Random.Range(0.5f, 1.5f)).ToList()[0];
+        Player teamTwoRebounder = GetCurrentLineup(teamTwo.GetLineup(), teamTwo.GetTeamID()).OrderByDescending(x => x.GetRatingForSkillWithItem(x.GetSkills()[11]) * UnityEngine.Random.Range(0.5f, 1.5f)).ToList()[0];
 
         float teamOneRebounderChance = teamOneRebounder.GetRatingForSkillWithItem(teamOneRebounder.GetSkills()[11]);
         float total = teamOneRebounder.GetRatingForSkillWithItem(teamOneRebounder.GetSkills()[11]) + teamTwoRebounder.GetRatingForSkillWithItem(teamOneRebounder.GetSkills()[11]);
@@ -94,8 +96,7 @@ public class BasketballMatchSimulator : MatchSimulator
 
         while (inPossession)
         {
-            // TODO: Add the lineup of the team
-            List<Player> best = teamInPossession.GetPlayersFromTeam().OrderByDescending(x => x.CalculateRatingForPosition() * UnityEngine.Random.Range(0.8f, 1.2f)).Take(5).ToList();
+            List<Player> best = GetCurrentLineup(teamInPossession.GetLineup(), teamInPossession.GetTeamID()).OrderByDescending(x => x.CalculateRatingForPosition() * UnityEngine.Random.Range(0.8f, 1.2f)).Take(5).ToList();
             playerWithBall = best[UnityEngine.Random.Range(0, 5)];
             Move move = DecideNextMove(secondsSpent);
             secondsSpent += UnityEngine.Random.Range(2, 5);
@@ -234,5 +235,27 @@ public class BasketballMatchSimulator : MatchSimulator
             default:
                 break;
         }
+    }
+
+    private void SetLineupAndMinutes(Team team, int matchID)
+    {
+        team.GenerateLineup();
+
+        foreach (Player player in GetCurrentLineup(team.GetLineup(), team.GetTeamID()))
+        {
+            AssignMinutesToPlayer(matchID, player, 12);
+        }
+    }
+
+    private void AssignMinutesToPlayer(int matchID, Player player, int minutes)
+    {
+        player.GetLatestSeason().UpdateMatch(matchID, new List<(string, int)>() { ("minutes", minutes) });
+    }
+
+    private List<Player> GetCurrentLineup(List<string> playerIDs, int teamID)
+    {
+        Team team = LeagueSystem.Instance.GetTeam(teamID);
+        List<Player> currentLineup = team.GetPlayersFromIDs(playerIDs);
+        return currentLineup;
     }
 }

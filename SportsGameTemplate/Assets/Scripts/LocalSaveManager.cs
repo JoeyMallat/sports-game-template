@@ -15,7 +15,7 @@ public class LocalSaveManager : MonoBehaviour
 
     private void Start()
     {
-        LoadGame();
+        //LoadGame();
     }
 
     private void OnApplicationQuit()

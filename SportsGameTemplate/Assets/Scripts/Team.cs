@@ -17,6 +17,7 @@ public class Team
     [SerializeField][HideInInspector] List<int> _availableMatchdays;
     [SerializeField][HideInInspector] int _seed;
     [SerializeField] TeamSeason _seasonStats;
+    [SerializeField] StartingLineup _startingLineup;
 
     public Team(int id, string name, int rating, List<Player> players)
     {
@@ -235,19 +236,25 @@ public class Team
         return tradeOffers;
     }
 
-    public void DebugShowStats()
+    public void GenerateLineup()
     {
-        List<Match> matches = LeagueSystem.Instance.GetMatchesForTeam(this);
+        _startingLineup = new StartingLineup(_players);
+    }
 
-        int wins = 0;
-        int losses = 0;
+    public List<string> GetLineup()
+    {
+        return _startingLineup.GetStartingLineup();
+    }
 
-        foreach (Match match in matches)
+    public List<Player> GetPlayersFromIDs(List<string> playerIDs)
+    {
+        List<Player> playerList = new List<Player>();
+
+        foreach (string id in playerIDs)
         {
-            wins += match.GetWinStatForTeam(_teamID).Item1;
-            losses += match.GetWinStatForTeam(_teamID).Item2;
+            playerList.Add(_players.Where(x => x.GetTradeableID() == id).ToList()[0]);
         }
 
-        Debug.Log($"{_teamName} finished the season with a {wins}-{losses} record");
+        return playerList;
     }
 }
