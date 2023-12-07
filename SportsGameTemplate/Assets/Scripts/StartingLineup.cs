@@ -6,11 +6,16 @@ using UnityEngine;
 [System.Serializable]
 public class StartingLineup
 {
-    [SerializeField] string _startingPointGuard;
-    [SerializeField] string _startingShootingGuard;
-    [SerializeField] string _startingCenter;
-    [SerializeField] string _startingSmallForward;
-    [SerializeField] string _startingPowerForward;
+    [SerializeField] string _startingPointGuard = "";
+    [SerializeField] string _startingShootingGuard = "";
+    [SerializeField] string _startingCenter = "";
+    [SerializeField] string _startingSmallForward = "";
+    [SerializeField] string _startingPowerForward = "";
+
+    public StartingLineup()
+    {
+
+    }
 
     public StartingLineup (List<Player> players)
     {

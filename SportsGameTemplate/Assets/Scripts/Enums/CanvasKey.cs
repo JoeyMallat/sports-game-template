@@ -18,5 +18,7 @@ public enum CanvasKey
     ContractNegotiations,
     Rewards,
     ItemInventory,
-    Store
+    Store,
+    Prematch,
+    Match
 }

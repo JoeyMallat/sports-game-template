@@ -29,6 +29,7 @@ public class Team
         _draftPicks = new();
         _matchdays = new List<int>();
         InitializeAvailableMatchdays();
+        _startingLineup = new StartingLineup();
 
         LeagueSystem.OnRegularSeasonFinished += SetSeed;
         LeagueSystem.OnRegularSeasonFinished += ExtendContracts;
@@ -252,7 +253,13 @@ public class Team
 
         foreach (string id in playerIDs)
         {
-            playerList.Add(_players.Where(x => x.GetTradeableID() == id).ToList()[0]);
+            if (id == String.Empty)
+            {
+                playerList.Add(null);
+            } else
+            {
+                playerList.Add(_players.Where(x => x.GetTradeableID() == id).ToList()[0]);
+            }
         }
 
         return playerList;
