@@ -303,6 +303,8 @@ public class Player : ITradeable
 
     public float GetAllTimeStats(string stat)
     {
+        if (_seasonStats[0].GetMatchStats().Count == 0) { return 0; }
+
         float total = 0;
         int matches = 0;
         foreach (var season in _seasonStats)
@@ -318,6 +320,8 @@ public class Player : ITradeable
 
     public float GetAllTimePoints()
     {
+        if (_seasonStats[0].GetMatchStats().Count == 0) { return 0; }
+
         float total = 0;
         int matches = 0;
         foreach (var season in _seasonStats)

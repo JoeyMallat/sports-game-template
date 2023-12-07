@@ -32,6 +32,7 @@ public class BasketballMatchSimulator : MatchSimulator
         Team awayTeam = LeagueSystem.Instance.GetTeam(match.GetAwayTeamID());
 
         Team teamInPossession = homeTeam;
+        Team teamNotInPossession = teamInPossession == homeTeam ? awayTeam : homeTeam;
 
         for (int i = 1; i < _numberOfPeriods + 1; i++)
         {
@@ -42,12 +43,12 @@ public class BasketballMatchSimulator : MatchSimulator
 
             while (secondsLeftInPeriod > .1)
             {
-                (int, PossessionResult) possession = SimulatePossession(match.GetMatchID(), homeTeam, awayTeam, _shotClock);
-                Team teamNotInPossession = teamInPossession == homeTeam ? awayTeam : homeTeam;
+                (int, PossessionResult) possession = SimulatePossession(match.GetMatchID(), teamInPossession, teamNotInPossession, _shotClock);
                 secondsLeftInPeriod -= possession.Item1;
                 match.AddPossessionResult(possession.Item2, teamInPossession);
 
                 teamInPossession = DecideNextPossession(match.GetMatchID(), possession.Item2, teamInPossession, teamNotInPossession);
+                teamNotInPossession = teamInPossession == homeTeam ? awayTeam : homeTeam;
             }
         }
         match.EndMatch();
@@ -89,6 +90,7 @@ public class BasketballMatchSimulator : MatchSimulator
 
     private (int, PossessionResult) SimulatePossession(int matchID, Team teamInPossession, Team defendingTeam, int maxSeconds)
     {
+        //Debug.Log($"Team in possession: {teamInPossession.GetTeamName()}");
         int secondsSpent = 0;
         bool inPossession = true;
         ResultAction resultOfPossession = ResultAction.TwoPointerMissed;
@@ -96,16 +98,26 @@ public class BasketballMatchSimulator : MatchSimulator
 
         while (inPossession)
         {
-            List<Player> best = GetCurrentLineup(teamInPossession.GetLineup(), teamInPossession.GetTeamID()).OrderByDescending(x => x.CalculateRatingForPosition() * UnityEngine.Random.Range(0.8f, 1.2f)).Take(5).ToList();
+            List<Player> best = GetCurrentLineup(teamInPossession.GetLineup(), teamInPossession.GetTeamID());
             playerWithBall = best[UnityEngine.Random.Range(0, 5)];
             Move move = DecideNextMove(secondsSpent);
-            secondsSpent += UnityEngine.Random.Range(2, 5);
-            DecideResult(playerWithBall, move, out bool possessionKept, out ResultAction resultAction);
+            (ResultAction, Player) turnover = DecideDefence(move, defendingTeam);
+            secondsSpent += UnityEngine.Random.Range(4, 8);
 
-            AssignActionToPlayer(matchID, resultAction, playerWithBall);
-
-            resultOfPossession = resultAction;
-            inPossession = possessionKept;
+            if (turnover.Item1 == ResultAction.Steal || turnover.Item1 == ResultAction.Block)
+            {
+                ResultAction resultAction = turnover.Item1;
+                AssignActionToPlayer(matchID, resultAction, turnover.Item2);
+                playerWithBall = turnover.Item2;
+                resultOfPossession = resultAction;
+                inPossession = false;
+            } else
+            {
+                DecideResult(playerWithBall, move, out bool possessionKept, out ResultAction resultAction);
+                AssignActionToPlayer(matchID, resultAction, playerWithBall);
+                resultOfPossession = resultAction;
+                inPossession = possessionKept;
+            }
 
             if (secondsSpent >= maxSeconds) inPossession = false;
         } 
@@ -115,10 +127,49 @@ public class BasketballMatchSimulator : MatchSimulator
         return (secondsSpent, result);
     }
 
+    private (ResultAction, Player) DecideDefence(Move move, Team defendingTeam)
+    {
+        List<Player> defendingLineup = GetCurrentLineup(defendingTeam.GetLineup(), defendingTeam.GetTeamID());
+
+        switch (move)
+        {
+            case Move.Pass:
+                Player player = defendingLineup.OrderByDescending(x => x.GetRatingForSkillWithItem(x.GetSkills()[6]) * UnityEngine.Random.Range(0.5f, 1.5f)).ToList()[0];
+                (bool, ResultAction) result = GetResult(_stealSuccessRate, 1, player.GetRatingForSkillWithItem(player.GetSkills()[6]), true, ResultAction.Steal, ResultAction.Pass);
+                return (result.Item2, player);
+            case Move.TwoPointer:
+                player = defendingLineup.OrderByDescending(x => x.GetRatingForSkillWithItem(x.GetSkills()[12]) * UnityEngine.Random.Range(0.5f, 1.5f)).ToList()[0];
+                result = GetResult(_blockSuccessRate, 1, player.GetRatingForSkillWithItem(player.GetSkills()[12]), true, ResultAction.Steal, ResultAction.Pass);
+                return (result.Item2, player);
+            case Move.ThreePointer:
+                player = defendingLineup.OrderByDescending(x => x.GetRatingForSkillWithItem(x.GetSkills()[12]) * UnityEngine.Random.Range(0.5f, 1.5f)).ToList()[0];
+                result = GetResult(_blockSuccessRate, 1, player.GetRatingForSkillWithItem(player.GetSkills()[12]), true, ResultAction.Steal, ResultAction.Pass);
+                return (result.Item2, player);
+            case Move.Dunk:
+                player = defendingLineup.OrderByDescending(x => x.GetRatingForSkillWithItem(x.GetSkills()[12]) * UnityEngine.Random.Range(0.5f, 1.5f)).ToList()[0];
+                result = GetResult(_blockSuccessRate, 1, player.GetRatingForSkillWithItem(player.GetSkills()[12]), true, ResultAction.Steal, ResultAction.Pass);
+                return (result.Item2, player);
+            case Move.Layup:
+                player = defendingLineup.OrderByDescending(x => x.GetRatingForSkillWithItem(x.GetSkills()[12]) * UnityEngine.Random.Range(0.5f, 1.5f)).ToList()[0];
+                result = GetResult(_blockSuccessRate, 1, player.GetRatingForSkillWithItem(player.GetSkills()[12]), true, ResultAction.Steal, ResultAction.Pass);
+                return (result.Item2, player);
+            case Move.Dribble:
+                player = defendingLineup.OrderByDescending(x => x.GetRatingForSkillWithItem(x.GetSkills()[6]) * UnityEngine.Random.Range(0.5f, 1.5f)).ToList()[0];
+                result = GetResult(_stealSuccessRate, 1, player.GetRatingForSkillWithItem(player.GetSkills()[6]), true, ResultAction.Steal, ResultAction.Pass);
+                return (result.Item2, player);
+            default:
+                player = defendingLineup.OrderByDescending(x => x.GetRatingForSkillWithItem(x.GetSkills()[12]) * UnityEngine.Random.Range(0.5f, 1.5f)).ToList()[0];
+                result = GetResult(_blockSuccessRate, 1, player.GetRatingForSkillWithItem(player.GetSkills()[12]), true, ResultAction.Steal, ResultAction.Pass);
+                return (result.Item2, player);
+        }
+    }
+
     private void DecideResult(Player playerWithBall, Move move, out bool possessionKept, out ResultAction resultAction)
     {
         possessionKept = true;
         resultAction = ResultAction.TwoPointerMissed;
+
+        //Debug.Log($"Player from {LeagueSystem.Instance.GetTeam(playerWithBall.GetTeamID()).GetTeamName()} has attempted a {move}");
         switch (move)
         {
             case Move.Pass:
@@ -161,6 +212,8 @@ public class BasketballMatchSimulator : MatchSimulator
         float averageSkillRating = skillRating / (amountOfSkills * 99f);
         float chanceOfSucceeding = Mathf.Lerp(averageSucceedingChance.x, averageSucceedingChance.y, averageSkillRating);
         float random = UnityEngine.Random.Range(0f, 1f);
+
+        //Debug.Log($"Average skill rating: {averageSkillRating}\nChance of succeeding: {chanceOfSucceeding}\nrandom: {random}");
 
         if (random < chanceOfSucceeding)
         {
