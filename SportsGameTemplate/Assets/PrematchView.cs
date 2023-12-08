@@ -10,6 +10,9 @@ public class PrematchView : MonoBehaviour, ISettable
 {
     [SerializeField] GameObject _lineupItemsRoot;
     [SerializeField] GameObject _benchItemsRoot;
+    [SerializeField] Button _selectAutomaticallyButton;
+    [SerializeField] Button _clearButton;
+    [SerializeField] Button _goToGameButton;
 
     private void Awake()
     {
@@ -18,7 +21,6 @@ public class PrematchView : MonoBehaviour, ISettable
 
     public void SetDetails<T>(T item) where T : class
     {
-        Debug.Log("Details set");
         Team team = item as Team;
         if (team.GetTeamID() != GameManager.Instance.GetTeamID()) return;
 
@@ -47,6 +49,16 @@ public class PrematchView : MonoBehaviour, ISettable
                 _benchItems[i].gameObject.SetActive(false);
             }
         }
+
+        _selectAutomaticallyButton.onClick.RemoveAllListeners();
+        _selectAutomaticallyButton.onClick.AddListener(() => team.GenerateLineup());
+
+        _clearButton.onClick.RemoveAllListeners();
+        _clearButton.onClick.AddListener(() => team.EmptyLineup());
+
+        _goToGameButton.ToggleButtonStatus(players.Count == 5);
+        _goToGameButton.onClick.RemoveAllListeners();
+        _goToGameButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.MatchOptions));
     }
 
     private List<Player> GetBench(Team team, List<Player> players)
@@ -65,6 +77,6 @@ public class PrematchView : MonoBehaviour, ISettable
 
     public void GoToPrematchView()
     {
-        Navigation.Instance.GoToScreen(true, CanvasKey.Prematch, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
+        TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(true, CanvasKey.Prematch, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID())));
     }
 }

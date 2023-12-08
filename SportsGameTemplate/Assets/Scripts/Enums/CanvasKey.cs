@@ -20,5 +20,6 @@ public enum CanvasKey
     ItemInventory,
     Store,
     Prematch,
-    Match
+    Match,
+    MatchOptions
 }

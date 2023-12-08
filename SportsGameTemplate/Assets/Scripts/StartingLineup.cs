@@ -14,6 +14,11 @@ public class StartingLineup
 
     public StartingLineup()
     {
+        _startingPointGuard = "";
+        _startingShootingGuard = "";
+        _startingCenter = "";
+        _startingSmallForward = "";
+        _startingPowerForward = "";
 
     }
 
@@ -28,7 +33,7 @@ public class StartingLineup
 
     public List<string> GetStartingLineup()
     {
-        return new List<string>() { _startingCenter, _startingPowerForward, _startingShootingGuard, _startingSmallForward, _startingPointGuard };
+        return new List<string>() { _startingPowerForward, _startingSmallForward, _startingShootingGuard, _startingPointGuard, _startingCenter };
     }
 
     private Player GetBestPlayerFromPosition(List<Player> players, string position)

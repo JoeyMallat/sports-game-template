@@ -249,6 +249,13 @@ public class Team
     public void GenerateLineup()
     {
         _startingLineup = new StartingLineup(_players);
+        OnLineupChanged?.Invoke(this);
+    }
+
+    public void EmptyLineup()
+    {
+        _startingLineup = new StartingLineup();
+        OnLineupChanged?.Invoke(this);
     }
 
     public List<string> GetLineup()

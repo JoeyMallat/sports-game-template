@@ -15,9 +15,8 @@ public class LineupItem : MonoBehaviour
 
     [SerializeField] Image _playerPortrait;
     [SerializeField] TextMeshProUGUI _playerName;
+    [SerializeField] TextMeshProUGUI _playerPosition;
     [SerializeField] TextMeshProUGUI _playerRating;
-
-    [SerializeField] Button _removeFromLineupButton;
     [SerializeField] TextMeshProUGUI _addToLineUpText;
 
     public void SetPlayerDetails(Player player)
@@ -34,13 +33,14 @@ public class LineupItem : MonoBehaviour
         _playerOverlay.SetActive(true);
 
         _playerPortrait.sprite = player.GetPlayerPortrait();
+        _playerPosition.text = player.GetPosition();
         _playerName.text = player.GetFullName();
         _playerRating.text = player.CalculateRatingForPosition().ToString();
     }
 
     private void SetNoPlayerButton()
     {
-        _addToLineUpText.text = $"+\n<size=20%>Drag {_positionString} to slot";
+        _addToLineUpText.text = $"+\n<size=20%>Drag {_positionString}\nfrom bench";
     }
 
     public string GetPosition()
