@@ -28,7 +28,7 @@ public class StartingLineup
 
     public List<string> GetStartingLineup()
     {
-        return new List<string>() { _startingPointGuard, _startingShootingGuard, _startingCenter, _startingSmallForward, _startingPowerForward };
+        return new List<string>() { _startingCenter, _startingPowerForward, _startingShootingGuard, _startingSmallForward, _startingPointGuard };
     }
 
     private Player GetBestPlayerFromPosition(List<Player> players, string position)
@@ -42,5 +42,29 @@ public class StartingLineup
         }
 
         return null;
+    }
+
+    public void SetPosition(string playerID, string position)
+    {
+        switch (position)
+        {
+            case "Point Guard":
+                _startingPointGuard = playerID;
+                break;
+            case "Shooting Guard":
+                _startingShootingGuard = playerID;
+                break;
+            case "Power Forward":
+                _startingPowerForward = playerID;
+                break;
+            case "Center":
+                _startingCenter = playerID;
+                break;
+            case "Small Forward":
+                _startingSmallForward = playerID;
+                break;
+            default:
+                break;
+        }
     }
 }

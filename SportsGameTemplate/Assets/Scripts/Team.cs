@@ -19,6 +19,8 @@ public class Team
     [SerializeField] TeamSeason _seasonStats;
     [SerializeField] StartingLineup _startingLineup;
 
+    public static event Action<Team> OnLineupChanged;
+
     public Team(int id, string name, int rating, List<Player> players)
     {
         _teamID = id;
@@ -83,6 +85,13 @@ public class Team
         }
 
         return abbreviation;
+    }
+
+    public void SetPositionInLineup(Player player, string position)
+    {
+        _startingLineup.SetPosition(player.GetTradeableID(), position);
+        OnLineupChanged?.Invoke(this);
+        Debug.Log("Lineup changed");
     }
 
     public TeamSeason GetCurrentSeasonStats()
