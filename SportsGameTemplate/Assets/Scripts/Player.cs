@@ -337,8 +337,9 @@ public class Player : ITradeable
 
     private Potential SetPotential()
     {
-        float random = UnityEngine.Random.Range(0f, 1f);
-        float valueOnGraph = ConfigManager.Instance.GetCurrentConfig().DistributionOfPotential.Evaluate(random);
+        float random = UnityEngine.Random.Range(0.8f, 1f);
+        float pseudoRandom = CalculateRatingForPosition() / 99f;
+        float valueOnGraph = ConfigManager.Instance.GetCurrentConfig().DistributionOfPotential.Evaluate(pseudoRandom * random);
 
         switch (valueOnGraph)
         {
@@ -397,12 +398,29 @@ public class Player : ITradeable
         float averageWeight = 1f / positionStats.Count;
         float importance = positionStat.GetSkillWeight() - averageWeight;
 
+        /*
         int baseRating = rating / 2;
         if (importance > 0) baseRating = Mathf.RoundToInt(Mathf.Clamp(rating * 1.1f, 0, 99));
 
         float randomness = Graphs.Instance.SkillImportanceGraph.Evaluate(importance) * rating / 4;
 
         int skillRating = Mathf.Clamp(Mathf.RoundToInt(UnityEngine.Random.Range(baseRating - randomness, baseRating + randomness)), 0, 99);
+        */
+
+        int skillRating;
+        float importantSway = 0.035f;
+        float nonImportantSway = 0.65f;
+
+        if (importance > 0)
+        {
+            float random = UnityEngine.Random.Range(1f - importantSway, 1f + importantSway);
+            skillRating = Mathf.RoundToInt(Mathf.Clamp(Mathf.Lerp(0, 99, (rating * random) / 99), 0, 99));
+        } else
+        {
+            float random = UnityEngine.Random.Range(1f - nonImportantSway, 1f);
+            skillRating = Mathf.RoundToInt(Mathf.Clamp(Mathf.Lerp(0, 99, (rating * random) / 99), 0, 99));
+        }
+
 
         return skillRating;
     }

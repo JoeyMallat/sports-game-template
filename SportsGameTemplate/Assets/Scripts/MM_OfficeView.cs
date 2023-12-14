@@ -17,6 +17,7 @@ public class MM_OfficeView : MonoBehaviour, ISettable
     [SerializeField] TextMeshProUGUI _currentBalanceText;
 
     [SerializeField] Button _freeSpinButton;
+    [SerializeField] TextMeshProUGUI _freeSpinTimeLeftText;
     [SerializeField] Button _paidSpinButton;
     [SerializeField] Button _storeButton;
     [SerializeField] TextMeshProUGUI _paidSpinCostText;
@@ -63,6 +64,7 @@ public class MM_OfficeView : MonoBehaviour, ISettable
 
         if ((DateTime.Now - timeObject.FreeSpinTime).TotalHours > 24)
         {
+            _freeSpinTimeLeftText.gameObject.SetActive(false);
             _freeSpinButton.ToggleButtonStatus(true);
             _freeSpinButton.onClick.RemoveAllListeners();
             _freeSpinButton.onClick.AddListener(() => OnFreeSpin?.Invoke(DateTime.Now));
@@ -71,7 +73,9 @@ public class MM_OfficeView : MonoBehaviour, ISettable
         }
         else
         {
+            _freeSpinTimeLeftText.gameObject.SetActive(true);
             _freeSpinButton.ToggleButtonStatus(false);
+            _freeSpinTimeLeftText.text = $"Available in {Mathf.FloorToInt((float)(24 - (DateTime.Now - timeObject.FreeSpinTime).TotalHours)).ToString("F0")} hours";
         }
     }
 

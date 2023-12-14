@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using System;
 
 public class PlayerUI : MonoBehaviour, ISettable
 {
@@ -40,6 +41,10 @@ public class PlayerUI : MonoBehaviour, ISettable
     [Header("Items")]
     [SerializeField] List<ItemSlot> _itemSlots;
 
+    [Header("Tabs, buttons and menu targets")]
+    [SerializeField] GameObject _itemsScreen;
+    [SerializeField] GameObject _itemsTabTitle;
+
     public void SetDetails<T>(T itemDetails) where T : class
     {
         Player player = itemDetails as Player;
@@ -58,6 +63,22 @@ public class PlayerUI : MonoBehaviour, ISettable
         SetSkills(player);
         SetStats(player);
         SetButtons(player);
+        SetTabs(player);
+    }
+
+    private void SetTabs(Player player)
+    {
+        bool inMyTeam = player.GetTeamID() == GameManager.Instance.GetTeamID();
+
+        if (inMyTeam)
+        {
+            _itemsScreen.SetActive(true);
+            _itemsTabTitle.SetActive(true);
+        } else
+        {
+            _itemsScreen.SetActive(false);
+            _itemsTabTitle.SetActive(false);
+        }
     }
 
     private void SetRatingDifference(Player player)

@@ -25,7 +25,6 @@ public class MM_TeamView : MonoBehaviour, ISettable
         SetTopPlayers(_topPlayersObjectsRoot.GetComponentsInChildren<PlayerItem>().ToList(), topPlayers);
 
         _teamManagementButton.onClick.RemoveAllListeners();
-        // TODO: Change to player chosen team
         _teamManagementButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Team, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID())));
     }
 
@@ -33,7 +32,8 @@ public class MM_TeamView : MonoBehaviour, ISettable
     {
         for (int i = 0; i < topObjects.Count; i++)
         {
-            topObjects[i].SetDetails(new StatObjectWrapper(topPlayers[i].GetFullName(), new List<float> { topPlayers[i].GetLatestSeason().GetAveragePoints() }));
+            int index = i;
+            topObjects[i].SetDetails(new StatObjectWrapper(topPlayers[index].GetFullName(), new List<float> { topPlayers[index].GetLatestSeason().GetAveragePoints() }, topPlayers[index]));
         }
     }
 
@@ -41,7 +41,8 @@ public class MM_TeamView : MonoBehaviour, ISettable
     {
         for (int i = 0; i < topObjects.Count; i++)
         {
-            topObjects[i].SetDetails(new StatObjectWrapper(topPlayers[i].GetFullName(), new List<float> { topPlayers[i].GetLatestSeason().GetAverageOfStat("assists" )}));
+            int index = i;
+            topObjects[i].SetDetails(new StatObjectWrapper(topPlayers[index].GetFullName(), new List<float> { topPlayers[index].GetLatestSeason().GetAverageOfStat("assists" )}, topPlayers[index]));
         }
     }
 
@@ -49,7 +50,7 @@ public class MM_TeamView : MonoBehaviour, ISettable
     {
         for (int i = 0; i < topObjects.Count; i++)
         {
-            topObjects[i].SetPlayerDetails(topPlayers[i], false, false);
+            topObjects[i].SetPlayerDetails(topPlayers[i], true, false);
         }
     }
 }

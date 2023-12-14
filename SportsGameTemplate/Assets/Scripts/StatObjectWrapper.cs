@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,15 +8,22 @@ public class StatObjectWrapper
 {
     [SerializeField] string _title;
     [SerializeField] List<float> _stats;
+    [SerializeField] Player _playerLink;
 
-    public StatObjectWrapper(string title, List<float> stats)
+    public StatObjectWrapper(string title, List<float> stats, Player player)
     {
         _title = title;
         _stats = stats;
+        _playerLink = player;
     }
 
     public (string, List<float>) ReadStatObject()
     {
         return (_title, _stats);
+    }
+
+    public Player GetPlayerLink()
+    {
+        return _playerLink;
     }
 }

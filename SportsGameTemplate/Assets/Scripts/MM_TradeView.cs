@@ -18,6 +18,8 @@ public class MM_TradeView : MonoBehaviour, ISettable
     [SerializeField] TextMeshProUGUI _noPlayersTradingBlockText;
     [SerializeField] TextMeshProUGUI _noTradeOffersText;
 
+    [SerializeField] TextMeshProUGUI _tradeOfferCountText;
+
     public void SetDetails<T>(T item) where T : class
     {
         Team team = item as Team;
@@ -59,6 +61,7 @@ public class MM_TradeView : MonoBehaviour, ISettable
         if (tradeOffers.Count <= 0)
         {
             _noTradeOffersText.gameObject.SetActive(true);
+            _tradeOfferCountText.gameObject.SetActive(false);
 
             foreach (var tradeOfferItem in tradeOfferItems)
             {
@@ -66,6 +69,9 @@ public class MM_TradeView : MonoBehaviour, ISettable
             }
             return;
         }
+
+        _tradeOfferCountText.gameObject.SetActive(true);
+        _tradeOfferCountText.text = tradeOffers.Count.ToString("F0");
 
         _noTradeOffersText.gameObject.SetActive(false);
 

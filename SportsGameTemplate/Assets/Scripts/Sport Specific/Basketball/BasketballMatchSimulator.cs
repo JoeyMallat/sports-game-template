@@ -102,7 +102,7 @@ public class BasketballMatchSimulator : MatchSimulator
             playerWithBall = best[UnityEngine.Random.Range(0, 5)];
             Move move = DecideNextMove(secondsSpent);
             (ResultAction, Player) turnover = DecideDefence(move, defendingTeam);
-            secondsSpent += UnityEngine.Random.Range(4, 8);
+            secondsSpent += UnityEngine.Random.Range(1, 4);
 
             if (turnover.Item1 == ResultAction.Steal || turnover.Item1 == ResultAction.Block)
             {
