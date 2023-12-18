@@ -36,7 +36,7 @@ public class ItemInventoryViewer : MonoBehaviour, ISettable
         {
             _filterActive = false;
             Team team = item as Team;
-            
+            ShowItems();
         }
     }
 
@@ -84,6 +84,13 @@ public class ItemInventoryViewer : MonoBehaviour, ISettable
 
         List<InventoryGameItem> inventoryGameItems = _itemRoot.GetComponentsInChildren<InventoryGameItem>(true).ToList();
 
+        int prefabsToSpawn = items.Count - inventoryGameItems.Count;
+
+        for (int i = 0; i < prefabsToSpawn; i++)
+        {
+            inventoryGameItems.Add(Instantiate(_itemPrefab, _itemRoot.transform));
+        }
+
         for (int i = 0; i < inventoryGameItems.Count; i++)
         {
             int index = i;
@@ -92,7 +99,8 @@ public class ItemInventoryViewer : MonoBehaviour, ISettable
             {
                 inventoryGameItems[i].gameObject.SetActive(true);
                 inventoryGameItems[i].SetItem(items[index]);
-            } else
+            }
+            else
             {
                 inventoryGameItems[i].gameObject.SetActive(false);
             }

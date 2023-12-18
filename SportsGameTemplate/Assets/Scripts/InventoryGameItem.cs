@@ -40,8 +40,6 @@ public class InventoryGameItem : MonoBehaviour
         _assignButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID())));
         _assignButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Team, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID())));
         _assignButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Player, player));
-
-        // TODO: Remove item from inventory
     }
 
     public void SetItem(OwnedGameItem item)
@@ -52,6 +50,16 @@ public class InventoryGameItem : MonoBehaviour
         _itemName.text = details.GetItemName();
         _itemBoosts.text = details.GetSkillBoostsString();
         _gamesRemaining.text = item.GetGamesRemainingString();
+
+        if (item.GetAmountInInventory() > 1)
+        {
+            _amountInInventoryObject.SetActive(true);
+            _amountInInventory.text = $"{item.GetAmountInInventory()}x";
+        }
+        else
+        {
+            _amountInInventoryObject.SetActive(false);
+        }
 
         _assignButton.gameObject.SetActive(false);
     }

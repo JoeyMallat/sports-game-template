@@ -1,0 +1,48 @@
+0,Shoes,Ruby,AirSlam Pro,Dribbling +50,Layups +50,Dunking +50
+1,Shoes,Silver,DunkMaster Elite,Dribbling +3,Layups +3,Dunking +3
+2,Shoes,Gold,GravityGlide 360,Dribbling +8,Layups +8,Dunking +8
+3,Shoes,Ruby,SkyStrider Boost,Blocking +50,Stealing +50,Rebounding +50
+4,Shoes,Silver,CourtCommander XR,Blocking +3,Stealing +3,Rebounding +3
+5,Shoes,Gold,PrecisionPivot Pro,Blocking +8,Stealing +8,Rebounding +8
+6,Shoes,Ruby,TurboDrive HyperX,Three_Point_Shooting +30,Mid_Range_Shooting +20,Short_Range_Shooting +10
+7,Shoes,Silver,SlamForce Xcelerator,Three_Point_Shooting +5,Mid_Range_Shooting +3,Short_Range_Shooting +1
+8,Shoes,Gold,GlideZone Supreme,Three_Point_Shooting +10,Mid_Range_Shooting +8,Short_Range_Shooting +6
+9,Shoes,Ruby,JumpJet Ignition,Passing +50,Three_Point_Shooting +50,Rebounding +50
+10,Shoes,Silver,ZoneControl HyperStep,Passing +3,Three_Point_Shooting +3,Rebounding +3
+11,Shoes,Gold,PowerDrive MaxAir,Passing +8,Three_Point_Shooting +8,Rebounding +8
+12,ArmSleeves,Ruby,FlexGuard Pro,Three_Point_Shooting +99,Mid_Range_Shooting +20,Short_Range_Shooting +20
+13,ArmSleeves,Silver,TurboWrap Elite,Three_Point_Shooting +10,Mid_Range_Shooting +3,Short_Range_Shooting +3
+14,ArmSleeves,Gold,PowerSleeve Xcel,Three_Point_Shooting +40,Mid_Range_Shooting +10,Short_Range_Shooting +10
+15,ArmSleeves,Ruby,ArmForce Supreme,Three_Point_Shooting +50,Dunking +50,
+16,ArmSleeves,Silver,PrecisionFit HyperFlex,Three_Point_Shooting +3,Dunking +3,
+17,ArmSleeves,Gold,SwiftShield Ignite,Three_Point_Shooting +8,Dunking +8,
+18,ArmSleeves,Ruby,EnergyWrap XR,Stealing +99,,
+19,ArmSleeves,Silver,GlideArm MaxAir,Stealing +10,,
+20,ArmSleeves,Gold,ZoneControl CompressionX,Stealing +30,,
+21,ArmSleeves,Ruby,RapidRecovery TurboSleeve,Dunking +50,Layups +50,Short_Range_Shooting +50
+22,ArmSleeves,Silver,FlexFlow Ignition,Dunking +3,Layups +3,Short_Range_Shooting +3
+23,ArmSleeves,Gold,ProPulse HyperFit,Dunking +8,Layups +8,Short_Range_Shooting +8
+24,Sweatbands,Ruby,DriMax Pro Bands,Passing +30,Leadership +10,Playmaking +10
+25,Sweatbands,Silver,SweatShield Elite Wraps,Passing +8,Leadership +3,Playmaking +3
+26,Sweatbands,Gold,HydroLock HyperTowels,Passing +14,Leadership +8,Playmaking +8
+27,Sweatbands,Ruby,CoolFlex Supreme Bands,Layups +50,Mid_Range_Shooting +50,
+28,Sweatbands,Silver,VaporGrip XR Sweats,Layups +10,Mid_Range_Shooting +10,
+29,Sweatbands,Gold,UltraWick Precision Wraps,Layups +25,Mid_Range_Shooting +25,
+30,Sweatbands,Ruby,SwiftDry Ignition Bands,Playmaking +99,Leadership +99,Passing +99
+31,Sweatbands,Silver,ZoneCool Compression Sweatbands,Playmaking +20,Leadership +20,Passing +20
+32,Sweatbands,Gold,RapidEvap TurboWraps,Playmaking +50,Leadership +50,Passing +50
+33,Sweatbands,Ruby,FreshFlow MaxDry Bands,Three_Point_Shooting +99,,
+34,Sweatbands,Silver,AquaShield HyperGrips,Three_Point_Shooting +20,,
+35,Sweatbands,Gold,SweatSync ProFit Wraps,Three_Point_Shooting +50,,
+36,Undershirt,Ruby,CoreVent Pro Tee,Playmaking +50,Passing +50,Dribbling +50
+37,Undershirt,Silver,AeroFit Elite Undershirt,Playmaking +3,Passing +3,Dribbling +3
+38,Undershirt,Gold,CoolFlow Supreme Base,Playmaking +15,Passing +15,Dribbling +15
+39,Undershirt,Ruby,DryLock HyperMesh,Dunking +99,Layups +99,
+40,Undershirt,Silver,SwiftDry Ignition Compression,Dunking +10,Layups +10,
+41,Undershirt,Gold,FlexCool XR Undershirt,Dunking +30,Layups +30,
+42,Undershirt,Ruby,ZoneControl MaxVent Tee,Three_Point_Shooting +50,Mid_Range_Shooting +50,Short_Range_Shooting +50
+43,Undershirt,Silver,RapidRecovery TurboBase,Three_Point_Shooting +3,Mid_Range_Shooting +3,Short_Range_Shooting +3
+44,Undershirt,Gold,PowerLite ProFit Undershirt,Three_Point_Shooting +20,Mid_Range_Shooting +20,Short_Range_Shooting +20
+45,Undershirt,Ruby,BreatheEase HyperFabric,Dribbling +50,Short_Range_Shooting +50,Stealing +50
+46,Undershirt,Silver,FlexDry Precision Base,Dribbling +10,Short_Range_Shooting +10,Stealing +10
+47,Undershirt,Gold,UltraVent Ignite Shirt,Dribbling +30,Short_Range_Shooting +20,Stealing +20

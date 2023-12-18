@@ -10,6 +10,8 @@ public class MM_LeagueView : MonoBehaviour, ISettable
     [SerializeField] GameObject _leaguePreviewRoot;
     [SerializeField] GameObject _topScorersRoot;
     [SerializeField] GameObject _topAssistersRoot;
+    [SerializeField] GameObject _topReboundersRoot;
+    [SerializeField] GameObject _mvpRaceRoot;
     [SerializeField] Button _standingsButton;
     [SerializeField] Button _playoffsButton;
     [SerializeField] Button _statsCenterButton;
@@ -23,6 +25,8 @@ public class MM_LeagueView : MonoBehaviour, ISettable
         List<TeamItem> teamItems = _leaguePreviewRoot.GetComponentsInChildren<TeamItem>().ToList();
         SetTopScorers(_topScorersRoot.GetComponentsInChildren<StatObject>().ToList(), LeagueSystem.Instance.GetTopListOfStat(new List<string>() { "freeThrowsMade", "twoPointersPoints", "threePointersPoints" }, 3));
         SetTopAssisters(_topAssistersRoot.GetComponentsInChildren<StatObject>().ToList(), LeagueSystem.Instance.GetTopListOfStat("assists", 3));
+        SetTopRebounders(_topReboundersRoot.GetComponentsInChildren<StatObject>().ToList(), LeagueSystem.Instance.GetTopListOfStat("rebounds", 3));
+        SetMVPRace(_mvpRaceRoot.GetComponentsInChildren<StatObject>().ToList(), LeagueSystem.Instance.GetMVPList(3));
 
         SetLeaguePreview(teamItems, league, position);
 
@@ -43,12 +47,30 @@ public class MM_LeagueView : MonoBehaviour, ISettable
         }
     }
 
+    private void SetTopRebounders(List<StatObject> topObjects, List<Player> topPlayers)
+    {
+        for (int i = 0; i < topObjects.Count; i++)
+        {
+            int index = i;
+            topObjects[i].SetDetails(new StatObjectWrapper($"{topPlayers[i].GetFullName()} - <color=#FF9900>{LeagueSystem.Instance.GetTeam(topPlayers[index].GetTeamID()).GetTeamName()}", new List<float> { topPlayers[index].GetLatestSeason().GetAverageOfStat("rebounds") }, topPlayers[index]));
+        }
+    }
+
     private void SetTopAssisters(List<StatObject> topObjects, List<Player> topPlayers)
     {
         for (int i = 0; i < topObjects.Count; i++)
         {
             int index = i;
             topObjects[i].SetDetails(new StatObjectWrapper($"{topPlayers[i].GetFullName()} - <color=#FF9900>{LeagueSystem.Instance.GetTeam(topPlayers[index].GetTeamID()).GetTeamName()}", new List<float> { topPlayers[index].GetLatestSeason().GetAverageOfStat("assists")}, topPlayers[index]));
+        }
+    }
+
+    private void SetMVPRace(List<StatObject> topObjects, List<Player> topPlayers)
+    {
+        for (int i = 0; i < topObjects.Count; i++)
+        {
+            int index = i;
+            topObjects[i].SetDetails(new StatObjectWrapper($"{topPlayers[i].GetFullName()} - <color=#FF9900>{LeagueSystem.Instance.GetTeam(topPlayers[index].GetTeamID()).GetTeamName()}", new List<float> { topPlayers[index].GetLatestSeason().GetAverageOfStat(new List<string>() { "freeThrowsMade", "twoPointersPoints", "threePointersPoints" }), topPlayers[index].GetLatestSeason().GetAverageOfStat("assists"), topPlayers[index].GetLatestSeason().GetAverageOfStat("rebounds") }, topPlayers[index]));
         }
     }
 

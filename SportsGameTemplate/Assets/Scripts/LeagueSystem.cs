@@ -147,6 +147,13 @@ public class LeagueSystem : MonoBehaviour
         return players;
     }
 
+    public List<Player> GetMVPList(int amount)
+    {
+        List<Player> players = GetAllPlayers();
+        players = players.OrderByDescending(x => x.GetLatestSeason().GetAveragePoints() * 0.5f + x.GetLatestSeason().GetAverageOfStat("assists") * 0.25f + x.GetLatestSeason().GetAverageOfStat("rebounds") * 0.25f).Take(amount).ToList();
+        return players;
+    }
+
     public List<Player> GetTopListOfStat(string stat, int amount)
     {
         List<Player> players = GetAllPlayers();

@@ -27,6 +27,7 @@ public class MM_OfficeView : MonoBehaviour, ISettable
 
     [SerializeField] List<InventoryPreviewItem> _inventoryPreviewItems;
     [SerializeField] TextMeshProUGUI _noItemsText;
+    [SerializeField] Button _goToInventoryButton;
 
     public static event Action<DateTime> OnFreeSpin;
 
@@ -84,6 +85,9 @@ public class MM_OfficeView : MonoBehaviour, ISettable
         {
             _noItemsText.gameObject.SetActive(true);
         }
+
+        _goToInventoryButton.onClick.RemoveAllListeners();
+        _goToInventoryButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(true, CanvasKey.ItemInventory, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()))));
     }
 
     private async void SetFreeSpinButton()
