@@ -57,7 +57,7 @@ public class MM_OfficeView : MonoBehaviour, ISettable
         _paidSpinButton.onClick.RemoveAllListeners();
         _paidSpinButton.onClick.AddListener(() => GoToBallGame(RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12)));
         _paidSpinButton.onClick.AddListener(() => FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventSpendVirtualCurrency, new Parameter("gems_spent", RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12))));
-        _paidSpinCostText.text = $"Spin wheel <color=\"white\">\n{RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12)} <sprite name=\"Gem\">";
+        _paidSpinCostText.text = $"Spin wheel    <color=\"white\">{RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12)} <sprite name=\"Gem\">";
 
         _storeButton.onClick.RemoveAllListeners();
         _storeButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(true, CanvasKey.Store)));
