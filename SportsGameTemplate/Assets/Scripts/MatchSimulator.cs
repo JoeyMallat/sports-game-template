@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface MatchSimulator
 {
-    public void SimulateMatch(Match match);
+    public void SimulateMatch(Match match, int teamToForceWin);
 }

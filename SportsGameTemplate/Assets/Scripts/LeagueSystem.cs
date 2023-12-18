@@ -194,15 +194,21 @@ public class LeagueSystem : MonoBehaviour
         int matches = matchesToSim.Count;
         Debug.Log($"Simming {matches} matches");
         MatchSimulator matchSimulator = ConfigManager.Instance.GetCurrentConfig().MatchSimulator;
+        bool forceWin = GameManager.Instance.GetCurrentForceWinState();
         for (int i = 0; i < matches; i++)
         {
             Match match = matchesToSim[i];
-            matchSimulator.SimulateMatch(match);
+
+            if (forceWin)
+            {
+                matchSimulator.SimulateMatch(match, GameManager.Instance.GetTeamID());
+            } else
+            {
+                matchSimulator.SimulateMatch(match, -1);
+            }
 
             float progress = (float)(i + 1) / matches;
             Debug.Log((int)(100 * progress) + "%");
-
-            //Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID()));
 
             CheckMyTeamResult(match);
             yield return null;

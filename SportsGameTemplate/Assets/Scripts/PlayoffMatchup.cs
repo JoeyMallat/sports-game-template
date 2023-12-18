@@ -95,7 +95,7 @@ public class PlayoffMatchup
         {
             if (!match.GetMatchStatus())
             {
-                ConfigManager.Instance.GetCurrentConfig().MatchSimulator.SimulateMatch(match);
+                ConfigManager.Instance.GetCurrentConfig().MatchSimulator.SimulateMatch(match, GameManager.Instance.GetCurrentForceWinState() ? GameManager.Instance.GetTeamID() : -1);
                 _homeTeamWins += match.GetWinStatForTeam(_homeTeamID).Item1;
                 _awayTeamWins += match.GetWinStatForTeam(_awayTeamID).Item1;
                 CheckForSeriesWinner();
@@ -110,7 +110,7 @@ public class PlayoffMatchup
         {
             if (!match.GetMatchStatus())
             {
-                ConfigManager.Instance.GetCurrentConfig().MatchSimulator.SimulateMatch(match);
+                ConfigManager.Instance.GetCurrentConfig().MatchSimulator.SimulateMatch(match, GameManager.Instance.GetCurrentForceWinState() ? GameManager.Instance.GetTeamID() : -1);
                 _homeTeamWins += match.GetWinStatForTeam(_homeTeamID).Item1;
                 _awayTeamWins += match.GetWinStatForTeam(_awayTeamID).Item1;
             }

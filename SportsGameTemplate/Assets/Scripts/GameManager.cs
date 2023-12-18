@@ -23,9 +23,20 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] List<OwnedGameItem> _ownedGameItems;
     [SerializeField] int _gems;
+    [SerializeField] bool _currentForceWinState;
     public static event Action<CloudSaveData> OnGemsUpdated;
     public static event Action<CloudSaveData> OnInventoryUpdated;
     public static event Action OnNewSeasonStarted;
+
+    public bool GetCurrentForceWinState()
+    {
+        return _currentForceWinState;
+    }
+
+    public void SetCurrentForceWinState(bool newForceWinState)
+    {
+        _currentForceWinState = newForceWinState;
+    }
 
     public void SetGems(int gems)
     {

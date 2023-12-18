@@ -24,12 +24,16 @@ public class BasketballMatchSimulator : MatchSimulator
     [SerializeField] Vector2 _blockSuccessRate;
     [SerializeField] Vector2 _stealSuccessRate;
 
+    int _teamToForceWin;
+
     [SerializeField] List<NextMove> _nextMoves;
 
-    public void SimulateMatch(Match match)
+    public void SimulateMatch(Match match, int teamToForceWin)
     {
         Team homeTeam = LeagueSystem.Instance.GetTeam(match.GetHomeTeamID());
         Team awayTeam = LeagueSystem.Instance.GetTeam(match.GetAwayTeamID());
+
+        _teamToForceWin = teamToForceWin;
 
         Team teamInPossession = homeTeam;
         Team teamNotInPossession = teamInPossession == homeTeam ? awayTeam : homeTeam;
@@ -102,7 +106,7 @@ public class BasketballMatchSimulator : MatchSimulator
             playerWithBall = best[UnityEngine.Random.Range(0, 5)];
             Move move = DecideNextMove(secondsSpent);
             (ResultAction, Player) turnover = DecideDefence(move, defendingTeam);
-            secondsSpent += UnityEngine.Random.Range(1, 4);
+            secondsSpent += UnityEngine.Random.Range(2, 6);
 
             if (turnover.Item1 == ResultAction.Steal || turnover.Item1 == ResultAction.Block)
             {
@@ -175,32 +179,74 @@ public class BasketballMatchSimulator : MatchSimulator
             case Move.Pass:
                 float passingSkill1 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Passing).ToList()[0]);
                 float passingSkill2 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Playmaking).ToList()[0]);
+                if (playerWithBall.GetTeamID() == _teamToForceWin)
+                {
+                    (possessionKept, resultAction) = GetResult(_passSuccessRate, 2, 99 + 99, true, ResultAction.Pass, ResultAction.Steal);
+                    break;
+                }
+
                 (possessionKept, resultAction) = GetResult(_passSuccessRate, 2, passingSkill1 + passingSkill2, true, ResultAction.Pass, ResultAction.Steal);
+
                 break;
             case Move.TwoPointer:
                 float twoPointerSkill1 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Short_Range_Shooting).ToList()[0]);
                 float twoPointerSkill2 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Mid_Range_Shooting).ToList()[0]);
+                if (playerWithBall.GetTeamID() == _teamToForceWin)
+                {
+                    (possessionKept, resultAction) = GetResult(_twoPointSuccessRate, 2, 99 + 99, false, ResultAction.TwoPointerMade, ResultAction.TwoPointerMissed);
+                    break;
+                }
+
                 (possessionKept, resultAction) = GetResult(_twoPointSuccessRate, 2, twoPointerSkill1 + twoPointerSkill2, false, ResultAction.TwoPointerMade, ResultAction.TwoPointerMissed);
+
                 break;
             case Move.ThreePointer:
                 float threePointerSkill1 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Mid_Range_Shooting).ToList()[0]);
                 float threePointerSkill2 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Three_Point_Shooting).ToList()[0]);
+                if (playerWithBall.GetTeamID() == _teamToForceWin)
+                {
+                    (possessionKept, resultAction) = GetResult(_threePointSuccessRate, 2, 99 + 99, false, ResultAction.ThreePointerMade, ResultAction.ThreePointerMissed);
+                    break;
+                }
+
                 (possessionKept, resultAction) = GetResult(_threePointSuccessRate, 2, threePointerSkill1 + threePointerSkill2, false, ResultAction.ThreePointerMade, ResultAction.ThreePointerMissed);
+
                 break;
             case Move.Dunk:
                 float dunkSkill1 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Dunking).ToList()[0]);
+                if (playerWithBall.GetTeamID() == _teamToForceWin)
+                {
+                    (possessionKept, resultAction) = GetResult(_dunkSuccessRate, 1, 99, false, ResultAction.TwoPointerMade, ResultAction.TwoPointerMissed);
+                    break;
+                }
+
                 (possessionKept, resultAction) = GetResult(_dunkSuccessRate, 1, dunkSkill1, false, ResultAction.TwoPointerMade, ResultAction.TwoPointerMissed);
+
                 break;
             case Move.Layup:
                 float layupSkill1 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Layups).ToList()[0]);
                 float layupSkill2 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Speed).ToList()[0]);
+                if (playerWithBall.GetTeamID() == _teamToForceWin)
+                {
+                    (possessionKept, resultAction) = GetResult(_layupSuccessRate, 2, 99 + 99, false, ResultAction.TwoPointerMade, ResultAction.TwoPointerMissed);
+                    break;
+                }
+
                 (possessionKept, resultAction) = GetResult(_layupSuccessRate, 2, layupSkill1 + layupSkill2, false, ResultAction.TwoPointerMade, ResultAction.TwoPointerMissed);
+
                 break;
             case Move.Dribble:
                 float dribbleSkill1 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Dribbling).ToList()[0]);
                 float dribbleSkill2 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Speed).ToList()[0]);
                 float dribbleSkill3 = playerWithBall.GetRatingForSkillWithItem(playerWithBall.GetSkills().Where(x => x.GetSkill() == Skill.Playmaking).ToList()[0]);
-                (possessionKept, resultAction) = GetResult(_dribbleSuccessRate, 3, dribbleSkill1 + dribbleSkill2 + dribbleSkill3, true, ResultAction.Dribble, ResultAction.Steal);
+                if (playerWithBall.GetTeamID() == _teamToForceWin)
+                {
+                    (possessionKept, resultAction) = GetResult(_dribbleSuccessRate, 3, 99 + 99 + 99, true, ResultAction.Dribble, ResultAction.Steal);
+                    break;
+                } else
+                {
+                    (possessionKept, resultAction) = GetResult(_dribbleSuccessRate, 3, dribbleSkill1 + dribbleSkill2 + dribbleSkill3, true, ResultAction.Dribble, ResultAction.Steal);
+                }
                 break;
             default:
                 break;
