@@ -20,6 +20,7 @@ public class RewardsView : MonoBehaviour, ISettable
     [SerializeField] Button _spinAgainButton;
     [SerializeField] TextMeshProUGUI _spinAgainText;
     [SerializeField] Button _mainMenuButton;
+    [SerializeField] Button _assignItemButton;
 
     private void Awake()
     {
@@ -64,6 +65,7 @@ public class RewardsView : MonoBehaviour, ISettable
     {
         _spinAgainButton.onClick.RemoveAllListeners();
         _mainMenuButton.onClick.RemoveAllListeners();
+        _assignItemButton.onClick.RemoveAllListeners();
 
         int spinWheelAgainCost = RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12);
         _spinAgainText.text = $"Spin again <color=\"white\">{spinWheelAgainCost} <sprite name=\"Gem\">";
@@ -71,5 +73,7 @@ public class RewardsView : MonoBehaviour, ISettable
         _spinAgainButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.BallGame, spinWheelAgainCost)));
 
         _mainMenuButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()))));
+
+        _assignItemButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(true, CanvasKey.Team, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()))));
     }
 }

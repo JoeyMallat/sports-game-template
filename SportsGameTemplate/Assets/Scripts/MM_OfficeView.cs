@@ -1,5 +1,8 @@
 using Firebase.Analytics;
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.Services.Authentication;
 using Unity.Services.RemoteConfig;
@@ -21,6 +24,9 @@ public class MM_OfficeView : MonoBehaviour, ISettable
     [SerializeField] Button _paidSpinButton;
     [SerializeField] Button _storeButton;
     [SerializeField] TextMeshProUGUI _paidSpinCostText;
+
+    [SerializeField] List<InventoryPreviewItem> _inventoryPreviewItems;
+    [SerializeField] TextMeshProUGUI _noItemsText;
 
     public static event Action<DateTime> OnFreeSpin;
 
@@ -54,6 +60,30 @@ public class MM_OfficeView : MonoBehaviour, ISettable
 
         _storeButton.onClick.RemoveAllListeners();
         _storeButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(true, CanvasKey.Store)));
+
+        int amountOfItems = GameManager.Instance.GetItems().Count;
+
+        _inventoryPreviewItems.ForEach(item => { item.gameObject.SetActive(false); });
+        if (amountOfItems > 0)
+        {
+            _noItemsText.gameObject.SetActive(false);
+            for (int i = 0; i < 4; i++)
+            {
+                int index = i;
+
+                if (i < amountOfItems)
+                {
+                    _inventoryPreviewItems[index].gameObject.SetActive(true);
+                    _inventoryPreviewItems[index].SetItemDetails(ItemDatabase.Instance.GetGameItemByID(GameManager.Instance.GetItems()[index].GetItemID()).GetItemImage());
+                } else
+                {
+                    _inventoryPreviewItems[index].gameObject.SetActive(false);
+                }
+            }
+        } else
+        {
+            _noItemsText.gameObject.SetActive(true);
+        }
     }
 
     private async void SetFreeSpinButton()

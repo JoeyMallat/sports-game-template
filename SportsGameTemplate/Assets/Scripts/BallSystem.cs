@@ -99,6 +99,11 @@ public class BallSystem : MonoBehaviour
         _spawnedBalls.ForEach(x => x.StartSpin());
 
         _startSpinButton.gameObject.SetActive(false);
+        Invoke("EnableStopButton", 2f);
+    }
+
+    private void EnableStopButton()
+    {
         _stopSpinButton.gameObject.SetActive(true);
     }
 
