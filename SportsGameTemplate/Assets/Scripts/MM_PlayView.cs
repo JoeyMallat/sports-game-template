@@ -30,7 +30,6 @@ public class MM_PlayView : MonoBehaviour, ISettable
         _freeAgencyGameObject.SetActive(false);
         _simButtons.SetActive(false);
 
-
         switch (GameManager.Instance.GetSeasonStage())
         {
             case SeasonStage.RegularSeason:

@@ -112,11 +112,12 @@ public class Purchaser : MonoBehaviour
                    Debug.Log(info.getIntroductoryPrice());
                    Debug.Log(info.getIntroductoryPricePeriod());
                    Debug.Log(info.getIntroductoryPricePeriodCycles());
+                    GameManager.Instance.SetPremiumStatus(info.isSubscribed() == Result.True);
                } else {
-                   Debug.Log("the product is not a subscription product");
+                   //Debug.Log("the product is not a subscription product");
                }
            } else {
-               Debug.Log($"{item.definition.id} should have a valid receipt");
+               //Debug.Log($"{item.definition.id} should have a valid receipt");
             }
         }
     }

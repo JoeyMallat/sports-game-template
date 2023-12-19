@@ -10,10 +10,12 @@ public class StoreView : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI _balanceText;
     [SerializeField] GameObject _subscriptionObject;
+    [SerializeField] Button _rewardedAdsButton;
 
     private void Awake()
     {
         GameManager.OnGemsUpdated += UpdateBalance;
+        RewardedAdsManager.OnRewardedAdWatched += GrantRewardedAdReward;
         ToggleSubscriptionObject();
     }
 
@@ -25,5 +27,14 @@ public class StoreView : MonoBehaviour
     private void UpdateBalance(CloudSaveData data)
     {
         _balanceText.text = $"Current Balance: {data.GemAmount} <sprite name=\"Gem\">";
+    }
+
+    private void GrantRewardedAdReward(string adCode)
+    {
+        if (adCode == "gems")
+        {
+            GameManager.Instance.AddToGems(5);
+            _rewardedAdsButton.ToggleButtonStatus(false);
+        }
     }
 }

@@ -56,9 +56,19 @@ public class PrematchView : MonoBehaviour, ISettable
         _clearButton.onClick.RemoveAllListeners();
         _clearButton.onClick.AddListener(() => team.EmptyLineup());
 
-        _goToGameButton.ToggleButtonStatus(players.Count == 5);
+        _goToGameButton.ToggleButtonStatus(CheckLineupCompletion(players));
         _goToGameButton.onClick.RemoveAllListeners();
         _goToGameButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.MatchOptions));
+    }
+
+    private bool CheckLineupCompletion(List<Player> players)
+    {
+        foreach (Player player in players)
+        {
+            if (player == null) return false;
+        }
+
+        return true;
     }
 
     private List<Player> GetBench(Team team, List<Player> players)

@@ -17,6 +17,7 @@ public class ChecklistView : MonoBehaviour
         Player.OnPlayerContractSigned += UpdateChecklist;
         DraftSystem.OnDraftEnded += CheckChecklist;
         DraftSystem.OnDraftEnded += OnDraftEnded;
+        RewardedAdsManager.OnRewardedAdWatched += SetRewardedAdCheckmark;
 
         _checklistChecks = new bool[4] { false, false, false, false };
     }
@@ -35,7 +36,6 @@ public class ChecklistView : MonoBehaviour
     {
         _checklistChecks[0] = true;
     }
-
 
     public void CheckChecklist()
     {
@@ -61,8 +61,8 @@ public class ChecklistView : MonoBehaviour
         {
             status = true;
         }
-        _checklistItems[3].SetChecklistItem(status, "Watch an ad or remove ads", "", new List<string>() { "Watch ad", "Remove ads" }, new List<System.Action>());
         _checklistChecks[3] = status;
+        _checklistItems[3].SetChecklistItem(_checklistChecks[3], "Watch an ad or remove ads", "", new List<string>() { "Watch ad", "Remove ads" }, new List<System.Action>());
 
         foreach (bool check in _checklistChecks)
         {
@@ -81,6 +81,20 @@ public class ChecklistView : MonoBehaviour
         _nextSeasonButton.onClick.AddListener(() => UncheckAllChecklistItems());
         _nextSeasonButton.onClick.AddListener(() => GameManager.Instance.StartNewSeason());
         _nextSeasonButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()))));
+    }
+
+    private void SetRewardedAdCheckmark(string code)
+    {
+        if (code == "checklist")
+        {
+            _checklistChecks[3] = true;
+            _checklistItems[3].SetChecklistItem(_checklistChecks[3], "Watch an ad or remove ads", "", new List<string>() { "Watch ad", "Remove ads" }, new List<System.Action>());
+        }
+    }
+
+    public void GoToStore()
+    {
+        TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(true, CanvasKey.Store));
     }
 
     private void UncheckAllChecklistItems()
