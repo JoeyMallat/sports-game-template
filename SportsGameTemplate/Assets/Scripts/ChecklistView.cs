@@ -18,6 +18,7 @@ public class ChecklistView : MonoBehaviour
         DraftSystem.OnDraftEnded += CheckChecklist;
         DraftSystem.OnDraftEnded += OnDraftEnded;
         RewardedAdsManager.OnRewardedAdWatched += SetRewardedAdCheckmark;
+        GameManager.OnPremiumStatusUpdated += SetPremiumStatus;
 
         _checklistChecks = new bool[4] { false, false, false, false };
     }
@@ -81,6 +82,11 @@ public class ChecklistView : MonoBehaviour
         _nextSeasonButton.onClick.AddListener(() => UncheckAllChecklistItems());
         _nextSeasonButton.onClick.AddListener(() => GameManager.Instance.StartNewSeason());
         _nextSeasonButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()))));
+    }
+
+    private void SetPremiumStatus(CloudSaveData cloudSaveData)
+    {
+        _checklistChecks[3] = cloudSaveData.PremiumStatus;
     }
 
     private void SetRewardedAdCheckmark(string code)

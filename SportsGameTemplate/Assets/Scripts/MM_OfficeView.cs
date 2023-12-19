@@ -48,7 +48,7 @@ public class MM_OfficeView : MonoBehaviour, ISettable
 
         _increaseSalaryCapButton.onClick.RemoveAllListeners();
 
-        _increaseSalaryCapText.text = $"Increase salary cap\n<color=\"white\"> {RemoteConfigService.Instance.appConfig.GetInt("increasesalarycap_cost", 46)} <sprite name=\"Gem\">";
+        _increaseSalaryCapText.text = $"Increase salary cap by 20%\n<color=\"white\"> {RemoteConfigService.Instance.appConfig.GetInt("increasesalarycap_cost", 46)} <sprite name=\"Gem\">";
 
         _currentBalanceText.text = $"Balance   <color=\"white\">{GameManager.Instance.GetGems()} <sprite name=\"Gem\">";
 

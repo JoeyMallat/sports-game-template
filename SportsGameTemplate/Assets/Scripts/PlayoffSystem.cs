@@ -42,7 +42,19 @@ public class PlayoffSystem : MonoBehaviour
 
     public bool IsTeamInPlayoffs()
     {
-        return _playoffRounds[_currentRound].GetMatchups().Where(x => x.GetHomeTeamID() == GameManager.Instance.GetTeamID() || x.GetAwayTeamID() == GameManager.Instance.GetTeamID()).ToList().Count > 0;
+        List<PlayoffMatchup> rounds = _playoffRounds[_currentRound].GetMatchups().Where(x => x.GetHomeTeamID() == GameManager.Instance.GetTeamID() || x.GetAwayTeamID() == GameManager.Instance.GetTeamID()).ToList();
+        
+        if (rounds.Count == 0) { return false; }
+
+        PlayoffMatchup myMatchup = _playoffRounds[_currentRound].GetMatchups().Where(x => x.GetHomeTeamID() == GameManager.Instance.GetTeamID() || x.GetAwayTeamID() == GameManager.Instance.GetTeamID()).ToList()[0];
+
+        if (myMatchup.GetSeriesWinner() != -1)
+        {
+            return myMatchup.GetSeriesWinner() == GameManager.Instance.GetTeamID();
+        } else 
+        { 
+            return true;
+        }
     }
 
     private void InitializeNextRound(List<Team> advancingTeams)
@@ -117,11 +129,28 @@ public class PlayoffSystem : MonoBehaviour
         yield return null;
     }
 
+    public IEnumerator SimulateRestOfPlayoffRound()
+    {
+        _playoffRounds[_currentRound].SimSeries();
+        SetNextMatch();
+        Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
+        yield return null;
+    }
+
+    public IEnumerator SimulateEntirePlayoffs()
+    {
+        for (int i = _currentRound; i < 4; i++)
+        {
+            _playoffRounds[i].SimSeries();
+            yield return null;
+        }
+
+        Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
+    }
+
     private void SetNextMatch()
     {
         int teamID = GameManager.Instance.GetTeamID();
-
-        Debug.Log(!IsTeamInPlayoffs());
 
         if (!IsTeamInPlayoffs()) return;
 
@@ -142,5 +171,21 @@ public class PlayoffSystem : MonoBehaviour
         }
 
         return matchups;
+    }
+
+    public bool MyTeamSeriesOver()
+    {
+        List<PlayoffMatchup> rounds = _playoffRounds[_currentRound].GetMatchups().Where(x => x.GetHomeTeamID() == GameManager.Instance.GetTeamID() || x.GetAwayTeamID() == GameManager.Instance.GetTeamID()).ToList();
+
+        if (rounds.Count == 0) { return true; }
+
+        PlayoffMatchup myMatchup = _playoffRounds[_currentRound].GetMatchups().Where(x => x.GetHomeTeamID() == GameManager.Instance.GetTeamID() || x.GetAwayTeamID() == GameManager.Instance.GetTeamID()).ToList()[0];
+
+        if (myMatchup.GetSeriesWinner() != -1)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

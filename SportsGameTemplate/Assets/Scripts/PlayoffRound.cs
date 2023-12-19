@@ -24,8 +24,6 @@ public class PlayoffRound : MonoBehaviour
 
             foreach (PlayoffMatchup match in _playoffMatchups)
             {
-                Debug.Log($"{match.GetMatchupStatus()} for match {match.GetHomeTeamID()} - {match.GetAwayTeamID()}");
-
                 if (match.GetMatchupStatus() == false) return;
 
                 winners.Add(LeagueSystem.Instance.GetTeam(match.GetSeriesWinner()));
@@ -46,6 +44,16 @@ public class PlayoffRound : MonoBehaviour
         foreach (var playoff in _playoffMatchups)
         {
             playoff.SimulateNextGameInSeries();
+        }
+
+        OnPlayoffRoundUpdated?.Invoke(this);
+    }
+
+    public void SimSeries()
+    {
+        foreach (var playoff in _playoffMatchups)
+        {
+            playoff.SimulateSeries();
         }
 
         OnPlayoffRoundUpdated?.Invoke(this);

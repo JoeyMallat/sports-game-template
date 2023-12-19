@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class LeagueSystem : MonoBehaviour
@@ -196,6 +197,37 @@ public class LeagueSystem : MonoBehaviour
         //ConfigManager.Instance.GetCurrentConfig().MatchSimulator.SimulateMatch(_seasonMatches[0]);
     }
 
+    IEnumerator SimulateToNextMatchWithProgress()
+    {
+        MatchSimulator matchSimulator = ConfigManager.Instance.GetCurrentConfig().MatchSimulator;
+        List<Match> matchList = new List<Match>();
+        int myTeamID = GameManager.Instance.GetTeamID();
+
+        for (int i = _nextMatchIndex; i < GetMatches().Count; i++)
+        {
+            int index = i;
+            if (GetMatches()[i].GetMatchStatus()) continue;
+
+            if (GetMatches()[i].GetHomeTeamID() == myTeamID || GetMatches()[i].GetAwayTeamID() == myTeamID) break;
+
+            matchList.Add(GetMatches()[index]);
+        }
+
+        Debug.Log($"Simulating {matchList.Count} matches");
+
+        foreach (Match match in matchList)
+        {
+            matchSimulator.SimulateMatch(match, -1);
+            //float progress = (float)(i + 1) / matchList.Count;
+            //Debug.Log((int)(100 * progress) + "%");
+            yield return null;
+        }
+
+        SortStandings();
+        GetNextGame(SeasonStage.RegularSeason, GameManager.Instance.GetCurrentWeek());
+        Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID()));
+    }
+
     IEnumerator SimulateMatchesWithProgress(List<Match> matchesToSim)
     {
         int matches = matchesToSim.Count;
@@ -273,14 +305,31 @@ public class LeagueSystem : MonoBehaviour
                 List<Match> matches = GetMatchesFromWeek(week);
                 if (matches.Count > 0)
                 {
-                    StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { GetNextGame(seasonStage, week); Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID())); }, SimulateMatchesWithProgress(matches)));
+                    if (MyTeamInMatches(matches))
+                    {
+                        StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { GetNextGame(seasonStage, week); Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID())); }, SimulateMatchesWithProgress(matches)));
+                    } else
+                    {
+                        StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { GetNextGame(seasonStage, week); Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID())); }, SimulateToNextMatchWithProgress()));
+                    }
                 } else
                 {
                     OnRegularSeasonFinished?.Invoke(_teams, SeasonStage.Playoffs);
                 }
                 break;
             case SeasonStage.Playoffs:
-                StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { }, PlayoffSystem.Instance.SimulateGameweekInPlayoffRound()));
+                Debug.Log("My team is in playoffs: " + PlayoffSystem.Instance.IsTeamInPlayoffs());
+                if (PlayoffSystem.Instance.IsTeamInPlayoffs() && PlayoffSystem.Instance.MyTeamSeriesOver())
+                {
+                    StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { }, PlayoffSystem.Instance.SimulateRestOfPlayoffRound()));
+                } else if (PlayoffSystem.Instance.IsTeamInPlayoffs())
+                {
+                    StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { }, PlayoffSystem.Instance.SimulateGameweekInPlayoffRound()));
+                }
+                else
+                {
+                    StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { }, PlayoffSystem.Instance.SimulateEntirePlayoffs()));
+                }
                 break;
             case SeasonStage.OffSeason:
                 Debug.Log("We are now in the offseason");
@@ -288,6 +337,19 @@ public class LeagueSystem : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    private bool MyTeamInMatches(List<Match> matches)
+    {
+        foreach (Match match in matches)
+        {
+            if (match.GetHomeTeamID() == GameManager.Instance.GetTeamID() || match.GetAwayTeamID() == GameManager.Instance.GetTeamID())
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public bool HasNextGame(int week = 0)

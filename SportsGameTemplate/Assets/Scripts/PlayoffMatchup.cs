@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [System.Serializable]
@@ -106,6 +107,8 @@ public class PlayoffMatchup
 
     public void SimulateSeries()
     {
+        if (_matchupCompleted) return;
+
         foreach (var match in _matches)
         {
             if (!match.GetMatchStatus())
@@ -117,15 +120,10 @@ public class PlayoffMatchup
         }
 
         int winner = CheckForSeriesWinner();
+
         if (winner == -1)
         {
-            //Debug.Log($"No winner after {_matches.Count} games");
             SimulateSeries();
-        } else
-        {
-            //Debug.Log($"{LeagueSystem.Instance.GetTeam(CheckForSeriesWinner()).GetTeamName()} has won the series after {_matches.Count}!");
-            _matchupCompleted = true;
-            OnMatchupCompleted?.Invoke(this, winner);
         }
     }
 
@@ -138,9 +136,6 @@ public class PlayoffMatchup
     {
         int homeWins = _homeTeamWins;
         int awayWins = _awayTeamWins;
-
-        Debug.Log($"{homeWins} < {(ConfigManager.Instance.GetCurrentConfig().BestOfAmountInPlayoffs + 1) / 2}");
-        Debug.Log($"{awayWins} < {(ConfigManager.Instance.GetCurrentConfig().BestOfAmountInPlayoffs + 1) / 2}");
 
         if (homeWins >= (ConfigManager.Instance.GetCurrentConfig().BestOfAmountInPlayoffs + 1) / 2)
         {
@@ -157,7 +152,13 @@ public class PlayoffMatchup
             return _awayTeamID;
         }
 
-        _matches.Add(new Match(0, 0, _homeTeamID, _awayTeamID));
+        bool enoughMatchesForHomeWin = _matches.Where(x => x.GetMatchStatus() == false).ToList().Count + homeWins >= (ConfigManager.Instance.GetCurrentConfig().BestOfAmountInPlayoffs + 1) / 2;
+        bool enoughMatchesForAwayWin = _matches.Where(x => x.GetMatchStatus() == false).ToList().Count + awayWins >= (ConfigManager.Instance.GetCurrentConfig().BestOfAmountInPlayoffs + 1) / 2;
+
+        if (!enoughMatchesForHomeWin || !enoughMatchesForHomeWin)
+        {
+            _matches.Add(new Match(0, 0, _homeTeamID, _awayTeamID));
+        }
 
         return -1;
     }
