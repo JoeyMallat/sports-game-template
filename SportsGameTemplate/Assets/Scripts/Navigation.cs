@@ -163,7 +163,7 @@ public class Navigation : SerializedMonoBehaviour
         } else
         {
             // Subtract the gems off your current balance
-            GameManager.Instance.EditGems(-coinsNeeded);
+            GameManager.Instance.AddToGems(-coinsNeeded);
         }
 
         if (!overlay)

@@ -21,9 +21,11 @@ public class GameManager : MonoBehaviour
     public static event Action<SeasonStage, int> OnPostSeasonStarted;
     public static GameManager Instance;
 
+    [SerializeField] bool _premiumStatus;
     [SerializeField] List<OwnedGameItem> _ownedGameItems;
     [SerializeField] int _gems;
     [SerializeField] bool _currentForceWinState;
+    public static event Action<CloudSaveData> OnPremiumStatusUpdated;
     public static event Action<CloudSaveData> OnGemsUpdated;
     public static event Action<CloudSaveData> OnInventoryUpdated;
     public static event Action OnNewSeasonStarted;
@@ -41,25 +43,36 @@ public class GameManager : MonoBehaviour
     public void SetGems(int gems)
     {
         _gems = gems;
-        OnGemsUpdated?.Invoke(new CloudSaveData(_gems, _ownedGameItems));
+        OnGemsUpdated?.Invoke(new CloudSaveData(_premiumStatus, _gems, _ownedGameItems));
     }
 
-    public void EditGems(int gemsToEdit)
+    public void AddToGems(int gemsToEdit)
     {
         _gems += gemsToEdit;
-        OnGemsUpdated.Invoke(new CloudSaveData(_gems, _ownedGameItems));
+        OnGemsUpdated.Invoke(new CloudSaveData(_premiumStatus, _gems, _ownedGameItems));
     }
 
     public bool CheckBuyItem(int cost)
     {
         if (cost <= _gems)
         {
-            EditGems(-cost);
+            AddToGems(-cost);
             return true;
         } else
         {
             return false;
         }
+    }
+
+    public void SetPremiumStatus(bool status)
+    {
+        _premiumStatus = status;
+        OnPremiumStatusUpdated?.Invoke(new CloudSaveData(_premiumStatus, _gems, _ownedGameItems));
+    }
+
+    public bool GetPremiumStatus()
+    {
+        return _premiumStatus;
     }
 
     public void RemoveItem(OwnedGameItem item)
@@ -72,7 +85,7 @@ public class GameManager : MonoBehaviour
             _ownedGameItems.Remove(item);
         }
 
-        OnInventoryUpdated?.Invoke(new CloudSaveData(_gems, _ownedGameItems));
+        OnInventoryUpdated?.Invoke(new CloudSaveData(_premiumStatus, _gems, _ownedGameItems));
     }
 
     public void SetInventory(List<CloudInventoryItem> ownedGameItems)
@@ -178,7 +191,7 @@ public class GameManager : MonoBehaviour
             _ownedGameItems.Where(x => x.GetItemID() == reward.GetItemID()).ToList()[0].UpdateAmount(1);
         }
 
-        OnInventoryUpdated?.Invoke(new CloudSaveData(_gems, _ownedGameItems));
+        OnInventoryUpdated?.Invoke(new CloudSaveData(_premiumStatus, _gems, _ownedGameItems));
     }
 
     public void Advance()

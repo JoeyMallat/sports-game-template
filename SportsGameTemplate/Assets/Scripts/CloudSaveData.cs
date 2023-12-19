@@ -5,11 +5,13 @@ using UnityEngine;
 [System.Serializable]
 public class CloudSaveData
 {
+    public bool PremiumStatus;
     public int GemAmount;
     public List<CloudInventoryItem> Inventory;
 
-    public CloudSaveData(int gems, List<OwnedGameItem> items)
+    public CloudSaveData(bool premiumStatus, int gems, List<OwnedGameItem> items)
     {
+        PremiumStatus = premiumStatus;
         GemAmount = gems;
         Inventory = new List<CloudInventoryItem>();
 

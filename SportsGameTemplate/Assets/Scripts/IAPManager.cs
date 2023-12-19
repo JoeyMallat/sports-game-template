@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
@@ -80,6 +81,28 @@ public class IAPManager : IDetailedStoreListener
         Debug.Log($"Purchased product with ID: {e.purchasedProduct.definition.id}");
 
         OnProductPurchased?.Invoke(e.purchasedProduct.definition.id);
+        Dictionary<string, string> dict = new Dictionary<string, string>() { { "com.basketballgm.allstar", "2.99USD" } };
+
+        if (e.purchasedProduct.definition.type == ProductType.Subscription)
+        {
+            string intro_json = (dict == null || !dict.ContainsKey(e.purchasedProduct.definition.storeSpecificId)) ? null : dict[e.purchasedProduct.definition.storeSpecificId];
+            SubscriptionManager p = new SubscriptionManager(e.purchasedProduct, intro_json);
+            SubscriptionInfo info = p.getSubscriptionInfo();
+
+            if (info.isExpired() == Result.True)
+            {
+                Debug.Log("User is now subscribed");
+                GameManager.Instance.SetPremiumStatus(true);
+            }
+            else if (info.isSubscribed() == Result.True)
+            {
+                Debug.Log("User is now subscribed");
+            }
+        }
+        else
+        {
+            Debug.Log("the product is not a subscription product");
+        }
 
         return PurchaseProcessingResult.Complete;
     }

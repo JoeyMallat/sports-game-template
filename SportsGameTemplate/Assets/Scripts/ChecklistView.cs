@@ -55,9 +55,14 @@ public class ChecklistView : MonoBehaviour
         _checklistChecks[2] = currentPayroll <= ConfigManager.Instance.GetCurrentConfig().SalaryCap;
 
         // Check watch ad or remove ads
-        bool tempTrue = true;
-        _checklistItems[3].SetChecklistItem(tempTrue, "Watch an ad or remove ads", "", new List<string>() { "Watch ad", "Remove ads" }, new List<System.Action>());
-        _checklistChecks[3] = tempTrue;
+        bool status = false;
+
+        if (GameManager.Instance.GetPremiumStatus())
+        {
+            status = true;
+        }
+        _checklistItems[3].SetChecklistItem(status, "Watch an ad or remove ads", "", new List<string>() { "Watch ad", "Remove ads" }, new List<System.Action>());
+        _checklistChecks[3] = status;
 
         foreach (bool check in _checklistChecks)
         {
