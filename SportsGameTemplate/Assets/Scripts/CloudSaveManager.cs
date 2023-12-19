@@ -45,11 +45,12 @@ public class CloudSaveManager : MonoBehaviour
 
         if (saveData == null)
         {
-            SaveAll(new CloudSaveData(GameManager.Instance.GetPremiumStatus(), GameManager.Instance.GetGems(), GameManager.Instance.GetItems()));
+            SaveAll(new CloudSaveData(GameManager.Instance.GetSalaryCapIncrease(), GameManager.Instance.GetPremiumStatus(), GameManager.Instance.GetGems(), GameManager.Instance.GetItems()));
             return;
         }
         else
         {
+            GameManager.Instance.SetSalaryCapIncrease(saveData.SalaryCapIncrease);
             GameManager.Instance.SetPremiumStatus(saveData.PremiumStatus);
             GameManager.Instance.SetInventory(saveData.Inventory);
             GameManager.Instance.SetGems(saveData.GemAmount);

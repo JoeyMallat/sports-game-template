@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System;
+using Unity.Services.RemoteConfig;
 
 public class ContractNegotiationsView : MonoBehaviour, ISettable
 {
@@ -19,6 +20,9 @@ public class ContractNegotiationsView : MonoBehaviour, ISettable
     [SerializeField] Image _totalSalaryAmount;
     [SerializeField] Image _totalSalaryAmountAndChange;
     [SerializeField] TextMeshProUGUI _salaryChangeIndication;
+
+    [SerializeField] Button _increaseSalaryCapButton;
+    [SerializeField] TextMeshProUGUI _increaseSalaryCapText;
 
     [SerializeField] TextMeshProUGUI _playerAcceptingStatus;
     [SerializeField] Button _signContractButton;
@@ -84,19 +88,22 @@ public class ContractNegotiationsView : MonoBehaviour, ISettable
 
         _salaryTile.InitializeTile(player.GetContract().GetYearlySalary());
         _contractLengthTile.InitializeTile(player.GetContract().GetYearsOnContract());
+
+        _increaseSalaryCapButton.onClick.AddListener(GameManager.Instance.CheckBuyItem(RemoteConfigService.Instance.appConfig.GetInt("increasesalarycap_cost", 46)) ? () => { GameManager.Instance.SetSalaryCapIncrease(0.2f); SetDetails(player); } : () => Navigation.Instance.GoToScreen(true, CanvasKey.Store));
+        _increaseSalaryCapText.text = $"Increase salary cap by 20%\n<color=\"white\"> {RemoteConfigService.Instance.appConfig.GetInt("increasesalarycap_cost", 46)} <sprite name=\"Gem\">";
     }
 
     private void UpdateSalaryCapImpact(int total, int change)
     {
-        _totalSalaryAmount.fillAmount = (float)total / (float)ConfigManager.Instance.GetCurrentConfig().SalaryCap;
+        _totalSalaryAmount.fillAmount = (float)total / (ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease()));
         _totalSalaryAmountAndChange.fillAmount = (float)(total + change) / (float)ConfigManager.Instance.GetCurrentConfig().SalaryCap;
 
         if (change != 0)
         {
-            _salaryChangeIndication.text = $"{total.ConvertToMonetaryString()} -> {(total + change).ConvertToMonetaryString()}<color=\"white\"> / {ConfigManager.Instance.GetCurrentConfig().SalaryCap.ConvertToMonetaryString()}";
+            _salaryChangeIndication.text = $"{total.ConvertToMonetaryString()} -> {(total + change).ConvertToMonetaryString()}<color=\"white\"> / {(ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease())).ConvertToMonetaryString()}";
         } else
         {
-            _salaryChangeIndication.text = $"{total.ConvertToMonetaryString()}<color=\"white\"> / {ConfigManager.Instance.GetCurrentConfig().SalaryCap.ConvertToMonetaryString()}";
+            _salaryChangeIndication.text = $"{total.ConvertToMonetaryString()}<color=\"white\"> / {(ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease())).ConvertToMonetaryString()}";
         }
     }
 }

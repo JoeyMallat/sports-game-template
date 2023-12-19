@@ -5,12 +5,14 @@ using UnityEngine;
 [System.Serializable]
 public class CloudSaveData
 {
+    public float SalaryCapIncrease;
     public bool PremiumStatus;
     public int GemAmount;
     public List<CloudInventoryItem> Inventory;
 
-    public CloudSaveData(bool premiumStatus, int gems, List<OwnedGameItem> items)
+    public CloudSaveData(float salaryCapIncrease, bool premiumStatus, int gems, List<OwnedGameItem> items)
     {
+        SalaryCapIncrease = salaryCapIncrease;
         PremiumStatus = premiumStatus;
         GemAmount = gems;
         Inventory = new List<CloudInventoryItem>();

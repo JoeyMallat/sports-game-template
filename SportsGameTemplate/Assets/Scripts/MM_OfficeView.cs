@@ -41,14 +41,14 @@ public class MM_OfficeView : MonoBehaviour, ISettable
     {
         Team team = item as Team;
 
-        float percentage = (float)team.GetTotalSalaryAmount() / (float)ConfigManager.Instance.GetCurrentConfig().SalaryCap;
+        float percentage = (float)team.GetTotalSalaryAmount() / (ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease()));
 
         _salaryFill.fillAmount = percentage;
-        _salaryText.text = $"{team.GetTotalSalaryAmount().ConvertToMonetaryString()}  <color=\"white\">/  {ConfigManager.Instance.GetCurrentConfig().SalaryCap.ConvertToMonetaryString()}";
+        _salaryText.text = $"{team.GetTotalSalaryAmount().ConvertToMonetaryString()}  <color=\"white\">/  {(ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease())).ConvertToMonetaryString()}";
 
         _increaseSalaryCapButton.onClick.RemoveAllListeners();
-
-        _increaseSalaryCapText.text = $"Increase salary cap by 20%\n<color=\"white\"> {RemoteConfigService.Instance.appConfig.GetInt("increasesalarycap_cost", 46)} <sprite name=\"Gem\">";
+        _increaseSalaryCapButton.onClick.AddListener(GameManager.Instance.CheckBuyItem(RemoteConfigService.Instance.appConfig.GetInt("increasesalarycap_cost", 46)) ? () => { GameManager.Instance.SetSalaryCapIncrease(0.2f); SetDetails(team); } : () => Navigation.Instance.GoToScreen(true, CanvasKey.Store));
+        _increaseSalaryCapText.text = $"Increase salary cap (+20%)\n<color=\"white\"> {RemoteConfigService.Instance.appConfig.GetInt("increasesalarycap_cost", 46)} <sprite name=\"Gem\">";
 
         _currentBalanceText.text = $"Balance   <color=\"white\">{GameManager.Instance.GetGems()} <sprite name=\"Gem\">";
 
