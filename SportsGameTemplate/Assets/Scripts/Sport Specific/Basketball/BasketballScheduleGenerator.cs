@@ -8,8 +8,6 @@ public class BasketballScheduleGenerator : ScheduleGenerator
 {
     public List<Match> GenerateSchedule(List<Team> teams)
     {
-        int matchID = 0;
-
         List<Match> matches = new List<Match>();
         Debug.Log($"Teams in league: {teams.Count}");
 
@@ -36,14 +34,13 @@ public class BasketballScheduleGenerator : ScheduleGenerator
 
                     if (GetHomeOrAway())
                     {
-                        matches.Add(new Match(matchID, week, team.GetTeamID(), opponentID));
+                        matches.Add(new Match(GameManager.Instance.GetNextMatchID(), week, team.GetTeamID(), opponentID));
                     }
                     else
                     {
-                        matches.Add(new Match(matchID, week, opponentID, team.GetTeamID()));
+                        matches.Add(new Match(GameManager.Instance.GetNextMatchID(), week, opponentID, team.GetTeamID()));
                     }
 
-                    matchID++;
                     team.AddMatchdayAsTaken(week);
                     opponent.AddMatchdayAsTaken(week);
 

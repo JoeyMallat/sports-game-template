@@ -151,7 +151,7 @@ public class LeagueSystem : MonoBehaviour
     public List<Player> GetMVPList(int amount)
     {
         List<Player> players = GetAllPlayers();
-        players = players.OrderByDescending(x => x.GetLatestSeason().GetAveragePoints() * 0.5f + x.GetLatestSeason().GetAverageOfStat("assists") * 0.25f + x.GetLatestSeason().GetAverageOfStat("rebounds") * 0.25f).Take(amount).ToList();
+        players = players.OrderByDescending(x => x.GetLatestSeason().GetMatchStats().Count * (x.GetLatestSeason().GetAveragePoints() * 0.7f + x.GetLatestSeason().GetAverageOfStat("assists") * 0.15f + x.GetLatestSeason().GetAverageOfStat("rebounds") * 0.05f)).Take(amount).ToList();
         return players;
     }
 

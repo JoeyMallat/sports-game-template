@@ -61,10 +61,10 @@ public class PlayoffMatchup
         _awayTeamID = awayID;
         _awayTeamSeed = awaySeed;
 
-        GenerateMatches(0, 0);
+        GenerateMatches();
     }
 
-    public List<Match> GenerateMatches(int lastID, int week)
+    public List<Match> GenerateMatches()
     {
         int minimumAmountOfMatches = (ConfigManager.Instance.GetCurrentConfig().BestOfAmountInPlayoffs + 1) / 2;
         _matches = new List<Match>();
@@ -73,13 +73,13 @@ public class PlayoffMatchup
         {
             if (i % 2 == 0)
             {
-                Match match = new Match(lastID + i, week + i, _homeTeamID, _awayTeamID);
+                Match match = new Match(GameManager.Instance.GetNextMatchID(), i, _homeTeamID, _awayTeamID);
                 _matches.Add(match);
 
             }
             else
             {
-                Match match = new Match(lastID + i, week + i, _awayTeamID, _homeTeamID);
+                Match match = new Match(GameManager.Instance.GetNextMatchID(), i, _awayTeamID, _homeTeamID);
                 _matches.Add(match);
 
             }
@@ -157,7 +157,7 @@ public class PlayoffMatchup
 
         if (!enoughMatchesForHomeWin || !enoughMatchesForHomeWin)
         {
-            _matches.Add(new Match(0, 0, _homeTeamID, _awayTeamID));
+            _matches.Add(new Match(GameManager.Instance.GetNextMatchID(), 0, _homeTeamID, _awayTeamID));
         }
 
         return -1;

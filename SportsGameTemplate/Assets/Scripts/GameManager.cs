@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
     public static event Action<CloudSaveData> OnInventoryUpdated;
     public static event Action OnNewSeasonStarted;
 
+    int _nextMatchID = 0;
+
     public bool GetCurrentForceWinState()
     {
         return _currentForceWinState;
@@ -246,5 +248,10 @@ public class GameManager : MonoBehaviour
         {
             Destroy(this);
         }
+    }
+
+    public int GetNextMatchID()
+    {
+        return _nextMatchID++;
     }
 }

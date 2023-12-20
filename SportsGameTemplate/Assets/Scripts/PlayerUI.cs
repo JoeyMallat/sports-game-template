@@ -182,7 +182,8 @@ public class PlayerUI : MonoBehaviour, ISettable
 
         for (int i = 0; i < amountOfObjectsToSpawn; i++)
         {
-            StatObject statObject = Instantiate(_statObjectPrefab, _statObjectRoot.transform);
+            StatObject statObject = Instantiate(_statObjectPrefab);
+            statObject.transform.SetParent(_statObjectRoot.transform, false);
             statObjects.Add(statObject);
         }
 
@@ -193,6 +194,8 @@ public class PlayerUI : MonoBehaviour, ISettable
             if (i < amountOfGames)
             {
                 statObjects[i].gameObject.SetActive(true);
+                RectTransform rect = statObjects[i].GetComponent<RectTransform>();
+                rect.sizeDelta = new Vector2(rect.sizeDelta.x, 75);
                 statObjects[i].SetDetails(new StatObjectWrapper(GetMatchOpponent(playerMatchStats[index].GetMatchID()),
                     new List<float>() {
                     playerMatchStats[index].GetTotal("minutes"),
@@ -205,12 +208,32 @@ public class PlayerUI : MonoBehaviour, ISettable
                 statObjects[i].gameObject.SetActive(false);
             }
         }
+
+        Canvas.ForceUpdateCanvases();
     }
 
     private string GetMatchOpponent(int matchID)
     {
-        Match match = LeagueSystem.Instance.GetMatches().Where(x => x.GetMatchID() == matchID).First();
-        return $"{LeagueSystem.Instance.GetTeam(match.GetAwayTeamID()).GetTeamName()} @ {LeagueSystem.Instance.GetTeam(match.GetHomeTeamID()).GetTeamName()}";
+        Match match = null;
+        match = LeagueSystem.Instance.GetMatches().FirstOrDefault(x => x.GetMatchID() == matchID);
+
+        if (match != null)
+        {
+            return $"{LeagueSystem.Instance.GetTeam(match.GetAwayTeamID()).GetTeamName()} @ {LeagueSystem.Instance.GetTeam(match.GetHomeTeamID()).GetTeamName()}";
+        } else
+        {
+            foreach (var matchup in PlayoffSystem.Instance.GetAllPlayoffsMatchups())
+            {
+                match = matchup.GetMatches().FirstOrDefault(x => x.GetMatchID() == matchID);
+                if (match != null)
+                {
+                    return $"{LeagueSystem.Instance.GetTeam(match.GetAwayTeamID()).GetTeamName()} @ {LeagueSystem.Instance.GetTeam(match.GetHomeTeamID()).GetTeamName()}";
+                }
+            }
+
+            Debug.Log($"No match found with matchID {matchID}");
+            return $"";
+        }
     }
 
     private void SetSkills(Player player)
