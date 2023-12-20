@@ -57,7 +57,7 @@ public class TeamBoxScores : MonoBehaviour, ISettable
 
         List<Player> playersWhoPlayed = team.GetPlayersFromTeam().Where(x => x.GetLatestSeason().GetMatchStats().Count > 0).Where(xx => xx.GetLatestSeason().GetMatchStats().Last().GetMatchID() == matchID).ToList();
         playersWhoPlayed = playersWhoPlayed.OrderByDescending(x => x.GetLatestSeason().GetMatchStats().Last().GetTotal("minutes")).ToList();
-        List<StatObject> statObjects = boxRoot.GetComponentsInChildren<StatObject>().ToList();
+        List<StatObject> statObjects = boxRoot.GetComponentsInChildren<StatObject>(true).ToList();
 
         int toBeSpawned = Mathf.Clamp(playersWhoPlayed.Count - statObjects.Count, 0, 999);
 

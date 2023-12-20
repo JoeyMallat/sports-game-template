@@ -135,6 +135,7 @@ public class Team
     public void RemovePlayer(Player player)
     {
         _players.RemoveByPlayerID(player.GetTradeableID());
+        GenerateLineup();
     }
 
     public void AddPlayer(Player player)
@@ -148,6 +149,7 @@ public class Team
     {
         _players.Add(player);
         player.ChangeTeam(_teamID, pick);
+        GenerateLineup();
     }
 
     private void ExtendContracts(List<Team> teams, SeasonStage seasonStage)

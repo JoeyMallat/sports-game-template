@@ -85,8 +85,8 @@ public class BasketballMatchSimulator : MatchSimulator
 
     private Team DecideReboundingTeam(int matchID, Team teamOne, Team teamTwo)
     {
-        Player teamOneRebounder = GetCurrentLineup(teamOne.GetLineup(), teamOne.GetTeamID()).OrderByDescending(x => x.GetRatingForSkillWithItem(x.GetSkills()[11]) * UnityEngine.Random.Range(0.5f, 1.5f)).ToList()[0];
-        Player teamTwoRebounder = GetCurrentLineup(teamTwo.GetLineup(), teamTwo.GetTeamID()).OrderByDescending(x => x.GetRatingForSkillWithItem(x.GetSkills()[11]) * UnityEngine.Random.Range(0.5f, 1.5f)).ToList()[0];
+        Player teamOneRebounder = GetCurrentLineup(teamOne.GetLineup(), teamOne.GetTeamID()).OrderByDescending(x => x.GetRatingForSkillWithItem(x.GetSkills()[11]) * UnityEngine.Random.Range(0.25f, 1.75f)).ToList()[0];
+        Player teamTwoRebounder = GetCurrentLineup(teamTwo.GetLineup(), teamTwo.GetTeamID()).OrderByDescending(x => x.GetRatingForSkillWithItem(x.GetSkills()[11]) * UnityEngine.Random.Range(0.25f, 1.75f)).ToList()[0];
 
         float teamOneRebounderChance = teamOneRebounder.GetRatingForSkillWithItem(teamOneRebounder.GetSkills()[11]);
         float total = teamOneRebounder.GetRatingForSkillWithItem(teamOneRebounder.GetSkills()[11]) + teamTwoRebounder.GetRatingForSkillWithItem(teamOneRebounder.GetSkills()[11]);
@@ -113,7 +113,7 @@ public class BasketballMatchSimulator : MatchSimulator
         while (inPossession)
         {
             List<Player> best = GetCurrentLineup(teamInPossession.GetLineup(), teamInPossession.GetTeamID());
-            playerWithBall = best[UnityEngine.Random.Range(0, 5)];
+            playerWithBall = best.OrderByDescending(x => x.CalculateRatingForPosition() * UnityEngine.Random.Range(0.65f, 1.35f)).ToList()[0];
             Move move = DecideNextMove(secondsSpent);
             (ResultAction, Player) turnover = DecideDefence(move, defendingTeam);
             secondsSpent += UnityEngine.Random.Range(2, 6);
