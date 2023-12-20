@@ -194,8 +194,6 @@ public class PlayerUI : MonoBehaviour, ISettable
             if (i < amountOfGames)
             {
                 statObjects[i].gameObject.SetActive(true);
-                RectTransform rect = statObjects[i].GetComponent<RectTransform>();
-                rect.sizeDelta = new Vector2(rect.sizeDelta.x, 75);
                 statObjects[i].SetDetails(new StatObjectWrapper(GetMatchOpponent(playerMatchStats[index].GetMatchID()),
                     new List<float>() {
                     playerMatchStats[index].GetTotal("minutes"),

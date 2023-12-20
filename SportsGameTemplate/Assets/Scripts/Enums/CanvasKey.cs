@@ -21,5 +21,6 @@ public enum CanvasKey
     Store,
     Prematch,
     Match,
-    MatchOptions
+    MatchOptions,
+    MatchResult
 }

@@ -58,6 +58,25 @@ public class Navigation : SerializedMonoBehaviour
         SetBackButton();
     }
 
+    public void GoToScreen(bool overlay, CanvasKey canvasKey, Match match)
+    {
+        if (!overlay)
+            DisableAllCanvasses();
+
+        AddToOpenCanvasses(GetCanvas(canvasKey));
+        Canvas canvas = GetCanvas(canvasKey);
+        canvas.enabled = true;
+
+        ISettable settable = canvas.gameObject.GetComponent<ISettable>();
+        
+        if (settable != null)
+        {
+            settable.SetDetails(match);
+        }
+
+        SetBackButton();
+    }
+
     public void GoToScreen(bool overlay, CanvasKey canvasKey, Team team)
     {
         if (!overlay)

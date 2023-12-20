@@ -14,6 +14,20 @@ public class PrematchView : MonoBehaviour, ISettable
     [SerializeField] Button _clearButton;
     [SerializeField] Button _goToGameButton;
 
+    [Header("Team Details")]
+    [SerializeField] TextMeshProUGUI _gameTypeText;
+    [SerializeField] Image _homeTeamLogo;
+    [SerializeField] TextMeshProUGUI _homeTeamName;
+    [SerializeField] TextMeshProUGUI _homeTeamPosition;
+    [SerializeField] TextMeshProUGUI _homeTeamRecord;
+    [SerializeField] TextMeshProUGUI _homeTeamBestPlayer;
+
+    [SerializeField] Image _awayTeamLogo;
+    [SerializeField] TextMeshProUGUI _awayTeamName;
+    [SerializeField] TextMeshProUGUI _awayTeamPosition;
+    [SerializeField] TextMeshProUGUI _awayTeamRecord;
+    [SerializeField] TextMeshProUGUI _awayTeamBestPlayer;
+
     private void Awake()
     {
         Team.OnLineupChanged += SetDetails;
@@ -59,6 +73,66 @@ public class PrematchView : MonoBehaviour, ISettable
         _goToGameButton.ToggleButtonStatus(CheckLineupCompletion(players));
         _goToGameButton.onClick.RemoveAllListeners();
         _goToGameButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.MatchOptions));
+
+        if (PlayoffSystem.Instance.IsTeamInPlayoffs() && GameManager.Instance.GetSeasonStage() == SeasonStage.Playoffs)
+        {
+            SetTeamDetails(PlayoffSystem.Instance.GetNextMatchData());
+        } else
+        {
+            SetTeamDetails(LeagueSystem.Instance.GetNextMatchData());
+        }
+    }
+
+    public void SetTeamDetails(Match match)
+    {
+        _gameTypeText.text = "League game";
+
+        Team homeTeam = LeagueSystem.Instance.GetTeam(match.GetHomeTeamID());
+        Team awayTeam = LeagueSystem.Instance.GetTeam(match.GetAwayTeamID());
+
+        // Home team
+        _homeTeamLogo.sprite = homeTeam.GetTeamLogo();
+        _homeTeamName.text = homeTeam.GetTeamName();
+        _homeTeamPosition.text = $"#{homeTeam.GetSeed()}";
+        _homeTeamRecord.text = homeTeam.GetCurrentSeasonStats().GetWins() + " - " + homeTeam.GetCurrentSeasonStats().GetLosses();
+
+        Player homeBestPlayer = homeTeam.GetPlayersFromTeam().OrderByDescending(x => x.CalculateRatingForPosition()).First();
+        _homeTeamBestPlayer.text = $"{homeBestPlayer.GetFullName()} ({homeBestPlayer.CalculateRatingForPosition()})";
+
+        // Away team
+        _awayTeamLogo.sprite = awayTeam.GetTeamLogo();
+        _awayTeamName.text = awayTeam.GetTeamName();
+        _awayTeamPosition.text = $"#{awayTeam.GetSeed()}";
+        _awayTeamRecord.text = awayTeam.GetCurrentSeasonStats().GetWins() + " - " + awayTeam.GetCurrentSeasonStats().GetLosses();
+
+        Player awayBestPlayer = awayTeam.GetPlayersFromTeam().OrderByDescending(x => x.CalculateRatingForPosition()).First();
+        _awayTeamBestPlayer.text = $"{awayBestPlayer.GetFullName()} ({awayBestPlayer.CalculateRatingForPosition()})";
+    }
+
+    public void SetTeamDetails(PlayoffMatchup match)
+    {
+        _gameTypeText.text = "Playoff Game";
+
+        Team homeTeam = LeagueSystem.Instance.GetTeam(match.GetHomeTeamID());
+        Team awayTeam = LeagueSystem.Instance.GetTeam(match.GetAwayTeamID());
+
+        // Home team
+        _homeTeamLogo.sprite = homeTeam.GetTeamLogo();
+        _homeTeamName.text = homeTeam.GetTeamName();
+        _homeTeamPosition.text = $"#{homeTeam.GetSeed()}";
+        _homeTeamRecord.text = homeTeam.GetCurrentSeasonStats().GetWins() + " - " + homeTeam.GetCurrentSeasonStats().GetLosses();
+
+        Player homeBestPlayer = homeTeam.GetPlayersFromTeam().OrderByDescending(x => x.CalculateRatingForPosition()).First();
+        _homeTeamBestPlayer.text = $"{homeBestPlayer.GetFullName()} ({homeBestPlayer.CalculateRatingForPosition()})";
+
+        // Away team
+        _awayTeamLogo.sprite = awayTeam.GetTeamLogo();
+        _awayTeamName.text = awayTeam.GetTeamName();
+        _awayTeamPosition.text = $"#{awayTeam.GetSeed()}";
+        _awayTeamRecord.text = awayTeam.GetCurrentSeasonStats().GetWins() + " - " + awayTeam.GetCurrentSeasonStats().GetLosses();
+
+        Player awayBestPlayer = awayTeam.GetPlayersFromTeam().OrderByDescending(x => x.CalculateRatingForPosition()).First();
+        _awayTeamBestPlayer.text = $"{awayBestPlayer.GetFullName()} ({awayBestPlayer.CalculateRatingForPosition()})";
     }
 
     private bool CheckLineupCompletion(List<Player> players)

@@ -26,8 +26,8 @@ public class LeagueSystem : MonoBehaviour
 
         GameManager.OnAdvance += SimulateGameweek;
         //GameManager.OnAdvance += GetNextGame;
-        GameManager.OnGameStarted += GetNextGame;
         GameManager.OnNewSeasonStarted += StartNewSeason;
+        GameManager.OnGameStarted += GetNextGame;
     }
 
     public List<Match> GetMatches()
@@ -234,6 +234,7 @@ public class LeagueSystem : MonoBehaviour
         Debug.Log($"Simming {matches} matches");
         MatchSimulator matchSimulator = ConfigManager.Instance.GetCurrentConfig().MatchSimulator;
         bool forceWin = GameManager.Instance.GetCurrentForceWinState();
+        Match myMatch = null;
         for (int i = 0; i < matches; i++)
         {
             Match match = matchesToSim[i];
@@ -249,12 +250,16 @@ public class LeagueSystem : MonoBehaviour
             float progress = (float)(i + 1) / matches;
             Debug.Log((int)(100 * progress) + "%");
 
-            CheckMyTeamResult(match);
+            if (match.IsMyTeamMatch(GameManager.Instance.GetTeamID()))
+            {
+                CheckMyTeamResult(match);
+                myMatch = match;
+            }
             yield return null;
         }
 
         SortStandings();
-        Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID()));
+        TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MatchResult, myMatch));
         //Navigation.Instance.GoToScreen(true, CanvasKey.Standings, GetTeams());
         //OnRegularSeasonFinished?.Invoke(_teams);
     }
@@ -262,7 +267,6 @@ public class LeagueSystem : MonoBehaviour
     private void CheckMyTeamResult(Match match)
     {
         int teamID = GameManager.Instance.GetTeamID();
-        if (!match.IsMyTeamMatch(teamID)) return;
 
         FirebaseAnalytics.LogEvent("game_played");
 
@@ -307,7 +311,7 @@ public class LeagueSystem : MonoBehaviour
                 {
                     if (MyTeamInMatches(matches))
                     {
-                        StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { GetNextGame(seasonStage, week); Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID())); }, SimulateMatchesWithProgress(matches)));
+                        StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { GetNextGame(seasonStage, week); GetTeam(GameManager.Instance.GetTeamID()); }, SimulateMatchesWithProgress(matches)));
                     } else
                     {
                         StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { GetNextGame(seasonStage, week); Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID())); }, SimulateToNextMatchWithProgress()));
@@ -318,7 +322,6 @@ public class LeagueSystem : MonoBehaviour
                 }
                 break;
             case SeasonStage.Playoffs:
-                Debug.Log("My team is in playoffs: " + PlayoffSystem.Instance.IsTeamInPlayoffs());
                 if (PlayoffSystem.Instance.IsTeamInPlayoffs() && PlayoffSystem.Instance.MyTeamSeriesOver())
                 {
                     StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { }, PlayoffSystem.Instance.SimulateRestOfPlayoffRound()));
@@ -361,16 +364,16 @@ public class LeagueSystem : MonoBehaviour
         return _seasonMatches.Where(x => x.GetWeek() == week + 1 && (x.GetHomeTeamID() == myTeamID || x.GetAwayTeamID() == myTeamID)).ToList().Count > 0;
     }
 
-    private void GetNextGame(SeasonStage seasonStage, int week)
+    public void GetNextGame(SeasonStage seasonStage, int week)
     {
         if (seasonStage != SeasonStage.RegularSeason) return;
         if (!HasNextGame()) return;
 
-        if (week < _seasonMatches.Last().GetWeek() - 1)
+        if (week < _seasonMatches.Last().GetWeek())
         {
             int myTeamID = GameManager.Instance.GetTeamID();
             Match match = _seasonMatches.Where(x => x.GetWeek() == week + 1 && (x.GetHomeTeamID() == myTeamID || x.GetAwayTeamID() == myTeamID)).ToList()[0];
-            //Debug.Log($"Match: {match.GetHomeTeamID()} vs {match.GetAwayTeamID()}");
+            Debug.Log($"{match.GetHomeTeamID()} - {match.GetAwayTeamID()}");
             _nextMatchIndex = _seasonMatches.IndexOf(match);
         }
     }
