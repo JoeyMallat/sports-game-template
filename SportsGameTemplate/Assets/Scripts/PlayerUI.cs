@@ -34,6 +34,10 @@ public class PlayerUI : MonoBehaviour, ISettable
     [SerializeField] TextMeshProUGUI _seasonAssists;
     [SerializeField] TextMeshProUGUI _seasonRebounds;
 
+    [SerializeField] GameObject _statObjectRoot;
+    [SerializeField] StatObject _statObjectPrefab;
+
+    [Header("Buttons")]
     [SerializeField] Button _extendContractButton;
     [SerializeField] Button _addToTradingBlock;
     [SerializeField] Button _addToTradeButton;
@@ -161,11 +165,52 @@ public class PlayerUI : MonoBehaviour, ISettable
         _careerAssists.text = player.GetAllTimeStats("assists").ToString("F1");
         _careerRebounds.text = player.GetAllTimeStats("rebounds").ToString("F1");
 
-
         _seasonMinutes.text = player.GetLatestSeason().GetAverageOfStat("minutes").ToString("F1");
         _seasonPoints.text = player.GetLatestSeason().GetAveragePoints().ToString("F1");
         _seasonAssists.text = player.GetLatestSeason().GetAverageOfStat("assists").ToString("F1");
         _seasonRebounds.text = player.GetLatestSeason().GetAverageOfStat("rebounds").ToString("F1");
+
+        SetBoxScores(player);
+    }
+
+    private void SetBoxScores(Player player)
+    {
+        List<PlayerMatchStats> playerMatchStats = player.GetLatestSeason().GetMatchStats();
+        int amountOfGames = playerMatchStats.Count;
+        List<StatObject> statObjects = _statObjectRoot.GetComponentsInChildren<StatObject>(true).ToList();
+        int amountOfObjectsToSpawn = Mathf.Clamp(amountOfGames - statObjects.Count, 0, 999);
+
+        for (int i = 0; i < amountOfObjectsToSpawn; i++)
+        {
+            StatObject statObject = Instantiate(_statObjectPrefab, _statObjectRoot.transform);
+            statObjects.Add(statObject);
+        }
+
+        for (int i = 0; i < statObjects.Count; i++)
+        {
+            int index = i;
+
+            if (i < amountOfGames)
+            {
+                statObjects[i].gameObject.SetActive(true);
+                statObjects[i].SetDetails(new StatObjectWrapper(GetMatchOpponent(playerMatchStats[index].GetMatchID()),
+                    new List<float>() {
+                    playerMatchStats[index].GetTotal("minutes"),
+                    playerMatchStats[index].GetPoints(),
+                    playerMatchStats[index].GetTotal("assists"),
+                    playerMatchStats[index].GetTotal("rebounds") }
+                    ));
+            } else
+            {
+                statObjects[i].gameObject.SetActive(false);
+            }
+        }
+    }
+
+    private string GetMatchOpponent(int matchID)
+    {
+        Match match = LeagueSystem.Instance.GetMatches().Where(x => x.GetMatchID() == matchID).First();
+        return $"{LeagueSystem.Instance.GetTeam(match.GetAwayTeamID()).GetTeamName()} @ {LeagueSystem.Instance.GetTeam(match.GetHomeTeamID()).GetTeamName()}";
     }
 
     private void SetSkills(Player player)

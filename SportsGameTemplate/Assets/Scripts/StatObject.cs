@@ -24,9 +24,22 @@ public class StatObject : MonoBehaviour, ISettable
             if (i < stats.Count) 
             {
                 _statText[_statText.Count - i - 1].gameObject.SetActive(true);
-                _statText[_statText.Count - i - 1].text = stats[i].ToString("F1");
+
+                if (Mathf.Approximately(stats[i], Mathf.RoundToInt(stats[i])))
+                {
+                    _statText[_statText.Count - i - 1].text = stats[i].ToString("F0");
+                } else
+                {
+                    _statText[_statText.Count - i - 1].text = stats[i].ToString("F1");
+                }
                 _playerLinkButton.onClick.RemoveAllListeners();
-                _playerLinkButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Player, wrapper.GetPlayerLink()));
+                _playerLinkButton.interactable = false;
+
+                if (wrapper.GetPlayerLink() != null)
+                {
+                    _playerLinkButton.interactable = true;
+                    _playerLinkButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Player, wrapper.GetPlayerLink()));
+                }
             } else
             {
                 _statText[_statText.Count - i - 1].gameObject.SetActive(false);
