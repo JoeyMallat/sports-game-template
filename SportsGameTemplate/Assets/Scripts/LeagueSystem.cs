@@ -259,7 +259,7 @@ public class LeagueSystem : MonoBehaviour
         }
 
         SortStandings();
-        TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MatchResult, myMatch));
+        
         //Navigation.Instance.GoToScreen(true, CanvasKey.Standings, GetTeams());
         //OnRegularSeasonFinished?.Invoke(_teams);
     }
@@ -311,7 +311,7 @@ public class LeagueSystem : MonoBehaviour
                 {
                     if (MyTeamInMatches(matches))
                     {
-                        StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { GetNextGame(seasonStage, week); GetTeam(GameManager.Instance.GetTeamID()); }, SimulateMatchesWithProgress(matches)));
+                        StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { GetNextGame(seasonStage, week); GetTeam(GameManager.Instance.GetTeamID()); Navigation.Instance.GoToScreen(false, CanvasKey.MatchResult, matches.First(x => x.IsMyTeamMatch(GameManager.Instance.GetTeamID()))); }, SimulateMatchesWithProgress(matches)));
                     } else
                     {
                         StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { GetNextGame(seasonStage, week); Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID())); }, SimulateToNextMatchWithProgress()));
@@ -327,7 +327,7 @@ public class LeagueSystem : MonoBehaviour
                     StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { }, PlayoffSystem.Instance.SimulateRestOfPlayoffRound()));
                 } else if (PlayoffSystem.Instance.IsTeamInPlayoffs())
                 {
-                    StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { }, PlayoffSystem.Instance.SimulateGameweekInPlayoffRound()));
+                    StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { /* TODO: Set transition to playoff game result */ }, PlayoffSystem.Instance.SimulateGameweekInPlayoffRound()));
                 }
                 else
                 {

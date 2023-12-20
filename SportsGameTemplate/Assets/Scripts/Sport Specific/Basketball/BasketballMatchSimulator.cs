@@ -25,6 +25,7 @@ public class BasketballMatchSimulator : MatchSimulator
     [SerializeField] Vector2 _stealSuccessRate;
 
     int _teamToForceWin;
+    float _secondsPlayed;
 
     [SerializeField] List<NextMove> _nextMoves;
 
@@ -40,19 +41,28 @@ public class BasketballMatchSimulator : MatchSimulator
 
         for (int i = 1; i < _numberOfPeriods + 1; i++)
         {
-            SetLineupAndMinutes(homeTeam, match.GetMatchID());
-            SetLineupAndMinutes(awayTeam, match.GetMatchID());
+            SetLineupAndMinutes(homeTeam, match.GetMatchID(), 2);
+            SetLineupAndMinutes(awayTeam, match.GetMatchID(), 2);
 
             int secondsLeftInPeriod = _secondsPerPeriod;
+            _secondsPlayed = 0;
 
             while (secondsLeftInPeriod > .1)
             {
                 (int, PossessionResult) possession = SimulatePossession(match.GetMatchID(), teamInPossession, teamNotInPossession, _shotClock);
                 secondsLeftInPeriod -= possession.Item1;
+                _secondsPlayed += possession.Item1;
                 match.AddPossessionResult(possession.Item2, teamInPossession);
 
                 teamInPossession = DecideNextPossession(match.GetMatchID(), possession.Item2, teamInPossession, teamNotInPossession);
                 teamNotInPossession = teamInPossession == homeTeam ? awayTeam : homeTeam;
+
+                if (_secondsPlayed >= 120)
+                {
+                    SetLineupAndMinutes(homeTeam, match.GetMatchID(), 2);
+                    SetLineupAndMinutes(awayTeam, match.GetMatchID(), 2);
+                    _secondsPlayed = 0;
+                }
             }
         }
         match.EndMatch();
@@ -336,13 +346,13 @@ public class BasketballMatchSimulator : MatchSimulator
         }
     }
 
-    private void SetLineupAndMinutes(Team team, int matchID)
+    private void SetLineupAndMinutes(Team team, int matchID, int minutes)
     {
         team.GenerateLineup();
 
         foreach (Player player in GetCurrentLineup(team.GetLineup(), team.GetTeamID()))
         {
-            AssignMinutesToPlayer(matchID, player, 12);
+            AssignMinutesToPlayer(matchID, player, minutes);
         }
     }
 

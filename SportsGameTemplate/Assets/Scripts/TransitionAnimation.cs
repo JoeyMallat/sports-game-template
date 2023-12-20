@@ -72,6 +72,7 @@ public class TransitionAnimation : MonoBehaviour
 
     private void SetStartingState()
     {
+        Debug.Log("called");
         _backgroundBlocker.enabled = true;
         LeanTween.moveLocal(_leftSide, new Vector3(-950, 0, 0), 0.001f);
         LeanTween.moveLocal(_rightSide, new Vector3(950, 0, 0), 0.001f);

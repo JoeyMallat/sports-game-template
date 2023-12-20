@@ -25,6 +25,8 @@ public class TeamBoxScores : MonoBehaviour, ISettable
     [SerializeField] TextMeshProUGUI _awayTeamName;
     [SerializeField] TextMeshProUGUI _awayTeamSmall;
 
+    [SerializeField] Button _backToMenuButton;
+
     public void SetDetails<T>(T item) where T : class
     {
         Match match = item as Match;
@@ -44,6 +46,9 @@ public class TeamBoxScores : MonoBehaviour, ISettable
 
         SetPlayerBoxScores(match, homeTeam, _homeBoxRoot);
         SetPlayerBoxScores(match, awayTeam, _awayBoxRoot);
+
+        _backToMenuButton.onClick.RemoveAllListeners();
+        _backToMenuButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()))));
     }
 
     private void SetPlayerBoxScores(Match match, Team team, GameObject boxRoot)
@@ -51,7 +56,7 @@ public class TeamBoxScores : MonoBehaviour, ISettable
         int matchID = match.GetMatchID();
 
         List<Player> playersWhoPlayed = team.GetPlayersFromTeam().Where(x => x.GetLatestSeason().GetMatchStats().Count > 0).Where(xx => xx.GetLatestSeason().GetMatchStats().Last().GetMatchID() == matchID).ToList();
-        playersWhoPlayed = playersWhoPlayed.OrderByDescending(x => x.GetLatestSeason().GetMatchStats().Last().GetPoints()).ToList();
+        playersWhoPlayed = playersWhoPlayed.OrderByDescending(x => x.GetLatestSeason().GetMatchStats().Last().GetTotal("minutes")).ToList();
         List<StatObject> statObjects = boxRoot.GetComponentsInChildren<StatObject>().ToList();
 
         int toBeSpawned = Mathf.Clamp(playersWhoPlayed.Count - statObjects.Count, 0, 999);
@@ -69,7 +74,7 @@ public class TeamBoxScores : MonoBehaviour, ISettable
                 int index = i;
                 PlayerMatchStats stats = playersWhoPlayed[index].GetLatestSeason().GetMatchStats().Last();
                 statObjects[i].gameObject.SetActive(true);
-                statObjects[i].SetDetails(new StatObjectWrapper(playersWhoPlayed[index].GetFullName(), new List<float>() { stats.GetTotal("minutes"), stats.GetPoints(), stats.GetTotal("assists"), stats.GetTotal("rebounds") }, playersWhoPlayed[index]));
+                statObjects[i].SetDetails(new StatObjectWrapper($"{playersWhoPlayed[index].GetFullName()} <color=#FF9900>{playersWhoPlayed[index].GetPosition()}", new List<float>() { stats.GetTotal("minutes"), stats.GetPoints(), stats.GetTotal("assists"), stats.GetTotal("rebounds") }, playersWhoPlayed[index]));
             } else
             {
                 statObjects[i].gameObject.SetActive(false);
