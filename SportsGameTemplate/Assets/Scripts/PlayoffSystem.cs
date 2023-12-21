@@ -125,7 +125,7 @@ public class PlayoffSystem : MonoBehaviour
     {
         _playoffRounds[_currentRound].SimMatches();
         SetNextMatch();
-        Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
+        Navigation.Instance.GoToScreen(false, CanvasKey.MatchResult, GetNextMatchData().GetLastPlayedMatch());
         yield return null;
     }
 

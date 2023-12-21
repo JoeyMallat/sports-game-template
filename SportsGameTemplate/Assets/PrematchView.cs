@@ -76,7 +76,7 @@ public class PrematchView : MonoBehaviour, ISettable
 
         if (PlayoffSystem.Instance.IsTeamInPlayoffs() && GameManager.Instance.GetSeasonStage() == SeasonStage.Playoffs)
         {
-            SetTeamDetails(PlayoffSystem.Instance.GetNextMatchData());
+            SetTeamDetails(PlayoffSystem.Instance.GetNextMatchData().GetNextMatch());
         } else
         {
             SetTeamDetails(LeagueSystem.Instance.GetNextMatchData());

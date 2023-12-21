@@ -327,7 +327,7 @@ public class LeagueSystem : MonoBehaviour
                     StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { }, PlayoffSystem.Instance.SimulateRestOfPlayoffRound()));
                 } else if (PlayoffSystem.Instance.IsTeamInPlayoffs())
                 {
-                    StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { /* TODO: Set transition to playoff game result */ }, PlayoffSystem.Instance.SimulateGameweekInPlayoffRound()));
+                    StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { }, PlayoffSystem.Instance.SimulateGameweekInPlayoffRound()));
                 }
                 else
                 {

@@ -54,6 +54,33 @@ public class PlayoffMatchup
         return _matches;
     }
 
+    public Match GetNextMatch()
+    {
+        foreach (Match match in _matches)
+        {
+            if (!match.GetMatchStatus())
+            {
+                return match;
+            }
+        }
+        return null;
+    }
+
+    public Match GetLastPlayedMatch()
+    {
+        for (int i = _matches.Count - 1; i >= 0; i--)
+        {
+            if (_matches[i].GetMatchStatus())
+            {
+                Debug.Log("Found a match!");
+                return _matches[i];
+            }
+        }
+
+        Debug.Log("Did not find a match");
+        return null;
+    }
+
     public PlayoffMatchup(int homeID, int homeSeed, int awayID, int awaySeed)
     {
         _homeTeamID = homeID;
