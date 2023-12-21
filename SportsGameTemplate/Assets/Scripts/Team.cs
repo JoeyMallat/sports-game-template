@@ -51,7 +51,6 @@ public class Team
 
     private void ResetForNewSeason()
     {
-        _draftPicks = new();
         InitializeAvailableMatchdays();
         _seasonStats = new TeamSeason();
         _startingLineup = new StartingLineup();
@@ -296,7 +295,7 @@ public class Team
 
     public void RemoveDraftPicksAndTradeOffers()
     {
-        _draftPicks.Clear();
+        _draftPicks = new List<DraftPick>();
         _players.ForEach(x => x.RemoveTradeOffers());
     }
 }
