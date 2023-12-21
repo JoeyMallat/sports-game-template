@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class LeagueSystem : MonoBehaviour
@@ -22,10 +23,7 @@ public class LeagueSystem : MonoBehaviour
         if (Instance == null) Instance = this;
         else { Destroy(this); }
 
-        ReadTeamsFromFile();
-
         GameManager.OnAdvance += SimulateGameweek;
-        //GameManager.OnAdvance += GetNextGame;
         GameManager.OnNewSeasonStarted += StartNewSeason;
         GameManager.OnGameStarted += GetNextGame;
     }
@@ -35,7 +33,7 @@ public class LeagueSystem : MonoBehaviour
         return _seasonMatches;
     }
 
-    private void ReadTeamsFromFile()
+    public void ReadTeamsFromFile()
     {
         _teams = new List<Team>();
 
@@ -59,21 +57,25 @@ public class LeagueSystem : MonoBehaviour
         }
 
         // TODO: Only perform this when starting a new save!
-        DistributeDraftPicks();
-        _seasonMatches = ConfigManager.Instance.GetCurrentConfig().ScheduleGenerator.GenerateSchedule(_teams);
-        _seasonMatches = _seasonMatches.OrderBy(x => x.GetWeek()).ToList();
+        DistributeDraftPicks(_teams);
     }
 
     public void StartNewSeason()
     {
-        //DistributeDraftPicks();
-        //_seasonMatches = ConfigManager.Instance.GetCurrentConfig().ScheduleGenerator.GenerateSchedule(_teams);
-        //_seasonMatches = _seasonMatches.OrderBy(x => x.GetWeek()).ToList();
+        _seasonMatches = ConfigManager.Instance.GetCurrentConfig().ScheduleGenerator.GenerateSchedule(_teams);
+        _seasonMatches = _seasonMatches.OrderBy(x => x.GetWeek()).ToList();
+
+        if (_teams[0].GetDraftPicks().Count <= 0)
+        {
+            DistributeDraftPicks(_teams);
+        }
     }
 
     public void SetTeams(List<Team> teams, int nextMatchIndex, List<Match> matches)
     {
         _teams = teams;
+        _teams.ForEach(x => x.ResetEventsFromLoad());
+
         _nextMatchIndex = nextMatchIndex;
         _seasonMatches = matches;
     }
@@ -170,9 +172,8 @@ public class LeagueSystem : MonoBehaviour
         return players;
     }
 
-    private void DistributeDraftPicks()
+    private void DistributeDraftPicks(List<Team> teams)
     {
-        List<Team> teams = _teams.OrderByDescending(x => x.GetSeed()).ToList();
         int index = 1;
         for (int round = 1; round < ConfigManager.Instance.GetCurrentConfig().DraftRounds + 1; round++)
         {

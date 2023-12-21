@@ -1,4 +1,5 @@
 using Sirenix.Serialization;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -8,14 +9,11 @@ public class LocalSaveManager : MonoBehaviour
 {
     [SerializeField] string _filePath;
 
+    public static event Action<SeasonStage, int> OnGameLoaded;
+
     private void Awake()
     {
         GameManager.OnAdvance += SaveGame;
-    }
-
-    private void Start()
-    {
-        //LoadGame();
     }
 
     private void OnApplicationQuit()
@@ -36,9 +34,11 @@ public class LocalSaveManager : MonoBehaviour
             localSaveData.TeamID = GameManager.Instance.GetTeamID();
             localSaveData.PlayoffRound = PlayoffSystem.Instance.GetPlayoffRound();
             localSaveData.PlayoffMatchups = PlayoffSystem.Instance.GetAllPlayoffsMatchups();
+            localSaveData.ChecklistChecks = FindFirstObjectByType<ChecklistView>(FindObjectsInactive.Include).GetChecklist();
 
             byte[] bytes = SerializationUtility.SerializeValue(localSaveData, DataFormat.JSON);
-            File.WriteAllBytes(Application.persistentDataPath + _filePath, bytes);
+            File.WriteAllBytes(_filePath, bytes);
+            Debug.Log($"Data written to {_filePath}");
         } catch
         {
             Debug.LogWarning("Data was not saved!");
@@ -46,18 +46,37 @@ public class LocalSaveManager : MonoBehaviour
 
     }
 
-    public void LoadGame()
+    public void LoadGame(string path)
     {
-        if (File.Exists(Application.persistentDataPath + _filePath))
+        if (File.Exists(path))
         {
-            byte[] bytes = File.ReadAllBytes(Application.persistentDataPath + _filePath);
+            byte[] bytes = File.ReadAllBytes(path);
             LocalSaveData data = SerializationUtility.DeserializeValue<LocalSaveData>(bytes, DataFormat.JSON);
             LeagueSystem.Instance.SetTeams(data.Teams, data.NextMatchIndex, data.Matches);
             GameManager.Instance.SetLoadData(data.SeasonStage, data.CurrentSeason, data.CurrentWeek, data.TeamID);
             PlayoffSystem.Instance.SetLoadData(data.PlayoffRound, data.PlayoffMatchups);
+            LeagueSystem.Instance.GetNextGame(data.SeasonStage, data.CurrentWeek);
+            FindFirstObjectByType<ChecklistView>().SetChecklist(data.ChecklistChecks);
 
-            Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(data.TeamID));
+            OnGameLoaded?.Invoke(GameManager.Instance.GetSeasonStage(), GameManager.Instance.GetCurrentWeek());
         }
+    }
+
+    public Team LoadTeamDetails(string path)
+    {
+        if (File.Exists(path))
+        {
+            byte[] bytes = File.ReadAllBytes(_filePath);
+            LocalSaveData data = SerializationUtility.DeserializeValue<LocalSaveData>(bytes, DataFormat.JSON);
+            return LeagueSystem.Instance.GetTeam(data.TeamID);
+        }
+
+        return null;
+    }
+
+    public void SetFilePath(string filePath)
+    {
+        _filePath = filePath;
     }
 }
 
@@ -73,4 +92,5 @@ public class LocalSaveData
     public List<Match> Matches;
     public int PlayoffRound;
     public List<PlayoffMatchup> PlayoffMatchups;
+    public List<bool> ChecklistChecks;
 }

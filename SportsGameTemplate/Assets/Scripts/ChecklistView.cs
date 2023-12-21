@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Linq;
 
 public class ChecklistView : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class ChecklistView : MonoBehaviour
 
     private void Awake()
     {
+        _checklistChecks = new bool[4] { false, false, false, false };
+
         GameManager.OnPostSeasonStarted += UpdateChecklist;
         Player.OnPlayerTeamChanged += UpdateChecklist;
         Player.OnPlayerContractSigned += UpdateChecklist;
@@ -19,8 +22,7 @@ public class ChecklistView : MonoBehaviour
         DraftSystem.OnDraftEnded += OnDraftEnded;
         RewardedAdsManager.OnRewardedAdWatched += SetRewardedAdCheckmark;
         GameManager.OnPremiumStatusUpdated += SetPremiumStatus;
-
-        _checklistChecks = new bool[4] { false, false, false, false };
+        LocalSaveManager.OnGameLoaded += UpdateChecklist;
     }
 
     public void UpdateChecklist(SeasonStage seasonStage = 0, int week = 0)
@@ -38,6 +40,19 @@ public class ChecklistView : MonoBehaviour
         _checklistChecks[0] = true;
     }
 
+    public List<bool> GetChecklist()
+    {
+        return _checklistChecks.ToList();
+    }
+
+    public void SetChecklist(List<bool> bools)
+    {
+        for (int i = 0; i < bools.Count; i++)
+        {
+            _checklistChecks[i] = bools[i];
+        }
+    }
+
     public void CheckChecklist()
     {
         Team team = LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID());
@@ -52,7 +67,7 @@ public class ChecklistView : MonoBehaviour
 
         // Check payroll
         int currentPayroll = team.GetTotalSalaryAmount();
-        _checklistItems[2].SetChecklistItem(currentPayroll <= ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease()), "Payroll under salary cap", $"Currently {currentPayroll.ConvertToMonetaryString()} / {ConfigManager.Instance.GetCurrentConfig().SalaryCap.ConvertToMonetaryString()}", new List<string>(), new List<System.Action>());
+        _checklistItems[2].SetChecklistItem(currentPayroll <= ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease()), "Payroll under salary cap", $"Currently {currentPayroll.ConvertToMonetaryString()} / { (ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease())).ConvertToMonetaryString()}", new List<string>(), new List<System.Action>());
         _checklistChecks[2] = currentPayroll <= ConfigManager.Instance.GetCurrentConfig().SalaryCap;
 
         // Check watch ad or remove ads

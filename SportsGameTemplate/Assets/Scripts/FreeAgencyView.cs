@@ -15,6 +15,7 @@ public class FreeAgencyView : MonoBehaviour
     {
         GameManager.OnPostSeasonStarted += LoadFreeAgents;
         Player.OnPlayerContractSigned += LoadFreeAgents;
+        LocalSaveManager.OnGameLoaded += LoadFreeAgents;
     }
 
     private void LoadFreeAgents(SeasonStage seasonStage, int week)

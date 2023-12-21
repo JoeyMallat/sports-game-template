@@ -31,6 +31,13 @@ public class DraftSystem : MonoBehaviour
         GenerateDraftClass();
     }
 
+    public void InitializeDraft()
+    {
+        UpdateDraftOrder(GameManager.Instance.GetSeasonStage(), GameManager.Instance.GetCurrentWeek());
+        _currentPick = 0;
+        GenerateDraftClass();
+    }
+
     private void RemoveDraftPicksFromTeams()
     {
         foreach (Team team in LeagueSystem.Instance.GetTeams())

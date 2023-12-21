@@ -12,6 +12,8 @@ public class BasketballScheduleGenerator : ScheduleGenerator
         Debug.Log($"Teams in league: {teams.Count}");
 
         List<Team> teamsToPlay = teams;
+        teams.ForEach(x => x.InitializeAvailableMatchdays());
+
         teamsToPlay = teamsToPlay.Shuffle();
 
         foreach (Team team in teams)

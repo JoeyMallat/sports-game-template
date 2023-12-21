@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] int _currentSeason;
     [SerializeField] int _currentWeek;
     [SerializeField] bool _draftCompleted;
-    [InfoBox("@GetTeamName()")]
     [SerializeField][Range(0, 29)] int _selectedTeamID;
     [SerializeField] bool _teamPicked;
 
@@ -32,7 +31,6 @@ public class GameManager : MonoBehaviour
     public static event Action<CloudSaveData> OnGemsUpdated;
     public static event Action<CloudSaveData> OnInventoryUpdated;
     public static event Action OnNewSeasonStarted;
-    public static event Action<bool> OnForceWinUpdated;
 
     int _nextMatchID = 0;
 
@@ -54,6 +52,7 @@ public class GameManager : MonoBehaviour
 
     public void AddToGems(int gemsToEdit)
     {
+        Debug.Log("AddedToGems called");
         _gems += gemsToEdit;
         OnGemsUpdated.Invoke(new CloudSaveData(_salaryCapIncrease,_premiumStatus, _gems, _ownedGameItems));
     }
@@ -90,6 +89,12 @@ public class GameManager : MonoBehaviour
     public float GetSalaryCapIncrease()
     {
         return _salaryCapIncrease;
+    }
+
+    public void ResetSalaryCapIncrease()
+    {
+        _salaryCapIncrease = 0;
+        OnSalaryCapIncreased?.Invoke(new CloudSaveData(_salaryCapIncrease, _premiumStatus, _gems, _ownedGameItems));
     }
 
     public void RemoveItem(OwnedGameItem item)
@@ -194,7 +199,7 @@ public class GameManager : MonoBehaviour
         ChangeSeasonStage(LeagueSystem.Instance.GetTeams(), SeasonStage.RegularSeason);
         TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(_selectedTeamID)));
         FirebaseAnalytics.LogEvent("new_season_started", new Parameter("season", _currentSeason));
-        SetSalaryCapIncrease(0);
+        ResetSalaryCapIncrease();
     }
 
     public void AddItem(GameItem reward)
@@ -217,7 +222,6 @@ public class GameManager : MonoBehaviour
         _currentWeek++;
 
         OnAdvance?.Invoke(_currentSeasonStage, _currentWeek);
-        OnForceWinUpdated?.Invoke(false);
     }
 
     public SeasonStage GetSeasonStage()

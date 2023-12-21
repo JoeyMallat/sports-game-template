@@ -12,8 +12,8 @@ public class Team
     [SerializeField] string _teamName;
     [SerializeField] int _teamRating;
     [InfoBox("@GetTotalSalaryAmount().ToString(\"C0\")")][SerializeField] List<Player> _players;
-    [SerializeField][HideInInspector] List<DraftPick> _draftPicks;
-    [SerializeField][HideInInspector]  List<int> _matchdays;
+    [SerializeField]List<DraftPick> _draftPicks;
+    [SerializeField][HideInInspector] List<int> _matchdays;
     [SerializeField][HideInInspector] List<int> _availableMatchdays;
     [SerializeField][HideInInspector] int _seed;
     [SerializeField] TeamSeason _seasonStats;
@@ -39,12 +39,22 @@ public class Team
         Player.OnContractExpired += RemovePlayersWithoutContract;
     }
 
+    public void ResetEventsFromLoad()
+    {
+        LeagueSystem.OnRegularSeasonFinished += SetSeed;
+        LeagueSystem.OnRegularSeasonFinished += ExtendContracts;
+        GameManager.OnNewSeasonStarted += ResetForNewSeason;
+        Player.OnContractExpired += RemovePlayersWithoutContract;
+
+        //_players.ForEach(x => x.ResetEventsFromLoad());
+    }
+
     private void ResetForNewSeason()
     {
         _draftPicks = new();
-        _matchdays = new List<int>();
         InitializeAvailableMatchdays();
         _seasonStats = new TeamSeason();
+        _startingLineup = new StartingLineup();
     }
 
     private void RemovePlayersWithoutContract(Player player)
@@ -191,8 +201,9 @@ public class Team
         return _availableMatchdays;
     }
 
-    private void InitializeAvailableMatchdays()
+    public void InitializeAvailableMatchdays()
     {
+        _matchdays = new List<int>();
         _availableMatchdays = new List<int>();
 
         for (int i = 1; i < ConfigManager.Instance.GetCurrentConfig().GamesPerTeamInRegularSeason * 2.5f; i++)

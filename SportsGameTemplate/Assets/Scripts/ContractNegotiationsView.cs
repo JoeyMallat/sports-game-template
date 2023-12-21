@@ -96,7 +96,7 @@ public class ContractNegotiationsView : MonoBehaviour, ISettable
     private void UpdateSalaryCapImpact(int total, int change)
     {
         _totalSalaryAmount.fillAmount = (float)total / (ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease()));
-        _totalSalaryAmountAndChange.fillAmount = (float)(total + change) / (float)ConfigManager.Instance.GetCurrentConfig().SalaryCap;
+        _totalSalaryAmountAndChange.fillAmount = (float)total / (ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease()));
 
         if (change != 0)
         {

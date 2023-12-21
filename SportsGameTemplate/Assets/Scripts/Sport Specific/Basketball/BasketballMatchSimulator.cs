@@ -63,6 +63,14 @@ public class BasketballMatchSimulator : MatchSimulator
                     SetLineupAndMinutes(awayTeam, match.GetMatchID(), 2);
                     _secondsPlayed = 0;
                 }
+
+                if (i == _numberOfPeriods)
+                {
+                    if (match.GetScore().Item1 == match.GetScore().Item2)
+                    {
+                        secondsLeftInPeriod = 720;
+                    }
+                }
             }
         }
         match.EndMatch();

@@ -55,6 +55,17 @@ public class CloudSaveManager : MonoBehaviour
             GameManager.Instance.SetInventory(saveData.Inventory);
             GameManager.Instance.SetGems(saveData.GemAmount);
         }
+
+        if (PlayerPrefs.GetInt("Welcome_gems") != 1)
+        {
+            Debug.Log("Welcome gems gifted");
+            GameManager.Instance.AddToGems(50);
+            PlayerPrefs.SetInt("Welcome_gems", 1);
+        }
+        else
+        {
+            Debug.Log("Welcome gems already gifted");
+        }
     }
 
     private async void SaveAll(CloudSaveData cloudSaveData)

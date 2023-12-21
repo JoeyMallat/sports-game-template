@@ -159,6 +159,7 @@ public class PlayoffSystem : MonoBehaviour
 
     public PlayoffMatchup GetNextMatchData()
     {
+        SetNextMatch();
         return _nextMatchup;
     }
 

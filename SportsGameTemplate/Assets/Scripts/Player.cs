@@ -450,4 +450,11 @@ public class Player : ITradeable
     {
         return Resources.Load<Sprite>($"Faces/{_portraitID}");
     }
+
+    public void ResetEventsFromLoad()
+    {
+        Match.OnMatchPlayed += OnMatchPlayed;
+        GameManager.OnAdvance += UpgradeDowngrade;
+        GameManager.OnNewSeasonStarted += ResetForNewSeason;
+    }
 }

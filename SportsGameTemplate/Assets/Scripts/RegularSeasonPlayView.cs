@@ -14,6 +14,7 @@ public class RegularSeasonPlayView : MonoBehaviour
 
     public void SetDetails(Team team)
     {
+        LeagueSystem.Instance.GetNextGame(GameManager.Instance.GetSeasonStage(), GameManager.Instance.GetCurrentWeek());
         Match nextMatch = LeagueSystem.Instance.GetNextMatchData();
         Team homeTeam = LeagueSystem.Instance.GetTeam(nextMatch.GetHomeTeamID());
         Team awayTeam = LeagueSystem.Instance.GetTeam(nextMatch.GetAwayTeamID());

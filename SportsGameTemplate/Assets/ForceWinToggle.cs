@@ -8,10 +8,24 @@ using Unity.Services.RemoteConfig;
 public class ForceWinToggle : MonoBehaviour
 {
     [SerializeField] Image _checkmarkImage;
+    [SerializeField] TextMeshProUGUI _forceWinText;
 
     private void Awake()
     {
-        GameManager.OnForceWinUpdated += UpdateForceWinToggle;
+        Match.OnMatchPlayed += CheckWinToggle;
+    }
+
+    private void Start()
+    {
+        _forceWinText.text = $"Force win   <color=\"white\"> {RemoteConfigService.Instance.appConfig.GetInt("forcewin_cost", 78)} <sprite name=\"Gem\">";
+    }
+
+    private void CheckWinToggle(Match match)
+    {
+        if (match.IsMyTeamMatch(GameManager.Instance.GetTeamID()))
+        {
+            UpdateForceWinToggle(false);
+        }
     }
 
     private void UpdateForceWinToggle(bool newState)
@@ -21,7 +35,10 @@ public class ForceWinToggle : MonoBehaviour
     }
 
 
-    public void ToggleForceWin(){
+    public void ToggleForceWin()
+    {
+        _forceWinText.text = $"Force win   <color=\"white\"> {RemoteConfigService.Instance.appConfig.GetInt("forcewin_cost", 78)} <sprite name=\"Gem\">";
+
         if (GameManager.Instance.GetCurrentForceWinState())
         {
             GameManager.Instance.AddToGems(RemoteConfigService.Instance.appConfig.GetInt("forcewin_cost", 78));

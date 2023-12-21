@@ -45,8 +45,10 @@ public class StartingLineup
             Player selectedPlayer = playersFromPosition.OrderByDescending(x => x.CalculateRatingForPosition() * UnityEngine.Random.Range(0.9f, 1.1f)).ToList()[0];
             return selectedPlayer;
         }
-
-        return null;
+        else
+        {
+            return players.OrderByDescending(x => x.CalculateRatingForPosition()).ToList().Last();
+        }
     }
 
     public void SetPosition(string playerID, string position)
