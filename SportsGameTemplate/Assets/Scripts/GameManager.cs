@@ -26,11 +26,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] List<OwnedGameItem> _ownedGameItems;
     [SerializeField] int _gems;
     [SerializeField] bool _currentForceWinState;
+
     public static event Action<CloudSaveData> OnSalaryCapIncreased;
     public static event Action<CloudSaveData> OnPremiumStatusUpdated;
     public static event Action<CloudSaveData> OnGemsUpdated;
     public static event Action<CloudSaveData> OnInventoryUpdated;
     public static event Action OnNewSeasonStarted;
+    public static event Action<bool> OnForceWinUpdated;
 
     int _nextMatchID = 0;
 
@@ -192,6 +194,7 @@ public class GameManager : MonoBehaviour
         ChangeSeasonStage(LeagueSystem.Instance.GetTeams(), SeasonStage.RegularSeason);
         TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(_selectedTeamID)));
         FirebaseAnalytics.LogEvent("new_season_started", new Parameter("season", _currentSeason));
+        SetSalaryCapIncrease(0);
     }
 
     public void AddItem(GameItem reward)
@@ -214,6 +217,7 @@ public class GameManager : MonoBehaviour
         _currentWeek++;
 
         OnAdvance?.Invoke(_currentSeasonStage, _currentWeek);
+        OnForceWinUpdated?.Invoke(false);
     }
 
     public SeasonStage GetSeasonStage()

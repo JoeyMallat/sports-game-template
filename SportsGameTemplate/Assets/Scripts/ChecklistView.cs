@@ -52,7 +52,7 @@ public class ChecklistView : MonoBehaviour
 
         // Check payroll
         int currentPayroll = team.GetTotalSalaryAmount();
-        _checklistItems[2].SetChecklistItem(currentPayroll <= ConfigManager.Instance.GetCurrentConfig().SalaryCap, "Payroll under salary cap", $"Currently {currentPayroll.ConvertToMonetaryString()} / {ConfigManager.Instance.GetCurrentConfig().SalaryCap.ConvertToMonetaryString()}", new List<string>(), new List<System.Action>());
+        _checklistItems[2].SetChecklistItem(currentPayroll <= ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease()), "Payroll under salary cap", $"Currently {currentPayroll.ConvertToMonetaryString()} / {ConfigManager.Instance.GetCurrentConfig().SalaryCap.ConvertToMonetaryString()}", new List<string>(), new List<System.Action>());
         _checklistChecks[2] = currentPayroll <= ConfigManager.Instance.GetCurrentConfig().SalaryCap;
 
         // Check watch ad or remove ads

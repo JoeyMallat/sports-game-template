@@ -23,11 +23,20 @@ public class DraftSystem : MonoBehaviour
         DraftPlayerUI.OnPlayerDrafted += UpdateDraftClass;
         GameManager.OnPostSeasonStarted += UpdateDraftOrder;
         OnDraftEnded += RemoveDraftClass;
+        OnDraftEnded += RemoveDraftPicksFromTeams;
         GameManager.OnNewSeasonStarted += GenerateDraftClass;
         GameManager.OnNewSeasonStarted += ResetDraft;
 
         _currentPick = 0;
         GenerateDraftClass();
+    }
+
+    private void RemoveDraftPicksFromTeams()
+    {
+        foreach (Team team in LeagueSystem.Instance.GetTeams())
+        {
+            team.RemoveDraftPicksAndTradeOffers();
+        }
     }
 
     public bool UserNowPicking()

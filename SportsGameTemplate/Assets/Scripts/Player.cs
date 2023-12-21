@@ -76,9 +76,9 @@ public class Player : ITradeable
         _position = position.GetPositionName();
         _age = UnityEngine.Random.Range(20, 22);
         _percentageScouted = 0.2f;
-        _startSeasonRating = _rating;
 
         SetRandomSkills(averageRating, position.GetPositionStats());
+        _startSeasonRating = _rating;
         _potential = SetPotential();
 
         _portraitID = UnityEngine.Random.Range(0, Resources.LoadAll<Sprite>("Faces/").Length);
@@ -107,7 +107,7 @@ public class Player : ITradeable
         _tradeOffers = new List<TradeOffer>();
         _age++;
         _contract.DecreaseYearsOnContract();
-        _seasonStats.Add(new PlayerSeason(0, _teamID));
+        _seasonStats.Add(new PlayerSeason(GameManager.Instance.GetCurrentSeason(), _teamID));
 
         if (_contract.GetYearsOnContract() == 0)
         {

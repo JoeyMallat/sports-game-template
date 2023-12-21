@@ -282,4 +282,10 @@ public class Team
 
         return playerList;
     }
+
+    public void RemoveDraftPicksAndTradeOffers()
+    {
+        _draftPicks.Clear();
+        _players.ForEach(x => x.RemoveTradeOffers());
+    }
 }
