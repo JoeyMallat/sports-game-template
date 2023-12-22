@@ -10,6 +10,7 @@ public class StoreView : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI _balanceText;
     [SerializeField] GameObject _subscriptionObject;
+    [SerializeField] Button _premiumButton;
     [SerializeField] Button _rewardedAdsButton;
 
     private void Awake()
@@ -17,7 +18,14 @@ public class StoreView : MonoBehaviour
         GameManager.OnGemsUpdated += UpdateBalance;
         RewardedAdsManager.OnRewardedAdWatched += GrantRewardedAdReward;
         ToggleSubscriptionObject();
+        GameManager.OnPremiumStatusUpdated += TogglePremiumObject;
     }
+
+    private void TogglePremiumObject(CloudSaveData cloudSaveData)
+    {
+        _premiumButton.ToggleButtonStatus(GameManager.Instance.GetPremiumStatus());
+    }
+
 
     private void ToggleSubscriptionObject()
     {

@@ -68,7 +68,7 @@ public class BasketballMatchSimulator : MatchSimulator
                 {
                     if (match.GetScore().Item1 == match.GetScore().Item2)
                     {
-                        secondsLeftInPeriod = 720;
+                        secondsLeftInPeriod = 24;
                     }
                 }
             }

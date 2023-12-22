@@ -133,7 +133,7 @@ public class Player : ITradeable
     {
         float random = UnityEngine.Random.Range(0f, 1f);
 
-        if (0.1f < UnityEngine.Random.Range(0f, 1f))
+        if (0.25f < UnityEngine.Random.Range(0f, 1f))
         {
             float chanceOfRatingUpgrade = Mathf.Lerp(0f, 0.5f, ((40 - _age) / 40f) * (5 - (int)_potential) / 5);
 

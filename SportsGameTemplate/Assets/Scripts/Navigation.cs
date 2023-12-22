@@ -16,6 +16,8 @@ public class Navigation : SerializedMonoBehaviour
 
     public Dictionary<CanvasKey, Canvas> CanvasDatabase;
 
+    public static event Action OnNewScreenOpened;
+
     private void Awake()
     {
         if (Instance == null)
@@ -159,6 +161,8 @@ public class Navigation : SerializedMonoBehaviour
             int index = i;
             _openedCanvasses[i].sortingOrder = index;
         }
+
+        OnNewScreenOpened?.Invoke();
     }
 
     public void GoToScreen(bool overlay, CanvasKey canvasKey)

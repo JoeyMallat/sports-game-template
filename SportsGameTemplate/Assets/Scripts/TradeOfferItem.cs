@@ -12,6 +12,7 @@ public class TradeOfferItem : MonoBehaviour
     [SerializeField] Button _tradeOfferButton;
 
     public static event Action<bool> OnNewTradeOpened;
+    public static event Action OnTradeOfferOpened;
 
     public void SetTradeOffer((TradeOffer, string) tradeOffer)
     {
@@ -54,6 +55,7 @@ public class TradeOfferItem : MonoBehaviour
         // Remove trade offer from player when clicked on trade offer
         _tradeOfferButton.onClick.AddListener(() => tradeOffer.GetAssets().Item1[0].RemoveTradeOffer(tradeOffer));
         _tradeOfferButton.onClick.AddListener(() => OnNewTradeOpened?.Invoke(true));
+        _tradeOfferButton.onClick.AddListener(() => OnTradeOfferOpened?.Invoke());
         _tradeOfferButton.onClick.AddListener(() => onClickAction(tradeOffer));
     }
 

@@ -17,6 +17,7 @@ public class TradingSystem : MonoBehaviour
     [SerializeReference] List<ITradeable> _teamBTradingAssets;
 
     [Header("Trade confirmation UI")]
+    bool _willAlwaysAccept;
     [SerializeField] string _tradeValueTooLowString;
     [SerializeField] string _overSalaryCapString;
     [SerializeField] string _willAcceptString;
@@ -33,6 +34,7 @@ public class TradingSystem : MonoBehaviour
         TeamAsset.OnRemoveFromTrade += RemoveFromTrade;
         OnAssetsUpdated += CheckTradeWillingness;
         TradeOfferItem.OnNewTradeOpened += ClearTrades;
+        TradeOfferItem.OnTradeOfferOpened += SetTradeWillingnessToTrue;
         GameManager.OnAdvance += GenerateTradeForPlayer;
     }
 
@@ -50,6 +52,11 @@ public class TradingSystem : MonoBehaviour
 
         Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
         Navigation.Instance.GoToScreen(true, CanvasKey.Team, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
+    }
+
+    private void SetTradeWillingnessToTrue()
+    {
+        _willAlwaysAccept = true;
     }
 
     private void GenerateTradeForPlayer(SeasonStage seasonStage, int week)
@@ -126,20 +133,22 @@ public class TradingSystem : MonoBehaviour
             _teamATradingAssets.Add(assetToAdd);
 
         }
-        else if (team != GameManager.Instance.GetTeamID())
+        else
         {
             if (_teamBTradingAssets.Contains(assetToAdd)) return;
 
-            Debug.Log("Asset added to team B");
-            _teamBTradingAssets.Add(assetToAdd);
-            _teamBID = team;
-        } /*
-        else
-        {
-            ClearTrades();
-            _teamATradingAssets.Add(assetToAdd);
-            _teamAID = team;
-        } */
+            if (_teamBID != team)
+            {
+                _willAlwaysAccept = false;
+                _teamBID = team;
+                _teamBTradingAssets = new List<ITradeable>();
+                _teamBTradingAssets.Add(assetToAdd);
+            }
+            else
+            {
+                _teamBTradingAssets.Add(assetToAdd);
+            }
+        }
 
         UpdateBothTeamsAssets(true);
     }
@@ -249,6 +258,13 @@ public class TradingSystem : MonoBehaviour
     {
         if (_teamBID == -1) return;
 
+        if (_willAlwaysAccept)
+        {
+            Debug.Log("Will accept!");
+            UpdateAcceptButtonAndText(true, _willAcceptString);
+            return;
+        }
+
         if (!CheckTradeEligibility(_teamBID, _teamATradingAssets, _teamBTradingAssets))
         {
             Debug.Log("Salary cap issues");
@@ -256,7 +272,7 @@ public class TradingSystem : MonoBehaviour
             return;
         }
 
-        if (GetTotalTradeValue(_teamATradingAssets) < GetTotalTradeValue(_teamBTradingAssets))
+        if (GetTotalTradeValue(_teamATradingAssets) < (GetTotalTradeValue(_teamBTradingAssets) * UnityEngine.Random.Range(0.5f, 1.5f)))
         {
             Debug.Log("Trade value issues");
             UpdateAcceptButtonAndText(false, _tradeValueTooLowString);

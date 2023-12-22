@@ -46,7 +46,7 @@ public class Team
         GameManager.OnNewSeasonStarted += ResetForNewSeason;
         Player.OnContractExpired += RemovePlayersWithoutContract;
 
-        //_players.ForEach(x => x.ResetEventsFromLoad());
+        _players.ForEach(x => x.ResetEventsFromLoad());
     }
 
     private void ResetForNewSeason()

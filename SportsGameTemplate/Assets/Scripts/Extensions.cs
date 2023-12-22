@@ -121,11 +121,11 @@ public static class Extensions
         if (status)
         {
             button.GetComponent<Image>().color = ColorManager.Instance.EnabledButtonColor;
-            button.GetComponentInChildren<TextMeshProUGUI>().color = ColorManager.Instance.EnabledButtonTextColor;
+            button.GetComponentsInChildren<TextMeshProUGUI>().ToList().ForEach(x => x.color = ColorManager.Instance.EnabledButtonTextColor);
         } else
         {
             button.GetComponent<Image>().color = ColorManager.Instance.DisabledButtonColor;
-            button.GetComponentInChildren<TextMeshProUGUI>().color = ColorManager.Instance.DisabledButtonTextColor;
+            button.GetComponentsInChildren<TextMeshProUGUI>().ToList().ForEach(x => x.color = ColorManager.Instance.DisabledButtonTextColor);
         }
     }
 

@@ -9,6 +9,7 @@ public class SetupScreenViewer : MonoBehaviour, ISettable
 {
     [SerializeField] Image _teamLogo;
     [SerializeField] GameObject _teamDataObject;
+    [SerializeField] GameObject _noTeamSelectedObject;
     [SerializeField] GameObject _bestPlayersRoot;
     [SerializeField] TextMeshProUGUI _teamNameText;
     [SerializeField] TextMeshProUGUI _ratingText;
@@ -18,16 +19,22 @@ public class SetupScreenViewer : MonoBehaviour, ISettable
     [SerializeField] TextMeshProUGUI _draftPickTwoText;
 
     [SerializeField] Button _selectTeamButton;
+    [SerializeField] Button _startGameButton;
+
 
     private void Awake()
     {
         TeamSelection.OnSelectedTeam += SetDetails;
         _teamDataObject.SetActive(false);
+        _noTeamSelectedObject.SetActive(true);
+        _startGameButton.ToggleButtonStatus(false);
         _selectTeamButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.TeamOverview, LeagueSystem.Instance.GetTeamsSortedByID()));
     }
 
     public void SetDetails<T>(T item) where T : class
     {
+        _noTeamSelectedObject.SetActive(false);
+        _startGameButton.ToggleButtonStatus(true);
         _teamDataObject.SetActive(true);
 
         Team team = item as Team;
@@ -42,7 +49,7 @@ public class SetupScreenViewer : MonoBehaviour, ISettable
 
         _teamNameText.text = team.GetTeamName();
         _ratingText.text = $"Average team rating  <color=\"white\">{rating} OVR";
-        _salaryText.text = $"Current salary  <color=\"white\">{salary} / {ConfigManager.Instance.GetCurrentConfig().SalaryCap.ConvertToMonetaryString()}";
+        _salaryText.text = $"Current salary  <color=\"white\">{salary} / {ConfigManager.Instance.GetCurrentConfig().SalaryCap.ConvertToMonetaryString()}    ({team.GetTotalSalaryAmount() - ConfigManager.Instance.GetCurrentConfig().SalaryCap})";
         _mediaExpectationText.text = $"Media expectation  <color=\"white\">{mediaExpectation}";
 
         _draftPickOneText.text = $"Round {draftPicks[0].GetPickData().Item1}  <color=\"white\">Pick {draftPicks[0].GetPickData().Item2}";

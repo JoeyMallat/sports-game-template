@@ -8,12 +8,16 @@ using UnityEngine;
 public class LocalSaveManager : MonoBehaviour
 {
     [SerializeField] string _filePath;
+    DateTime _timeSaved;
 
     public static event Action<SeasonStage, int> OnGameLoaded;
 
     private void Awake()
     {
         GameManager.OnAdvance += SaveGame;
+        Match.OnMatchPlayed += SaveGameAfterMatch;
+        Navigation.OnNewScreenOpened += SaveGameButton;
+        GameManager.OnNewSeasonStarted += SaveGameButton;
     }
 
     private void OnApplicationQuit()
@@ -21,10 +25,27 @@ public class LocalSaveManager : MonoBehaviour
         SaveGame(GameManager.Instance.GetSeasonStage(), GameManager.Instance.GetCurrentWeek());
     }
 
+    private void SaveGameAfterMatch(Match match)
+    {
+        if (match.IsMyTeamMatch(GameManager.Instance.GetTeamID()))
+        {
+            SaveGame(GameManager.Instance.GetSeasonStage(), GameManager.Instance.GetCurrentWeek());
+        }
+    }
+
+    public void SaveGameButton()
+    {
+        if (_timeSaved.Minute == DateTime.Now.Minute) return;
+        if (!GameManager.Instance.GetTeamPickedStatus()) return;
+
+        SaveGame(GameManager.Instance.GetSeasonStage(), GameManager.Instance.GetCurrentWeek());
+    }
+
     public void SaveGame(SeasonStage seasonStage, int week)
     {
         try
         {
+            _timeSaved = DateTime.Now;
             LocalSaveData localSaveData = new LocalSaveData();
             localSaveData.Teams = LeagueSystem.Instance.GetTeams();
             localSaveData.Matches = LeagueSystem.Instance.GetMatches();
