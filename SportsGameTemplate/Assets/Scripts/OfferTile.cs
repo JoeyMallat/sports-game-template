@@ -52,8 +52,11 @@ public class OfferTile : MonoBehaviour
         }
         else
         {
-            _amountText.text = $"{currentAmount} YRS";
-            OnLengthUpdated?.Invoke((int)currentAmount);
+            if (currentAmount < 6)
+            {
+                _amountText.text = $"{currentAmount} YRS";
+                OnLengthUpdated?.Invoke((int)currentAmount);
+            }
         }
 
         SetButtons(currentAmount);

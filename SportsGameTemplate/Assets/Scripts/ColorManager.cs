@@ -10,6 +10,11 @@ public class ColorManager : MonoBehaviour
     public Color EnabledButtonColor;
     public Color EnabledButtonTextColor;
 
+    public Color DisabledStoreButtonColor;
+    public Color DisabledStoreButtonTextColor;
+    public Color EnabledStoreButtonColor;
+    public Color EnabledStoreButtonTextColor;
+
     private void Awake()
     {
         if (Instance == null)

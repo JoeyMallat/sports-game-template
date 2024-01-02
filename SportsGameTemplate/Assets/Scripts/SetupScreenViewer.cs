@@ -49,7 +49,7 @@ public class SetupScreenViewer : MonoBehaviour, ISettable
 
         _teamNameText.text = team.GetTeamName();
         _ratingText.text = $"Average team rating  <color=\"white\">{rating} OVR";
-        _salaryText.text = $"Current salary  <color=\"white\">{salary} / {ConfigManager.Instance.GetCurrentConfig().SalaryCap.ConvertToMonetaryString()}    ({team.GetTotalSalaryAmount() - ConfigManager.Instance.GetCurrentConfig().SalaryCap})";
+        _salaryText.text = $"Current salary  <color=\"white\">{salary} / {ConfigManager.Instance.GetCurrentConfig().SalaryCap.ConvertToMonetaryString()}    ({(ConfigManager.Instance.GetCurrentConfig().SalaryCap - team.GetTotalSalaryAmount()).ConvertToMonetaryString()})";
         _mediaExpectationText.text = $"Media expectation  <color=\"white\">{mediaExpectation}";
 
         _draftPickOneText.text = $"Round {draftPicks[0].GetPickData().Item1}  <color=\"white\">Pick {draftPicks[0].GetPickData().Item2}";

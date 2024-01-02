@@ -10,7 +10,9 @@ public class IAPManager : IDetailedStoreListener
     private IExtensionProvider extensions;
 
     string _subscriptionID = "com.basketballgm.allstar";
+    string _promo1 = "com.basketballgm.promo599";
     string _mvpID = "com.basketballgm.mvp";
+    string _mvpPromoID = "com.basketballgm.mvppromo";
     string _10gemsID = "com.basketballgm.gems10";
     string _100gemsID = "com.basketballgm.gems100";
     string _250gemsID = "com.basketballgm.gems250";
@@ -39,7 +41,9 @@ public class IAPManager : IDetailedStoreListener
     private ConfigurationBuilder AddProducts(ConfigurationBuilder builder)
     {
         builder.AddProduct(_subscriptionID, ProductType.Subscription);
+        builder.AddProduct(_promo1, ProductType.Consumable);
         builder.AddProduct(_mvpID, ProductType.NonConsumable);
+        builder.AddProduct(_mvpPromoID, ProductType.NonConsumable);
         builder.AddProduct(_10gemsID, ProductType.Consumable);
         builder.AddProduct(_100gemsID, ProductType.Consumable);
         builder.AddProduct(_250gemsID, ProductType.Consumable);

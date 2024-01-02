@@ -222,6 +222,11 @@ public class GameManager : MonoBehaviour
         _currentWeek++;
 
         OnAdvance?.Invoke(_currentSeasonStage, _currentWeek);
+
+        if (_currentWeek % 20 == 0 && !GetPremiumStatus())
+        {
+            InterstitialAdsManager.Instance.ShowAd();
+        }
     }
 
     public SeasonStage GetSeasonStage()

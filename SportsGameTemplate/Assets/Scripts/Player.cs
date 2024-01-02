@@ -368,10 +368,10 @@ public class Player : ITradeable
 
     public int CalculateTradeValue()
     {
-        _tradeValue = (25 * CalculateRatingForPosition()) * (40 - _age);
+        _tradeValue = Mathf.RoundToInt((200 * CalculateRatingForPosition()) * Mathf.Lerp(0.85f, 1.15f, 40 / _age));
         float contractLengthMultiplier = ConfigManager.Instance.GetCurrentConfig().ContractLengthImpactOnTradeValue.Evaluate(_age / 40);
 
-        _tradeValue = Mathf.RoundToInt(_tradeValue * contractLengthMultiplier / ((float)_potential + 1));
+        _tradeValue = Mathf.RoundToInt(_tradeValue * (0.25f * contractLengthMultiplier) / (1 + (0.1f * (float)_potential + 1)));
         return _tradeValue;
     }
 

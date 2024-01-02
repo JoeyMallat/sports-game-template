@@ -52,4 +52,9 @@ public class StartupScreenView : MonoBehaviour, ISettable
 
         return files;
     }
+
+    public void GoToUrl(string url)
+    {
+        Application.OpenURL(url);
+    }
 }

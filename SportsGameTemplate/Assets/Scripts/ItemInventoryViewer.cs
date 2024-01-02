@@ -5,6 +5,8 @@ using TMPro;
 using UnityEngine.UI;
 using System;
 using System.Linq;
+using Unity.Services.RemoteConfig;
+using Firebase.Analytics;
 
 public class ItemInventoryViewer : MonoBehaviour, ISettable
 {
@@ -13,6 +15,10 @@ public class ItemInventoryViewer : MonoBehaviour, ISettable
 
     [SerializeField] GameObject _itemRoot;
     [SerializeField] InventoryGameItem _itemPrefab;
+
+    [SerializeField] GameObject _noItemsObject;
+    [SerializeField] Button _spinWheelButton;
+    [SerializeField] TextMeshProUGUI _spinWheelButtonText;
 
     private void Awake()
     {
@@ -44,32 +50,48 @@ public class ItemInventoryViewer : MonoBehaviour, ISettable
     {
         List<OwnedGameItem> items = GameManager.Instance.GetItems();
 
-        if (_filterActive)
+        if (items.Count > 0)
         {
-            items = GameManager.Instance.GetItems().Where(x => ItemDatabase.Instance.GetGameItemByID(x.GetItemID()).GetItemType() == _typeFilter).ToList();
-        }
+            _itemRoot.SetActive(true);
 
-        List<InventoryGameItem> inventoryGameItems = _itemRoot.GetComponentsInChildren<InventoryGameItem>(true).ToList();
-
-        int prefabsToSpawn = items.Count - inventoryGameItems.Count;
-
-        for (int i = 0; i < prefabsToSpawn; i++)
-        {
-            inventoryGameItems.Add(Instantiate(_itemPrefab, _itemRoot.transform));
-        }
-
-        for (int i = 0; i < inventoryGameItems.Count; i++)
-        {
-            int index = i;
-
-            if (i < items.Count)
+            if (_filterActive)
             {
-                inventoryGameItems[i].gameObject.SetActive(true);
-                inventoryGameItems[i].SetItem(player, items[index]);
-            } else
-            {
-                inventoryGameItems[i].gameObject.SetActive(false);
+                items = GameManager.Instance.GetItems().Where(x => ItemDatabase.Instance.GetGameItemByID(x.GetItemID()).GetItemType() == _typeFilter).ToList();
             }
+
+            List<InventoryGameItem> inventoryGameItems = _itemRoot.GetComponentsInChildren<InventoryGameItem>(true).ToList();
+
+            int prefabsToSpawn = items.Count - inventoryGameItems.Count;
+
+            for (int i = 0; i < prefabsToSpawn; i++)
+            {
+                inventoryGameItems.Add(Instantiate(_itemPrefab, _itemRoot.transform));
+            }
+
+            for (int i = 0; i < inventoryGameItems.Count; i++)
+            {
+                int index = i;
+
+                if (i < items.Count)
+                {
+                    inventoryGameItems[i].gameObject.SetActive(true);
+                    inventoryGameItems[i].SetItem(player, items[index]);
+                }
+                else
+                {
+                    inventoryGameItems[i].gameObject.SetActive(false);
+                }
+            }
+        }
+        else
+        {
+            _itemRoot.SetActive(false);
+            _noItemsObject.SetActive(true);
+            _spinWheelButton.onClick.RemoveAllListeners();
+            _spinWheelButton.onClick.RemoveAllListeners();
+            _spinWheelButton.onClick.AddListener(() => GoToBallGame(RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12)));
+            _spinWheelButton.onClick.AddListener(() => FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventSpendVirtualCurrency, new Parameter("gems_spent", RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12))));
+            _spinWheelButtonText.text = $"Spin wheel    <color=\"white\">{RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12)} <sprite name=\"Gem\">";
         }
     }
 
@@ -77,33 +99,52 @@ public class ItemInventoryViewer : MonoBehaviour, ISettable
     {
         List<OwnedGameItem> items = GameManager.Instance.GetItems();
 
-        if (_filterActive)
+        if (items.Count > 0)
         {
-            items = GameManager.Instance.GetItems().Where(x => ItemDatabase.Instance.GetGameItemByID(x.GetItemID()).GetItemType() == _typeFilter).ToList();
-        }
+            _noItemsObject.SetActive(false);
 
-        List<InventoryGameItem> inventoryGameItems = _itemRoot.GetComponentsInChildren<InventoryGameItem>(true).ToList();
-
-        int prefabsToSpawn = items.Count - inventoryGameItems.Count;
-
-        for (int i = 0; i < prefabsToSpawn; i++)
-        {
-            inventoryGameItems.Add(Instantiate(_itemPrefab, _itemRoot.transform));
-        }
-
-        for (int i = 0; i < inventoryGameItems.Count; i++)
-        {
-            int index = i;
-
-            if (i < items.Count)
+            if (_filterActive)
             {
-                inventoryGameItems[i].gameObject.SetActive(true);
-                inventoryGameItems[i].SetItem(items[index]);
+                items = GameManager.Instance.GetItems().Where(x => ItemDatabase.Instance.GetGameItemByID(x.GetItemID()).GetItemType() == _typeFilter).ToList();
             }
-            else
+
+            List<InventoryGameItem> inventoryGameItems = _itemRoot.GetComponentsInChildren<InventoryGameItem>(true).ToList();
+
+            int prefabsToSpawn = items.Count - inventoryGameItems.Count;
+
+            for (int i = 0; i < prefabsToSpawn; i++)
             {
-                inventoryGameItems[i].gameObject.SetActive(false);
+                inventoryGameItems.Add(Instantiate(_itemPrefab, _itemRoot.transform));
             }
+
+            for (int i = 0; i < inventoryGameItems.Count; i++)
+            {
+                int index = i;
+
+                if (i < items.Count)
+                {
+                    inventoryGameItems[i].gameObject.SetActive(true);
+                    inventoryGameItems[i].SetItem(items[index]);
+                }
+                else
+                {
+                    inventoryGameItems[i].gameObject.SetActive(false);
+                }
+            }
+        } else
+        {
+            _noItemsObject.SetActive(true);
+            _spinWheelButton.onClick.RemoveAllListeners();
+            _spinWheelButton.onClick.RemoveAllListeners();
+            _spinWheelButton.onClick.AddListener(() => GoToBallGame(RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12)));
+            _spinWheelButton.onClick.AddListener(() => FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventSpendVirtualCurrency, new Parameter("gems_spent", RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12))));
+            _spinWheelButtonText.text = $"Spin wheel    <color=\"white\">{RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12)} <sprite name=\"Gem\">";
         }
+    }
+
+    private void GoToBallGame(int cost)
+    {
+        TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.BallGame, cost));
+        FindAnyObjectByType<BallSystem>().SetStartingState();
     }
 }

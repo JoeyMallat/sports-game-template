@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: e0509620972bb46cbbed8d9e6880835f
+guid: e6ec6a32aacfb4c4ea4c80b9210334e7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5622901713081898559
-    second: 27_0
+      213: -2626700502237268128
+    second: star (2)_0
   - first:
-      213: 6393303234226741781
-    second: 27_1
+      213: 3262537016061868855
+    second: star (2)_1
   - first:
-      213: 1159544496477699280
-    second: 27_2
+      213: -7112929468887886219
+    second: star (2)_2
   - first:
-      213: -830633138475329538
-    second: 27_3
+      213: 1580814079445245515
+    second: star (2)_3
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -131,55 +131,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 27_0
+      name: star (2)_0
       rect:
         serializedVersion: 2
-        x: 55
-        y: 344
-        width: 10
-        height: 9
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1c961d0fea077f1b0800000000000000
-      internalID: -5622901713081898559
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: 27_1
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 70
-        width: 373
-        height: 378
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 512e0791b6399b850800000000000000
-      internalID: 6393303234226741781
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: 27_2
-      rect:
-        serializedVersion: 2
-        x: 30
-        y: 312
+        x: 103
+        y: 329
         width: 9
-        height: 9
+        height: 8
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -187,20 +145,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0dcffc57397871010800000000000000
-      internalID: 1159544496477699280
+      spriteID: 067bec06fc51c8bd0800000000000000
+      internalID: -2626700502237268128
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 27_3
+      name: star (2)_1
       rect:
         serializedVersion: 2
-        x: 167
-        y: 59
-        width: 122
-        height: 26
+        x: 110
+        y: 115
+        width: 293
+        height: 296
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -208,8 +166,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ef7928abf8ff874f0800000000000000
-      internalID: -830633138475329538
+      spriteID: 73b3ee4612cd64d20800000000000000
+      internalID: 3262537016061868855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: star (2)_2
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 304
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 576978e755cc94d90800000000000000
+      internalID: -7112929468887886219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: star (2)_3
+      rect:
+        serializedVersion: 2
+        x: 191
+        y: 106
+        width: 95
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4e154d970e20f510800000000000000
+      internalID: 1580814079445245515
       vertices: []
       indices: 
       edges: []
@@ -225,10 +225,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      27_0: -5622901713081898559
-      27_1: 6393303234226741781
-      27_2: 1159544496477699280
-      27_3: -830633138475329538
+      star (2)_0: -2626700502237268128
+      star (2)_1: 3262537016061868855
+      star (2)_2: -7112929468887886219
+      star (2)_3: 1580814079445245515
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

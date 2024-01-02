@@ -129,6 +129,21 @@ public static class Extensions
         }
     }
 
+    public static void ToggleStoreButtonStatus(this Button button, bool status)
+    {
+        button.enabled = status;
+
+        if (status)
+        {
+            button.GetComponent<Image>().color = ColorManager.Instance.EnabledStoreButtonColor;
+            button.GetComponentsInChildren<TextMeshProUGUI>().ToList().ForEach(x => x.color = ColorManager.Instance.EnabledStoreButtonTextColor);
+        } else
+        {
+            button.GetComponent<Image>().color = ColorManager.Instance.DisabledStoreButtonColor;
+            button.GetComponentsInChildren<TextMeshProUGUI>().ToList().ForEach(x => x.color = ColorManager.Instance.DisabledStoreButtonTextColor);
+        }
+    }
+
     public static (int, int) GetRatingRangeNumbers(this int rating, float accuracy, int seed)
     {
         UnityEngine.Random.InitState(seed);

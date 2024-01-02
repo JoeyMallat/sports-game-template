@@ -93,7 +93,7 @@ public class PrematchView : MonoBehaviour, ISettable
         // Home team
         _homeTeamLogo.sprite = homeTeam.GetTeamLogo();
         _homeTeamName.text = homeTeam.GetTeamName();
-        _homeTeamPosition.text = $"#{homeTeam.GetSeed()}";
+        _homeTeamPosition.text = $"#{homeTeam.GetSeed() + 1}";
         _homeTeamRecord.text = homeTeam.GetCurrentSeasonStats().GetWins() + " - " + homeTeam.GetCurrentSeasonStats().GetLosses();
 
         Player homeBestPlayer = homeTeam.GetPlayersFromTeam().OrderByDescending(x => x.CalculateRatingForPosition()).First();
@@ -102,7 +102,7 @@ public class PrematchView : MonoBehaviour, ISettable
         // Away team
         _awayTeamLogo.sprite = awayTeam.GetTeamLogo();
         _awayTeamName.text = awayTeam.GetTeamName();
-        _awayTeamPosition.text = $"#{awayTeam.GetSeed()}";
+        _awayTeamPosition.text = $"#{awayTeam.GetSeed() + 1}";
         _awayTeamRecord.text = awayTeam.GetCurrentSeasonStats().GetWins() + " - " + awayTeam.GetCurrentSeasonStats().GetLosses();
 
         Player awayBestPlayer = awayTeam.GetPlayersFromTeam().OrderByDescending(x => x.CalculateRatingForPosition()).First();

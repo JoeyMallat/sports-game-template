@@ -2,6 +2,7 @@ using Firebase.Analytics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
@@ -29,6 +30,15 @@ public class Purchaser : MonoBehaviour
                 FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventPurchase, new Parameter("value", 6.99f));
                 GameManager.Instance.AddToGems(250);
                 GameManager.Instance.SetPremiumStatus(true);
+                break;
+            case "com.basketballgm.mvppromo":
+                FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventPurchase, new Parameter("value", 3.49f));
+                GameManager.Instance.AddToGems(250);
+                GameManager.Instance.SetPremiumStatus(true);
+                break;
+            case "com.basketballgm.promo599":
+                FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventPurchase, new Parameter("value", 5.99f));
+                GameManager.Instance.AddToGems(2024);
                 break;
             case "com.basketballgm.gems10":
                 GameManager.Instance.AddToGems(10);
@@ -112,7 +122,7 @@ public class Purchaser : MonoBehaviour
                    Debug.Log(info.getIntroductoryPrice());
                    Debug.Log(info.getIntroductoryPricePeriod());
                    Debug.Log(info.getIntroductoryPricePeriodCycles());
-                    GameManager.Instance.SetPremiumStatus(info.isSubscribed() == Result.True);
+                    //GameManager.Instance.SetPremiumStatus(info.isSubscribed() == Result.True);
                } else {
                    //Debug.Log("the product is not a subscription product");
                }

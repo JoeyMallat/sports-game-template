@@ -17,7 +17,7 @@ public class TradingSystem : MonoBehaviour
     [SerializeReference] List<ITradeable> _teamBTradingAssets;
 
     [Header("Trade confirmation UI")]
-    bool _willAlwaysAccept;
+    [SerializeField] bool _willAlwaysAccept;
     [SerializeField] string _tradeValueTooLowString;
     [SerializeField] string _overSalaryCapString;
     [SerializeField] string _willAcceptString;
@@ -32,13 +32,12 @@ public class TradingSystem : MonoBehaviour
         Player.OnAddedToTrade += AddAssetToTrade;
         DraftPick.OnAddedToTrade += AddAssetToTrade;
         TeamAsset.OnRemoveFromTrade += RemoveFromTrade;
-        OnAssetsUpdated += CheckTradeWillingness;
         TradeOfferItem.OnNewTradeOpened += ClearTrades;
-        TradeOfferItem.OnTradeOfferOpened += SetTradeWillingnessToTrue;
         GameManager.OnAdvance += GenerateTradeForPlayer;
+        TradeOfferItem.OnTradeOfferOpened += SetTradeWillingnessToTrue;
+        OnAssetsUpdated += CheckTradeWillingness;
     }
 
-    [Button(ButtonSizes.Large)]
     public void ConfirmTrade()
     {
         FirebaseAnalytics.LogEvent("trade_confirmed", new Parameter("value_sent", GetTotalTradeValue(_teamATradingAssets)), new Parameter("value_received", GetTotalTradeValue(_teamBTradingAssets)));
@@ -57,11 +56,12 @@ public class TradingSystem : MonoBehaviour
     private void SetTradeWillingnessToTrue()
     {
         _willAlwaysAccept = true;
+        CheckTradeWillingness(1, _teamBID, _teamBTradingAssets, true);
     }
 
     private void GenerateTradeForPlayer(SeasonStage seasonStage, int week)
     {
-        int randomAmount = UnityEngine.Random.Range(0, 2);
+        int randomAmount = UnityEngine.Random.Range(1, 3);
 
         for (int i = 0; i < randomAmount; i++)
         {
@@ -70,7 +70,7 @@ public class TradingSystem : MonoBehaviour
             int teamTwo = UnityEngine.Random.Range(0, LeagueSystem.Instance.GetTeams().Count - 1);
 
             AITrader aiTrader = new AITrader();
-            aiTrader.GenerateOffer(LeagueSystem.Instance.GetTeam(teamOne).GetTradeAssets(), teamTwo, UnityEngine.Random.Range(2000, 15000), LeagueSystem.Instance.GetTeam(teamTwo).GetTradeAssets());
+            aiTrader.GenerateOffer(LeagueSystem.Instance.GetTeam(teamOne).GetTradeAssets(), teamTwo, UnityEngine.Random.Range(1000, 2500), LeagueSystem.Instance.GetTeam(teamTwo).GetTradeAssets());
         }
     }
 
@@ -96,6 +96,7 @@ public class TradingSystem : MonoBehaviour
         _teamAID = GameManager.Instance.GetTeamID();
         _teamATradingAssets = new List<ITradeable>();
         _teamBTradingAssets = new List<ITradeable>();
+        _willAlwaysAccept = false;
         UpdateBothTeamsAssets(toTradeScreen);
     }
 
@@ -131,7 +132,7 @@ public class TradingSystem : MonoBehaviour
             if (_teamATradingAssets.Contains(assetToAdd)) return;
 
             _teamATradingAssets.Add(assetToAdd);
-
+            _willAlwaysAccept = false;
         }
         else
         {
@@ -139,7 +140,6 @@ public class TradingSystem : MonoBehaviour
 
             if (_teamBID != team)
             {
-                _willAlwaysAccept = false;
                 _teamBID = team;
                 _teamBTradingAssets = new List<ITradeable>();
                 _teamBTradingAssets.Add(assetToAdd);
@@ -147,6 +147,7 @@ public class TradingSystem : MonoBehaviour
             else
             {
                 _teamBTradingAssets.Add(assetToAdd);
+                _willAlwaysAccept = false;
             }
         }
 
@@ -157,6 +158,7 @@ public class TradingSystem : MonoBehaviour
     {
         if (teamID == 0)
         {
+            _willAlwaysAccept = false;
             _teamATradingAssets.Remove(asset);
             UpdateBothTeamsAssets(true);
         }
@@ -167,6 +169,7 @@ public class TradingSystem : MonoBehaviour
 
             if (_teamBTradingAssets.Count == 0)
             {
+                _willAlwaysAccept = false;
                 OnTradeCompleted?.Invoke();
                 UpdateAcceptButtonAndText(false, "");
             }
@@ -272,7 +275,7 @@ public class TradingSystem : MonoBehaviour
             return;
         }
 
-        if (GetTotalTradeValue(_teamATradingAssets) < (GetTotalTradeValue(_teamBTradingAssets) * UnityEngine.Random.Range(0.5f, 1.5f)))
+        if (GetTotalTradeValue(_teamATradingAssets) < GetTotalTradeValue(_teamBTradingAssets))
         {
             Debug.Log("Trade value issues");
             UpdateAcceptButtonAndText(false, _tradeValueTooLowString);
@@ -294,6 +297,17 @@ public class TradingSystem : MonoBehaviour
         if (willAccept)
         {
             _confirmTradeButton.ToggleButtonStatus(true);
+
+            if (GameManager.Instance.GetGems() >= 1)
+            {
+                _confirmTradeButton.onClick.RemoveAllListeners();
+                _confirmTradeButton.onClick.AddListener(() => ConfirmTrade());
+                _confirmTradeButton.onClick.AddListener(() => GameManager.Instance.AddToGems(-1));
+            } else
+            {
+                _confirmTradeButton.onClick.RemoveAllListeners();
+                _confirmTradeButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(true, CanvasKey.Store)));
+            }
         }
         else
         {

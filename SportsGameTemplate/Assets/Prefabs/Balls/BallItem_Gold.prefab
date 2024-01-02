@@ -98,4 +98,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ballType: 1
-  _oddsOnAppearing: 0.65
+  _oddsOnAppearing: 0.7

@@ -29,7 +29,6 @@ public class AITrader
     public TradeOffer GenerateOffer(List<ITradeable> teamAssets, int offeringTeamID, int tradeValue, List<ITradeable> assetsToUse)
     {
         TradeOffer tradeOffer = new TradeOffer(offeringTeamID);
-        tradeValue = Mathf.RoundToInt(tradeValue * Random.Range(0.65f, 1.05f));
 
         // Generate a starting set of players from list of assets
         List<ITradeable> myTeamAssets = GenerateOffer(tradeValue, teamAssets);
@@ -46,7 +45,7 @@ public class AITrader
         // Generate an offer for the selected myTeamAssets
         int totalValueOfMyAssets = 0;
         myTeamAssets.ForEach(x => totalValueOfMyAssets += x.CalculateTradeValue());
-        List<ITradeable> offeredAssets = GenerateOffer(Mathf.RoundToInt(totalValueOfMyAssets * UnityEngine.Random.Range(0.2f, 0.9f)), assetsToUse);
+        List<ITradeable> offeredAssets = GenerateOffer(Mathf.RoundToInt(totalValueOfMyAssets * UnityEngine.Random.Range(0.5f, 3f)), assetsToUse);
 
         if (offeredAssets.Count == 0) return null;
 

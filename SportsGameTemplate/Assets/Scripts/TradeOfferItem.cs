@@ -55,8 +55,8 @@ public class TradeOfferItem : MonoBehaviour
         // Remove trade offer from player when clicked on trade offer
         _tradeOfferButton.onClick.AddListener(() => tradeOffer.GetAssets().Item1[0].RemoveTradeOffer(tradeOffer));
         _tradeOfferButton.onClick.AddListener(() => OnNewTradeOpened?.Invoke(true));
-        _tradeOfferButton.onClick.AddListener(() => OnTradeOfferOpened?.Invoke());
         _tradeOfferButton.onClick.AddListener(() => onClickAction(tradeOffer));
+        _tradeOfferButton.onClick.AddListener(() => OnTradeOfferOpened?.Invoke());
     }
 
     private void AddAssetsToTrade(TradeOffer tradeOffer)

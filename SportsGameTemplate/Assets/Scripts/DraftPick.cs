@@ -53,8 +53,8 @@ public class DraftPick : ITradeable
 
     public int CalculateTradeValue()
     {
-        _tradeValue = GetFirstPickValue() - (GetTotalPickNumber() * 30);
-        return _tradeValue;
+        _tradeValue = GetFirstPickValue() - (GetTotalPickNumber() * 40);
+        return Mathf.RoundToInt(Mathf.Clamp(_tradeValue, 0, Mathf.Infinity));
     }
 
     public string GetTradeableID()

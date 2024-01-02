@@ -19,9 +19,17 @@ public class TeamItem : MonoBehaviour
     {
         TeamSeason teamSeason = team.GetCurrentSeasonStats();
 
+        if (team.GetTeamID() == GameManager.Instance.GetTeamID())
+        {
+            _teamNameText.text = $"{team.GetTeamName()} <sprite name=\"star\">";
+        }
+        else
+        {
+            _teamNameText.text = team.GetTeamName();
+        }
+
         _placeText.text = place.ToString();
         _teamLogo.sprite = team.GetTeamLogo();
-        _teamNameText.text = team.GetTeamName();
         _winsText.text = teamSeason.GetWins().ToString();
         _lossesText.text = teamSeason.GetLosses().ToString();
         _percentageText.text = teamSeason.GetWinPercentage().ToString("F3");

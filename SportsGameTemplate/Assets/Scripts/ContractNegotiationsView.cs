@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 using System;
 using Unity.Services.RemoteConfig;
+using Firebase.Analytics;
 
 public class ContractNegotiationsView : MonoBehaviour, ISettable
 {
@@ -72,7 +73,17 @@ public class ContractNegotiationsView : MonoBehaviour, ISettable
     private void SetButton()
     {
         _signContractButton.onClick.RemoveAllListeners();
-        _signContractButton.onClick.AddListener(() => OnContractSigned?.Invoke());
+
+        if (GameManager.Instance.GetGems() >= 1)
+        {
+            _signContractButton.onClick.AddListener(() => OnContractSigned?.Invoke());
+            _signContractButton.onClick.AddListener(() => GameManager.Instance.AddToGems(-1));
+            _signContractButton.onClick.AddListener(() => FirebaseAnalytics.LogEvent("extended_contract"));
+        }
+        else
+        {
+            _signContractButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(true, CanvasKey.Store)));
+        }
     }
 
     public void SetDetails<T>(T item) where T : class

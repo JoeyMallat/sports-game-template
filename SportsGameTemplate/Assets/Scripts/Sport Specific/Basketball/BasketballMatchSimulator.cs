@@ -121,7 +121,7 @@ public class BasketballMatchSimulator : MatchSimulator
         while (inPossession)
         {
             List<Player> best = GetCurrentLineup(teamInPossession.GetLineup(), teamInPossession.GetTeamID());
-            playerWithBall = best.OrderByDescending(x => x.CalculateRatingForPosition() * UnityEngine.Random.Range(0.65f, 1.35f)).ToList()[0];
+            playerWithBall = best.OrderByDescending(x => x.CalculateRatingForPosition() * UnityEngine.Random.Range(0.5f, 1.5f)).ToList()[0];
             Move move = DecideNextMove(secondsSpent);
             (ResultAction, Player) turnover = DecideDefence(move, defendingTeam);
             secondsSpent += UnityEngine.Random.Range(2, 6);

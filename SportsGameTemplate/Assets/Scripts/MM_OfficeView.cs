@@ -11,6 +11,7 @@ using UnityEngine.UI;
 
 public class MM_OfficeView : MonoBehaviour, ISettable
 {
+    [SerializeField] GameObject _freeSpinNotifier;
     [SerializeField] Image _salaryFill;
     [SerializeField] TextMeshProUGUI _salaryText;
 
@@ -50,7 +51,7 @@ public class MM_OfficeView : MonoBehaviour, ISettable
         _increaseSalaryCapButton.onClick.AddListener(() => { if (GameManager.Instance.CheckBuyItem(RemoteConfigService.Instance.appConfig.GetInt("increasesalarycap_cost", 46))) { GameManager.Instance.SetSalaryCapIncrease(0.2f); SetDetails(team); } else { Navigation.Instance.GoToScreen(true, CanvasKey.Store); } });
         _increaseSalaryCapText.text = $"Increase salary cap (+20%)\n<color=\"white\"> {RemoteConfigService.Instance.appConfig.GetInt("increasesalarycap_cost", 46)} <sprite name=\"Gem\">";
 
-        _currentBalanceText.text = $"Balance   <color=\"white\">{GameManager.Instance.GetGems()} <sprite name=\"Gem\">";
+        _currentBalanceText.text = $"club house   <color=#DA7100>  Balance   <color=\"white\">{GameManager.Instance.GetGems()} <sprite name=\"Gem\">";
 
         SetFreeSpinButton();
 
@@ -98,8 +99,9 @@ public class MM_OfficeView : MonoBehaviour, ISettable
 
         if ((DateTime.Now - timeObject.FreeSpinTime).TotalHours > 24)
         {
+            _freeSpinNotifier.SetActive(true);
             _freeSpinTimeLeftText.gameObject.SetActive(false);
-            _freeSpinButton.ToggleButtonStatus(true);
+            _freeSpinButton.ToggleStoreButtonStatus(true);
             _freeSpinButton.onClick.RemoveAllListeners();
             _freeSpinButton.onClick.AddListener(() => OnFreeSpin?.Invoke(DateTime.Now));
             _freeSpinButton.onClick.AddListener(() => FirebaseAnalytics.LogEvent("free_spin_used"));
@@ -107,8 +109,9 @@ public class MM_OfficeView : MonoBehaviour, ISettable
         }
         else
         {
+            _freeSpinNotifier.SetActive(false);
             _freeSpinTimeLeftText.gameObject.SetActive(true);
-            _freeSpinButton.ToggleButtonStatus(false);
+            _freeSpinButton.ToggleStoreButtonStatus(false);
             _freeSpinTimeLeftText.text = $"Available in {Mathf.FloorToInt((float)(24 - (DateTime.Now - timeObject.FreeSpinTime).TotalHours)).ToString("F0")} hours";
         }
     }

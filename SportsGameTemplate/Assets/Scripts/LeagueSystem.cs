@@ -67,7 +67,14 @@ public class LeagueSystem : MonoBehaviour
 
         if (GameManager.Instance.GetCurrentSeason() != 0)
         {
-            GameManager.Instance.AddToGems(10);
+            if (GameManager.Instance.GetPremiumStatus())
+            {
+                GameManager.Instance.AddToGems(50);
+            }
+            else
+            {
+                GameManager.Instance.AddToGems(10);
+            }
         }
 
         if (_teams[0].GetDraftPicks().Count <= 0)
@@ -305,6 +312,9 @@ public class LeagueSystem : MonoBehaviour
     private void SortStandings()
     {
         _teams = _teams.OrderByDescending(x => x.GetCurrentSeasonStats().GetWinPercentage()).ToList();
+
+        int seedIndex = 0;
+        _teams.ForEach(x => { x.SetSeed(seedIndex); seedIndex++; });
     }
 
     private void SimulateGameweek(SeasonStage seasonStage, int week)
