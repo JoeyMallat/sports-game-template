@@ -33,6 +33,16 @@ public class GameManager : MonoBehaviour
     public static event Action OnNewSeasonStarted;
 
     int _nextMatchID = 0;
+    int _screenshotIndex = 1;
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            ScreenCapture.CaptureScreenshot($"screenshots/bgm_screenshot_{_screenshotIndex}.png");
+            _screenshotIndex++;
+        }
+    }
 
     public bool GetCurrentForceWinState()
     {
@@ -44,10 +54,14 @@ public class GameManager : MonoBehaviour
         _currentForceWinState = newForceWinState;
     }
 
-    public void SetGems(int gems)
+    public void SetGems(int gems, bool save)
     {
-        _gems = gems;
-        OnGemsUpdated?.Invoke(new CloudSaveData(_salaryCapIncrease, _premiumStatus, _gems, _ownedGameItems));
+        _gems = Mathf.Max(_gems, gems);
+
+        if (save)
+        {
+            OnGemsUpdated?.Invoke(new CloudSaveData(_salaryCapIncrease, _premiumStatus, _gems, _ownedGameItems));
+        }
     }
 
     public void AddToGems(int gemsToEdit)
@@ -69,10 +83,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SetPremiumStatus(bool status)
+    public void SetPremiumStatus(bool status, bool save)
     {
         _premiumStatus = status;
-        OnPremiumStatusUpdated?.Invoke(new CloudSaveData(_salaryCapIncrease,_premiumStatus, _gems, _ownedGameItems));
+
+        if (save)
+        {
+            OnPremiumStatusUpdated?.Invoke(new CloudSaveData(_salaryCapIncrease, _premiumStatus, _gems, _ownedGameItems));
+        }
     }
 
     public bool GetPremiumStatus()
@@ -80,10 +98,14 @@ public class GameManager : MonoBehaviour
         return _premiumStatus;
     }
 
-    public void SetSalaryCapIncrease(float salaryCapIncrease)
+    public void SetSalaryCapIncrease(float salaryCapIncrease, bool save)
     {
         _salaryCapIncrease += salaryCapIncrease;
-        OnSalaryCapIncreased?.Invoke(new CloudSaveData(_salaryCapIncrease, _premiumStatus, _gems, _ownedGameItems));
+
+        if (save)
+        {
+            OnSalaryCapIncreased?.Invoke(new CloudSaveData(_salaryCapIncrease, _premiumStatus, _gems, _ownedGameItems));
+        }
     }
 
     public float GetSalaryCapIncrease()

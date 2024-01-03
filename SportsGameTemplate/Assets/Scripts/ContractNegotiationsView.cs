@@ -100,7 +100,7 @@ public class ContractNegotiationsView : MonoBehaviour, ISettable
         _salaryTile.InitializeTile(player.GetContract().GetYearlySalary());
         _contractLengthTile.InitializeTile(player.GetContract().GetYearsOnContract());
 
-        _increaseSalaryCapButton.onClick.AddListener(GameManager.Instance.CheckBuyItem(RemoteConfigService.Instance.appConfig.GetInt("increasesalarycap_cost", 46)) ? () => { GameManager.Instance.SetSalaryCapIncrease(0.2f); SetDetails(player); } : () => Navigation.Instance.GoToScreen(true, CanvasKey.Store));
+        _increaseSalaryCapButton.onClick.AddListener(GameManager.Instance.CheckBuyItem(RemoteConfigService.Instance.appConfig.GetInt("increasesalarycap_cost", 46)) ? () => { GameManager.Instance.SetSalaryCapIncrease(0.2f, true); SetDetails(player); } : () => Navigation.Instance.GoToScreen(true, CanvasKey.Store));
         _increaseSalaryCapText.text = $"Increase salary cap by 20%\n<color=\"white\"> {RemoteConfigService.Instance.appConfig.GetInt("increasesalarycap_cost", 46)} <sprite name=\"Gem\">";
     }
 

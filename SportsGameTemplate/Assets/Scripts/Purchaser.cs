@@ -29,12 +29,12 @@ public class Purchaser : MonoBehaviour
             case "com.basketballgm.mvp":
                 FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventPurchase, new Parameter("value", 6.99f));
                 GameManager.Instance.AddToGems(250);
-                GameManager.Instance.SetPremiumStatus(true);
+                GameManager.Instance.SetPremiumStatus(true, true);
                 break;
             case "com.basketballgm.mvppromo":
                 FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventPurchase, new Parameter("value", 3.49f));
                 GameManager.Instance.AddToGems(250);
-                GameManager.Instance.SetPremiumStatus(true);
+                GameManager.Instance.SetPremiumStatus(true, true);
                 break;
             case "com.basketballgm.promo599":
                 FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventPurchase, new Parameter("value", 5.99f));

@@ -96,7 +96,7 @@ public class IAPManager : IDetailedStoreListener
             if (info.isExpired() == Result.True)
             {
                 Debug.Log("User is now subscribed");
-                GameManager.Instance.SetPremiumStatus(true);
+                GameManager.Instance.SetPremiumStatus(true, true);
             }
             else if (info.isSubscribed() == Result.True)
             {

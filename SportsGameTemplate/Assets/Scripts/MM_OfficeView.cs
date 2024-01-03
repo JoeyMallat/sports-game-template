@@ -48,7 +48,7 @@ public class MM_OfficeView : MonoBehaviour, ISettable
         _salaryText.text = $"{team.GetTotalSalaryAmount().ConvertToMonetaryString()}  <color=\"white\">/  {(ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease())).ConvertToMonetaryString()}";
 
         _increaseSalaryCapButton.onClick.RemoveAllListeners();
-        _increaseSalaryCapButton.onClick.AddListener(() => { if (GameManager.Instance.CheckBuyItem(RemoteConfigService.Instance.appConfig.GetInt("increasesalarycap_cost", 46))) { GameManager.Instance.SetSalaryCapIncrease(0.2f); SetDetails(team); } else { Navigation.Instance.GoToScreen(true, CanvasKey.Store); } });
+        _increaseSalaryCapButton.onClick.AddListener(() => { if (GameManager.Instance.CheckBuyItem(RemoteConfigService.Instance.appConfig.GetInt("increasesalarycap_cost", 46))) { GameManager.Instance.SetSalaryCapIncrease(0.2f, true); SetDetails(team); } else { Navigation.Instance.GoToScreen(true, CanvasKey.Store); } });
         _increaseSalaryCapText.text = $"Increase salary cap (+20%)\n<color=\"white\"> {RemoteConfigService.Instance.appConfig.GetInt("increasesalarycap_cost", 46)} <sprite name=\"Gem\">";
 
         _currentBalanceText.text = $"club house   <color=#DA7100>  Balance   <color=\"white\">{GameManager.Instance.GetGems()} <sprite name=\"Gem\">";

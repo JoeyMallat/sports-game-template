@@ -22,14 +22,14 @@ public class ChecklistItem : MonoBehaviour
 
         if (buttonTexts.Count == 0)
         {
-            for (int i = 0; i < _buttons.Count; i++)
+            for (int i = 0; i < _buttons.Count - 1; i++)
             {
                 _buttons[i].gameObject.SetActive(false);
             }
             return;
         }
 
-        for (int i = 0; i < _buttons.Count; i++)
+        for (int i = 0; i < _buttons.Count - 1; i++)
         {
             _buttons[i].gameObject.SetActive(true);
 
@@ -43,7 +43,11 @@ public class ChecklistItem : MonoBehaviour
             int index = i;
             _buttons[i].GetComponentInChildren<TextMeshProUGUI>().text = buttonTexts[index];
             _buttons[i].onClick.RemoveAllListeners();
-            _buttons[i].onClick.AddListener(() => buttonActions[index]());
+
+            if (buttonActions.Count < index)
+            {
+                _buttons[i].onClick.AddListener(() => buttonActions[index]());
+            }
         }
     }
 }

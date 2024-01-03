@@ -50,16 +50,16 @@ public class CloudSaveManager : MonoBehaviour
         }
         else
         {
-            GameManager.Instance.SetSalaryCapIncrease(saveData.SalaryCapIncrease);
-            GameManager.Instance.SetPremiumStatus(saveData.PremiumStatus);
+            GameManager.Instance.SetGems(saveData.GemAmount, false);
             GameManager.Instance.SetInventory(saveData.Inventory);
-            GameManager.Instance.SetGems(saveData.GemAmount);
+            GameManager.Instance.SetSalaryCapIncrease(saveData.SalaryCapIncrease, false);
+            GameManager.Instance.SetPremiumStatus(saveData.PremiumStatus, false);
         }
 
         if (PlayerPrefs.GetInt("Welcome_gems") != 1)
         {
             Debug.Log("Welcome gems gifted");
-            GameManager.Instance.AddToGems(50);
+            GameManager.Instance.AddToGems(10);
             PlayerPrefs.SetInt("Welcome_gems", 1);
         }
         else
