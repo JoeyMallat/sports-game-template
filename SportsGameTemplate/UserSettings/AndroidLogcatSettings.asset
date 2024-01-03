@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "R3CR30N7BNR",
         "name": "com.mallatentertainment.basketballgm",
-        "processId": 20897,
+        "processId": 16590,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -23,37 +23,31 @@
         {
             "deviceId": "R3CR30N7BNR",
             "name": "com.mallatentertainment.basketballgm",
-            "processId": 4751,
-            "exited": true
-        },
-        {
-            "deviceId": "R3CR30N7BNR",
-            "name": "com.mallatentertainment.basketballgm",
-            "processId": 8158,
-            "exited": true
-        },
-        {
-            "deviceId": "R3CR30N7BNR",
-            "name": "com.mallatentertainment.basketballgm",
-            "processId": 10748,
-            "exited": true
-        },
-        {
-            "deviceId": "R3CR30N7BNR",
-            "name": "com.mallatentertainment.basketballgm",
-            "processId": 15427,
-            "exited": true
-        },
-        {
-            "deviceId": "R3CR30N7BNR",
-            "name": "com.mallatentertainment.basketballgm",
             "processId": 18148,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "R3CR30N7BNR",
             "name": "com.mallatentertainment.basketballgm",
             "processId": 20897,
+            "exited": true
+        },
+        {
+            "deviceId": "R3CR30N7BNR",
+            "name": "com.mallatentertainment.basketballgm",
+            "processId": 24218,
+            "exited": true
+        },
+        {
+            "deviceId": "R3CR30N7BNR",
+            "name": "com.mallatentertainment.basketballgm",
+            "processId": 5917,
+            "exited": true
+        },
+        {
+            "deviceId": "R3CR30N7BNR",
+            "name": "com.mallatentertainment.basketballgm",
+            "processId": 16590,
             "exited": false
         }
     ],
@@ -108,7 +102,7 @@
         "Behavior": 0
     },
     "m_FilterOptions": {
-        "m_Filter": "push",
+        "m_Filter": "",
         "m_UseRegularExpressions": false,
         "m_MatchCase": false
     },

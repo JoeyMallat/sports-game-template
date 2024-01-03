@@ -96,7 +96,7 @@ public class StoreView : MonoBehaviour, ISettable
             _promoObject.SetActive(false);
         } else
         {
-            _promoTimerText.text = $"special offers   <color=\"white\">Expires in {(endDate - now).Days} and {(endDate - now).Hours} hours";
+            _promoTimerText.text = $"special offers   <color=\"white\">Expires in {(endDate - now).Days} days and {(endDate - now).Hours} hours";
             _promoObject.SetActive(true);
         }
     }

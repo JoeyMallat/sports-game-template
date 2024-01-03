@@ -1,5 +1,5 @@
 # ninja log v5
-0	60	7259089591006636	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	c0eec43a0271e286
-60	139	7259089591531719	C:/Users/joeym/Documents/GitHub/sports-game-template/SportsGameTemplate/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/5r522z2m/obj/arm64-v8a/libswappywrapper.so	6feada781f4de2e6
-0	64	7259094946262135	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	c0eec43a0271e286
-64	158	7259094946889754	C:/Users/joeym/Documents/GitHub/sports-game-template/SportsGameTemplate/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/5r522z2m/obj/arm64-v8a/libswappywrapper.so	6feada781f4de2e6
+7	367	7259266091223397	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	c0eec43a0271e286
+367	561	7259266092826145	C:/Users/joeym/Documents/GitHub/sports-game-template/SportsGameTemplate/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/5r522z2m/obj/arm64-v8a/libswappywrapper.so	6feada781f4de2e6
+0	69	7259270149730972	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	c0eec43a0271e286
+70	177	7259270150452713	C:/Users/joeym/Documents/GitHub/sports-game-template/SportsGameTemplate/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/5r522z2m/obj/arm64-v8a/libswappywrapper.so	6feada781f4de2e6

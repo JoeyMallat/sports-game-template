@@ -297,21 +297,22 @@ public class TradingSystem : MonoBehaviour
         if (willAccept)
         {
             _confirmTradeButton.ToggleButtonStatus(true);
-
-            if (GameManager.Instance.GetGems() >= 1)
-            {
-                _confirmTradeButton.onClick.RemoveAllListeners();
-                _confirmTradeButton.onClick.AddListener(() => ConfirmTrade());
-                _confirmTradeButton.onClick.AddListener(() => GameManager.Instance.AddToGems(-1));
-            } else
-            {
-                _confirmTradeButton.onClick.RemoveAllListeners();
-                _confirmTradeButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(true, CanvasKey.Store)));
-            }
         }
         else
         {
             _confirmTradeButton.ToggleButtonStatus(false);
+        }
+
+        if (GameManager.Instance.GetGems() >= 1)
+        {
+            _confirmTradeButton.onClick.RemoveAllListeners();
+            _confirmTradeButton.onClick.AddListener(() => ConfirmTrade());
+            _confirmTradeButton.onClick.AddListener(() => GameManager.Instance.AddToGems(-1));
+        }
+        else
+        {
+            _confirmTradeButton.onClick.RemoveAllListeners();
+            _confirmTradeButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(true, CanvasKey.Store)));
         }
     }
 

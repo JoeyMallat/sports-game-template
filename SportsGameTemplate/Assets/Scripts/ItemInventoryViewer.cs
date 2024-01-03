@@ -16,6 +16,7 @@ public class ItemInventoryViewer : MonoBehaviour, ISettable
     [SerializeField] GameObject _itemRoot;
     [SerializeField] InventoryGameItem _itemPrefab;
 
+    [SerializeField] GameObject _itemsObject;
     [SerializeField] GameObject _noItemsObject;
     [SerializeField] Button _spinWheelButton;
     [SerializeField] TextMeshProUGUI _spinWheelButtonText;
@@ -52,7 +53,8 @@ public class ItemInventoryViewer : MonoBehaviour, ISettable
 
         if (items.Count > 0)
         {
-            _itemRoot.SetActive(true);
+            _itemsObject.SetActive(true);
+            _noItemsObject.SetActive(false);
 
             if (_filterActive)
             {
@@ -85,7 +87,7 @@ public class ItemInventoryViewer : MonoBehaviour, ISettable
         }
         else
         {
-            _itemRoot.SetActive(false);
+            _itemsObject.SetActive(false);
             _noItemsObject.SetActive(true);
             _spinWheelButton.onClick.RemoveAllListeners();
             _spinWheelButton.onClick.RemoveAllListeners();
@@ -102,6 +104,7 @@ public class ItemInventoryViewer : MonoBehaviour, ISettable
         if (items.Count > 0)
         {
             _noItemsObject.SetActive(false);
+            _itemsObject.SetActive(true);
 
             if (_filterActive)
             {
@@ -134,6 +137,7 @@ public class ItemInventoryViewer : MonoBehaviour, ISettable
         } else
         {
             _noItemsObject.SetActive(true);
+            _itemsObject.SetActive(false);
             _spinWheelButton.onClick.RemoveAllListeners();
             _spinWheelButton.onClick.RemoveAllListeners();
             _spinWheelButton.onClick.AddListener(() => GoToBallGame(RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12)));
