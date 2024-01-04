@@ -15,7 +15,6 @@ public class LocalSaveManager : MonoBehaviour
     private void Awake()
     {
         GameManager.OnAdvance += SaveGame;
-        Match.OnMatchPlayed += SaveGameAfterMatch;
         Navigation.OnNewScreenOpened += SaveGameButton;
         GameManager.OnNewSeasonStarted += SaveGameButton;
     }
@@ -23,14 +22,6 @@ public class LocalSaveManager : MonoBehaviour
     private void OnApplicationQuit()
     {
         SaveGame(GameManager.Instance.GetSeasonStage(), GameManager.Instance.GetCurrentWeek());
-    }
-
-    private void SaveGameAfterMatch(Match match)
-    {
-        if (match.IsMyTeamMatch(GameManager.Instance.GetTeamID()))
-        {
-            SaveGame(GameManager.Instance.GetSeasonStage(), GameManager.Instance.GetCurrentWeek());
-        }
     }
 
     public void SaveGameButton()

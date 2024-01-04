@@ -124,6 +124,6 @@ public class MM_OfficeView : MonoBehaviour, ISettable
 
     private void UpdateBalance(CloudSaveData data)
     {
-        _currentBalanceText.text = $"Balance   <color=\"white\">{data.GemAmount} <sprite name=\"Gem\">";
+        _currentBalanceText.text = $"club house   <color=#DA7100>  Balance   <color=\"white\">{GameManager.Instance.GetGems()} <sprite name=\"Gem\">";
     }
 }

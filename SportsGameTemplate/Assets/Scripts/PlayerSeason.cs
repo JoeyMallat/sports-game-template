@@ -90,4 +90,9 @@ public class PlayerSeason
 
         return percentage;
     }
+
+    public void ChangeTeamID(int newTeamID)
+    {
+        _teamID = newTeamID;
+    }
 }

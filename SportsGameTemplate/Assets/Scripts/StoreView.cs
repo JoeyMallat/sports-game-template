@@ -21,11 +21,13 @@ public class StoreView : MonoBehaviour, ISettable
     private void Awake()
     {
         SetDetails(this);
+        GameManager.OnStoreItemsUpdated += UpdateBalance;
+        GameManager.OnStoreItemsUpdated += TogglePremiumObject;
+        RewardedAdsManager.OnRewardedAdWatched += GrantRewardedAdReward;
     }
 
     private void ToggleReviewButton()
     {
-        Debug.Log(PlayerPrefs.GetInt("reviewed"));
         if (PlayerPrefs.GetInt("reviewed") == 1)
         {
             _reviewForGemsButton.ToggleStoreButtonStatus(false);
@@ -48,7 +50,7 @@ public class StoreView : MonoBehaviour, ISettable
         }
     }
 
-    private void TogglePremiumObject(CloudSaveData cloudSaveData)
+    private void TogglePremiumObject(int gems, bool premium)
     {
         _premiumButton.ToggleStoreButtonStatus(!GameManager.Instance.GetPremiumStatus());
     }
@@ -59,10 +61,11 @@ public class StoreView : MonoBehaviour, ISettable
         _subscriptionObject.SetActive(RemoteConfigService.Instance.appConfig.GetBool("show_subscription", false));
     }
 
-    private void UpdateBalance(CloudSaveData data)
+    private void UpdateBalance(int gems, bool premiumStatus)
     {
+        Debug.Log($"Set balance to {GameManager.Instance.GetGems()}");
+        _balanceText.text = $"Current Balance: {GameManager.Instance.GetGems()} <sprite name=\"Gem\">";
         _premiumButton.ToggleStoreButtonStatus(!GameManager.Instance.GetPremiumStatus());
-        _balanceText.text = $"Current Balance: {data.GemAmount} <sprite name=\"Gem\">";
     }
 
     private void GrantRewardedAdReward(string adCode)
@@ -76,10 +79,7 @@ public class StoreView : MonoBehaviour, ISettable
 
     public void SetDetails<T>(T item) where T : class
     {
-        GameManager.OnGemsUpdated += UpdateBalance;
-        RewardedAdsManager.OnRewardedAdWatched += GrantRewardedAdReward;
         ToggleSubscriptionObject();
-        GameManager.OnPremiumStatusUpdated += TogglePremiumObject;
         ToggleReviewButton();
         TogglePromoItem();
 

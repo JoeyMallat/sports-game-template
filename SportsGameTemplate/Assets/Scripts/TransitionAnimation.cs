@@ -21,6 +21,19 @@ public class TransitionAnimation : MonoBehaviour
     [SerializeField] float _sidesMoveSpeed;
     [SerializeField] float _logoTurnSpeed;
 
+    int _wideBorderClosed = 600;
+    int _wideBorderOpen = 1479;
+    int _wideLogoPosition = 950;
+
+    int _smallBorderClosed = 600;
+    int _smallBorderOpen = 1150;
+    int _smallLogoPosition = 900;
+
+    int _closedPostion;
+    int _openedPostion;
+    int _logoPosition;
+
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -29,7 +42,7 @@ public class TransitionAnimation : MonoBehaviour
 
     private void OnEnable()
     {
-        //StartTransition(() => { });
+        SetStartingState();
         _backgroundBlocker.enabled = false;
     }
 
@@ -47,34 +60,46 @@ public class TransitionAnimation : MonoBehaviour
     {
         SetTeamLogo();
         SetStartingState();
-        LeanTween.moveLocal(_leftSide, new Vector3(-270, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay);
-        LeanTween.moveLocal(_rightSide, new Vector3(270, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay);
+        LeanTween.moveLocal(_leftSide, new Vector3(-_closedPostion, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay);
+        LeanTween.moveLocal(_rightSide, new Vector3(_closedPostion, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay);
         LeanTween.moveLocal(_teamLogo, new Vector3(0, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay).setOnComplete(actionOnTransition); ;
-        LeanTween.moveLocal(_leftSide, new Vector3(-895, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay + _sidesMoveSpeed + _logoTurnSpeed);
-        LeanTween.moveLocal(_rightSide, new Vector3(895, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay + _sidesMoveSpeed + _logoTurnSpeed);
-        LeanTween.moveLocal(_teamLogo, new Vector3(625, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay + _sidesMoveSpeed + _logoTurnSpeed).setOnComplete(() => _backgroundBlocker.enabled = false);
+        LeanTween.moveLocal(_leftSide, new Vector3(-_openedPostion, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay + _sidesMoveSpeed + _logoTurnSpeed);
+        LeanTween.moveLocal(_rightSide, new Vector3(_openedPostion, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay + _sidesMoveSpeed + _logoTurnSpeed);
+        LeanTween.moveLocal(_teamLogo, new Vector3(_logoPosition, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay + _sidesMoveSpeed + _logoTurnSpeed).setOnComplete(() => _backgroundBlocker.enabled = false);
     }
 
     public IEnumerator StartTransitionWithWaitForCompletion(Action actionOnTransition, IEnumerator waitForCompletion)
     {
         SetTeamLogo();
         SetStartingState();
-        LeanTween.moveLocal(_leftSide, new Vector3(-270, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay);
-        LeanTween.moveLocal(_rightSide, new Vector3(270, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay);
+        LeanTween.moveLocal(_leftSide, new Vector3(-_closedPostion, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay);
+        LeanTween.moveLocal(_rightSide, new Vector3(_closedPostion, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay);
         LeanTween.moveLocal(_teamLogo, new Vector3(0, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay);
         yield return new WaitForSeconds(_startingDelay + _sidesMoveSpeed);
         yield return StartCoroutine(waitForCompletion);
         actionOnTransition?.Invoke();
-        LeanTween.moveLocal(_leftSide, new Vector3(-950, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay + _sidesMoveSpeed + _logoTurnSpeed);
-        LeanTween.moveLocal(_rightSide, new Vector3(950, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay + _sidesMoveSpeed + _logoTurnSpeed);
-        LeanTween.moveLocal(_teamLogo, new Vector3(700, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay + _sidesMoveSpeed + _logoTurnSpeed).setOnComplete(() => _backgroundBlocker.enabled = false);
+        LeanTween.moveLocal(_leftSide, new Vector3(-_openedPostion, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay + _sidesMoveSpeed + _logoTurnSpeed);
+        LeanTween.moveLocal(_rightSide, new Vector3(_openedPostion, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay + _sidesMoveSpeed + _logoTurnSpeed);
+        LeanTween.moveLocal(_teamLogo, new Vector3(_logoPosition, 0, 0), _sidesMoveSpeed).setEase(_sidesAnimationCurve).setDelay(_startingDelay + _sidesMoveSpeed + _logoTurnSpeed).setOnComplete(() => _backgroundBlocker.enabled = false);
     }
 
     private void SetStartingState()
     {
+        if (Screen.width > 1800)
+        {
+            _closedPostion = _wideBorderClosed;
+            _openedPostion = _wideBorderOpen;
+            _logoPosition = _wideLogoPosition;
+        } else
+        {
+            _closedPostion = _smallBorderClosed;
+            _openedPostion = _smallBorderOpen;
+            _logoPosition = _smallLogoPosition;
+        }
+
         _backgroundBlocker.enabled = true;
-        LeanTween.moveLocal(_leftSide, new Vector3(-950, 0, 0), 0.001f);
-        LeanTween.moveLocal(_rightSide, new Vector3(950, 0, 0), 0.001f);
-        LeanTween.moveLocal(_teamLogo, new Vector3(-700, 0, 0), 0.001f);
+        LeanTween.moveLocal(_leftSide, new Vector3(-_openedPostion, 0, 0), 0.001f);
+        LeanTween.moveLocal(_rightSide, new Vector3(_openedPostion, 0, 0), 0.001f);
+        LeanTween.moveLocal(_teamLogo, new Vector3(-_logoPosition, 0, 0), 0.001f);
     }
 }

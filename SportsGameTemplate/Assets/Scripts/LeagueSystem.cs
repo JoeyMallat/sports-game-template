@@ -238,6 +238,7 @@ public class LeagueSystem : MonoBehaviour
 
         SortStandings();
         GetNextGame(SeasonStage.RegularSeason, GameManager.Instance.GetCurrentWeek());
+        FindAnyObjectByType<LocalSaveManager>().SaveGame(GameManager.Instance.GetSeasonStage(), GameManager.Instance.GetCurrentWeek());
         Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID()));
     }
 
@@ -272,7 +273,8 @@ public class LeagueSystem : MonoBehaviour
         }
 
         SortStandings();
-        
+        FindAnyObjectByType<LocalSaveManager>().SaveGame(GameManager.Instance.GetSeasonStage(), GameManager.Instance.GetCurrentWeek());
+
         //Navigation.Instance.GoToScreen(true, CanvasKey.Standings, GetTeams());
         //OnRegularSeasonFinished?.Invoke(_teams);
     }
@@ -314,7 +316,7 @@ public class LeagueSystem : MonoBehaviour
         _teams = _teams.OrderByDescending(x => x.GetCurrentSeasonStats().GetWinPercentage()).ToList();
 
         int seedIndex = 0;
-        _teams.ForEach(x => { x.SetSeed(seedIndex); seedIndex++; });
+        _teams.ForEach(x => { x.SetSeed(seedIndex + 1); seedIndex++; });
     }
 
     private void SimulateGameweek(SeasonStage seasonStage, int week)

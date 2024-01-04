@@ -56,7 +56,7 @@ public class Player : ITradeable
 
         _contract = new Contract(CalculateRatingForPosition(), _age);
         _potential = SetPotential();
-        _portraitID = UnityEngine.Random.Range(0, Resources.LoadAll<Sprite>("Faces/").Length); // TODO: Make more efficient
+        _portraitID = UnityEngine.Random.Range(0, 40);
 
         _seasonStats = new List<PlayerSeason>();
         _seasonStats.Add(new PlayerSeason(0, _teamID));
@@ -81,7 +81,7 @@ public class Player : ITradeable
         _startSeasonRating = _rating;
         _potential = SetPotential();
 
-        _portraitID = UnityEngine.Random.Range(0, Resources.LoadAll<Sprite>("Faces/").Length);
+        _portraitID = UnityEngine.Random.Range(0, 40);
         _teamID = -1;
 
         _seasonStats = new List<PlayerSeason>();
@@ -133,7 +133,7 @@ public class Player : ITradeable
     {
         float random = UnityEngine.Random.Range(0f, 1f);
 
-        if (0.25f < UnityEngine.Random.Range(0f, 1f))
+        if (0.5f < UnityEngine.Random.Range(0f, 1f))
         {
             float chanceOfRatingUpgrade = Mathf.Lerp(0f, 0.5f, ((40 - _age) / 40f) * (5 - (int)_potential) / 5);
 
@@ -264,7 +264,7 @@ public class Player : ITradeable
     public void ChangeTeam(int teamID)
     {
         _teamID = teamID;
-        _seasonStats.Add(new PlayerSeason(0, _teamID));
+        _seasonStats.Last().ChangeTeamID(teamID);
         OnPlayerTeamChanged?.Invoke(this);
     }
 
@@ -310,7 +310,7 @@ public class Player : ITradeable
         foreach (var season in _seasonStats)
         {
             matches += season.GetMatchStats().Count;
-            total = matches * season.GetAverageOfStat(stat);
+            total += season.GetMatchStats().Count * season.GetAverageOfStat(stat);
         }
 
         float average = total / matches;
@@ -327,7 +327,7 @@ public class Player : ITradeable
         foreach (var season in _seasonStats)
         {
             matches += season.GetMatchStats().Count;
-            total = matches * season.GetAveragePoints();
+            total += season.GetMatchStats().Count * season.GetAveragePoints();
         }
 
         float average = total / matches;

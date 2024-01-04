@@ -63,6 +63,8 @@ public class TradingSystem : MonoBehaviour
     {
         int randomAmount = UnityEngine.Random.Range(1, 3);
 
+        if (LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()).GetAllTradeOffers().Count >= 25) return;
+
         for (int i = 0; i < randomAmount; i++)
         {
             int teamOne = GameManager.Instance.GetTeamID();

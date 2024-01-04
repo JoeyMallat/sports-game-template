@@ -58,6 +58,7 @@ public class ChecklistView : MonoBehaviour
         Team team = LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID());
 
         // Check draft
+        Debug.Log("Setting the checklist items");
         _checklistItems[0].SetChecklistItem(_checklistChecks[0], "Complete the draft", "", new List<string>() { "Start draft" }, new List<System.Action>() { () => Navigation.Instance.GoToScreen(false, CanvasKey.Draft) });
 
         // Check amount of players
@@ -68,7 +69,7 @@ public class ChecklistView : MonoBehaviour
         // Check payroll
         int currentPayroll = team.GetTotalSalaryAmount();
         _checklistItems[2].SetChecklistItem(currentPayroll <= ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease()), "Payroll under salary cap", $"Currently {currentPayroll.ConvertToMonetaryString()} / { (ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease())).ConvertToMonetaryString()}", new List<string>(), new List<System.Action>());
-        _checklistChecks[2] = currentPayroll <= ConfigManager.Instance.GetCurrentConfig().SalaryCap;
+        _checklistChecks[2] = currentPayroll <= ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease());
 
         // Check watch ad or remove ads
         bool status = false;

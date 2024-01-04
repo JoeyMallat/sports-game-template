@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     public static event Action<CloudSaveData> OnPremiumStatusUpdated;
     public static event Action<CloudSaveData> OnGemsUpdated;
     public static event Action<CloudSaveData> OnInventoryUpdated;
+    public static event Action<int, bool> OnStoreItemsUpdated;
     public static event Action OnNewSeasonStarted;
 
     int _nextMatchID = 0;
@@ -62,11 +63,12 @@ public class GameManager : MonoBehaviour
         {
             OnGemsUpdated?.Invoke(new CloudSaveData(_salaryCapIncrease, _premiumStatus, _gems, _ownedGameItems));
         }
+
+        OnStoreItemsUpdated?.Invoke(_gems, GetPremiumStatus());
     }
 
     public void AddToGems(int gemsToEdit)
     {
-        Debug.Log("AddedToGems called");
         _gems += gemsToEdit;
         OnGemsUpdated.Invoke(new CloudSaveData(_salaryCapIncrease,_premiumStatus, _gems, _ownedGameItems));
     }
@@ -91,6 +93,8 @@ public class GameManager : MonoBehaviour
         {
             OnPremiumStatusUpdated?.Invoke(new CloudSaveData(_salaryCapIncrease, _premiumStatus, _gems, _ownedGameItems));
         }
+
+        OnStoreItemsUpdated?.Invoke(_gems, _premiumStatus);
     }
 
     public bool GetPremiumStatus()
@@ -202,8 +206,8 @@ public class GameManager : MonoBehaviour
         switch (_currentSeasonStage)
         {
             case SeasonStage.RegularSeason:
-                OnNewSeasonStarted?.Invoke();
                 _currentSeason++;
+                OnNewSeasonStarted?.Invoke();
                 break;
             case SeasonStage.Playoffs:
                 Navigation.Instance.GoToScreen(true, CanvasKey.Playoffs);

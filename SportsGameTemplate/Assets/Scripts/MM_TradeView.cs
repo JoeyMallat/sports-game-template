@@ -71,7 +71,13 @@ public class MM_TradeView : MonoBehaviour, ISettable
         }
 
         _tradeOfferCountText.gameObject.SetActive(true);
-        _tradeOfferCountText.text = tradeOffers.Count.ToString("F0");
+        if (tradeOffers.Count > 9)
+        {
+            _tradeOfferCountText.text = "9+";
+        } else
+        {
+            _tradeOfferCountText.text = tradeOffers.Count.ToString("F0");
+        }
 
         _noTradeOffersText.gameObject.SetActive(false);
 
