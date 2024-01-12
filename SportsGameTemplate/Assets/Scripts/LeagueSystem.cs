@@ -33,7 +33,7 @@ public class LeagueSystem : MonoBehaviour
         return _seasonMatches;
     }
 
-    public void ReadTeamsFromFile()
+    public async Task<List<Team>> ReadTeamsFromFile(bool isDummy)
     {
         _teams = new List<Team>();
 
@@ -49,15 +49,26 @@ public class LeagueSystem : MonoBehaviour
             string teamName = teamData[0];
             int.TryParse(teamData[1], out int rating);
 
-            List<Player> players = squadCreator.CreateSquad(id, rating);
-            Team newTeam = new Team(id, teamName, rating, players);
+            Team newTeam = null;
+            if (!isDummy)
+            {
+                List<Player> players = await squadCreator.CreateSquad(id, rating);
+                newTeam = new Team(id, teamName, rating, players);
+            } else
+            {
+                newTeam = new Team(id, teamName);
+            }
             _teams.Add(newTeam);
 
             id++;
         }
 
-        // TODO: Only perform this when starting a new save!
-        DistributeDraftPicks(_teams);
+        if (!isDummy)
+        {
+            DistributeDraftPicks(_teams);
+        }
+
+        return _teams;
     }
 
     public void StartNewSeason()
@@ -238,7 +249,6 @@ public class LeagueSystem : MonoBehaviour
 
         SortStandings();
         GetNextGame(SeasonStage.RegularSeason, GameManager.Instance.GetCurrentWeek());
-        FindAnyObjectByType<LocalSaveManager>().SaveGame(GameManager.Instance.GetSeasonStage(), GameManager.Instance.GetCurrentWeek());
         Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID()));
     }
 
@@ -273,7 +283,6 @@ public class LeagueSystem : MonoBehaviour
         }
 
         SortStandings();
-        FindAnyObjectByType<LocalSaveManager>().SaveGame(GameManager.Instance.GetSeasonStage(), GameManager.Instance.GetCurrentWeek());
 
         //Navigation.Instance.GoToScreen(true, CanvasKey.Standings, GetTeams());
         //OnRegularSeasonFinished?.Invoke(_teams);

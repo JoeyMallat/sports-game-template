@@ -118,6 +118,8 @@ public class Match
 
         OnMatchPlayed?.Invoke(this);
 
+        _possessionResults = new();
+
         /*
         int totalTwoPointers = 0;
         int madeTwoPointers = 0;

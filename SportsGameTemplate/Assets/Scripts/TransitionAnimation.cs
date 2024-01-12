@@ -21,13 +21,13 @@ public class TransitionAnimation : MonoBehaviour
     [SerializeField] float _sidesMoveSpeed;
     [SerializeField] float _logoTurnSpeed;
 
-    int _wideBorderClosed = 600;
+    int _wideBorderClosed = 590;
     int _wideBorderOpen = 1479;
     int _wideLogoPosition = 950;
 
-    int _smallBorderClosed = 600;
+    int _smallBorderClosed = 590;
     int _smallBorderOpen = 1150;
-    int _smallLogoPosition = 900;
+    int _smallLogoPosition = 625;
 
     int _closedPostion;
     int _openedPostion;

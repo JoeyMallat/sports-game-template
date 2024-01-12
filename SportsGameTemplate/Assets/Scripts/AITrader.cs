@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class AITrader
@@ -36,7 +37,7 @@ public class AITrader
         // Return null if no assets were added
         if (myTeamAssets.Count == 0) return null;
 
-        // Add these assets to trade offer (include the first player as there is no other to add him to the trade
+        // Add these assets to trade offer (include the first player as there is no other to add him to the trade)
         foreach (ITradeable tradeable in myTeamAssets)
         {
             tradeOffer.AddTeammate(tradeable);
@@ -54,7 +55,7 @@ public class AITrader
             tradeOffer.AddAsset(asset);
         }
 
-        // Find the first player and add the trade offer to him
+        Debug.Log($"Generated trade offer with {offeredAssets.Count} assets offered");
         myTeamAssets[0].AddTradeOffer(tradeOffer);
 
         return tradeOffer;

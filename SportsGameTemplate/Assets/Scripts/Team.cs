@@ -39,6 +39,14 @@ public class Team
         Player.OnContractExpired += RemovePlayersWithoutContract;
     }
 
+    public Team(int id, string name)
+    {
+        // Dummy team for showing logos on startup
+        _teamID = id;
+        _seed = id;
+        _teamName = name;
+    }
+
     public void ResetEventsFromLoad()
     {
         LeagueSystem.OnRegularSeasonFinished += SetSeed;

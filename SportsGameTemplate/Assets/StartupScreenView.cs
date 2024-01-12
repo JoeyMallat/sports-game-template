@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,9 +14,9 @@ public class StartupScreenView : MonoBehaviour, ISettable
     [SerializeField] List<SaveGameButton> _loadButtons;
     [SerializeField] Button _storeButton;
 
-    private void Start()
+    private async void Start()
     {
-        LeagueSystem.Instance.ReadTeamsFromFile();
+        await LeagueSystem.Instance.ReadTeamsFromFile(true);
         SetDetails("empty");
     }
 

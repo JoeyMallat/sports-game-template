@@ -126,7 +126,6 @@ public class PlayoffSystem : MonoBehaviour
         _playoffRounds[_currentRound].SimMatches();
         SetNextMatch();
         Navigation.Instance.GoToScreen(false, CanvasKey.MatchResult, GetNextMatchData().GetLastPlayedMatch());
-        FindAnyObjectByType<LocalSaveManager>().SaveGame(GameManager.Instance.GetSeasonStage(), GameManager.Instance.GetCurrentWeek());
         yield return null;
     }
 
@@ -135,7 +134,6 @@ public class PlayoffSystem : MonoBehaviour
         _playoffRounds[_currentRound].SimSeries();
         SetNextMatch();
         Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
-        FindAnyObjectByType<LocalSaveManager>().SaveGame(GameManager.Instance.GetSeasonStage(), GameManager.Instance.GetCurrentWeek());
         yield return null;
     }
 
@@ -148,7 +146,6 @@ public class PlayoffSystem : MonoBehaviour
         }
 
         Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
-        FindAnyObjectByType<LocalSaveManager>().SaveGame(GameManager.Instance.GetSeasonStage(), GameManager.Instance.GetCurrentWeek());
     }
 
     private void SetNextMatch()

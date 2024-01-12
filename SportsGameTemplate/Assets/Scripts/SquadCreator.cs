@@ -1,13 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class SquadCreator
 {
     public SquadCreator() { }
 
-    public List<Player> CreateSquad(int teamID = -1, int rating = 0)
+    public async Task<List<Player>> CreateSquad(int teamID = -1, int rating = 0)
     {
         List<Player> players = new List<Player>();
 

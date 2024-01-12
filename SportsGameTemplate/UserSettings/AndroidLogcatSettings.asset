@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "R3CR30N7BNR",
         "name": "com.mallatentertainment.basketballgm",
-        "processId": 16590,
+        "processId": 9375,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -13,18 +13,6 @@
             "name": "com.sec.android.app.launcher",
             "processId": 2616,
             "exited": false
-        },
-        {
-            "deviceId": "R3CR30N7BNR",
-            "name": "android.process.media",
-            "processId": 5880,
-            "exited": false
-        },
-        {
-            "deviceId": "R3CR30N7BNR",
-            "name": "com.mallatentertainment.basketballgm",
-            "processId": 18148,
-            "exited": true
         },
         {
             "deviceId": "R3CR30N7BNR",
@@ -48,6 +36,18 @@
             "deviceId": "R3CR30N7BNR",
             "name": "com.mallatentertainment.basketballgm",
             "processId": 16590,
+            "exited": true
+        },
+        {
+            "deviceId": "R3CR30N7BNR",
+            "name": "com.mallatentertainment.basketballgm",
+            "processId": 7901,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CR30N7BNR",
+            "name": "com.mallatentertainment.basketballgm",
+            "processId": 9375,
             "exited": false
         }
     ],
