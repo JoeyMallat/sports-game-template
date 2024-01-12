@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using TMPro;
 using Unity.VisualScripting;
@@ -21,7 +22,7 @@ public class SaveGameButton : MonoBehaviour
         _overwriteButton.onClick.RemoveAllListeners();
         button.onClick.AddListener(() => localSaveManager.SetFilePath(path));
 
-        if (saveExists)
+        if (saveExists && File.Exists(path + "_preview"))
         {
             localSaveManager.SetFilePath(path);
             Team savedTeam = localSaveManager.LoadTeamDetails(path + "_preview");

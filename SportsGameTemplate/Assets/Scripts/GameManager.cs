@@ -253,6 +253,16 @@ public class GameManager : MonoBehaviour
         {
             InterstitialAdsManager.Instance.ShowAd();
         }
+
+        if (_currentWeek == 10 && LeagueSystem.Instance.GetTeam(_selectedTeamID).GetSeed() < 10)
+        {
+            Notification.Instance.ShowNotification("Reminder: you can get free gems by reviewing the game and watching an ad. Go to the store to get your free gems!", NotificationType.Reminder, 2);
+        }
+
+        if (_currentWeek % 25 == 0)
+        {
+            Notification.Instance.ShowNotification("Reminder: Save your game to not lose any progress when closing the game. Go to the play tab to save your game.", NotificationType.Reminder, 2);
+        }
     }
 
     public SeasonStage GetSeasonStage()
@@ -277,7 +287,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        Application.targetFrameRate = 120;
+        Application.targetFrameRate = 240;
         TeamSelection.OnSelectedTeam += ((x) => _selectedTeamID = x.GetTeamID());
 
         if (Instance == null)

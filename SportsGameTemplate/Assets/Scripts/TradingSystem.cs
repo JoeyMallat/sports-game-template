@@ -51,6 +51,8 @@ public class TradingSystem : MonoBehaviour
 
         Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
         Navigation.Instance.GoToScreen(true, CanvasKey.Team, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
+
+        Notification.Instance.ShowNotification("Trade confirmed!", NotificationType.Success, 2);
     }
 
     private void SetTradeWillingnessToTrue()

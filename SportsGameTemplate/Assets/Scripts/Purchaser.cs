@@ -91,6 +91,8 @@ public class Purchaser : MonoBehaviour
                 Debug.Log("Could not distribute rewards");
                 break;
         }
+
+        Notification.Instance.ShowNotification("Purchase successful!", NotificationType.Success, 2);
     }
 
     public void OnProductPurchase(string productID)

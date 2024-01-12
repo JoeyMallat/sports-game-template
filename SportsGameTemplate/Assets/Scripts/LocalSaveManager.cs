@@ -16,6 +16,8 @@ public class LocalSaveManager : MonoBehaviour
     {
         try
         {
+            Notification.Instance.ShowNotification("Game was succesfully saved!", NotificationType.Success, 2);
+
             LocalSaveData localSaveData = new LocalSaveData();
             localSaveData.Teams = LeagueSystem.Instance.GetTeams();
             localSaveData.Matches = LeagueSystem.Instance.GetMatches();
@@ -37,8 +39,8 @@ public class LocalSaveManager : MonoBehaviour
         } catch
         {
             Debug.LogWarning("Data was not saved!");
+            Notification.Instance.ShowNotification("Game was not saved. Restart the game and try again.", NotificationType.Warning, 2);
         }
-
     }
 
     public async Task LoadGame(string path)
