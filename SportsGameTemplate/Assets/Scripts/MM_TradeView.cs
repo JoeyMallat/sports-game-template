@@ -10,6 +10,7 @@ public class MM_TradeView : MonoBehaviour, ISettable
 {
     [SerializeField] GameObject _tradingBlockRoot;
     [SerializeField] Button _startNewTradeButton;
+    [SerializeField] Button _searchPlayerButton;
     [SerializeField] GameObject _tradeOffersRoot;
 
     [SerializeField] Transform _tradeOfferPrefabParent;
@@ -29,6 +30,9 @@ public class MM_TradeView : MonoBehaviour, ISettable
         SetPlayersOnTradingBlock(_tradingBlockRoot.GetComponentsInChildren<PlayerItem>(true).ToList(), playersOnBlock);
 
         SetTradeOffers(_tradeOffersRoot.GetComponentsInChildren<TradeOfferItem>(true).ToList(), LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()).GetAllTradeOffers());
+
+        _searchPlayerButton.onClick.RemoveAllListeners();
+        _searchPlayerButton.onClick.AddListener(() => { TransitionAnimation.Instance.StartTransition(() => { Navigation.Instance.GoToScreen(true, CanvasKey.PlayerSearch, team); }); });
     }
 
     private void SetPlayersOnTradingBlock(List<PlayerItem> playerItems, List<Player> playersOnBlock)

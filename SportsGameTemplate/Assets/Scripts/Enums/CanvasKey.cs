@@ -23,5 +23,6 @@ public enum CanvasKey
     Match,
     MatchOptions,
     MatchResult,
-    Startup
+    Startup,
+    PlayerSearch
 }

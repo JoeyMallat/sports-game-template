@@ -169,6 +169,11 @@ public static class Extensions
         }
     }
 
+    public static int GetIntFromString(string str)
+    {
+        return int.Parse(str);
+    }
+
     public static string GetMediaExpectation(this int index)
     {
         switch (index)
