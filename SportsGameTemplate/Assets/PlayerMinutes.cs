@@ -1,0 +1,18 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerMinutes : MonoBehaviour
+{
+    [SerializeField] PlayerItem _playerItem;
+    [SerializeField] MinutesBar _minutesBar;
+
+    public void SetPlayerDetails(Player player)
+    {
+        _playerItem.SetPlayerDetails(player);
+
+        _minutesBar.AssignPlayer(player);
+        int minutes = player.GetMinutes();
+        _minutesBar.SetMinutes(minutes);
+    }
+}

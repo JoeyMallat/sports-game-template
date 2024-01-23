@@ -11,6 +11,7 @@ public class MM_TeamView : MonoBehaviour, ISettable
     [SerializeField] GameObject _topAssistsObjectsRoot;
     [SerializeField] GameObject _topPlayersObjectsRoot;
     [SerializeField] Button _teamManagementButton;
+    [SerializeField] Button _teamTacticsButton;
 
     public void SetDetails<T>(T item) where T : class
     {
@@ -26,6 +27,9 @@ public class MM_TeamView : MonoBehaviour, ISettable
 
         _teamManagementButton.onClick.RemoveAllListeners();
         _teamManagementButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Team, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID())));
+
+        _teamTacticsButton.onClick.RemoveAllListeners();
+        _teamTacticsButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.TeamTactics, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID())));
     }
 
     private void SetTopScorers(List<StatObject> topObjects, List<Player> topPlayers)

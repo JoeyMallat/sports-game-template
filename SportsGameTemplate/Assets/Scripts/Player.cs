@@ -21,6 +21,7 @@ public class Player : ITradeable
     [ReadOnly][SerializeField] int _rating;
     [ReadOnly][SerializeField] int _startSeasonRating;
     [ReadOnly][SerializeField] int _tradeValue;
+    [SerializeField] int _averageMinutes;
     [SerializeField] bool _onTradingBlock;
     [SerializeField] List<PlayerSkill> _skills;
     [SerializeField] List<PlayerSeason> _seasonStats;
@@ -115,6 +116,15 @@ public class Player : ITradeable
         }
     }
 
+    public int GetMinutes()
+    {
+        return _averageMinutes;
+    }
+
+    public void SetMinutes(int minutes)
+    {
+        _averageMinutes = minutes;
+    }
     private void OnMatchPlayed(Match match)
     {
         if (match.GetHomeTeamID() == _teamID || match.GetAwayTeamID() == _teamID)
