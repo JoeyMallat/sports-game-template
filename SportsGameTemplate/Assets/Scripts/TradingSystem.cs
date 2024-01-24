@@ -22,6 +22,7 @@ public class TradingSystem : MonoBehaviour
     [SerializeField] string _overSalaryCapString;
     [SerializeField] string _willAcceptString;
     [SerializeField] TextMeshProUGUI _willAcceptText;
+    [SerializeField] Image _tradeWillingnessBar;
     [SerializeField] Button _confirmTradeButton;
 
     public static event Action<int, int, List<ITradeable>, bool> OnAssetsUpdated;
@@ -269,12 +270,14 @@ public class TradingSystem : MonoBehaviour
         {
             Debug.Log("Will accept!");
             UpdateAcceptButtonAndText(true, _willAcceptString);
+            _tradeWillingnessBar.fillAmount = 1;
             return;
         }
 
         if (!CheckTradeEligibility(_teamBID, _teamATradingAssets, _teamBTradingAssets))
         {
             Debug.Log("Salary cap issues");
+            _tradeWillingnessBar.fillAmount = GetTotalTradeValue(_teamATradingAssets) / (float)GetTotalTradeValue(_teamBTradingAssets);
             UpdateAcceptButtonAndText(false, _overSalaryCapString);
             return;
         }
@@ -282,11 +285,13 @@ public class TradingSystem : MonoBehaviour
         if (GetTotalTradeValue(_teamATradingAssets) < GetTotalTradeValue(_teamBTradingAssets))
         {
             Debug.Log("Trade value issues");
+            _tradeWillingnessBar.fillAmount = GetTotalTradeValue(_teamATradingAssets) / (float)GetTotalTradeValue(_teamBTradingAssets);
             UpdateAcceptButtonAndText(false, _tradeValueTooLowString);
             return;
         }
         else
         {
+            _tradeWillingnessBar.fillAmount = 1;
             Debug.Log("Will accept!");
             UpdateAcceptButtonAndText(true, _willAcceptString);
             return;
