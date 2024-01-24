@@ -268,7 +268,15 @@ public class Team
 
     public void GenerateLineup()
     {
-        _startingLineup = new StartingLineup(_players);
+        if (_teamID == GameManager.Instance.GetTeamID())
+        {
+            _startingLineup = new StartingLineup(_players, true);
+        }
+        else
+        {
+            _startingLineup = new StartingLineup(_players);
+        }
+
         OnLineupChanged?.Invoke(this);
     }
 

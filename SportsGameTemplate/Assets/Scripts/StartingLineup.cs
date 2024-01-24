@@ -31,6 +31,15 @@ public class StartingLineup
         _startingPowerForward = GetBestPlayerFromPosition(players, "Power Forward").GetTradeableID();
     }
 
+    public StartingLineup(List<Player> players, bool myTeam)
+    {
+        _startingPointGuard = ChoosePlayerWithMinutes(players, "Point Guard").GetTradeableID();
+        _startingShootingGuard = ChoosePlayerWithMinutes(players, "Shooting Guard").GetTradeableID();
+        _startingCenter = ChoosePlayerWithMinutes(players, "Center").GetTradeableID();
+        _startingSmallForward = ChoosePlayerWithMinutes(players, "Small Forward").GetTradeableID();
+        _startingPowerForward = ChoosePlayerWithMinutes(players, "Power Forward").GetTradeableID();
+    }
+
     public List<string> GetStartingLineup()
     {
         return new List<string>() { _startingPowerForward, _startingSmallForward, _startingShootingGuard, _startingPointGuard, _startingCenter };
@@ -49,6 +58,29 @@ public class StartingLineup
         {
             return players.OrderByDescending(x => x.CalculateRatingForPosition()).ToList().Last();
         }
+    }
+
+    private Player ChoosePlayerWithMinutes(List<Player> players, string position)
+    {
+        List<Player> playersFromPosition = players.Where(x => x.GetPosition() == position).ToList();
+
+        int totalMinutes = 0;
+        playersFromPosition.ForEach(x => totalMinutes += x.GetMinutes());
+
+        int random = UnityEngine.Random.Range(0, totalMinutes);
+
+        foreach (Player player in playersFromPosition)
+        {
+            if (random < player.GetMinutes())
+            {
+                return player;
+            } else
+            {
+                random -= player.GetMinutes();
+            }
+        }
+
+        return playersFromPosition[0];
     }
 
     public void SetPosition(string playerID, string position)

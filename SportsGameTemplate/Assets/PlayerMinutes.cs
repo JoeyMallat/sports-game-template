@@ -10,9 +10,7 @@ public class PlayerMinutes : MonoBehaviour
     public void SetPlayerDetails(Player player)
     {
         _playerItem.SetPlayerDetails(player);
-
         _minutesBar.AssignPlayer(player);
-        int minutes = player.GetMinutes();
-        _minutesBar.SetMinutes(minutes);
+        _minutesBar.SetMinutes(player.GetMinutes());
     }
 }

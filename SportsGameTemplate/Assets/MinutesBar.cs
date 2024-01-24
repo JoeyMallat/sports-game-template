@@ -13,21 +13,23 @@ public class MinutesBar : MonoBehaviour
     int _minuteCap;
     Player _player;
 
-    public static event Action OnMinutesChanged;
+    public static event Action<string> OnMinutesChanged;
 
     private void OnEnable()
     {
-        TeamTacticsView.OnMinutesRemainingUpdated += SetMinuteCap;
+        TeamTacticsView.OnMinutesForPositionRemainingUpdated += SetMinuteCap;
     }
 
     private void OnDisable()
     {
-        TeamTacticsView.OnMinutesRemainingUpdated -= SetMinuteCap;
+        TeamTacticsView.OnMinutesForPositionRemainingUpdated -= SetMinuteCap;
     }
 
-    private void SetMinuteCap(int value)
+    private void SetMinuteCap(int value, string position)
     {
         if (_player == null) return;
+
+        if (_player.GetPosition() != position) return;
 
         value = Mathf.Clamp(Mathf.Max(_player.GetMinutes() + value), 0, 48);
 
@@ -41,7 +43,7 @@ public class MinutesBar : MonoBehaviour
 
     public void SetMinutes(int minutes)
     {
-        _slider.value = minutes;
+        _slider.SetValueWithoutNotify(minutes);
         OnSliderValueChanged(minutes);
     }
 
@@ -51,7 +53,9 @@ public class MinutesBar : MonoBehaviour
         {
             _minuteText.text = value.ToString("F0");
             _player.SetMinutes((int)value);
-        } else
+            _slider.value = value;
+        }
+        else
         {
             _minuteText.text = _minuteCap.ToString("F0");
             _player.SetMinutes(_minuteCap);
@@ -59,6 +63,6 @@ public class MinutesBar : MonoBehaviour
             OnSliderValueChanged(_minuteCap);
         }
 
-        OnMinutesChanged?.Invoke();
+        OnMinutesChanged?.Invoke(_player.GetPosition());
     }
 }
