@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class TeamAssets : MonoBehaviour
 {
@@ -45,7 +43,8 @@ public class TeamAssets : MonoBehaviour
             if (i < tradeAssetsAmount)
             {
                 _teamAssets[i].SetAssetDetails(tradeAssets[i]);
-            } else
+            }
+            else
             {
                 _teamAssets[i].SetAssetDetails();
             }

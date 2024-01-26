@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -21,7 +20,8 @@ public class StandingsViewer : MonoBehaviour, ISettable
             {
                 teamItems[i].gameObject.SetActive(true);
                 teamItems[i].SetTeamDetails(i + 1, teamList[i], mostWins);
-            } else
+            }
+            else
             {
                 teamItems[i].gameObject.SetActive(false);
             }

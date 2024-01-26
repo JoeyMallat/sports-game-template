@@ -1,9 +1,8 @@
-using Sirenix.Serialization;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Sirenix.Serialization;
 using UnityEngine;
 
 public class LocalSaveManager : MonoBehaviour
@@ -28,6 +27,8 @@ public class LocalSaveManager : MonoBehaviour
             localSaveData.PlayoffRound = PlayoffSystem.Instance.GetPlayoffRound();
             localSaveData.PlayoffMatchups = PlayoffSystem.Instance.GetAllPlayoffsMatchups();
             localSaveData.ChecklistChecks = FindFirstObjectByType<ChecklistView>(FindObjectsInactive.Include).GetChecklist();
+            localSaveData.TacticValues = FindFirstObjectByType<TacticsSettings>().GetValues();
+            localSaveData.Staff = StaffSystem.Instance.GetAllStaff();
 
             byte[] bytes = SerializationUtility.SerializeValue(localSaveData, DataFormat.JSON);
             File.WriteAllBytes(_filePath, bytes);
@@ -36,7 +37,8 @@ public class LocalSaveManager : MonoBehaviour
             string teamID = localSaveData.TeamID.ToString();
             File.WriteAllText(_filePath + "_preview", teamID);
             Debug.Log($"Save preview saved to {_filePath + "_preview"}");
-        } catch
+        }
+        catch
         {
             Debug.LogWarning("Data was not saved!");
             Notification.Instance.ShowNotification("Game was not saved. Restart the game and try again.", NotificationType.Warning, 2);
@@ -54,6 +56,8 @@ public class LocalSaveManager : MonoBehaviour
             PlayoffSystem.Instance.SetLoadData(data.PlayoffRound, data.PlayoffMatchups);
             LeagueSystem.Instance.GetNextGame(data.SeasonStage, data.CurrentWeek);
             FindFirstObjectByType<ChecklistView>().SetChecklist(data.ChecklistChecks);
+            FindFirstObjectByType<TacticsSettings>().SetDropdownValuesAfterLoading(data.TacticValues);
+            if (data.Staff != null) StaffSystem.Instance.SetStaffFromLoad(data.Staff.Coach, data.Staff.Scout, data.Staff.Mascot, data.Staff.Negotiator);
 
             OnGameLoaded?.Invoke(GameManager.Instance.GetSeasonStage(), GameManager.Instance.GetCurrentWeek());
         }
@@ -90,4 +94,6 @@ public class LocalSaveData
     public int PlayoffRound;
     public List<PlayoffMatchup> PlayoffMatchups;
     public List<bool> ChecklistChecks;
+    public List<int> TacticValues;
+    public AllStaff Staff;
 }

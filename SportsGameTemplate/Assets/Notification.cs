@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,7 +19,8 @@ public class Notification : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-        } else
+        }
+        else
         {
             Destroy(this);
         }
@@ -44,7 +44,7 @@ public class Notification : MonoBehaviour
                 _notificationColor.color = _warningColor;
                 break;
             case NotificationType.Reminder:
-                _notificationColor.color= _reminderColor;
+                _notificationColor.color = _reminderColor;
                 break;
             default:
                 break;
@@ -65,8 +65,8 @@ public class Notification : MonoBehaviour
             _notificationColor.color = value;
             _notificationText.color = new Color(1, 1, 1, value.a);
         },
-        new Color(_notificationColor.color.r, _notificationColor.color.g, _notificationColor.color.b, 1f), 
-        new Color(_notificationColor.color.r, _notificationColor.color.g, _notificationColor.color.b, 0),  
+        new Color(_notificationColor.color.r, _notificationColor.color.g, _notificationColor.color.b, 1f),
+        new Color(_notificationColor.color.r, _notificationColor.color.g, _notificationColor.color.b, 0),
             0.2f);
     }
 }

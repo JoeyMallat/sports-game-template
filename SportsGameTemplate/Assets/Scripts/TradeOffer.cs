@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +8,7 @@ public class TradeOffer
     [SerializeField] List<TradeAssetWrapper> _includedTeammates;
     [SerializeField] List<TradeAssetWrapper> _tradeAssetsOffered;
 
-    public TradeOffer (int teamID)
+    public TradeOffer(int teamID)
     {
         _teamID = teamID;
         _tradeAssetsOffered = new List<TradeAssetWrapper>();

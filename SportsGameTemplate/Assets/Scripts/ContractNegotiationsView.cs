@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
 using System;
-using Unity.Services.RemoteConfig;
 using Firebase.Analytics;
+using TMPro;
+using Unity.Services.RemoteConfig;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class ContractNegotiationsView : MonoBehaviour, ISettable
 {
@@ -53,11 +51,13 @@ public class ContractNegotiationsView : MonoBehaviour, ISettable
                 _signContractButton.ToggleButtonStatus(true);
                 _playerAcceptingStatus.text = _playerWillAcceptText.Replace("{{PLAYERNAME}}", player.GetFullName());
                 SetButton();
-            } else
+            }
+            else
             {
                 _playerAcceptingStatus.text = _willNotAcceptLengthText.Replace("{{PLAYERNAME}}", player.GetFullName());
             }
-        } else
+        }
+        else
         {
             if (length)
             {
@@ -112,7 +112,8 @@ public class ContractNegotiationsView : MonoBehaviour, ISettable
         if (change != 0)
         {
             _salaryChangeIndication.text = $"{total.ConvertToMonetaryString()} -> {(total + change).ConvertToMonetaryString()}<color=\"white\"> / {(ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease())).ConvertToMonetaryString()}";
-        } else
+        }
+        else
         {
             _salaryChangeIndication.text = $"{total.ConvertToMonetaryString()}<color=\"white\"> / {(ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease())).ConvertToMonetaryString()}";
         }

@@ -1,11 +1,7 @@
-using Firebase.Analytics;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using Firebase.Analytics;
 using UnityEngine;
 using UnityEngine.Purchasing;
-using UnityEngine.Purchasing.Extension;
 
 public class Purchaser : MonoBehaviour
 {
@@ -45,7 +41,7 @@ public class Purchaser : MonoBehaviour
                 FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventPurchase, new Parameter("value", 0.99f));
 
                 break;
-            case  "com.basketballgm.gems100":
+            case "com.basketballgm.gems100":
                 // 100 gems + 10 gems free
                 GameManager.Instance.AddToGems(110);
                 FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventPurchase, new Parameter("value", 2.99f));
@@ -105,31 +101,37 @@ public class Purchaser : MonoBehaviour
         Dictionary<string, string> dict = new Dictionary<string, string>() { { "com.basketballgm.allstar", "2.99USD" } };
         foreach (Product item in _iapManager.GetController().products.all)
         {
-           // this is the usage of SubscriptionManager class
-           if (item.receipt != null) {
-               if (item.definition.type == ProductType.Subscription) {
-                   string intro_json = (dict == null || !dict.ContainsKey(item.definition.storeSpecificId)) ? null :  dict[item.definition.storeSpecificId];
-                   SubscriptionManager p = new SubscriptionManager(item, intro_json);
-                   SubscriptionInfo info = p.getSubscriptionInfo();
-                   Debug.Log(info.getProductId());
-                   Debug.Log(info.getPurchaseDate());
-                   Debug.Log(info.getExpireDate());
-                   Debug.Log(info.isSubscribed());
-                   Debug.Log(info.isExpired());
-                   Debug.Log(info.isCancelled());
-                   Debug.Log(info.isFreeTrial());
-                   Debug.Log(info.isAutoRenewing());
-                   Debug.Log(info.getRemainingTime());
-                   Debug.Log(info.isIntroductoryPricePeriod());
-                   Debug.Log(info.getIntroductoryPrice());
-                   Debug.Log(info.getIntroductoryPricePeriod());
-                   Debug.Log(info.getIntroductoryPricePeriodCycles());
+            // this is the usage of SubscriptionManager class
+            if (item.receipt != null)
+            {
+                if (item.definition.type == ProductType.Subscription)
+                {
+                    string intro_json = (dict == null || !dict.ContainsKey(item.definition.storeSpecificId)) ? null : dict[item.definition.storeSpecificId];
+                    SubscriptionManager p = new SubscriptionManager(item, intro_json);
+                    SubscriptionInfo info = p.getSubscriptionInfo();
+                    Debug.Log(info.getProductId());
+                    Debug.Log(info.getPurchaseDate());
+                    Debug.Log(info.getExpireDate());
+                    Debug.Log(info.isSubscribed());
+                    Debug.Log(info.isExpired());
+                    Debug.Log(info.isCancelled());
+                    Debug.Log(info.isFreeTrial());
+                    Debug.Log(info.isAutoRenewing());
+                    Debug.Log(info.getRemainingTime());
+                    Debug.Log(info.isIntroductoryPricePeriod());
+                    Debug.Log(info.getIntroductoryPrice());
+                    Debug.Log(info.getIntroductoryPricePeriod());
+                    Debug.Log(info.getIntroductoryPricePeriodCycles());
                     //GameManager.Instance.SetPremiumStatus(info.isSubscribed() == Result.True);
-               } else {
-                   //Debug.Log("the product is not a subscription product");
-               }
-           } else {
-               //Debug.Log($"{item.definition.id} should have a valid receipt");
+                }
+                else
+                {
+                    //Debug.Log("the product is not a subscription product");
+                }
+            }
+            else
+            {
+                //Debug.Log($"{item.definition.id} should have a valid receipt");
             }
         }
     }

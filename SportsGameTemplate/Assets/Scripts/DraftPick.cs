@@ -1,7 +1,6 @@
-using Sirenix.OdinInspector;
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 [System.Serializable]
@@ -45,15 +44,15 @@ public class DraftPick : ITradeable
 
     private int GetFirstPickValue()
     {
-        // 30 is the minimum value for the draft picks
+        // 450 is the minimum value for the draft picks
         // TODO: Base the value of off the upcoming draft class
 
-        return 30 + ConfigManager.Instance.GetCurrentConfig().PlayersPerDraftRound * ConfigManager.Instance.GetCurrentConfig().DraftRounds * 30;
+        return 450 + ConfigManager.Instance.GetCurrentConfig().PlayersPerDraftRound * ConfigManager.Instance.GetCurrentConfig().DraftRounds * 450;
     }
 
     public int CalculateTradeValue()
     {
-        _tradeValue = GetFirstPickValue() - (GetTotalPickNumber() * 40);
+        _tradeValue = GetFirstPickValue() - (GetTotalPickNumber() * 450);
         return Mathf.RoundToInt(Mathf.Clamp(_tradeValue, 0, Mathf.Infinity));
     }
 

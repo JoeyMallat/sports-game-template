@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System;
 
 public class ItemSlot : MonoBehaviour
 {
@@ -34,7 +32,8 @@ public class ItemSlot : MonoBehaviour
             _itemName.text = itemDetails.GetItemName();
             _itemDetails.text = itemDetails.GetSkillBoostsString();
             _gamesRemaining.text = item.GetGamesRemainingString();
-        } else
+        }
+        else
         {
             _usedSlotOverlay.SetActive(false);
             _unusedSlotOverlay.SetActive(true);

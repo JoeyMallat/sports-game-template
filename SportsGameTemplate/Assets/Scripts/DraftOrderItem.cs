@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
 
 public class DraftOrderItem : MonoBehaviour
 {
@@ -14,7 +11,7 @@ public class DraftOrderItem : MonoBehaviour
         _pickNumberText.text = $"#{_pickNumberText}";
         _teamNameText.text = team.GetTeamName();
     }
-    
+
     public void SetDraftOrderItem(DraftOrderItemWrapper draftOrderItem)
     {
         gameObject.SetActive(true);
@@ -25,7 +22,8 @@ public class DraftOrderItem : MonoBehaviour
         {
             _pickNumberText.characterSpacing = -10;
             _pickNumberText.fontSize = 220;
-        } else
+        }
+        else
         {
             _pickNumberText.characterSpacing = 0;
             _pickNumberText.fontSize = 280;

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -50,7 +49,7 @@ public class DraftSystem : MonoBehaviour
     {
         foreach (var draftPick in LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()).GetDraftPicks())
         {
-            if (_currentPick+1 == draftPick.GetTotalPickNumber())
+            if (_currentPick + 1 == draftPick.GetTotalPickNumber())
                 return true;
         }
         return false;

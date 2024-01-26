@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class InventoryGameItem : MonoBehaviour
@@ -27,7 +25,8 @@ public class InventoryGameItem : MonoBehaviour
         {
             _amountInInventoryObject.SetActive(true);
             _amountInInventory.text = $"{item.GetAmountInInventory()}x";
-        } else
+        }
+        else
         {
             _amountInInventoryObject.SetActive(false);
         }

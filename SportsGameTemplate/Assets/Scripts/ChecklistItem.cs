@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
 using System;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class ChecklistItem : MonoBehaviour
 {
@@ -36,7 +35,8 @@ public class ChecklistItem : MonoBehaviour
             if (completed)
             {
                 _buttons[i].ToggleButtonStatus(false);
-            } else
+            }
+            else
             {
                 _buttons[i].ToggleButtonStatus(true);
             }

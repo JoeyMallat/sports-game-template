@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,6 +9,7 @@ public class MM_TeamView : MonoBehaviour, ISettable
     [SerializeField] GameObject _topAssistsObjectsRoot;
     [SerializeField] GameObject _topPlayersObjectsRoot;
     [SerializeField] Button _teamManagementButton;
+    [SerializeField] Button _rotationButton;
     [SerializeField] Button _teamTacticsButton;
 
     public void SetDetails<T>(T item) where T : class
@@ -28,8 +27,11 @@ public class MM_TeamView : MonoBehaviour, ISettable
         _teamManagementButton.onClick.RemoveAllListeners();
         _teamManagementButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Team, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID())));
 
+        _rotationButton.onClick.RemoveAllListeners();
+        _rotationButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Rotation, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()))); ;
+
         _teamTacticsButton.onClick.RemoveAllListeners();
-        _teamTacticsButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.TeamTactics, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID())));
+        _teamTacticsButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Tactics, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID())));
     }
 
     private void SetTopScorers(List<StatObject> topObjects, List<Player> topPlayers)
@@ -46,7 +48,7 @@ public class MM_TeamView : MonoBehaviour, ISettable
         for (int i = 0; i < topObjects.Count; i++)
         {
             int index = i;
-            topObjects[i].SetDetails(new StatObjectWrapper(topPlayers[index].GetFullName(), new List<float> { topPlayers[index].GetLatestSeason().GetAverageOfStat("assists" )}, topPlayers[index]));
+            topObjects[i].SetDetails(new StatObjectWrapper(topPlayers[index].GetFullName(), new List<float> { topPlayers[index].GetLatestSeason().GetAverageOfStat("assists") }, topPlayers[index]));
         }
     }
 

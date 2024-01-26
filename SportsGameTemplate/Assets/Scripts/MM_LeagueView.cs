@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System.Linq;
 
 public class MM_LeagueView : MonoBehaviour, ISettable
 {
@@ -61,7 +59,7 @@ public class MM_LeagueView : MonoBehaviour, ISettable
         for (int i = 0; i < topObjects.Count; i++)
         {
             int index = i;
-            topObjects[i].SetDetails(new StatObjectWrapper($"{topPlayers[i].GetFullName()} - <color=#FF9900>{LeagueSystem.Instance.GetTeam(topPlayers[index].GetTeamID()).GetTeamName()}", new List<float> { topPlayers[index].GetLatestSeason().GetAverageOfStat("assists")}, topPlayers[index]));
+            topObjects[i].SetDetails(new StatObjectWrapper($"{topPlayers[i].GetFullName()} - <color=#FF9900>{LeagueSystem.Instance.GetTeam(topPlayers[index].GetTeamID()).GetTeamName()}", new List<float> { topPlayers[index].GetLatestSeason().GetAverageOfStat("assists") }, topPlayers[index]));
         }
     }
 

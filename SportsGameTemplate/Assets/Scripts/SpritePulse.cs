@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SpritePulse : MonoBehaviour
@@ -24,7 +22,8 @@ public class SpritePulse : MonoBehaviour
             {
                 _spriteRenderer.color = new Color(color.r, color.g, color.b, x);
             });
-        } else
+        }
+        else
         {
             LeanTween.cancel(gameObject);
             _spriteRenderer.color = new Color(color.r, color.g, color.b, 0);

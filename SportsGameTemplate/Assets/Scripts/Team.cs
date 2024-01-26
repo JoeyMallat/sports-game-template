@@ -1,9 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using Sirenix.OdinInspector;
+using UnityEngine;
 
 [System.Serializable]
 public class Team
@@ -12,7 +11,7 @@ public class Team
     [SerializeField] string _teamName;
     [SerializeField] int _teamRating;
     [InfoBox("@GetTotalSalaryAmount().ToString(\"C0\")")][SerializeField] List<Player> _players;
-    [SerializeField]List<DraftPick> _draftPicks;
+    [SerializeField] List<DraftPick> _draftPicks;
     [SerializeField][HideInInspector] List<int> _matchdays;
     [SerializeField][HideInInspector] List<int> _availableMatchdays;
     [SerializeField][HideInInspector] int _seed;
@@ -300,7 +299,8 @@ public class Team
             if (id == String.Empty)
             {
                 playerList.Add(null);
-            } else
+            }
+            else
             {
                 playerList.Add(_players.Where(x => x.GetTradeableID() == id).ToList()[0]);
             }

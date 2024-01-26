@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public enum CanvasKey
 {
     Team,
@@ -25,5 +21,7 @@ public enum CanvasKey
     MatchResult,
     Startup,
     PlayerSearch,
-    TeamTactics
+    Rotation,
+    Tactics,
+    Staff
 }

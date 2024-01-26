@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using Sirenix.OdinInspector;
-using System;
 using System.Linq;
+using Unity.VisualScripting;
+using UnityEngine;
 
 public class BasketballMatchSimulator : MatchSimulator
 {
@@ -103,7 +101,8 @@ public class BasketballMatchSimulator : MatchSimulator
         {
             AssignActionToPlayer(matchID, ResultAction.Rebound, teamTwoRebounder);
             return teamTwo;
-        } else
+        }
+        else
         {
             AssignActionToPlayer(matchID, ResultAction.Rebound, teamOneRebounder);
             return teamOne;
@@ -133,7 +132,8 @@ public class BasketballMatchSimulator : MatchSimulator
                 playerWithBall = turnover.Item2;
                 resultOfPossession = resultAction;
                 inPossession = false;
-            } else
+            }
+            else
             {
                 DecideResult(playerWithBall, move, out bool possessionKept, out ResultAction resultAction);
                 AssignActionToPlayer(matchID, resultAction, playerWithBall);
@@ -142,7 +142,7 @@ public class BasketballMatchSimulator : MatchSimulator
             }
 
             if (secondsSpent >= maxSeconds) inPossession = false;
-        } 
+        }
 
         PossessionResult result = new PossessionResult(playerWithBall, resultOfPossession);
 
@@ -190,6 +190,7 @@ public class BasketballMatchSimulator : MatchSimulator
     {
         possessionKept = true;
         resultAction = ResultAction.TwoPointerMissed;
+        float gameBoost = playerWithBall.GetTeamID() == GameManager.Instance.GetTeamID() ? StaffSystem.Instance.GetGameBoost() : 1f;
 
         //Debug.Log($"Player from {LeagueSystem.Instance.GetTeam(playerWithBall.GetTeamID()).GetTeamName()} has attempted a {move}");
         switch (move)
@@ -203,7 +204,7 @@ public class BasketballMatchSimulator : MatchSimulator
                     break;
                 }
 
-                (possessionKept, resultAction) = GetResult(_passSuccessRate, 2, passingSkill1 + passingSkill2, true, ResultAction.Pass, ResultAction.Steal);
+                (possessionKept, resultAction) = GetResult(_passSuccessRate, 2,  gameBoost * (passingSkill1 + passingSkill2), true, ResultAction.Pass, ResultAction.Steal);
 
                 break;
             case Move.TwoPointer:
@@ -213,9 +214,12 @@ public class BasketballMatchSimulator : MatchSimulator
                 {
                     (possessionKept, resultAction) = GetResult(_twoPointSuccessRate, 2, 99 + 99, false, ResultAction.TwoPointerMade, ResultAction.TwoPointerMissed);
                     break;
+                } else if (playerWithBall.GetTeamID() == GameManager.Instance.GetTeamID())
+                {
+                    (possessionKept, resultAction) = GetResult(_twoPointSuccessRate, 2, gameBoost * (twoPointerSkill1 * StaffSystem.Instance.GetShootingBoost() + twoPointerSkill2 * StaffSystem.Instance.GetShootingBoost()), false, ResultAction.TwoPointerMade, ResultAction.TwoPointerMissed);
                 }
 
-                (possessionKept, resultAction) = GetResult(_twoPointSuccessRate, 2, twoPointerSkill1 + twoPointerSkill2, false, ResultAction.TwoPointerMade, ResultAction.TwoPointerMissed);
+                (possessionKept, resultAction) = GetResult(_twoPointSuccessRate, 2, gameBoost * (twoPointerSkill1 + twoPointerSkill2), false, ResultAction.TwoPointerMade, ResultAction.TwoPointerMissed);
 
                 break;
             case Move.ThreePointer:
@@ -225,9 +229,12 @@ public class BasketballMatchSimulator : MatchSimulator
                 {
                     (possessionKept, resultAction) = GetResult(_threePointSuccessRate, 2, 99 + 99, false, ResultAction.ThreePointerMade, ResultAction.ThreePointerMissed);
                     break;
+                } else if (playerWithBall.GetTeamID() == GameManager.Instance.GetTeamID())
+                {
+                    (possessionKept, resultAction) = GetResult(_threePointSuccessRate, 2, gameBoost * (threePointerSkill1 * StaffSystem.Instance.GetShootingBoost() + threePointerSkill2 * StaffSystem.Instance.GetShootingBoost()), false, ResultAction.ThreePointerMade, ResultAction.ThreePointerMissed);
                 }
 
-                (possessionKept, resultAction) = GetResult(_threePointSuccessRate, 2, threePointerSkill1 + threePointerSkill2, false, ResultAction.ThreePointerMade, ResultAction.ThreePointerMissed);
+                (possessionKept, resultAction) = GetResult(_threePointSuccessRate, 2, gameBoost * (threePointerSkill1 + threePointerSkill2), false, ResultAction.ThreePointerMade, ResultAction.ThreePointerMissed);
 
                 break;
             case Move.Dunk:
@@ -238,7 +245,7 @@ public class BasketballMatchSimulator : MatchSimulator
                     break;
                 }
 
-                (possessionKept, resultAction) = GetResult(_dunkSuccessRate, 1, dunkSkill1, false, ResultAction.TwoPointerMade, ResultAction.TwoPointerMissed);
+                (possessionKept, resultAction) = GetResult(_dunkSuccessRate, 1, gameBoost * dunkSkill1, false, ResultAction.TwoPointerMade, ResultAction.TwoPointerMissed);
 
                 break;
             case Move.Layup:
@@ -250,7 +257,7 @@ public class BasketballMatchSimulator : MatchSimulator
                     break;
                 }
 
-                (possessionKept, resultAction) = GetResult(_layupSuccessRate, 2, layupSkill1 + layupSkill2, false, ResultAction.TwoPointerMade, ResultAction.TwoPointerMissed);
+                (possessionKept, resultAction) = GetResult(_layupSuccessRate, 2, gameBoost * (layupSkill1 + layupSkill2), false, ResultAction.TwoPointerMade, ResultAction.TwoPointerMissed);
 
                 break;
             case Move.Dribble:
@@ -261,9 +268,10 @@ public class BasketballMatchSimulator : MatchSimulator
                 {
                     (possessionKept, resultAction) = GetResult(_dribbleSuccessRate, 3, 99 + 99 + 99, true, ResultAction.Dribble, ResultAction.Steal);
                     break;
-                } else
+                }
+                else
                 {
-                    (possessionKept, resultAction) = GetResult(_dribbleSuccessRate, 3, dribbleSkill1 + dribbleSkill2 + dribbleSkill3, true, ResultAction.Dribble, ResultAction.Steal);
+                    (possessionKept, resultAction) = GetResult(_dribbleSuccessRate, 3, gameBoost * (dribbleSkill1 + dribbleSkill2 + dribbleSkill3), true, ResultAction.Dribble, ResultAction.Steal);
                 }
                 break;
             default:
@@ -304,7 +312,8 @@ public class BasketballMatchSimulator : MatchSimulator
             if (random < move.GetOddsOfMove(second))
             {
                 return move.GetMove();
-            } else
+            }
+            else
             {
                 random -= move.GetOddsOfMove(second);
             }
@@ -318,9 +327,9 @@ public class BasketballMatchSimulator : MatchSimulator
         switch (resultAction)
         {
             case ResultAction.Pass:
-                int[] passOutcome = new int[4] { 0, 0, 0, 1};
+                int[] passOutcome = new int[4] { 0, 0, 0, 1 };
                 int random = UnityEngine.Random.Range(0, 4);
-                player.GetLatestSeason().UpdateMatch(matchID, new List<(string, int)>() { ("assists", passOutcome[random] ) });
+                player.GetLatestSeason().UpdateMatch(matchID, new List<(string, int)>() { ("assists", passOutcome[random]) });
                 break;
             case ResultAction.Rebound:
                 player.GetLatestSeason().UpdateMatch(matchID, new List<(string, int)>() { ("rebounds", 1) });

@@ -1,7 +1,6 @@
-using Firebase.Analytics;
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using Firebase.Analytics;
 using TMPro;
 using Unity.Services.RemoteConfig;
 using UnityEngine;
@@ -95,7 +94,8 @@ public class DraftPlayerUI : MonoBehaviour, ISettable
                     skillBars[i].gameObject.SetActive(false);
                 }
             }
-        } else
+        }
+        else
         {
             int overall = player.CalculateRatingForPosition();
             skillBars[0].SetSkillBar("Overall", overall);

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +10,8 @@ public class PlayoffGameItem : MonoBehaviour
         if (team == null)
         {
             _logoImage.enabled = false;
-        } else
+        }
+        else
         {
             _logoImage.enabled = true;
             _logoImage.sprite = team.GetTeamLogo();

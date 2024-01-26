@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -39,13 +35,14 @@ public class StartupScreenView : MonoBehaviour, ISettable
 
     private List<(bool, string)> GetSaveFilePaths()
     {
-        List<(bool, string)> files = new List<(bool, string)> ();
+        List<(bool, string)> files = new List<(bool, string)>();
         for (int i = 0; i < _loadButtons.Count; i++)
         {
             if (File.Exists(Application.persistentDataPath + _saveFilePath + $"_{i}"))
             {
                 files.Add((true, Application.persistentDataPath + _saveFilePath + $"_{i}"));
-            } else
+            }
+            else
             {
                 files.Add((false, Application.persistentDataPath + _saveFilePath + $"_{i}"));
             }

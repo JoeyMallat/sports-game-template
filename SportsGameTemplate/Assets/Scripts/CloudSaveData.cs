@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 [System.Serializable]
 public class CloudSaveData
@@ -31,7 +29,7 @@ public class CloudInventoryItem
     public int GamesRemaining;
     public int AmountInInventory;
 
-    public CloudInventoryItem (OwnedGameItem item)
+    public CloudInventoryItem(OwnedGameItem item)
     {
         ConvertToCloudInventoryItem(item);
     }

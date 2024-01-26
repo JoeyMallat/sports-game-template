@@ -1,12 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
-using System;
 using System.Linq;
-using Unity.Services.RemoteConfig;
 using Firebase.Analytics;
+using TMPro;
+using Unity.Services.RemoteConfig;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class ItemInventoryViewer : MonoBehaviour, ISettable
 {
@@ -39,7 +37,8 @@ public class ItemInventoryViewer : MonoBehaviour, ISettable
             Player player = item as Player;
             ShowItems(player);
 
-        } else
+        }
+        else
         {
             _filterActive = false;
             Team team = item as Team;
@@ -134,7 +133,8 @@ public class ItemInventoryViewer : MonoBehaviour, ISettable
                     inventoryGameItems[i].gameObject.SetActive(false);
                 }
             }
-        } else
+        }
+        else
         {
             _noItemsObject.SetActive(true);
             _itemsObject.SetActive(false);

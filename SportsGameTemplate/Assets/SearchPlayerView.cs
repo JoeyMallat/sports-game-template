@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using UnityEditor.Search;
 using UnityEngine;
 
 public class SearchPlayerView : MonoBehaviour, ISettable
@@ -75,14 +72,14 @@ public class SearchPlayerView : MonoBehaviour, ISettable
     {
         return players.Where(x => x.GetPosition() == _position.options[_position.value].text).ToList();
     }
-    
+
 
     private List<Player> FilterOverall(List<Player> players)
     {
         return players.Where(x => x.CalculateRatingForPosition() >= int.Parse(_overallMinimum.options[_overallMinimum.value].text)
                     && x.CalculateRatingForPosition() <= int.Parse(_overallMaximum.options[_overallMaximum.value].text)).ToList();
     }
-    
+
 
     private List<Player> FilterAge(List<Player> players)
     {
@@ -113,10 +110,12 @@ public class SearchPlayerView : MonoBehaviour, ISettable
         if (players.Count <= 20 && players.Count > 0)
         {
             playersShown = players;
-        } else if (players.Count > 20)
+        }
+        else if (players.Count > 20)
         {
             playersShown = players.Take(20).ToList();
-        } else
+        }
+        else
         {
             ToggleNoPlayersFound(true);
             foreach (StatObject statObject in _statObjects)

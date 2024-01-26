@@ -1,8 +1,3 @@
-using UnityEngine;
-using UnityEngine.UI;
-using System.Collections.Generic;
-using System;
-
 /* Author: Josh H.
  * Procedural UI Image
  * assetstore.joshh@gmail.com for feedback or questions
@@ -187,7 +182,7 @@ namespace UnityEngine.UI.ProceduralImage
             //Allocates mem
             //float scaleFactor = Mathf.Min(r.width / (vec.x + vec.y), r.width / (vec.z + vec.w), r.height / (vec.x + vec.w), r.height / (vec.z + vec.y), 1);
             //Allocation free:
-            float scaleFactor = Mathf.Min (Mathf.Min (Mathf.Min (Mathf.Min (r.width / (vec.x + vec.y), r.width / (vec.z + vec.w)), r.height / (vec.x + vec.w)), r.height / (vec.z + vec.y)), 1f);
+            float scaleFactor = Mathf.Min(Mathf.Min(Mathf.Min(Mathf.Min(r.width / (vec.x + vec.y), r.width / (vec.z + vec.w)), r.height / (vec.x + vec.w)), r.height / (vec.z + vec.y)), 1f);
             return vec * scaleFactor;
         }
 

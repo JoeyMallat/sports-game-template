@@ -1,10 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System.Linq;
-using System;
 
 public class PrematchView : MonoBehaviour, ISettable
 {
@@ -77,7 +75,8 @@ public class PrematchView : MonoBehaviour, ISettable
         if (PlayoffSystem.Instance.IsTeamInPlayoffs() && GameManager.Instance.GetSeasonStage() == SeasonStage.Playoffs)
         {
             SetTeamDetails(PlayoffSystem.Instance.GetNextMatchData().GetNextMatch());
-        } else
+        }
+        else
         {
             SetTeamDetails(LeagueSystem.Instance.GetNextMatchData());
         }

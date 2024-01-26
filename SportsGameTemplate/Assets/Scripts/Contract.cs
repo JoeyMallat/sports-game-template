@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -9,13 +6,13 @@ public class Contract
     [SerializeField] int _yearsOnContract;
     [SerializeField] int _yearlySalary;
 
-    public Contract (int rating, int age)
+    public Contract(int rating, int age)
     {
         _yearsOnContract = UnityEngine.Random.Range(1, 6);
         _yearlySalary = rating * age * UnityEngine.Random.Range(3000, 5000);
     }
 
-    public Contract (int pick)
+    public Contract(int pick)
     {
         if (pick >= 30) pick = 30;
 

@@ -1,8 +1,6 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Sirenix.OdinInspector;
-using System;
 
 [System.Serializable]
 public class Match
@@ -21,7 +19,7 @@ public class Match
 
     public static event Action<Match> OnMatchPlayed;
 
-    public Match (int id, int week, int homeID, int awayID)
+    public Match(int id, int week, int homeID, int awayID)
     {
         _matchID = id;
         _week = week;
@@ -60,7 +58,8 @@ public class Match
         if (GetHomeTeamID() == teamID || GetAwayTeamID() == teamID)
         {
             return true;
-        } else
+        }
+        else
         {
             return false;
         }
@@ -81,7 +80,8 @@ public class Match
                 if (IsHomeTeam(team.GetTeamID()))
                 {
                     _homeTeamPoints += 2;
-                } else
+                }
+                else
                 {
                     _awayTeamPoints += 2;
                 }
@@ -194,7 +194,7 @@ public class Match
             if (_homeTeamPoints >= _awayTeamPoints)
             {
                 return (0, 1);
-            } 
+            }
             else
             {
                 return (1, 0);

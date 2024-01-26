@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
 public class MM_PlayView : MonoBehaviour, ISettable
 {
@@ -54,7 +50,8 @@ public class MM_PlayView : MonoBehaviour, ISettable
                 {
                     _waitingForNextRoundGameObject.gameObject.SetActive(true);
                     _skipButtons.SetActive(true);
-                } else if (PlayoffSystem.Instance.IsTeamInPlayoffs())
+                }
+                else if (PlayoffSystem.Instance.IsTeamInPlayoffs())
                 {
                     _playoffsGameObject.gameObject.SetActive(true);
                     _playoffsGameObject.SetDetails(team);

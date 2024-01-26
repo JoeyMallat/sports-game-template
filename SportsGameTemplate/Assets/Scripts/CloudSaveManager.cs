@@ -1,13 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
-using Sirenix.Serialization;
 using Unity.Services.Authentication;
 using Unity.Services.CloudSave;
-using Unity.Services.CloudSave.Models;
-using Unity.Services.Core;
 using UnityEngine;
 
 public class CloudSaveManager : MonoBehaviour
@@ -32,7 +27,8 @@ public class CloudSaveManager : MonoBehaviour
             Debug.Log(freeSpinTime);
             TimeObject timeObject = new TimeObject(freeSpinTime);
             return timeObject;
-        } catch
+        }
+        catch
         {
             Debug.LogWarning("Free Spin Timer not yet retrieved. Trying again.");
             return null;

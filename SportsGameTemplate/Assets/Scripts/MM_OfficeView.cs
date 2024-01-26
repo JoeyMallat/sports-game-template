@@ -1,8 +1,6 @@
-using Firebase.Analytics;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using Firebase.Analytics;
 using TMPro;
 using Unity.Services.Authentication;
 using Unity.Services.RemoteConfig;
@@ -77,12 +75,14 @@ public class MM_OfficeView : MonoBehaviour, ISettable
                 {
                     _inventoryPreviewItems[index].gameObject.SetActive(true);
                     _inventoryPreviewItems[index].SetItemDetails(ItemDatabase.Instance.GetGameItemByID(GameManager.Instance.GetItems()[index].GetItemID()).GetItemImage());
-                } else
+                }
+                else
                 {
                     _inventoryPreviewItems[index].gameObject.SetActive(false);
                 }
             }
-        } else
+        }
+        else
         {
             _noItemsText.gameObject.SetActive(true);
         }

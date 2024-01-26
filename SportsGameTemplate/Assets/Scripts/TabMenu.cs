@@ -30,7 +30,8 @@ public class TabMenu : MonoBehaviour
             {
                 _tabMenuItems[i].ChangeColor(_selectedColor);
                 StartCoroutine(MoveToTarget(_tabMenuItems[i].GetTarget(), 0.2f));
-            } else
+            }
+            else
             {
                 _tabMenuItems[i].ChangeColor(_deselectedColor);
             }

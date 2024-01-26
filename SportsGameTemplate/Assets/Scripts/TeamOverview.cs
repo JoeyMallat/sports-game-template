@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -37,7 +36,8 @@ public class TeamOverview : MonoBehaviour, ISettable
         {
             FindFirstObjectByType<TeamSelection>().SelectTeam(index);
             Navigation.Instance.CloseCanvas(GetComponent<Canvas>());
-        } else
+        }
+        else
         {
             Navigation.Instance.GoToScreen(true, CanvasKey.Team, LeagueSystem.Instance.GetTeam(index));
         }

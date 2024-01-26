@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Graphs : MonoBehaviour
@@ -13,7 +11,8 @@ public class Graphs : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-        } else
+        }
+        else
         {
             Destroy(this);
         }

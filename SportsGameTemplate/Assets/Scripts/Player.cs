@@ -1,11 +1,8 @@
-using Sirenix.OdinInspector;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 
 [System.Serializable]
 public class Player : ITradeable
@@ -76,7 +73,7 @@ public class Player : ITradeable
         _lastName = lastname;
         _position = position.GetPositionName();
         _age = UnityEngine.Random.Range(20, 22);
-        _percentageScouted = 0.2f;
+        _percentageScouted = 0f;
 
         SetRandomSkills(averageRating, position.GetPositionStats());
         _startSeasonRating = _rating;
@@ -145,14 +142,15 @@ public class Player : ITradeable
 
         if (0.5f < UnityEngine.Random.Range(0f, 1f))
         {
-            float chanceOfRatingUpgrade = Mathf.Lerp(0f, 0.5f, ((40 - _age) / 40f) * (5 - (int)_potential) / 5);
+            float chanceOfRatingUpgrade = Mathf.Lerp(0f, 0.5f, ((40 - _age) / 40f) * (5 - (int)_potential) / 5) * StaffSystem.Instance.GetUpgradeChanceBoost();
 
             if (chanceOfRatingUpgrade > random)
             {
                 _skills[UnityEngine.Random.Range(0, _skills.Count)].EditRating(1);
                 CalculateRatingForPosition();
             }
-        } else
+        }
+        else
         {
             float chanceOfRatingDowngrade = Mathf.Lerp(0f, 0.5f, _age / 40f);
 
@@ -373,15 +371,18 @@ public class Player : ITradeable
 
     public float GetScoutingPercentage()
     {
+        _percentageScouted = StaffSystem.Instance.GetScoutingPercentage() - 1;
+
         return _percentageScouted;
     }
 
     public int CalculateTradeValue()
     {
-        _tradeValue = Mathf.RoundToInt((200 * CalculateRatingForPosition()) * Mathf.Lerp(0.85f, 1.15f, 40 / _age));
+        float ratingModifier = Mathf.Pow(CalculateRatingForPosition(), 3);
+        float ageModifier = Mathf.Lerp(0.85f, 1.15f, 40 / _age);
         float contractLengthMultiplier = ConfigManager.Instance.GetCurrentConfig().ContractLengthImpactOnTradeValue.Evaluate(_age / 40);
 
-        _tradeValue = Mathf.RoundToInt(_tradeValue * (0.25f * contractLengthMultiplier) / (1 + (0.1f * (float)_potential + 1)));
+        _tradeValue = Mathf.RoundToInt(ratingModifier * ageModifier * (0.25f * contractLengthMultiplier) / (1 + (0.1f * (float)_potential + 1)));
         return _tradeValue;
     }
 
@@ -425,7 +426,8 @@ public class Player : ITradeable
         {
             float random = UnityEngine.Random.Range(1f - importantSway, 1f + importantSway);
             skillRating = Mathf.RoundToInt(Mathf.Clamp(Mathf.Lerp(0, 99, (rating * random) / 99), 0, 99));
-        } else
+        }
+        else
         {
             float random = UnityEngine.Random.Range(1f - nonImportantSway, 1f);
             skillRating = Mathf.RoundToInt(Mathf.Clamp(Mathf.Lerp(0, 99, (rating * random) / 99), 0, 99));

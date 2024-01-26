@@ -1,14 +1,13 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class StatObject : MonoBehaviour, ISettable
 {
     [SerializeField] TextMeshProUGUI _statTitle;
     [SerializeField] List<TextMeshProUGUI> _statText;
-    [SerializeField] Button _playerLinkButton; 
+    [SerializeField] Button _playerLinkButton;
 
     public void SetDetails<T>(T item) where T : class
     {
@@ -21,14 +20,15 @@ public class StatObject : MonoBehaviour, ISettable
 
         for (int i = 0; i < _statText.Count; i++)
         {
-            if (i < stats.Count) 
+            if (i < stats.Count)
             {
                 _statText[_statText.Count - i - 1].gameObject.SetActive(true);
 
                 if (Mathf.Approximately(stats[i], Mathf.RoundToInt(stats[i])))
                 {
                     _statText[_statText.Count - i - 1].text = stats[i].ToString("F0");
-                } else
+                }
+                else
                 {
                     _statText[_statText.Count - i - 1].text = stats[i].ToString("F1");
                 }
@@ -40,7 +40,8 @@ public class StatObject : MonoBehaviour, ISettable
                     _playerLinkButton.interactable = true;
                     _playerLinkButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Player, wrapper.GetPlayerLink()));
                 }
-            } else
+            }
+            else
             {
                 _statText[_statText.Count - i - 1].gameObject.SetActive(false);
             }

@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ContractNegotiationsSystem : MonoBehaviour
@@ -55,7 +53,7 @@ public class ContractNegotiationsSystem : MonoBehaviour
         float ageImpactOnLength = _contractLengthCurve.Evaluate(_currentPlayer.GetAge() / 40f);
         float ageImpactOnSalary = _contractAmountCurve.Evaluate(_currentPlayer.GetAge() / 40f);
 
-        float lowestAcceptingAmount = Mathf.Clamp(_currentPlayer.GetContract().GetYearlySalary() * (float)Mathf.Lerp(0f, 3f, ageImpactOnSalary), ConfigManager.Instance.GetCurrentConfig().MinimumSalary, Mathf.Infinity);
+        float lowestAcceptingAmount = Mathf.Clamp(_currentPlayer.GetContract().GetYearlySalary() * (float)Mathf.Lerp(0f, 3f, ageImpactOnSalary) * StaffSystem.Instance.GetLowerSalaryPercentage(), ConfigManager.Instance.GetCurrentConfig().MinimumSalary, Mathf.Infinity);
         float shortestAcceptedContract = Mathf.Clamp(Mathf.Lerp(1f, 5f, ageImpactOnLength), 1, 5);
 
         OnPlayerDecisionMade?.Invoke(_currentPlayer, _offeredAmount >= lowestAcceptingAmount, _offeredLength >= shortestAcceptedContract);
@@ -69,7 +67,8 @@ public class ContractNegotiationsSystem : MonoBehaviour
             int changeInPlayerSalary = (int)offeredAmount - _currentPlayer.GetContract().GetYearlySalary();
 
             OnNewSalaryAmountCalculated?.Invoke(currentSalaryAmount, changeInPlayerSalary);
-        } else
+        }
+        else
         {
             int currentSalaryAmount = LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()).GetTotalSalaryAmount();
             int changeInPlayerSalary = (int)offeredAmount;

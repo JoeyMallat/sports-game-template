@@ -1,11 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+using Firebase.Analytics;
 using TMPro;
 using Unity.Services.RemoteConfig;
-using Firebase.Analytics;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class StoreView : MonoBehaviour, ISettable
 {
@@ -31,7 +29,8 @@ public class StoreView : MonoBehaviour, ISettable
         if (PlayerPrefs.GetInt("reviewed") == 1)
         {
             _reviewForGemsButton.ToggleStoreButtonStatus(false);
-        } else
+        }
+        else
         {
             _reviewForGemsButton.ToggleStoreButtonStatus(true);
             _reviewForGemsButton.onClick.RemoveAllListeners();
@@ -41,7 +40,8 @@ public class StoreView : MonoBehaviour, ISettable
             if (Application.platform == RuntimePlatform.Android)
             {
                 _reviewForGemsButton.onClick.AddListener(() => Application.OpenURL(RemoteConfigService.Instance.appConfig.GetString("review_link_android", "market://details?id=" + Application.productName)));
-            } else
+            }
+            else
             {
                 _reviewForGemsButton.onClick.AddListener(() => Application.OpenURL(RemoteConfigService.Instance.appConfig.GetString("review_link_ios", "market://details?id=" + Application.productName)));
             }
@@ -94,7 +94,8 @@ public class StoreView : MonoBehaviour, ISettable
         if (endDate < now)
         {
             _promoObject.SetActive(false);
-        } else
+        }
+        else
         {
             _promoTimerText.text = $"special offers   <color=\"white\">Expires in {(endDate - now).Days} days and {(endDate - now).Hours} hours";
             _promoObject.SetActive(true);

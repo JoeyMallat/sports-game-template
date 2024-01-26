@@ -1,11 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System;
-using Unity.VisualScripting;
-using System.Linq;
 
 public class TeamBoxScores : MonoBehaviour, ISettable
 {
@@ -67,7 +64,7 @@ public class TeamBoxScores : MonoBehaviour, ISettable
             statObjects.Add(statObject);
         }
 
-        for (int i = 0;i < statObjects.Count;i++)
+        for (int i = 0; i < statObjects.Count; i++)
         {
             if (i < playersWhoPlayed.Count)
             {
@@ -75,7 +72,8 @@ public class TeamBoxScores : MonoBehaviour, ISettable
                 PlayerMatchStats stats = playersWhoPlayed[index].GetLatestSeason().GetMatchStats().Last();
                 statObjects[i].gameObject.SetActive(true);
                 statObjects[i].SetDetails(new StatObjectWrapper($"{playersWhoPlayed[index].GetFullName()} <color=#FF9900>{playersWhoPlayed[index].GetPosition()}", new List<float>() { stats.GetTotal("minutes"), stats.GetPoints(), stats.GetTotal("assists"), stats.GetTotal("rebounds") }, playersWhoPlayed[index]));
-            } else
+            }
+            else
             {
                 statObjects[i].gameObject.SetActive(false);
             }

@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Sirenix.OdinInspector;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Firebase.Analytics;
+using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
@@ -70,7 +68,7 @@ public class GameManager : MonoBehaviour
     public void AddToGems(int gemsToEdit)
     {
         _gems += gemsToEdit;
-        OnGemsUpdated.Invoke(new CloudSaveData(_salaryCapIncrease,_premiumStatus, _gems, _ownedGameItems));
+        OnGemsUpdated.Invoke(new CloudSaveData(_salaryCapIncrease, _premiumStatus, _gems, _ownedGameItems));
     }
 
     public bool CheckBuyItem(int cost)
@@ -79,7 +77,8 @@ public class GameManager : MonoBehaviour
         {
             AddToGems(-cost);
             return true;
-        } else
+        }
+        else
         {
             return false;
         }
@@ -128,12 +127,13 @@ public class GameManager : MonoBehaviour
         if (item.GetAmountInInventory() > 1)
         {
             _ownedGameItems.Where(x => x.GetItemID() == item.GetItemID()).ToList()[0].UpdateAmount(-1);
-        } else
+        }
+        else
         {
             _ownedGameItems.Remove(item);
         }
 
-        OnInventoryUpdated?.Invoke(new CloudSaveData(_salaryCapIncrease,_premiumStatus, _gems, _ownedGameItems));
+        OnInventoryUpdated?.Invoke(new CloudSaveData(_salaryCapIncrease, _premiumStatus, _gems, _ownedGameItems));
     }
 
     public void SetInventory(List<CloudInventoryItem> ownedGameItems)
@@ -235,7 +235,8 @@ public class GameManager : MonoBehaviour
         if (amount == 0)
         {
             _ownedGameItems.Add(new OwnedGameItem(reward.GetItemID(), reward.GetGamesRemaining(), amount + 1));
-        } else
+        }
+        else
         {
             _ownedGameItems.Where(x => x.GetItemID() == reward.GetItemID()).ToList()[0].UpdateAmount(1);
         }
@@ -293,7 +294,8 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-        } else
+        }
+        else
         {
             Destroy(this);
         }

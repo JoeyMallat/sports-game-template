@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -47,7 +45,8 @@ public class BasketballScheduleGenerator : ScheduleGenerator
                     opponent.AddMatchdayAsTaken(week);
 
                     teamsToPlay = UpdatePossibleOpponents(teamsToPlay, opponent);
-                } else
+                }
+                else
                 {
                     continue;
                 }
@@ -80,7 +79,8 @@ public class BasketballScheduleGenerator : ScheduleGenerator
             if (toCheck.GetMatchdayCount() < ConfigManager.Instance.GetCurrentConfig().GamesPerTeamInRegularSeason)
             {
                 return teamsToPlay;
-            } else
+            }
+            else
             {
                 teamsToPlay.Remove(toCheck);
             }
@@ -119,7 +119,8 @@ public class BasketballScheduleGenerator : ScheduleGenerator
         if (UnityEngine.Random.Range(0f, 1f) > .5f)
         {
             return true;
-        } else
+        }
+        else
         {
             return false;
         }

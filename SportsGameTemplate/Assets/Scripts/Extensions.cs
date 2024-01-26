@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -15,7 +13,8 @@ public static class Extensions
         if (playersToRemove.Any())
         {
             players.Remove(playersToRemove[0]);
-        } else
+        }
+        else
         {
             Debug.LogWarning($"No player found with id {playersToRemove[0].GetTradeableID()}");
         }
@@ -58,7 +57,7 @@ public static class Extensions
         if (number < 1000000)
             character = "K";
 
-        float floatNumber = (float)Mathf.RoundToInt((float)number / 100000f) / 10f; 
+        float floatNumber = (float)Mathf.RoundToInt((float)number / 100000f) / 10f;
         return $"{floatNumber.ToString("F1")}{character}";
     }
 
@@ -122,7 +121,8 @@ public static class Extensions
         {
             button.GetComponent<Image>().color = ColorManager.Instance.EnabledButtonColor;
             button.GetComponentsInChildren<TextMeshProUGUI>().ToList().ForEach(x => x.color = ColorManager.Instance.EnabledButtonTextColor);
-        } else
+        }
+        else
         {
             button.GetComponent<Image>().color = ColorManager.Instance.DisabledButtonColor;
             button.GetComponentsInChildren<TextMeshProUGUI>().ToList().ForEach(x => x.color = ColorManager.Instance.DisabledButtonTextColor);
@@ -137,7 +137,8 @@ public static class Extensions
         {
             button.GetComponent<Image>().color = ColorManager.Instance.EnabledStoreButtonColor;
             button.GetComponentsInChildren<TextMeshProUGUI>().ToList().ForEach(x => x.color = ColorManager.Instance.EnabledStoreButtonTextColor);
-        } else
+        }
+        else
         {
             button.GetComponent<Image>().color = ColorManager.Instance.DisabledStoreButtonColor;
             button.GetComponentsInChildren<TextMeshProUGUI>().ToList().ForEach(x => x.color = ColorManager.Instance.DisabledStoreButtonTextColor);

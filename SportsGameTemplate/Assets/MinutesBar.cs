@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,7 +31,7 @@ public class MinutesBar : MonoBehaviour
 
         value = Mathf.Clamp(Mathf.Max(_player.GetMinutes() + value), 0, 48);
 
-        _minuteCap =  value;
+        _minuteCap = value;
     }
 
     public void AssignPlayer(Player player)

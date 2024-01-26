@@ -1,10 +1,9 @@
-using Firebase.Analytics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Firebase.Analytics;
 using UnityEngine;
 
 public class LeagueSystem : MonoBehaviour
@@ -54,7 +53,8 @@ public class LeagueSystem : MonoBehaviour
             {
                 List<Player> players = await squadCreator.CreateSquad(id, rating);
                 newTeam = new Team(id, teamName, rating, players);
-            } else
+            }
+            else
             {
                 newTeam = new Team(id, teamName);
             }
@@ -113,7 +113,8 @@ public class LeagueSystem : MonoBehaviour
             if (match.GetHomeTeamID() == teamID)
             {
                 matchesForTeam.Add(match);
-            } else if (match.GetAwayTeamID() == teamID)
+            }
+            else if (match.GetAwayTeamID() == teamID)
             {
                 matchesForTeam.Add(match);
             }
@@ -186,7 +187,7 @@ public class LeagueSystem : MonoBehaviour
         players = players.OrderByDescending(x => x.GetLatestSeason().GetAverageOfStat(stat)).Take(amount).ToList();
         return players;
     }
-    
+
 
     public List<Player> GetTopListOfStat(List<string> stats, int amount)
     {
@@ -266,7 +267,8 @@ public class LeagueSystem : MonoBehaviour
             if (forceWin)
             {
                 matchSimulator.SimulateMatch(match, GameManager.Instance.GetTeamID());
-            } else
+            }
+            else
             {
                 matchSimulator.SimulateMatch(match, -1);
             }
@@ -301,11 +303,13 @@ public class LeagueSystem : MonoBehaviour
             if (stat.Item1 > 0)
             {
                 FirebaseAnalytics.LogEvent("game_win", new Parameter("points_scored", match.GetScore().Item1), new Parameter("points_conceded", match.GetScore().Item2));
-            } else if (stat.Item2 > 0)
+            }
+            else if (stat.Item2 > 0)
             {
                 FirebaseAnalytics.LogEvent("game_loss", new Parameter("points_scored", match.GetScore().Item1), new Parameter("points_conceded", match.GetScore().Item2));
             }
-        } else
+        }
+        else
         {
             (int, int) stat = match.GetWinStatForTeam(teamID);
 
@@ -339,11 +343,13 @@ public class LeagueSystem : MonoBehaviour
                     if (MyTeamInMatches(matches))
                     {
                         StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { GetNextGame(seasonStage, week); GetTeam(GameManager.Instance.GetTeamID()); Navigation.Instance.GoToScreen(false, CanvasKey.MatchResult, matches.First(x => x.IsMyTeamMatch(GameManager.Instance.GetTeamID()))); }, SimulateMatchesWithProgress(matches)));
-                    } else
+                    }
+                    else
                     {
                         StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { GetNextGame(seasonStage, week); Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID())); }, SimulateToNextMatchWithProgress()));
                     }
-                } else
+                }
+                else
                 {
                     OnRegularSeasonFinished?.Invoke(_teams, SeasonStage.Playoffs);
                 }
@@ -352,7 +358,8 @@ public class LeagueSystem : MonoBehaviour
                 if (PlayoffSystem.Instance.IsTeamInPlayoffs() && PlayoffSystem.Instance.MyTeamSeriesOver())
                 {
                     StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { }, PlayoffSystem.Instance.SimulateRestOfPlayoffRound()));
-                } else if (PlayoffSystem.Instance.IsTeamInPlayoffs())
+                }
+                else if (PlayoffSystem.Instance.IsTeamInPlayoffs())
                 {
                     StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { }, PlayoffSystem.Instance.SimulateGameweekInPlayoffRound()));
                 }

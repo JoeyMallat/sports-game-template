@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
-using UnityEditor;
 using UnityEngine;
 
 public class AITrader
@@ -18,7 +16,8 @@ public class AITrader
             {
                 assets.Add(asset);
                 valueOfAssetsPicked += asset.CalculateTradeValue();
-            } else
+            }
+            else
             {
                 return assets;
             }
@@ -46,7 +45,7 @@ public class AITrader
         // Generate an offer for the selected myTeamAssets
         int totalValueOfMyAssets = 0;
         myTeamAssets.ForEach(x => totalValueOfMyAssets += x.CalculateTradeValue());
-        List<ITradeable> offeredAssets = GenerateOffer(Mathf.RoundToInt(totalValueOfMyAssets * UnityEngine.Random.Range(0.5f, 1.5f)), assetsToUse);
+        List<ITradeable> offeredAssets = GenerateOffer(Mathf.RoundToInt(totalValueOfMyAssets * UnityEngine.Random.Range(0.5f, 1.1f)), assetsToUse);
 
         if (offeredAssets.Count == 0) return null;
 

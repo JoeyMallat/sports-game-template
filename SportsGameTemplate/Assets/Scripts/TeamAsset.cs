@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System;
 
 public class TeamAsset : MonoBehaviour
 {
@@ -49,7 +47,8 @@ public class TeamAsset : MonoBehaviour
         if (asset.GetType() == typeof(Player))
         {
             SetPlayerAssetDetails(asset as Player);
-        } else if (asset.GetType() == typeof(DraftPick))
+        }
+        else if (asset.GetType() == typeof(DraftPick))
         {
             SetPickAssetDetails(asset as DraftPick);
         }

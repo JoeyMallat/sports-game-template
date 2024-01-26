@@ -1,8 +1,7 @@
-using Sirenix.OdinInspector;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -51,7 +50,7 @@ public class Navigation : SerializedMonoBehaviour
         canvas.enabled = true;
 
         ISettable settable = canvas.gameObject.GetComponent<ISettable>();
-        
+
         if (settable != null)
         {
             settable.SetDetails(player);
@@ -70,7 +69,7 @@ public class Navigation : SerializedMonoBehaviour
         canvas.enabled = true;
 
         ISettable settable = canvas.gameObject.GetComponent<ISettable>();
-        
+
         if (settable != null)
         {
             settable.SetDetails(match);
@@ -89,7 +88,7 @@ public class Navigation : SerializedMonoBehaviour
         canvas.enabled = true;
 
         ISettable settable = canvas.gameObject.GetComponent<ISettable>();
-        
+
         if (settable != null)
         {
             settable.SetDetails(team);
@@ -183,7 +182,8 @@ public class Navigation : SerializedMonoBehaviour
         {
             GoToScreen(true, CanvasKey.Store);
             return;
-        } else
+        }
+        else
         {
             // Subtract the gems off your current balance
             GameManager.Instance.AddToGems(-coinsNeeded);
@@ -204,7 +204,7 @@ public class Navigation : SerializedMonoBehaviour
         canvas.enabled = false;
         canvas.sortingOrder = 0;
 
-        if (_openedCanvasses.Contains(canvas)) 
+        if (_openedCanvasses.Contains(canvas))
         {
             _openedCanvasses.Remove(canvas);
         }
@@ -246,7 +246,8 @@ public class Navigation : SerializedMonoBehaviour
             _backButton.onClick.AddListener(() => CloseCanvas(_openedCanvasses.Last()));
             _backButton.onClick.AddListener(() => SetBackButton());
 
-        } else 
+        }
+        else
         {
             _backButton.gameObject.SetActive(false);
         }

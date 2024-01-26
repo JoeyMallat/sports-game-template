@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
 using System.Linq;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class ChecklistView : MonoBehaviour
 {
@@ -68,7 +66,7 @@ public class ChecklistView : MonoBehaviour
 
         // Check payroll
         int currentPayroll = team.GetTotalSalaryAmount();
-        _checklistItems[2].SetChecklistItem(currentPayroll <= ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease()), "Payroll under salary cap", $"Currently {currentPayroll.ConvertToMonetaryString()} / { (ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease())).ConvertToMonetaryString()}", new List<string>(), new List<System.Action>());
+        _checklistItems[2].SetChecklistItem(currentPayroll <= ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease()), "Payroll under salary cap", $"Currently {currentPayroll.ConvertToMonetaryString()} / {(ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease())).ConvertToMonetaryString()}", new List<string>(), new List<System.Action>());
         _checklistChecks[2] = currentPayroll <= ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease());
 
         // Check watch ad or remove ads
@@ -86,7 +84,8 @@ public class ChecklistView : MonoBehaviour
             if (check == true)
             {
                 continue;
-            } else
+            }
+            else
             {
                 _nextSeasonButton.ToggleButtonStatus(false);
                 return;

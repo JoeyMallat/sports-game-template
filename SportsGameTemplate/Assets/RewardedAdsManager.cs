@@ -1,7 +1,6 @@
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Advertisements;
 using System;
+using UnityEngine;
+using UnityEngine.Advertisements;
 
 public class RewardedAdsManager : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener
 {
@@ -19,7 +18,8 @@ public class RewardedAdsManager : MonoBehaviour, IUnityAdsLoadListener, IUnityAd
         if (Instance == null)
         {
             Instance = this;
-        } else
+        }
+        else
         {
             Destroy(this);
         }

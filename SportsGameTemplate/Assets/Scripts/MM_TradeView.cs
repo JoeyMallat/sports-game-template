@@ -1,10 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
 using System.Linq;
-using System;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class MM_TradeView : MonoBehaviour, ISettable
 {
@@ -40,7 +38,8 @@ public class MM_TradeView : MonoBehaviour, ISettable
         if (playersOnBlock.Count <= 0)
         {
             _noPlayersTradingBlockText.gameObject.SetActive(true);
-        } else
+        }
+        else
         {
             _noPlayersTradingBlockText.gameObject.SetActive(false);
         }
@@ -53,7 +52,8 @@ public class MM_TradeView : MonoBehaviour, ISettable
                 index = i;
                 playerItems[i].gameObject.SetActive(true);
                 playerItems[i].SetPlayerDetails(playersOnBlock[index], false, false);
-            } else
+            }
+            else
             {
                 playerItems[i].gameObject.SetActive(false);
             }
@@ -78,7 +78,8 @@ public class MM_TradeView : MonoBehaviour, ISettable
         if (tradeOffers.Count > 9)
         {
             _tradeOfferCountText.text = "9+";
-        } else
+        }
+        else
         {
             _tradeOfferCountText.text = tradeOffers.Count.ToString("F0");
         }
@@ -108,11 +109,13 @@ public class MM_TradeView : MonoBehaviour, ISettable
                 {
                     tradeOfferItems[i].gameObject.SetActive(true);
                     tradeOfferItems[i].SetTradeOffer(tradeOffers[index]);
-                } else
+                }
+                else
                 {
                     tradeOfferItems[i].gameObject.SetActive(false);
                 }
-            } else
+            }
+            else
             {
                 tradeOfferItems[i].gameObject.SetActive(false);
             }

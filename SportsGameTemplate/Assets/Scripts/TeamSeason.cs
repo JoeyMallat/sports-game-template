@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -19,7 +17,8 @@ public class TeamSeason
         if (points >= pointsAgainst)
         {
             _wins++;
-        } else
+        }
+        else
         {
             _losses++;
         }

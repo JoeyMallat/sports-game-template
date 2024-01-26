@@ -1,10 +1,9 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System.Linq;
-using System;
 
 public class TradeOfferItem : MonoBehaviour
 {
@@ -23,11 +22,13 @@ public class TradeOfferItem : MonoBehaviour
             if (assets[0].GetType() == typeof(Player))
             {
                 _tradeOfferText.text = $"{offeringTeam.GetTeamName()} trade offer for {(assets[0] as Player).GetFullName()} + more";
-            } else
+            }
+            else
             {
                 _tradeOfferText.text = $"{offeringTeam.GetTeamName()} trade offer for pick #{(assets[0] as DraftPick).GetTotalPickNumber()} + more";
             }
-        } else
+        }
+        else
         {
             List<ITradeable> assets = LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()).GetTradeAssets().Where(x => x.GetTradeableID() == tradeOffer.Item2).ToList();
             if (assets[0].GetType() == typeof(Player))

@@ -1,10 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System.Linq;
-using System;
 
 public class PlayerUI : MonoBehaviour, ISettable
 {
@@ -78,7 +76,8 @@ public class PlayerUI : MonoBehaviour, ISettable
         {
             _itemsScreen.SetActive(true);
             _itemsTabTitle.SetActive(true);
-        } else
+        }
+        else
         {
             _itemsScreen.SetActive(false);
             _itemsTabTitle.SetActive(false);
@@ -110,7 +109,8 @@ public class PlayerUI : MonoBehaviour, ISettable
             if (gameItem.Count == 0)
             {
                 _itemSlots[i].SetSlot(player, null);
-            } else
+            }
+            else
             {
                 _itemSlots[i].SetSlot(player, gameItem[0]);
             }
@@ -120,7 +120,7 @@ public class PlayerUI : MonoBehaviour, ISettable
     private void SetButtons(Player player)
     {
         int teamID = GameManager.Instance.GetTeamID();
-        
+
         if (player.GetTeamID() == teamID)
         {
             _addToTradingBlock.gameObject.SetActive(true);
@@ -134,7 +134,8 @@ public class PlayerUI : MonoBehaviour, ISettable
             _addToTradeButton.gameObject.SetActive(false);
             _extendContractButton.gameObject.SetActive(true);
             _extendContractButton.GetComponentInChildren<TextMeshProUGUI>().text = "Offer contract";
-        } else
+        }
+        else
         {
             _addToTradingBlock.gameObject.SetActive(false);
             _addToTradeButton.gameObject.SetActive(true);
@@ -201,7 +202,8 @@ public class PlayerUI : MonoBehaviour, ISettable
                     playerMatchStats[index].GetTotal("assists"),
                     playerMatchStats[index].GetTotal("rebounds") }
                     ));
-            } else
+            }
+            else
             {
                 statObjects[i].gameObject.SetActive(false);
             }
@@ -218,7 +220,8 @@ public class PlayerUI : MonoBehaviour, ISettable
         if (match != null)
         {
             return $"{LeagueSystem.Instance.GetTeam(match.GetAwayTeamID()).GetTeamName()} @ {LeagueSystem.Instance.GetTeam(match.GetHomeTeamID()).GetTeamName()}";
-        } else
+        }
+        else
         {
             foreach (var matchup in PlayoffSystem.Instance.GetAllPlayoffsMatchups())
             {
@@ -261,7 +264,8 @@ public class PlayerUI : MonoBehaviour, ISettable
                     skillBars[i].SetSkillBar(playerSkills[index]);
                 else
                     skillBars[i].SetSkillBar(playerSkills[index].GetSkill().ToString(), playerSkills[index].GetRatingForSkill(), boost);
-            } else
+            }
+            else
             {
                 skillBars[i].gameObject.SetActive(false);
             }

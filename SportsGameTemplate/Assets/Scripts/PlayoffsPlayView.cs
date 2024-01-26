@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System.Linq;
 
 public class PlayoffsPlayView : MonoBehaviour
 {
@@ -38,10 +37,12 @@ public class PlayoffsPlayView : MonoBehaviour
         {
             string word = homeWins == (ConfigManager.Instance.GetCurrentConfig().BestOfAmountInPlayoffs + 1) / 2 ? "won" : "leads";
             _leadText.text = $"{homeTeam.GetTeamName()} {word} series {homeWins}-{awayWins}";
-        } else if (homeWins == awayWins)
+        }
+        else if (homeWins == awayWins)
         {
             _leadText.text = $"Series is tied at {homeWins}-{awayWins}";
-        } else
+        }
+        else
         {
             string word = awayWins == (ConfigManager.Instance.GetCurrentConfig().BestOfAmountInPlayoffs + 1) / 2 ? "won" : "leads";
             _leadText.text = $"{awayTeam.GetTeamName()} {word} series {awayWins}-{homeWins}";

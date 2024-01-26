@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 using Unity.Services.RemoteConfig;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class ForceWinToggle : MonoBehaviour
 {
@@ -44,13 +42,15 @@ public class ForceWinToggle : MonoBehaviour
             GameManager.Instance.AddToGems(RemoteConfigService.Instance.appConfig.GetInt("forcewin_cost", 78));
             GameManager.Instance.SetCurrentForceWinState(false);
             _checkmarkImage.gameObject.SetActive(GameManager.Instance.GetCurrentForceWinState());
-        } else
+        }
+        else
         {
             if (GameManager.Instance.CheckBuyItem(RemoteConfigService.Instance.appConfig.GetInt("forcewin_cost", 78)))
             {
                 GameManager.Instance.SetCurrentForceWinState(true);
                 _checkmarkImage.gameObject.SetActive(GameManager.Instance.GetCurrentForceWinState());
-            } else
+            }
+            else
             {
                 TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(true, CanvasKey.Store));
             }

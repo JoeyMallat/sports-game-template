@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -22,7 +21,7 @@ public class StartingLineup
 
     }
 
-    public StartingLineup (List<Player> players)
+    public StartingLineup(List<Player> players)
     {
         _startingPointGuard = GetBestPlayerFromPosition(players, "Point Guard").GetTradeableID();
         _startingShootingGuard = GetBestPlayerFromPosition(players, "Shooting Guard").GetTradeableID();
@@ -48,7 +47,7 @@ public class StartingLineup
     private Player GetBestPlayerFromPosition(List<Player> players, string position)
     {
         List<Player> playersFromPosition = players.Where(x => x.GetPosition() == position).ToList();
-        
+
         if (playersFromPosition.Count > 0)
         {
             Player selectedPlayer = playersFromPosition.OrderByDescending(x => x.CalculateRatingForPosition() * UnityEngine.Random.Range(0.9f, 1.1f)).ToList()[0];
@@ -74,7 +73,8 @@ public class StartingLineup
             if (random < player.GetMinutes())
             {
                 return player;
-            } else
+            }
+            else
             {
                 random -= player.GetMinutes();
             }

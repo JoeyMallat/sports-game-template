@@ -1,11 +1,10 @@
-using Sirenix.OdinInspector;
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using Firebase.Analytics;
+using Sirenix.OdinInspector;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using Firebase.Analytics;
 
 public class TradingSystem : MonoBehaviour
 {
@@ -75,7 +74,7 @@ public class TradingSystem : MonoBehaviour
             int teamTwo = UnityEngine.Random.Range(0, LeagueSystem.Instance.GetTeams().Count - 1);
 
             AITrader aiTrader = new AITrader();
-            aiTrader.GenerateOffer(LeagueSystem.Instance.GetTeam(teamOne).GetTradeAssets(), teamTwo, UnityEngine.Random.Range(1000, 2500), LeagueSystem.Instance.GetTeam(teamTwo).GetTradeAssets());
+            aiTrader.GenerateOffer(LeagueSystem.Instance.GetTeam(teamOne).GetTradeAssets(), teamTwo, UnityEngine.Random.Range(10000, 40000), LeagueSystem.Instance.GetTeam(teamTwo).GetTradeAssets());
         }
     }
 
@@ -87,7 +86,8 @@ public class TradingSystem : MonoBehaviour
             {
                 Player playerInAsset = (Player)asset;
                 TradePlayer(currentTeamID, newTeamID, playerInAsset);
-            } else if (asset.GetType() == typeof(DraftPick))
+            }
+            else if (asset.GetType() == typeof(DraftPick))
             {
                 DraftPick draftPick = (DraftPick)asset;
                 TradePick(currentTeamID, newTeamID, draftPick);
@@ -282,10 +282,10 @@ public class TradingSystem : MonoBehaviour
             return;
         }
 
-        if (GetTotalTradeValue(_teamATradingAssets) < GetTotalTradeValue(_teamBTradingAssets))
+        if (GetTotalTradeValue(_teamATradingAssets) < GetTotalTradeValue(_teamBTradingAssets) * StaffSystem.Instance.GetBetterTradePercentage())
         {
             Debug.Log("Trade value issues");
-            _tradeWillingnessBar.fillAmount = GetTotalTradeValue(_teamATradingAssets) / (float)GetTotalTradeValue(_teamBTradingAssets);
+            _tradeWillingnessBar.fillAmount = GetTotalTradeValue(_teamATradingAssets) / (float)(GetTotalTradeValue(_teamBTradingAssets) * StaffSystem.Instance.GetBetterTradePercentage());
             UpdateAcceptButtonAndText(false, _tradeValueTooLowString);
             return;
         }

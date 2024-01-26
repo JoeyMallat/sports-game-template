@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,7 +8,7 @@ public class PlayerSeason
     [SerializeField] int _season;
     [SerializeField] int _teamID;
     [SerializeField] List<PlayerMatchStats> _matchStats;
-    
+
     public PlayerSeason(int season, int teamID)
     {
         _season = season;
@@ -35,7 +33,8 @@ public class PlayerSeason
             PlayerMatchStats newMatch = new PlayerMatchStats(matchID);
             _matchStats.Add(newMatch);
             newMatch.AddStat(stats);
-        } else
+        }
+        else
         {
             singleMatch.FirstOrDefault().AddStat(stats);
         }

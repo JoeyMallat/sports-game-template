@@ -1,10 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
-using System;
 using Unity.Services.RemoteConfig;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class RewardsView : MonoBehaviour, ISettable
 {

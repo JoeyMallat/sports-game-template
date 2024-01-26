@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 /**
@@ -34,7 +33,8 @@ namespace DentedPixel
             return array;
         }
 
-        public void init(GameObject[] array, bool retrieveOldestItems = true){
+        public void init(GameObject[] array, bool retrieveOldestItems = true)
+        {
             this.array = array;
 
             if (retrieveOldestItems)

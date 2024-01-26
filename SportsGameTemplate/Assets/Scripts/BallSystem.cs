@@ -1,10 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class BallSystem : MonoBehaviour
 {
@@ -85,7 +83,7 @@ public class BallSystem : MonoBehaviour
 
         _startSpinButton.gameObject.SetActive(true);
         _stopSpinButton.gameObject.SetActive(false);
-        
+
         _elapsedTime = 0;
     }
 
@@ -151,7 +149,8 @@ public class BallSystem : MonoBehaviour
             {
                 random -= ball.GetOdds();
                 continue;
-            } else
+            }
+            else
             {
                 return ball;
             }

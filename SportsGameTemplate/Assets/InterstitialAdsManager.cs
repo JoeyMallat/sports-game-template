@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
@@ -58,7 +55,7 @@ public class InterstitialAdsManager : MonoBehaviour, IUnityAdsLoadListener, IUni
 
     // Implement the Show Listener's OnUnityAdsShowComplete callback method to determine if the user gets a reward:
     public void OnUnityAdsShowComplete(string adUnitId, UnityAdsShowCompletionState showCompletionState)
-    { 
+    {
         LoadAd();
     }
 

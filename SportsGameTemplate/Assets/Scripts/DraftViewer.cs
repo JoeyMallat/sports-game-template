@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -51,7 +49,8 @@ public class DraftViewer : MonoBehaviour, ISettable
                 draftPlayerItems[i].gameObject.SetActive(true);
                 int index = i;
                 draftPlayerItems[i].SetPlayerAssets(players[index]);
-            } else
+            }
+            else
             {
                 draftPlayerItems[i].gameObject.SetActive(false);
             }
@@ -63,7 +62,8 @@ public class DraftViewer : MonoBehaviour, ISettable
         if (item.GetType() != typeof(List<DraftOrderItemWrapper>))
         {
             _draftOrderItemWrappers = FindFirstObjectByType<DraftSystem>().GetDraftOrder(LeagueSystem.Instance.GetTeams());
-        } else
+        }
+        else
         {
             _draftOrderItemWrappers = item as List<DraftOrderItemWrapper>;
         }
@@ -85,7 +85,7 @@ public class DraftViewer : MonoBehaviour, ISettable
     private void RefreshDraftView(Player player, Team team, int pick)
     {
         _draftInfoText.text = _textAfterPick.Replace("{{playerData}}", $"{player.GetPosition()} {player.GetFullName()} ({player.CalculateRatingForPosition()} OVR)")
-            .Replace("{{pickNumber}}", $"#{pick+1}")
+            .Replace("{{pickNumber}}", $"#{pick + 1}")
             .Replace("{{teamName}}", team.GetTeamName());
         List<DraftOrderItem> draftOrderItems = _picksRoot.GetComponentsInChildren<DraftOrderItem>(true).ToList();
 
@@ -119,7 +119,8 @@ public class DraftViewer : MonoBehaviour, ISettable
 }
 
 [System.Serializable]
-public struct DraftOrderItemWrapper {
+public struct DraftOrderItemWrapper
+{
     [SerializeField] int _round;
     [SerializeField] int _pickNumber;
     [SerializeField] int _teamID;

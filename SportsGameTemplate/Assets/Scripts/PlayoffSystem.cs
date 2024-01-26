@@ -24,7 +24,8 @@ public class PlayoffSystem : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-        } else
+        }
+        else
         {
             Destroy(this);
         }
@@ -43,7 +44,7 @@ public class PlayoffSystem : MonoBehaviour
     public bool IsTeamInPlayoffs()
     {
         List<PlayoffMatchup> rounds = _playoffRounds[_currentRound].GetMatchups().Where(x => x.GetHomeTeamID() == GameManager.Instance.GetTeamID() || x.GetAwayTeamID() == GameManager.Instance.GetTeamID()).ToList();
-        
+
         if (rounds.Count == 0) { return false; }
 
         PlayoffMatchup myMatchup = _playoffRounds[_currentRound].GetMatchups().Where(x => x.GetHomeTeamID() == GameManager.Instance.GetTeamID() || x.GetAwayTeamID() == GameManager.Instance.GetTeamID()).ToList()[0];
@@ -51,8 +52,9 @@ public class PlayoffSystem : MonoBehaviour
         if (myMatchup.GetSeriesWinner() != -1)
         {
             return myMatchup.GetSeriesWinner() == GameManager.Instance.GetTeamID();
-        } else 
-        { 
+        }
+        else
+        {
             return true;
         }
     }
@@ -63,7 +65,8 @@ public class PlayoffSystem : MonoBehaviour
         {
             _currentRound++;
             SetTeamsInRound(_currentRound, advancingTeams);
-        } else
+        }
+        else
         {
             OnPlayoffsFinished?.Invoke(new List<Team>(), SeasonStage.OffSeason);
         }
@@ -89,12 +92,13 @@ public class PlayoffSystem : MonoBehaviour
         {
             int lastIndex = teamsInRound.Count;
             int matchupIndex = 0;
-            for (int i = 0; i < lastIndex; i+=2)
+            for (int i = 0; i < lastIndex; i += 2)
             {
                 _playoffRounds[round].AddMatchup(matchupIndex, teamsInRound[i].GetTeamID(), 0, teamsInRound[i + 1].GetTeamID(), 0);
                 matchupIndex++;
             }
-        } else
+        }
+        else
         {
             _playoffRounds[round].AddMatchup(0, teamsInRound[0].GetTeamID(), 0, teamsInRound[1].GetTeamID(), 0);
         }

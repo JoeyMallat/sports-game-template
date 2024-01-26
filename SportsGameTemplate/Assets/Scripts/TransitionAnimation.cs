@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -90,7 +89,8 @@ public class TransitionAnimation : MonoBehaviour
             _closedPostion = _wideBorderClosed;
             _openedPostion = _wideBorderOpen;
             _logoPosition = _wideLogoPosition;
-        } else
+        }
+        else
         {
             _closedPostion = _smallBorderClosed;
             _openedPostion = _smallBorderOpen;
