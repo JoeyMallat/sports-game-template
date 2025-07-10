@@ -23,6 +23,14 @@ public class TacticsSettings : MonoBehaviour, ISettable
     {
         Team team = item as Team;
 
+        _dropdowns = GetComponentsInChildren<TMP_Dropdown>().ToList();
+
+        if (_dropdownValues.Count == 0)
+        {
+            _dropdownValues = new List<int>();
+            _dropdowns.ForEach(x => _dropdownValues.Add(0));
+        }
+
         for (int i = 0; i < _dropdowns.Count; i++)
         {
             int index = i;

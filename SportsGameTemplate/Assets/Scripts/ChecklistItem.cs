@@ -44,7 +44,7 @@ public class ChecklistItem : MonoBehaviour
             _buttons[i].GetComponentInChildren<TextMeshProUGUI>().text = buttonTexts[index];
             _buttons[i].onClick.RemoveAllListeners();
 
-            if (index <= buttonActions.Count)
+            if (index < buttonActions.Count)
             {
                 _buttons[i].onClick.AddListener(() => buttonActions[index]());
             }

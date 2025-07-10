@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,6 +9,8 @@ public class ChecklistView : MonoBehaviour
     [SerializeField] List<ChecklistItem> _checklistItems;
     [SerializeField] bool[] _checklistChecks;
     [SerializeField] Button _nextSeasonButton;
+
+    public event Action<int> OnChecklistItemChecked;
 
     private void Awake()
     {
@@ -21,6 +24,7 @@ public class ChecklistView : MonoBehaviour
         RewardedAdsManager.OnRewardedAdWatched += SetRewardedAdCheckmark;
         GameManager.OnPremiumStatusUpdated += SetPremiumStatus;
         LocalSaveManager.OnGameLoaded += UpdateChecklist;
+        OnChecklistItemChecked += SetNextSeasonButton;
     }
 
     public void UpdateChecklist(SeasonStage seasonStage = 0, int week = 0)
@@ -35,7 +39,7 @@ public class ChecklistView : MonoBehaviour
 
     public void OnDraftEnded()
     {
-        _checklistChecks[0] = true;
+        ToggleChecklistItem(0, true);
     }
 
     public List<bool> GetChecklist()
@@ -57,58 +61,44 @@ public class ChecklistView : MonoBehaviour
 
         // Check draft
         Debug.Log("Setting the checklist items");
-        _checklistItems[0].SetChecklistItem(_checklistChecks[0], "Complete the draft", "", new List<string>() { "Start draft" }, new List<System.Action>() { () => Navigation.Instance.GoToScreen(false, CanvasKey.Draft) });
+        _checklistItems[0].SetChecklistItem(_checklistChecks[0], "Complete the draft", "", new List<string>() { "Start draft" }, new List<System.Action>() { () => { Navigation.Instance.GoToScreen(false, CanvasKey.Draft); CheckChecklist(); } }); 
 
         // Check amount of players
         int playerCount = team.GetPlayersFromTeam().Count;
-        _checklistItems[1].SetChecklistItem(playerCount >= 15, "Minimum of 15 players in team", $"Currently {playerCount}", new List<string>(), new List<System.Action>());
-        _checklistChecks[1] = playerCount >= 15;
+        _checklistItems[1].SetChecklistItem(playerCount >= 15, "Minimum of 15 players in team", $"Currently {playerCount}", new List<string>(), new List<System.Action>() { () => CheckChecklist() });
+        ToggleChecklistItem(1, playerCount >= 15);
 
         // Check payroll
         int currentPayroll = team.GetTotalSalaryAmount();
-        _checklistItems[2].SetChecklistItem(currentPayroll <= ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease()), "Payroll under salary cap", $"Currently {currentPayroll.ConvertToMonetaryString()} / {(ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease())).ConvertToMonetaryString()}", new List<string>(), new List<System.Action>());
-        _checklistChecks[2] = currentPayroll <= ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease());
+        _checklistItems[2].SetChecklistItem(currentPayroll <= ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease()), "Payroll under salary cap", $"Currently {currentPayroll.ConvertToMonetaryString()} / {(ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease())).ConvertToMonetaryString()}", new List<string>(), new List<System.Action>() { () => CheckChecklist() });
+        ToggleChecklistItem(2, currentPayroll <= ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease()));
 
-        // Check watch ad or remove ads
-        bool status = false;
+        ToggleChecklistItem(3, GameManager.Instance.GetPremiumStatus());
+        _checklistItems[3].SetChecklistItem(_checklistChecks[3], "Watch an ad or remove ads", "", new List<string>() { "Watch ad", "Remove ads" }, new List<System.Action>() { () => CheckChecklist() });
+    }
 
-        if (GameManager.Instance.GetPremiumStatus())
-        {
-            status = true;
-        }
-        _checklistChecks[3] = status;
-        _checklistItems[3].SetChecklistItem(_checklistChecks[3], "Watch an ad or remove ads", "", new List<string>() { "Watch ad", "Remove ads" }, new List<System.Action>());
-
-        foreach (bool check in _checklistChecks)
-        {
-            if (check == true)
-            {
-                continue;
-            }
-            else
-            {
-                _nextSeasonButton.ToggleButtonStatus(false);
-                return;
-            }
-        }
+    private void SetNextSeasonButton(int amountChecked)
+    {
+        if (amountChecked < _checklistChecks.Length) return;
 
         _nextSeasonButton.ToggleButtonStatus(true);
         _nextSeasonButton.onClick.RemoveAllListeners();
         _nextSeasonButton.onClick.AddListener(() => UncheckAllChecklistItems());
         _nextSeasonButton.onClick.AddListener(() => GameManager.Instance.StartNewSeason());
         _nextSeasonButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()))));
+
     }
 
     private void SetPremiumStatus(CloudSaveData cloudSaveData)
     {
-        _checklistChecks[3] = cloudSaveData.PremiumStatus;
+        ToggleChecklistItem(3, cloudSaveData.PremiumStatus);
     }
 
     private void SetRewardedAdCheckmark(string code)
     {
         if (code == "checklist")
         {
-            _checklistChecks[3] = true;
+            ToggleChecklistItem(3, true);
             _checklistItems[3].SetChecklistItem(_checklistChecks[3], "Watch an ad or remove ads", "", new List<string>() { "Watch ad", "Remove ads" }, new List<System.Action>());
         }
     }
@@ -118,11 +108,17 @@ public class ChecklistView : MonoBehaviour
         TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(true, CanvasKey.Store));
     }
 
+    private void ToggleChecklistItem(int index, bool status)
+    {
+        _checklistChecks[index] = status;
+        OnChecklistItemChecked(_checklistChecks.Count(x => x == true));
+    }
+
     private void UncheckAllChecklistItems()
     {
-        _checklistChecks[0] = false;
-        _checklistChecks[1] = false;
-        _checklistChecks[2] = false;
-        _checklistChecks[3] = false;
+        ToggleChecklistItem(0, false);
+        ToggleChecklistItem(1, false);
+        ToggleChecklistItem(2, false);
+        ToggleChecklistItem(3, false);
     }
 }

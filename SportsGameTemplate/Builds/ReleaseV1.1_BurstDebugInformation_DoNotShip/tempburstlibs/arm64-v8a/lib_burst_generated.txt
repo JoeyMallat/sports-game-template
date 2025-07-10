@@ -46,7 +46,6 @@ Library: C:\Users\joeym\Documents\GitHub\sports-game-template\SportsGameTemplate
 --assembly-defines=Unity.Services.Core.Scheduler;
 --assembly-defines=Unity.Services.Core.Telemetry;
 --assembly-defines=Unity.Services.Core.Threading;
---assembly-defines=Unity.Services.PushNotifications;
 --assembly-defines=Unity.Services.RemoteConfig;
 --assembly-defines=Unity.TextMeshPro;
 --assembly-defines=UnityEngine;
