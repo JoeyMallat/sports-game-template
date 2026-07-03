@@ -25,7 +25,7 @@ public class TacticsSettings : MonoBehaviour, ISettable
 
         _dropdowns = GetComponentsInChildren<TMP_Dropdown>().ToList();
 
-        if (_dropdownValues.Count == 0)
+        if (_dropdownValues == null || _dropdownValues.Count == 0)
         {
             _dropdownValues = new List<int>();
             _dropdowns.ForEach(x => _dropdownValues.Add(0));
@@ -49,6 +49,9 @@ public class TacticsSettings : MonoBehaviour, ISettable
         for (int i = 0; i < _dropdowns.Count; i++)
         {
             int index = i;
+
+            if (index >= _dropdownValues.Count) break;
+
             _dropdownValues[index] = _dropdowns[i].value;
         }
 

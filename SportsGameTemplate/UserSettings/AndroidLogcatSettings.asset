@@ -1,56 +1,13 @@
 {
     "m_SelectedDeviceId": "R3CR30N7BNR",
-    "m_SelectedPackage": {
-        "deviceId": "R3CR30N7BNR",
-        "name": "com.mallatentertainment.basketballgm",
-        "processId": 9375,
+    "m_SelectedProcess": {
+        "deviceId": "",
+        "name": "",
+        "processId": 0,
         "exited": false
     },
     "m_SelectedPriority": 0,
-    "m_KnownPackagesForSerialization": [
-        {
-            "deviceId": "R3CR30N7BNR",
-            "name": "com.sec.android.app.launcher",
-            "processId": 2616,
-            "exited": false
-        },
-        {
-            "deviceId": "R3CR30N7BNR",
-            "name": "com.mallatentertainment.basketballgm",
-            "processId": 20897,
-            "exited": true
-        },
-        {
-            "deviceId": "R3CR30N7BNR",
-            "name": "com.mallatentertainment.basketballgm",
-            "processId": 24218,
-            "exited": true
-        },
-        {
-            "deviceId": "R3CR30N7BNR",
-            "name": "com.mallatentertainment.basketballgm",
-            "processId": 5917,
-            "exited": true
-        },
-        {
-            "deviceId": "R3CR30N7BNR",
-            "name": "com.mallatentertainment.basketballgm",
-            "processId": 16590,
-            "exited": true
-        },
-        {
-            "deviceId": "R3CR30N7BNR",
-            "name": "com.mallatentertainment.basketballgm",
-            "processId": 7901,
-            "exited": false
-        },
-        {
-            "deviceId": "R3CR30N7BNR",
-            "name": "com.mallatentertainment.basketballgm",
-            "processId": 9375,
-            "exited": false
-        }
-    ],
+    "m_KnownProcessesForSerialization": [],
     "m_Tags": {
         "m_Entries": [
             {
@@ -83,8 +40,11 @@
             }
         ]
     },
+    "m_ExtraWindowState": {
+        "Type": 0,
+        "Height": 0.0
+    },
     "m_MemoryViewerState": {
-        "MemoryWindowHeight": 300.0,
         "MemoryWindowWidth": 170.0,
         "MemoryTypeEnabled": [
             true,
@@ -99,7 +59,7 @@
             true
         ],
         "MemoryGroup": 2,
-        "Behavior": 0
+        "AutoCapture": true
     },
     "m_FilterOptions": {
         "m_Filter": "",
@@ -117,5 +77,28 @@
         "BitRateK": 20000,
         "DisplayIdEnabled": false,
         "DisplayId": ""
-    }
+    },
+    "m_ScreenCaptureSettings": {
+        "Mode": 0,
+        "m_LastSaveLocation": [
+            "C:\\Users\\joeym\\Documents\\GitHub\\sports-game-template\\SportsGameTemplate",
+            "C:\\Users\\joeym\\Documents\\GitHub\\sports-game-template\\SportsGameTemplate"
+        ]
+    },
+    "m_QueryLayoutSettings": {
+        "LastLayoutSaveLocation": "",
+        "LastScreenshotSaveLocation": ""
+    },
+    "m_InputSettings": {
+        "ShiftModifier": false,
+        "SendText": "",
+        "PosixKillSignal": 0,
+        "TargetProcess": {
+            "deviceId": "",
+            "name": "",
+            "processId": 0,
+            "exited": false
+        }
+    },
+    "m_AutoScroll": 2
 }

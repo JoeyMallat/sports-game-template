@@ -114,7 +114,13 @@ public class Match
     public void EndMatch()
     {
         _matchPlayed = true;
-        SetResult(_homeTeamPoints, _awayTeamPoints);
+        //SetResult(_homeTeamPoints, _awayTeamPoints);
+
+        if (GameManager.Instance.GetSeasonStage() == SeasonStage.RegularSeason)
+        {
+            LeagueSystem.Instance.GetTeam(_homeTeamID).GetCurrentSeasonStats().AddResult(_homeTeamPoints, _awayTeamPoints);
+            LeagueSystem.Instance.GetTeam(_awayTeamID).GetCurrentSeasonStats().AddResult(_awayTeamPoints, _homeTeamPoints);
+        }
 
         OnMatchPlayed?.Invoke(this);
 
@@ -160,12 +166,6 @@ public class Match
     {
         _homeTeamPoints = homeTeamPoints;
         _awayTeamPoints = awayTeamPoints;
-
-        if (GameManager.Instance.GetSeasonStage() == SeasonStage.RegularSeason)
-        {
-            LeagueSystem.Instance.GetTeam(_homeTeamID).GetCurrentSeasonStats().AddResult(homeTeamPoints, awayTeamPoints);
-            LeagueSystem.Instance.GetTeam(_awayTeamID).GetCurrentSeasonStats().AddResult(awayTeamPoints, homeTeamPoints);
-        }
     }
 
     public bool IsHomeTeam(int teamID)

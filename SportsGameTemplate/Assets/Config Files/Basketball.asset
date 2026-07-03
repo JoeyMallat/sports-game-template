@@ -18,11 +18,13 @@ MonoBehaviour:
     rid: 7850772540815572992
   MatchSimulator:
     rid: 960799562269458433
+  QuickMatchSimulator:
+    rid: 5272541413503139917
   AverageSquadSize: 18
   AverageAgeInLeague: 23
   LeagueFile: {fileID: 4900000, guid: 522c45c2c290a0a428cdf6c80f684299, type: 3}
   ItemFile: {fileID: 4900000, guid: 9bf604923a5a6264c9311b31a325d792, type: 3}
-  GamesPerTeamInRegularSeason: 2
+  GamesPerTeamInRegularSeason: 24
   SalaryCap: 148000000
   MinimumSalary: 640000
   BestOfAmountInPlayoffs: 7
@@ -339,6 +341,9 @@ MonoBehaviour:
             m_PreInfinity: 2
             m_PostInfinity: 2
             m_RotationOrder: 4
+    - rid: 5272541413503139917
+      type: {class: BasketballQuickSim, ns: , asm: Assembly-CSharp}
+      data: 
     - rid: 7850772540815572992
       type: {class: BasketballScheduleGenerator, ns: , asm: Assembly-CSharp}
       data: 

@@ -224,7 +224,7 @@ public class LeagueSystem : MonoBehaviour
 
     IEnumerator SimulateToNextMatchWithProgress()
     {
-        MatchSimulator matchSimulator = ConfigManager.Instance.GetCurrentConfig().MatchSimulator;
+        MatchSimulator matchSimulator = ConfigManager.Instance.GetCurrentConfig().QuickMatchSimulator;
         List<Match> matchList = new List<Match>();
         int myTeamID = GameManager.Instance.GetTeamID();
 
@@ -257,7 +257,7 @@ public class LeagueSystem : MonoBehaviour
     {
         int matches = matchesToSim.Count;
         Debug.Log($"Simming {matches} matches");
-        MatchSimulator matchSimulator = ConfigManager.Instance.GetCurrentConfig().MatchSimulator;
+        MatchSimulator matchSimulator = ConfigManager.Instance.GetCurrentConfig().QuickMatchSimulator;
         bool forceWin = GameManager.Instance.GetCurrentForceWinState();
         Match myMatch = null;
         for (int i = 0; i < matches; i++)
@@ -407,7 +407,6 @@ public class LeagueSystem : MonoBehaviour
         {
             int myTeamID = GameManager.Instance.GetTeamID();
             Match match = _seasonMatches.Where(x => x.GetWeek() == week + 1 && (x.GetHomeTeamID() == myTeamID || x.GetAwayTeamID() == myTeamID)).ToList()[0];
-            Debug.Log($"{match.GetHomeTeamID()} - {match.GetAwayTeamID()}");
             _nextMatchIndex = _seasonMatches.IndexOf(match);
         }
     }

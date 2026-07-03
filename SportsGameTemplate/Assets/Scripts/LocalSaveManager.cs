@@ -38,9 +38,9 @@ public class LocalSaveManager : MonoBehaviour
             File.WriteAllText(_filePath + "_preview", teamID);
             Debug.Log($"Save preview saved to {_filePath + "_preview"}");
         }
-        catch
+        catch (Exception e)
         {
-            Debug.LogWarning("Data was not saved!");
+            Debug.LogWarning("Data was not saved! " + e);
             Notification.Instance.ShowNotification("Game was not saved. Restart the game and try again.", NotificationType.Warning, 2);
         }
     }
