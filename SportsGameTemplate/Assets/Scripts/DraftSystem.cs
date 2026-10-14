@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class DraftSystem : MonoBehaviour
 {
+    public static DraftSystem Instance { get; private set; }
+
     [SerializeField] DraftClass _upcomingDraftClass;
+    [SerializeField] List<DraftClass> _futureDraftClasses = new List<DraftClass>();
 
     [SerializeField] List<DraftOrderItemWrapper> _teamPicks;
     [SerializeField] int _currentPick;
@@ -14,6 +17,11 @@ public class DraftSystem : MonoBehaviour
     public static event Action<List<DraftOrderItemWrapper>> OnGetDraftOrder;
     public static event Action<DraftClass> OnDraftClassUpdated;
     public static event Action OnDraftEnded;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -77,8 +85,31 @@ public class DraftSystem : MonoBehaviour
 
     private void GenerateDraftClass()
     {
-        _upcomingDraftClass = new DraftClass(UnityEngine.Random.Range(40, 85));
+        int currentSeason = GameManager.Instance.GetCurrentSeason();
+        _futureDraftClasses.RemoveAll(draftClass => draftClass == null || draftClass.GetSeason() < currentSeason);
+
+        TradeValueSettings settings = ConfigManager.Instance.GetCurrentConfig().TradeValueSettings ?? TradeValueSettings.Default;
+        for (int season = currentSeason; season < currentSeason + settings.FutureDraftClassHorizon; season++)
+        {
+            if (_futureDraftClasses.Any(draftClass => draftClass.GetSeason() == season))
+                continue;
+
+            _futureDraftClasses.Add(new DraftClass(UnityEngine.Random.Range(40, 85), season));
+        }
+
+        _futureDraftClasses = _futureDraftClasses.OrderBy(draftClass => draftClass.GetSeason()).ToList();
+        _upcomingDraftClass = _futureDraftClasses.First(draftClass => draftClass.GetSeason() == currentSeason);
         OnDraftClassUpdated?.Invoke(_upcomingDraftClass);
+    }
+
+    public DraftClass GetDraftClass(int season)
+    {
+        return _futureDraftClasses.FirstOrDefault(draftClass => draftClass.GetSeason() == season);
+    }
+
+    public Dictionary<int, float> GetDraftClassQuality()
+    {
+        return _futureDraftClasses.ToDictionary(draftClass => draftClass.GetSeason(), draftClass => draftClass.GetQuality());
     }
 
     public List<DraftOrderItemWrapper> GetDraftOrder(List<Team> teams)

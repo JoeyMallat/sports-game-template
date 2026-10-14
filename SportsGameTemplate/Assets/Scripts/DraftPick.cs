@@ -10,21 +10,47 @@ public class DraftPick : ITradeable
     [SerializeField][ReadOnly] int _tradeValue;
     [SerializeField] int _round;
     [SerializeField] int _pickNumber;
+    [SerializeField] int _draftSeason = -1;
+    [SerializeField] int _originalTeamID = -1;
     [SerializeField] List<TradeOffer> _tradeOffers;
 
     public static event Action<int, ITradeable> OnAddedToTrade;
     public static event Action<ITradeable> OnTradeOfferReceived;
 
-    public DraftPick(int round, int number)
+    public DraftPick(int round, int number, int draftSeason = -1, int originalTeamID = -1)
     {
         _pickID = RandomIDGenerator.GenerateRandomID();
 
         _round = round;
         _pickNumber = number;
+        _draftSeason = draftSeason;
+        _originalTeamID = originalTeamID;
 
         CalculateTradeValue();
 
         _tradeOffers = new List<TradeOffer>();
+    }
+
+    public int GetDraftSeason()
+    {
+        if (_draftSeason < 0 && GameManager.Instance != null)
+            _draftSeason = GameManager.Instance.GetCurrentSeason();
+
+        return _draftSeason;
+    }
+
+    public int GetOriginalTeamID()
+    {
+        return _originalTeamID;
+    }
+
+    public void SetLegacyMetadata(int draftSeason, int originalTeamID)
+    {
+        if (_draftSeason < 0)
+            _draftSeason = draftSeason;
+
+        if (_originalTeamID < 0)
+            _originalTeamID = originalTeamID;
     }
 
     public int GetTotalPickNumber()
@@ -42,18 +68,20 @@ public class DraftPick : ITradeable
         return $"Round {_round} - Pick {_pickNumber}";
     }
 
-    private int GetFirstPickValue()
-    {
-        // 450 is the minimum value for the draft picks
-        // TODO: Base the value of off the upcoming draft class
-
-        return 450 + ConfigManager.Instance.GetCurrentConfig().PlayersPerDraftRound * ConfigManager.Instance.GetCurrentConfig().DraftRounds * 450;
-    }
-
     public int CalculateTradeValue()
     {
-        _tradeValue = GetFirstPickValue() - (GetTotalPickNumber() * 450);
-        return Mathf.RoundToInt(Mathf.Clamp(_tradeValue, 0, Mathf.Infinity));
+        TradeValueSettings settings = ConfigManager.Instance.GetCurrentConfig().TradeValueSettings ?? TradeValueSettings.Default;
+        Dictionary<int, float> classQuality = DraftSystem.Instance == null ? null : DraftSystem.Instance.GetDraftClassQuality();
+        TradeValueContext context = TradeValueContext.Create(LeagueSystem.Instance.GetTeams(), settings, classQuality);
+        _tradeValue = DraftPickTradeValuator.Evaluate(this, context, LeagueSystem.Instance.GetTeams()).TotalValue;
+        return _tradeValue;
+    }
+
+    public TradeValueResult CalculateTradeValue(TradeValueContext context, IReadOnlyList<Team> teams)
+    {
+        TradeValueResult result = DraftPickTradeValuator.Evaluate(this, context, teams);
+        _tradeValue = result.TotalValue;
+        return result;
     }
 
     public string GetTradeableID()

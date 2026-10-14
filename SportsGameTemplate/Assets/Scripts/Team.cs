@@ -191,6 +191,10 @@ public class Team
 
     public List<DraftPick> GetDraftPicks()
     {
+        int currentSeason = GameManager.Instance == null ? 0 : GameManager.Instance.GetCurrentSeason();
+        foreach (DraftPick pick in _draftPicks)
+            pick.SetLegacyMetadata(currentSeason, _teamID);
+
         return _draftPicks;
     }
 

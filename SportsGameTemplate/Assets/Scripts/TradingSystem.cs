@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Firebase.Analytics;
 using Sirenix.OdinInspector;
 using TMPro;
@@ -40,10 +41,23 @@ public class TradingSystem : MonoBehaviour
 
     public void ConfirmTrade()
     {
+        Team teamA = LeagueSystem.Instance.GetTeam(_teamAID);
+        Team teamB = LeagueSystem.Instance.GetTeam(_teamBID);
+        ValidationResult validation = new Validator(LeagueSystem.Instance.GetTeams())
+            .Validate(teamA, _teamATradingAssets, teamB, _teamBTradingAssets, !_willAlwaysAccept);
+        if (!validation.IsValid)
+        {
+            Notification.Instance.ShowNotification(validation.Reason, NotificationType.Warning, 3);
+            CheckTradeWillingness(1, _teamBID, _teamBTradingAssets, false);
+            return;
+        }
+
         FirebaseAnalytics.LogEvent("trade_confirmed", new Parameter("value_sent", GetTotalTradeValue(_teamATradingAssets)), new Parameter("value_received", GetTotalTradeValue(_teamBTradingAssets)));
 
         TradeAssets(_teamAID, _teamBID, _teamATradingAssets);
         TradeAssets(_teamBID, _teamAID, _teamBTradingAssets);
+        teamA.GenerateLineup();
+        teamB.GenerateLineup();
 
         ClearTrades(false);
         UpdateAcceptButtonAndText(false, "");
@@ -70,11 +84,17 @@ public class TradingSystem : MonoBehaviour
         for (int i = 0; i < randomAmount; i++)
         {
             int teamOne = GameManager.Instance.GetTeamID();
-
-            int teamTwo = UnityEngine.Random.Range(0, LeagueSystem.Instance.GetTeams().Count - 1);
+            List<Team> possibleTradePartners = LeagueSystem.Instance.GetTeams().FindAll(team => team.GetTeamID() != teamOne);
+            if (possibleTradePartners.Count == 0) return;
+            int teamTwo = possibleTradePartners[UnityEngine.Random.Range(0, possibleTradePartners.Count)].GetTeamID();
 
             AITrader aiTrader = new AITrader();
-            aiTrader.GenerateOffer(LeagueSystem.Instance.GetTeam(teamOne).GetTradeAssets(), teamTwo, UnityEngine.Random.Range(10000, 40000), LeagueSystem.Instance.GetTeam(teamTwo).GetTradeAssets());
+            Team userTeam = LeagueSystem.Instance.GetTeam(teamOne);
+            List<ITradeable> userAssets = userTeam.GetTradeAssets();
+            if (userAssets.Count == 0) return;
+
+            ITradeable target = userAssets[UnityEngine.Random.Range(0, userAssets.Count)];
+            aiTrader.GenerateOffer(userAssets, teamTwo, target.CalculateTradeValue(), LeagueSystem.Instance.GetTeam(teamTwo).GetTradeAssets());
         }
     }
 
@@ -186,7 +206,9 @@ public class TradingSystem : MonoBehaviour
         _teamAID = GameManager.Instance.GetTeamID();
         _teamATradingAssets = new List<ITradeable>() { LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()).GetPlayersFromTeam()[0], LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()).GetDraftPicks()[0] };
 
-        _teamBID = UnityEngine.Random.Range(0, LeagueSystem.Instance.GetTeams().Count - 1);
+        List<Team> possibleTradePartners = LeagueSystem.Instance.GetTeams().FindAll(team => team.GetTeamID() != _teamAID);
+        if (possibleTradePartners.Count == 0) return;
+        _teamBID = possibleTradePartners[UnityEngine.Random.Range(0, possibleTradePartners.Count)].GetTeamID();
         _teamBTradingAssets = GetTradeOffer(_teamBID).GetAssets().Item2;
 
         UpdateBothTeamsAssets(true);
@@ -268,25 +290,26 @@ public class TradingSystem : MonoBehaviour
 
         if (_willAlwaysAccept)
         {
-            Debug.Log("Will accept!");
-            UpdateAcceptButtonAndText(true, _willAcceptString);
-            _tradeWillingnessBar.fillAmount = 1;
+            ValidationResult offeredTradeValidation = new Validator(LeagueSystem.Instance.GetTeams())
+                .Validate(LeagueSystem.Instance.GetTeam(_teamAID), _teamATradingAssets, LeagueSystem.Instance.GetTeam(_teamBID), _teamBTradingAssets, false);
+            if (offeredTradeValidation.IsValid)
+            {
+                UpdateAcceptButtonAndText(true, _willAcceptString);
+                _tradeWillingnessBar.fillAmount = 1;
+                return;
+            }
+
+            _willAlwaysAccept = false;
+            UpdateAcceptButtonAndText(false, offeredTradeValidation.Reason);
             return;
         }
 
-        if (!CheckTradeEligibility(_teamBID, _teamATradingAssets, _teamBTradingAssets))
+        ValidationResult validation = new Validator(LeagueSystem.Instance.GetTeams())
+            .Validate(LeagueSystem.Instance.GetTeam(_teamAID), _teamATradingAssets, LeagueSystem.Instance.GetTeam(_teamBID), _teamBTradingAssets);
+        if (!validation.IsValid)
         {
-            Debug.Log("Salary cap issues");
             _tradeWillingnessBar.fillAmount = GetTotalTradeValue(_teamATradingAssets) / (float)GetTotalTradeValue(_teamBTradingAssets);
-            UpdateAcceptButtonAndText(false, _overSalaryCapString);
-            return;
-        }
-
-        if (GetTotalTradeValue(_teamATradingAssets) < GetTotalTradeValue(_teamBTradingAssets) * StaffSystem.Instance.GetBetterTradePercentage())
-        {
-            Debug.Log("Trade value issues");
-            _tradeWillingnessBar.fillAmount = GetTotalTradeValue(_teamATradingAssets) / (float)(GetTotalTradeValue(_teamBTradingAssets) * StaffSystem.Instance.GetBetterTradePercentage());
-            UpdateAcceptButtonAndText(false, _tradeValueTooLowString);
+            UpdateAcceptButtonAndText(false, validation.Reason);
             return;
         }
         else
@@ -329,5 +352,94 @@ public class TradingSystem : MonoBehaviour
     {
         OnAssetsUpdated?.Invoke(0, _teamAID, _teamATradingAssets, reloadScreen);
         OnAssetsUpdated?.Invoke(1, _teamBID, _teamBTradingAssets, reloadScreen);
+    }
+
+    public class ValidationResult
+    {
+        public bool IsValid { get; }
+        public string Reason { get; }
+
+        private ValidationResult(bool isValid, string reason)
+        {
+            IsValid = isValid;
+            Reason = reason;
+        }
+
+        public static ValidationResult Valid()
+        {
+            return new ValidationResult(true, string.Empty);
+        }
+
+        public static ValidationResult Invalid(string reason)
+        {
+            return new ValidationResult(false, reason);
+        }
+    }
+
+    public class Validator
+    {
+        private readonly TradeValueService _valuation;
+
+        public Validator(IReadOnlyList<Team> teams)
+        {
+            _valuation = new TradeValueService(teams);
+        }
+
+        public ValidationResult Validate(Team teamA, List<ITradeable> assetsFromA, Team teamB, List<ITradeable> assetsFromB, bool validateValue = true)
+        {
+            if (teamA == null || teamB == null || teamA == teamB)
+                return ValidationResult.Invalid("A trade requires two different teams.");
+            if (assetsFromA == null || assetsFromB == null || assetsFromA.Count == 0 || assetsFromB.Count == 0)
+                return ValidationResult.Invalid("Both teams must include at least one asset.");
+            if (assetsFromA.Any(asset => asset == null) || assetsFromB.Any(asset => asset == null))
+                return ValidationResult.Invalid("One or more assets are no longer available.");
+            if (HasDuplicates(assetsFromA) || HasDuplicates(assetsFromB))
+                return ValidationResult.Invalid("The same asset cannot be included more than once.");
+            if (!OwnsAllAssets(teamA, assetsFromA) || !OwnsAllAssets(teamB, assetsFromB))
+                return ValidationResult.Invalid("One or more assets are no longer owned by the offering team.");
+            if (!HasLegalRoster(teamA, assetsFromA, assetsFromB) || !HasLegalRoster(teamB, assetsFromB, assetsFromA))
+                return ValidationResult.Invalid("The trade would leave a team without a legal roster.");
+            if (!FitsSalaryCap(teamA, assetsFromA, assetsFromB) || !FitsSalaryCap(teamB, assetsFromB, assetsFromA))
+                return ValidationResult.Invalid("The trade would put a team over the salary cap.");
+
+            if (validateValue)
+            {
+                int valueReceivedByB = _valuation.GetPackageValueForTeam(assetsFromA, teamB);
+                int valueSentByB = _valuation.GetPackageValueForTeam(assetsFromB, teamB);
+                if (valueReceivedByB < valueSentByB * _valuation.Context.Settings.MinimumAcceptanceRatio)
+                    return ValidationResult.Invalid("The offered value is too low for the other team.");
+            }
+
+            return ValidationResult.Valid();
+        }
+
+        private static bool HasDuplicates(IEnumerable<ITradeable> assets)
+        {
+            return assets.GroupBy(asset => asset.GetTradeableID()).Any(group => group.Count() > 1);
+        }
+
+        private static bool OwnsAllAssets(Team team, IEnumerable<ITradeable> assets)
+        {
+            HashSet<string> ownedIDs = new HashSet<string>(team.GetTradeAssets().Select(asset => asset.GetTradeableID()));
+            return assets.All(asset => ownedIDs.Contains(asset.GetTradeableID()));
+        }
+
+        private static bool HasLegalRoster(Team team, IEnumerable<ITradeable> outgoing, IEnumerable<ITradeable> incoming)
+        {
+            int outgoingPlayers = outgoing.Count(asset => asset is Player);
+            int incomingPlayers = incoming.Count(asset => asset is Player);
+            return team.GetPlayersFromTeam().Count - outgoingPlayers + incomingPlayers >= 5;
+        }
+
+        private static bool FitsSalaryCap(Team team, IEnumerable<ITradeable> outgoing, IEnumerable<ITradeable> incoming)
+        {
+            int outgoingSalary = outgoing.OfType<Player>().Sum(player => player.GetContract().GetYearlySalary());
+            int incomingSalary = incoming.OfType<Player>().Sum(player => player.GetContract().GetYearlySalary());
+            float capIncrease = GameManager.Instance != null && team.GetTeamID() == GameManager.Instance.GetTeamID()
+                ? GameManager.Instance.GetSalaryCapIncrease()
+                : 0f;
+            float effectiveCap = ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1f + capIncrease);
+            return team.GetTotalSalaryAmount() - outgoingSalary + incomingSalary <= effectiveCap;
+        }
     }
 }

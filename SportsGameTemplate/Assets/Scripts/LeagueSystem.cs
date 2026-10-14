@@ -203,7 +203,7 @@ public class LeagueSystem : MonoBehaviour
         {
             foreach (Team team in teams)
             {
-                team.AddDraftPick(new DraftPick(round, index));
+                team.AddDraftPick(new DraftPick(round, index, GameManager.Instance.GetCurrentSeason(), team.GetTeamID()));
 
                 // Don't add to index when it's the last pick of the round
                 if ((index == 30 && round % 2 != 0) || (index == 1 && round % 2 == 0)) break;

@@ -327,6 +327,12 @@ public class Player : ITradeable
 
     public PlayerSeason GetLatestSeason()
     {
+        if (_seasonStats == null)
+            _seasonStats = new List<PlayerSeason>();
+
+        if (_seasonStats.Count == 0)
+            _seasonStats.Add(new PlayerSeason(GameManager.Instance == null ? 0 : GameManager.Instance.GetCurrentSeason(), _teamID));
+
         return _seasonStats.Last();
     }
 
@@ -399,12 +405,17 @@ public class Player : ITradeable
 
     public int CalculateTradeValue()
     {
-        float ratingModifier = Mathf.Pow(CalculateRatingForPosition(), 3);
-        float ageModifier = Mathf.Lerp(0.85f, 1.15f, 40 / _age);
-        float contractLengthMultiplier = ConfigManager.Instance.GetCurrentConfig().ContractLengthImpactOnTradeValue.Evaluate(_age / 40);
-
-        _tradeValue = Mathf.RoundToInt(ratingModifier * ageModifier * (0.25f * contractLengthMultiplier) / (1 + (0.1f * (float)_potential + 1)));
+        TradeValueSettings settings = ConfigManager.Instance.GetCurrentConfig().TradeValueSettings ?? TradeValueSettings.Default;
+        TradeValueContext context = TradeValueContext.Create(LeagueSystem.Instance.GetTeams(), settings);
+        _tradeValue = PlayerTradeValuator.Evaluate(this, context).TotalValue;
         return _tradeValue;
+    }
+
+    public TradeValueResult CalculateTradeValue(TradeValueContext context)
+    {
+        TradeValueResult result = PlayerTradeValuator.Evaluate(this, context);
+        _tradeValue = result.TotalValue;
+        return result;
     }
 
     public int CalculateRatingForPosition()

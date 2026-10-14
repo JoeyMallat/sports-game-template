@@ -1,37 +1,30 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class AITrader
 {
     public List<ITradeable> GenerateOffer(int tradeValue, List<ITradeable> assetsToUse)
     {
-        List<ITradeable> assets = new List<ITradeable>();
-        assetsToUse = assetsToUse.Shuffle();
+        if (assetsToUse == null || assetsToUse.Count == 0 || tradeValue <= 0)
+            return new List<ITradeable>();
 
-        int valueOfAssetsPicked = 0;
-
-        foreach (ITradeable asset in assetsToUse)
-        {
-            if (valueOfAssetsPicked <= tradeValue && assets.Count < 5)
-            {
-                assets.Add(asset);
-                valueOfAssetsPicked += asset.CalculateTradeValue();
-            }
-            else
-            {
-                return assets;
-            }
-        }
-
-        return assets;
+        TradeValueSettings settings = ConfigManager.Instance.GetCurrentConfig().TradeValueSettings ?? TradeValueSettings.Default;
+        return FindBestPackage(assetsToUse, tradeValue, settings.MaximumAssetsPerSide, null, null);
     }
 
     public TradeOffer GenerateOffer(List<ITradeable> teamAssets, int offeringTeamID, int tradeValue, List<ITradeable> assetsToUse)
     {
-        TradeOffer tradeOffer = new TradeOffer(offeringTeamID);
+        if (teamAssets == null || assetsToUse == null)
+            return null;
 
-        // Generate a starting set of players from list of assets
-        List<ITradeable> myTeamAssets = GenerateOffer(tradeValue, teamAssets);
+        TradeOffer tradeOffer = new TradeOffer(offeringTeamID);
+        Team userTeam = LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID());
+        Team offeringTeam = LeagueSystem.Instance.GetTeam(offeringTeamID);
+        TradeValueService valuation = new TradeValueService(LeagueSystem.Instance.GetTeams());
+        TradeValueSettings settings = valuation.Context.Settings;
+
+        List<ITradeable> myTeamAssets = FindBestPackage(teamAssets, tradeValue, settings.MaximumAssetsPerSide, valuation, offeringTeam);
 
         // Return null if no assets were added
         if (myTeamAssets.Count == 0) return null;
@@ -43,9 +36,8 @@ public class AITrader
         }
 
         // Generate an offer for the selected myTeamAssets
-        int totalValueOfMyAssets = 0;
-        myTeamAssets.ForEach(x => totalValueOfMyAssets += x.CalculateTradeValue());
-        List<ITradeable> offeredAssets = GenerateOffer(Mathf.RoundToInt(totalValueOfMyAssets * UnityEngine.Random.Range(0.5f, 1.1f)), assetsToUse);
+        int requestedValue = valuation.GetPackageValueForTeam(myTeamAssets, offeringTeam);
+        List<ITradeable> offeredAssets = FindBestPackage(assetsToUse, requestedValue, settings.MaximumAssetsPerSide, valuation, userTeam);
 
         if (offeredAssets.Count == 0) return null;
 
@@ -58,5 +50,70 @@ public class AITrader
         myTeamAssets[0].AddTradeOffer(tradeOffer);
 
         return tradeOffer;
+    }
+
+    private List<ITradeable> FindBestPackage(List<ITradeable> assets, int targetValue, int maximumAssets, TradeValueService valuation, Team receivingTeam)
+    {
+        List<ITradeable> candidates = assets
+            .Where(asset => asset != null)
+            .OrderBy(asset => Mathf.Abs(GetValue(asset, valuation, receivingTeam) - targetValue))
+            .Take(12)
+            .ToList();
+        List<ITradeable> bestPackage = new List<ITradeable>();
+        float bestScore = float.MaxValue;
+
+        SearchPackages(candidates, 0, targetValue, maximumAssets, valuation, receivingTeam, new List<ITradeable>(), ref bestPackage, ref bestScore);
+        return bestPackage;
+    }
+
+    private void SearchPackages(
+        List<ITradeable> candidates,
+        int index,
+        int targetValue,
+        int maximumAssets,
+        TradeValueService valuation,
+        Team receivingTeam,
+        List<ITradeable> currentPackage,
+        ref List<ITradeable> bestPackage,
+        ref float bestScore)
+    {
+        if (currentPackage.Count > 0)
+        {
+            int packageValue = currentPackage.Sum(asset => GetValue(asset, valuation, receivingTeam));
+            float difference = Mathf.Abs(packageValue - targetValue) / (float)Mathf.Max(1, targetValue);
+            float complexityPenalty = (currentPackage.Count - 1) * 0.025f;
+            float score = difference + complexityPenalty;
+            if (score < bestScore)
+            {
+                bestScore = score;
+                bestPackage = new List<ITradeable>(currentPackage);
+            }
+
+            if (currentPackage.Count >= maximumAssets || packageValue > targetValue * 1.25f)
+                return;
+        }
+
+        for (int i = index; i < candidates.Count; i++)
+        {
+            currentPackage.Add(candidates[i]);
+            SearchPackages(candidates, i + 1, targetValue, maximumAssets, valuation, receivingTeam, currentPackage, ref bestPackage, ref bestScore);
+            currentPackage.RemoveAt(currentPackage.Count - 1);
+        }
+    }
+
+    public string GetOfferDebugSummary(IEnumerable<ITradeable> assets, Team receivingTeam)
+    {
+        TradeValueService valuation = new TradeValueService(LeagueSystem.Instance.GetTeams());
+        List<ITradeable> package = assets.Where(asset => asset != null).ToList();
+        int marketValue = package.Sum(asset => valuation.GetMarketValue(asset));
+        int teamValue = package.Sum(asset => valuation.GetValueForTeam(asset, receivingTeam));
+        return $"{receivingTeam.GetTeamName()}: {package.Count} assets, market {marketValue}, team value {teamValue}, direction {valuation.GetProfile(receivingTeam).Direction}";
+    }
+
+    private int GetValue(ITradeable asset, TradeValueService valuation, Team receivingTeam)
+    {
+        return valuation == null || receivingTeam == null
+            ? asset.CalculateTradeValue()
+            : valuation.GetValueForTeam(asset, receivingTeam);
     }
 }

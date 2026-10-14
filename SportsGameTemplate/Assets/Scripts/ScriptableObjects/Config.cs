@@ -29,6 +29,7 @@ public class Config : ScriptableObject
     [Header("Calculations")]
     public AnimationCurve ContractLengthImpactOnTradeValue;
     public AnimationCurve DistributionOfPotential;
+    public TradeValueSettings TradeValueSettings = new TradeValueSettings();
 
     public int GetTotalDraftPicks()
     {
