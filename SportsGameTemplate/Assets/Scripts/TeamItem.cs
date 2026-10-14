@@ -19,8 +19,7 @@ public class TeamItem : MonoBehaviour
     {
         TeamSeason teamSeason = team.GetCurrentSeasonStats();
 
-        if (team.GetTeamID() == GameManager.Instance.GetTeamID())
-            _isMyTeamOverlay.gameObject.SetActive(true);
+        _isMyTeamOverlay.gameObject.SetActive(team.GetTeamID() == GameManager.Instance.GetTeamID());
 
         _teamNameText.text = team.GetTeamName();
         _placeText.text = place.ToString();

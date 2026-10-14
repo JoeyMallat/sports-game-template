@@ -1,16 +1,23 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HomeStoreComponent : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    [SerializeField] Button _button;
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        if (_button == null)
+        {
+            _button = GetComponent<Button>();
+        }
+
+        if (_button == null)
+        {
+            return;
+        }
+
+        _button.onClick.RemoveAllListeners();
+        _button.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Store));
     }
 }

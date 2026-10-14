@@ -17,7 +17,7 @@ public class TeamViewer : MonoBehaviour, ISettable
         Team team = item as Team;
         _currentShowedTeam = team.GetTeamID();
         _teamNameText.text = team.GetTeamName();
-        List<Player> players = team.GetPlayersFromTeam().OrderBy(x => x.GetPosition()).ToList();
+        List<Player> players = team.GetPlayersFromTeam().OrderBy(x => x.GetPosition()).ThenByDescending(x => x.CalculateRatingForPosition()).ToList();
         List<DraftPick> draftPicks = team.GetDraftPicks().OrderBy(x => x.GetTotalPickNumber()).ToList();
 
         List<PlayerItem> playerItems = _playerRoot.GetComponentsInChildren<PlayerItem>(true).ToList();

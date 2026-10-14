@@ -57,4 +57,24 @@ public class TacticsSettings : MonoBehaviour, ISettable
 
         return _dropdownValues;
     }
+
+    public string GetMainTacticName()
+    {
+        if (_dropdowns == null)
+        {
+            _dropdowns = GetComponentsInChildren<TMP_Dropdown>(true).ToList();
+        }
+
+        if (_dropdowns.Count == 0 || _dropdowns[0].options.Count == 0)
+        {
+            return "Balanced";
+        }
+
+        int selectedValue = _dropdownValues != null && _dropdownValues.Count > 0
+            ? _dropdownValues[0]
+            : _dropdowns[0].value;
+        selectedValue = Mathf.Clamp(selectedValue, 0, _dropdowns[0].options.Count - 1);
+
+        return _dropdowns[0].options[selectedValue].text;
+    }
 }

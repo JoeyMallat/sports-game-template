@@ -415,4 +415,19 @@ public class LeagueSystem : MonoBehaviour
     {
         return _seasonMatches[_nextMatchIndex];
     }
+
+    public Match GetNextAvailableMatchForTeam(int teamID)
+    {
+        Match nextMatch = _seasonMatches
+            .Where(match => !match.GetMatchStatus() && match.IsMyTeamMatch(teamID))
+            .OrderBy(match => match.GetWeek())
+            .FirstOrDefault();
+
+        if (nextMatch != null)
+        {
+            _nextMatchIndex = _seasonMatches.IndexOf(nextMatch);
+        }
+
+        return nextMatch;
+    }
 }

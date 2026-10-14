@@ -12,6 +12,7 @@ public class Player : ITradeable
     [SerializeField] string _firstName;
     [SerializeField] string _lastName;
     [SerializeField] string _position;
+    [SerializeField] int _jerseyNumber = -1;
     [SerializeField] int _age;
     [SerializeField] Potential _potential;
     [SerializeField] float _percentageScouted;
@@ -46,6 +47,7 @@ public class Player : ITradeable
         _firstName = firstname;
         _lastName = lastname;
         _position = position.GetPositionName();
+        _jerseyNumber = UnityEngine.Random.Range(0, 100);
         _age = UnityEngine.Random.Range(20, 39);
         _teamID = teamID;
 
@@ -72,6 +74,7 @@ public class Player : ITradeable
         _firstName = firstname;
         _lastName = lastname;
         _position = position.GetPositionName();
+        _jerseyNumber = UnityEngine.Random.Range(0, 100);
         _age = UnityEngine.Random.Range(20, 22);
         _percentageScouted = 0f;
 
@@ -289,6 +292,16 @@ public class Player : ITradeable
         return $"{_firstName} {_lastName}".Replace("\r", "");
     }
 
+    public string GetFirstName()
+    {
+        return _firstName;
+    }
+
+    public string GetLastName()
+    {
+        return _lastName;
+    }
+
     public int GetAge()
     {
         return _age;
@@ -302,6 +315,14 @@ public class Player : ITradeable
     public string GetPosition()
     {
         return _position;
+    }
+
+    public int GetJerseyNumber()
+    {
+        if (_jerseyNumber < 0)
+            _jerseyNumber = UnityEngine.Random.Range(0, 100);
+
+        return _jerseyNumber;
     }
 
     public PlayerSeason GetLatestSeason()

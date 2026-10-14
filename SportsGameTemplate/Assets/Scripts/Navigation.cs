@@ -10,6 +10,7 @@ public class Navigation : SerializedMonoBehaviour
     public static Navigation Instance;
 
     [SerializeField] Button _backButton;
+    [SerializeField] NextMatchButton _nextMatchButton;
 
     [SerializeField] List<Canvas> _openedCanvasses;
 
@@ -23,6 +24,11 @@ public class Navigation : SerializedMonoBehaviour
             Instance = this;
         else
             Destroy(this);
+
+        if (_nextMatchButton == null)
+        {
+            _nextMatchButton = FindFirstObjectByType<NextMatchButton>(FindObjectsInactive.Include);
+        }
 
         _openedCanvasses = new List<Canvas>();
 
@@ -237,20 +243,26 @@ public class Navigation : SerializedMonoBehaviour
     private void SetBackButton()
     {
         _backButton.GetComponentInParent<Canvas>().enabled = true;
+        _backButton.onClick.RemoveAllListeners();
 
-        if (_openedCanvasses.Count > 1)
+        bool teamSelected = GameManager.Instance != null && GameManager.Instance.GetTeamPickedStatus();
+        bool mainMenuIsCurrent = _openedCanvasses.Count > 0 &&
+            _openedCanvasses.Last() == GetCanvas(CanvasKey.MainMenu);
+        bool canReturnToMainMenu = teamSelected && !mainMenuIsCurrent;
+
+        _backButton.gameObject.SetActive(canReturnToMainMenu);
+        _nextMatchButton?.SetVisible(teamSelected && mainMenuIsCurrent);
+
+        if (canReturnToMainMenu)
         {
-            _backButton.gameObject.SetActive(true);
-
-            _backButton.onClick.RemoveAllListeners();
-            _backButton.onClick.AddListener(() => CloseCanvas(_openedCanvasses.Last()));
-            _backButton.onClick.AddListener(() => SetBackButton());
-
+            _backButton.onClick.AddListener(ReturnToMainMenu);
         }
-        else
-        {
-            _backButton.gameObject.SetActive(false);
-        }
+    }
+
+    private void ReturnToMainMenu()
+    {
+        Team team = LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID());
+        GoToScreen(false, CanvasKey.MainMenu, team);
     }
 
     private void DisableAllCanvasses()

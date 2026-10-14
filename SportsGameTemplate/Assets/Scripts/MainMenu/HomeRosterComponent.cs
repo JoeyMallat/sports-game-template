@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class HomeRosterComponent : MonoBehaviour, ISettable
 {
+    [SerializeField] Button _button;
     [SerializeField] TextMeshProUGUI _amountOfPlayersText;
     [SerializeField] TextMeshProUGUI _overallRatingText;
     [SerializeField] Image _frontPlayerHeadshot;
@@ -37,6 +38,13 @@ public class HomeRosterComponent : MonoBehaviour, ISettable
 
         SetHeadshot(_frontPlayerHeadshot, topPlayers, 0);
         SetHeadshot(_backPlayerHeadshot, topPlayers, 1);
+
+        if (_button != null)
+        {
+            Team selectedTeam = LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID());
+            _button.onClick.RemoveAllListeners();
+            _button.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Team, selectedTeam));
+        }
     }
 
     private void SetHeadshot(Image headshot, List<Player> players, int index)
