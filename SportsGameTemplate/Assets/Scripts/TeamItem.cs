@@ -11,6 +11,8 @@ public class TeamItem : MonoBehaviour
     [SerializeField] TextMeshProUGUI _percentageText;
     [SerializeField] TextMeshProUGUI _gamesBackText;
 
+    [SerializeField] Image _isMyTeamOverlay;
+
     [SerializeField] Image _teamLogo;
 
     public void SetTeamDetails(int place, Team team, int mostWins)
@@ -18,14 +20,9 @@ public class TeamItem : MonoBehaviour
         TeamSeason teamSeason = team.GetCurrentSeasonStats();
 
         if (team.GetTeamID() == GameManager.Instance.GetTeamID())
-        {
-            _teamNameText.text = $"{team.GetTeamName()} <sprite name=\"star\">";
-        }
-        else
-        {
-            _teamNameText.text = team.GetTeamName();
-        }
+            _isMyTeamOverlay.gameObject.SetActive(true);
 
+        _teamNameText.text = team.GetTeamName();
         _placeText.text = place.ToString();
         _teamLogo.sprite = team.GetTeamLogo();
         _winsText.text = teamSeason.GetWins().ToString();

@@ -1,6 +1,6 @@
 Initialising UDS system complete:
   - System type: Client
-  - Resource namespace: cf9670afe918eb76ba27df6411b28389
+  - Resource namespace: 85faccb5492a83d214cc7b79133e73aa
   - Shared memory size: 1073741824
   - Command buffer id: 1052576
   - Command buffer size: 8192
