@@ -139,208 +139,33 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  TradeValueSettings:
+    PlayerValueScale: 1000
+    RatingExponent: 3.2
+    AttributeWeight: 0.2
+    ProductionWeight: 0.2
+    ProductionGamesForFullConfidence: 20
+    SalaryValueScale: 0.35
+    MaximumContractAdjustment: 0.4
+    FirstPickValue: 5000
+    PickValueExponent: 0.4
+    FuturePickDiscount: 0.82
+    MinimumClassMultiplier: 0.7
+    MaximumClassMultiplier: 1.3
+    MinimumAcceptanceRatio: 0.95
+    MaximumOfferRatio: 1.15
+    TeamFitMaximumAdjustment: 0.2
+    MaximumAssetsPerSide: 5
+    FutureDraftClassHorizon: 3
   references:
     version: 2
     RefIds:
     - rid: 960799562269458433
       type: {class: BasketballMatchSimulator, ns: , asm: Assembly-CSharp}
       data:
-        _scoringRate: 0
-        _passSuccessRate: {x: 0.95, y: 0.999}
-        _twoPointSuccessRate: {x: 0.1, y: 0.55}
-        _threePointSuccessRate: {x: 0.08, y: 0.55}
-        _dunkSuccessRate: {x: 0.13, y: 0.75}
-        _layupSuccessRate: {x: 0.13, y: 0.82}
-        _dribbleSuccessRate: {x: 0.4, y: 0.9}
-        _blockSuccessRate: {x: 0, y: 0.05}
-        _stealSuccessRate: {x: 0, y: 0.05}
-        _nextMoves:
-        - _move: 0
-          _occurencePerSecond:
-            serializedVersion: 2
-            m_Curve:
-            - serializedVersion: 3
-              time: 0
-              value: 100
-              inSlope: 0.77565616
-              outSlope: 0.77565616
-              tangentMode: 0
-              weightedMode: 0
-              inWeight: 0
-              outWeight: 0.13110884
-            - serializedVersion: 3
-              time: 24
-              value: 0
-              inSlope: 0
-              outSlope: 0
-              tangentMode: 0
-              weightedMode: 0
-              inWeight: 0
-              outWeight: 0
-            m_PreInfinity: 2
-            m_PostInfinity: 2
-            m_RotationOrder: 4
-        - _move: 1
-          _occurencePerSecond:
-            serializedVersion: 2
-            m_Curve:
-            - serializedVersion: 3
-              time: 0
-              value: 0
-              inSlope: 0.77565616
-              outSlope: 0.77565616
-              tangentMode: 0
-              weightedMode: 0
-              inWeight: 0
-              outWeight: 0.13110884
-            - serializedVersion: 3
-              time: 18
-              value: 100
-              inSlope: -1.5340608
-              outSlope: -1.5340608
-              tangentMode: 0
-              weightedMode: 0
-              inWeight: 0.33333334
-              outWeight: 0.5205272
-            - serializedVersion: 3
-              time: 24
-              value: 0
-              inSlope: -62.134373
-              outSlope: -62.134373
-              tangentMode: 0
-              weightedMode: 0
-              inWeight: 0.01876227
-              outWeight: 0
-            m_PreInfinity: 2
-            m_PostInfinity: 2
-            m_RotationOrder: 4
-        - _move: 2
-          _occurencePerSecond:
-            serializedVersion: 2
-            m_Curve:
-            - serializedVersion: 3
-              time: 0
-              value: 0
-              inSlope: 0.77565616
-              outSlope: 0.77565616
-              tangentMode: 0
-              weightedMode: 0
-              inWeight: 0
-              outWeight: 0.13110884
-            - serializedVersion: 3
-              time: 18
-              value: 100
-              inSlope: 0.022733707
-              outSlope: 0.022733707
-              tangentMode: 0
-              weightedMode: 0
-              inWeight: 0.33333334
-              outWeight: 1
-            - serializedVersion: 3
-              time: 24
-              value: 0
-              inSlope: Infinity
-              outSlope: Infinity
-              tangentMode: 0
-              weightedMode: 0
-              inWeight: 0
-              outWeight: 0
-            m_PreInfinity: 2
-            m_PostInfinity: 2
-            m_RotationOrder: 4
-        - _move: 3
-          _occurencePerSecond:
-            serializedVersion: 2
-            m_Curve:
-            - serializedVersion: 3
-              time: 0
-              value: 0
-              inSlope: 0.77565616
-              outSlope: 0.77565616
-              tangentMode: 0
-              weightedMode: 0
-              inWeight: 0
-              outWeight: 0.13110884
-            - serializedVersion: 3
-              time: 14
-              value: 100
-              inSlope: -1.1712837
-              outSlope: -1.1712837
-              tangentMode: 0
-              weightedMode: 0
-              inWeight: 0.33333334
-              outWeight: 0.35929292
-            - serializedVersion: 3
-              time: 24
-              value: 0
-              inSlope: -6.399294
-              outSlope: -6.399294
-              tangentMode: 0
-              weightedMode: 0
-              inWeight: 0.10753257
-              outWeight: 0
-            m_PreInfinity: 2
-            m_PostInfinity: 2
-            m_RotationOrder: 4
-        - _move: 4
-          _occurencePerSecond:
-            serializedVersion: 2
-            m_Curve:
-            - serializedVersion: 3
-              time: 0
-              value: 0
-              inSlope: 0.77565616
-              outSlope: 0.77565616
-              tangentMode: 0
-              weightedMode: 0
-              inWeight: 0
-              outWeight: 0.13110884
-            - serializedVersion: 3
-              time: 18
-              value: 100
-              inSlope: -1.5340608
-              outSlope: -1.5340608
-              tangentMode: 0
-              weightedMode: 0
-              inWeight: 0.33333334
-              outWeight: 0.5205272
-            - serializedVersion: 3
-              time: 24
-              value: 0
-              inSlope: -62.134373
-              outSlope: -62.134373
-              tangentMode: 0
-              weightedMode: 0
-              inWeight: 0.01876227
-              outWeight: 0
-            m_PreInfinity: 2
-            m_PostInfinity: 2
-            m_RotationOrder: 4
-        - _move: 5
-          _occurencePerSecond:
-            serializedVersion: 2
-            m_Curve:
-            - serializedVersion: 3
-              time: 0
-              value: 100
-              inSlope: 0.77565616
-              outSlope: 0.77565616
-              tangentMode: 0
-              weightedMode: 0
-              inWeight: 0
-              outWeight: 0.13110884
-            - serializedVersion: 3
-              time: 24
-              value: 0
-              inSlope: 0
-              outSlope: 0
-              tangentMode: 0
-              weightedMode: 0
-              inWeight: 0
-              outWeight: 0
-            m_PreInfinity: 2
-            m_PostInfinity: 2
-            m_RotationOrder: 4
+        _shotHeatmap: {fileID: 0}
+        _seedSalt: 7919
+        _timelineCheckpointInterval: 50
     - rid: 5272541413503139917
       type: {class: BasketballQuickSim, ns: , asm: Assembly-CSharp}
       data: 

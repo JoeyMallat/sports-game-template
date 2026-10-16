@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class BasketballMatchSimulator : MatchSimulator
+[System.Obsolete("Use BasketballMatchSimulator, the event-driven adapter, instead.")]
+public class LegacyBasketballMatchSimulator : MatchSimulator
 {
     [Header("Match settings")]
     const int _numberOfPeriods = 4;

@@ -94,7 +94,9 @@ public class TradingSystem : MonoBehaviour
             if (userAssets.Count == 0) return;
 
             ITradeable target = userAssets[UnityEngine.Random.Range(0, userAssets.Count)];
-            aiTrader.GenerateOffer(userAssets, teamTwo, target.CalculateTradeValue(), LeagueSystem.Instance.GetTeam(teamTwo).GetTradeAssets());
+            Team offeringTeam = LeagueSystem.Instance.GetTeam(teamTwo);
+            TradeValueService valuation = new TradeValueService(LeagueSystem.Instance.GetTeams());
+            aiTrader.GenerateOffer(userAssets, teamTwo, valuation.GetValueForTeam(target, offeringTeam), offeringTeam.GetTradeAssets());
         }
     }
 
@@ -217,18 +219,13 @@ public class TradingSystem : MonoBehaviour
     private TradeOffer GetTradeOffer(int teamID)
     {
         AITrader aiTrader = new AITrader();
-        return aiTrader.GenerateOffer(_teamATradingAssets, teamID, GetTotalTradeValue(_teamATradingAssets), LeagueSystem.Instance.GetTeam(_teamBID).GetTradeAssets());
+        return aiTrader.GenerateOffer(_teamATradingAssets, teamID, GetTotalTradeValueForTeam(_teamATradingAssets, teamID), LeagueSystem.Instance.GetTeam(_teamBID).GetTradeAssets());
     }
 
     public int GetTotalTradeValue(List<ITradeable> assets)
     {
-        int total = 0;
-        foreach (ITradeable asset in assets)
-        {
-            total += asset.CalculateTradeValue();
-        }
-
-        return total;
+        TradeValueService valuation = new TradeValueService(LeagueSystem.Instance.GetTeams());
+        return valuation.GetPackageMarketValue(assets);
     }
 
     public List<ITradeable> GetOffer(int teamToOffer = 1)
@@ -308,7 +305,9 @@ public class TradingSystem : MonoBehaviour
             .Validate(LeagueSystem.Instance.GetTeam(_teamAID), _teamATradingAssets, LeagueSystem.Instance.GetTeam(_teamBID), _teamBTradingAssets);
         if (!validation.IsValid)
         {
-            _tradeWillingnessBar.fillAmount = GetTotalTradeValue(_teamATradingAssets) / (float)GetTotalTradeValue(_teamBTradingAssets);
+            int valueReceivedByB = GetTotalTradeValueForTeam(_teamATradingAssets, _teamBID);
+            int valueSentByB = GetTotalTradeValueForTeam(_teamBTradingAssets, _teamBID);
+            _tradeWillingnessBar.fillAmount = valueReceivedByB / (float)Mathf.Max(1, valueSentByB);
             UpdateAcceptButtonAndText(false, validation.Reason);
             return;
         }
@@ -319,6 +318,12 @@ public class TradingSystem : MonoBehaviour
             UpdateAcceptButtonAndText(true, _willAcceptString);
             return;
         }
+    }
+
+    private int GetTotalTradeValueForTeam(IEnumerable<ITradeable> assets, int receivingTeamID)
+    {
+        TradeValueService valuation = new TradeValueService(LeagueSystem.Instance.GetTeams());
+        return valuation.GetPackageValueForTeam(assets, LeagueSystem.Instance.GetTeam(receivingTeamID));
     }
 
     private void UpdateAcceptButtonAndText(bool willAccept, string text)

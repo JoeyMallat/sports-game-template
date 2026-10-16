@@ -17,6 +17,7 @@ public class Team
     [SerializeField][HideInInspector] int _seed;
     [SerializeField] TeamSeason _seasonStats;
     [SerializeField] StartingLineup _startingLineup;
+    [SerializeField] BasketballTacticProfile _basketballTactics = new BasketballTacticProfile();
 
     public static event Action<Team> OnLineupChanged;
 
@@ -36,6 +37,13 @@ public class Team
         LeagueSystem.OnRegularSeasonFinished += ExtendContracts;
         GameManager.OnNewSeasonStarted += ResetForNewSeason;
         Player.OnContractExpired += RemovePlayersWithoutContract;
+    }
+
+    public BasketballTacticProfile GetBasketballTactics()
+    {
+        if (_basketballTactics == null)
+            _basketballTactics = BasketballTacticProfile.Balanced;
+        return _basketballTactics;
     }
 
     public Team(int id, string name)

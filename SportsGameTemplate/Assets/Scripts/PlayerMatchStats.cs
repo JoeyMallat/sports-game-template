@@ -16,7 +16,11 @@ public class PlayerMatchStats
         _stats["assists"] = 0;
         _stats["steals"] = 0;
         _stats["rebounds"] = 0;
+        _stats["offensiveRebounds"] = 0;
+        _stats["defensiveRebounds"] = 0;
         _stats["blocks"] = 0;
+        _stats["turnovers"] = 0;
+        _stats["personalFouls"] = 0;
         _stats["freeThrowsAttempted"] = 0;
         _stats["freeThrowsMade"] = 0;
         _stats["twoPointersAttempted"] = 0;
@@ -36,7 +40,11 @@ public class PlayerMatchStats
         _stats["assists"] = assists;
         _stats["steals"] = steals;
         _stats["rebounds"] = rebounds;
+        _stats["offensiveRebounds"] = 0;
+        _stats["defensiveRebounds"] = rebounds;
         _stats["blocks"] = blocks;
+        _stats["turnovers"] = 0;
+        _stats["personalFouls"] = 0;
         _stats["freeThrowsAttempted"] = ftAttempts;
         _stats["freeThrowsMade"] = ftMade;
         _stats["twoPointersAttempted"] = twoAttempts;
@@ -73,6 +81,8 @@ public class PlayerMatchStats
     {
         foreach (var stat in stats)
         {
+            if (!_stats.ContainsKey(stat.Item1))
+                _stats[stat.Item1] = 0;
             _stats[stat.Item1] += stat.Item2;
         }
     }

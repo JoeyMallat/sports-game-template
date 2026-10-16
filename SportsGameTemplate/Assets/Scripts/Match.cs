@@ -16,6 +16,7 @@ public class Match
     [SerializeField] bool _matchPlayed;
 
     [SerializeField] List<PossessionResult> _possessionResults;
+    [NonSerialized] IBasketballMatchTimeline _basketballTimeline;
 
     public static event Action<Match> OnMatchPlayed;
 
@@ -26,6 +27,21 @@ public class Match
         _homeTeamID = homeID;
         _awayTeamID = awayID;
         _possessionResults = new List<PossessionResult>();
+    }
+
+    public bool HasDetailedTimeline()
+    {
+        return _basketballTimeline != null;
+    }
+
+    public IBasketballMatchTimeline GetTimeline()
+    {
+        return _basketballTimeline;
+    }
+
+    public void AttachTimeline(IBasketballMatchTimeline timeline)
+    {
+        _basketballTimeline = timeline ?? throw new ArgumentNullException(nameof(timeline));
     }
 
     public int GetWeek()

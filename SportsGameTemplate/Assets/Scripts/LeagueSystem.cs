@@ -257,7 +257,6 @@ public class LeagueSystem : MonoBehaviour
     {
         int matches = matchesToSim.Count;
         Debug.Log($"Simming {matches} matches");
-        MatchSimulator matchSimulator = ConfigManager.Instance.GetCurrentConfig().QuickMatchSimulator;
         bool forceWin = GameManager.Instance.GetCurrentForceWinState();
         Match myMatch = null;
         for (int i = 0; i < matches; i++)
@@ -266,11 +265,11 @@ public class LeagueSystem : MonoBehaviour
 
             if (forceWin)
             {
-                matchSimulator.SimulateMatch(match, GameManager.Instance.GetTeamID());
+                BasketballMatchSimulationRouter.Simulate(match, GameManager.Instance.GetTeamID());
             }
             else
             {
-                matchSimulator.SimulateMatch(match, -1);
+                BasketballMatchSimulationRouter.Simulate(match, -1);
             }
 
             float progress = (float)(i + 1) / matches;

@@ -9,8 +9,8 @@ public class AITrader
         if (assetsToUse == null || assetsToUse.Count == 0 || tradeValue <= 0)
             return new List<ITradeable>();
 
-        TradeValueSettings settings = ConfigManager.Instance.GetCurrentConfig().TradeValueSettings ?? TradeValueSettings.Default;
-        return FindBestPackage(assetsToUse, tradeValue, settings.MaximumAssetsPerSide, null, null);
+        TradeValueService valuation = new TradeValueService(LeagueSystem.Instance.GetTeams());
+        return FindBestPackage(assetsToUse, tradeValue, valuation.Context.Settings.MaximumAssetsPerSide, valuation, null);
     }
 
     public TradeOffer GenerateOffer(List<ITradeable> teamAssets, int offeringTeamID, int tradeValue, List<ITradeable> assetsToUse)
@@ -79,7 +79,7 @@ public class AITrader
     {
         if (currentPackage.Count > 0)
         {
-            int packageValue = currentPackage.Sum(asset => GetValue(asset, valuation, receivingTeam));
+            int packageValue = GetPackageValue(currentPackage, valuation, receivingTeam);
             float difference = Mathf.Abs(packageValue - targetValue) / (float)Mathf.Max(1, targetValue);
             float complexityPenalty = (currentPackage.Count - 1) * 0.025f;
             float score = difference + complexityPenalty;
@@ -105,15 +105,22 @@ public class AITrader
     {
         TradeValueService valuation = new TradeValueService(LeagueSystem.Instance.GetTeams());
         List<ITradeable> package = assets.Where(asset => asset != null).ToList();
-        int marketValue = package.Sum(asset => valuation.GetMarketValue(asset));
-        int teamValue = package.Sum(asset => valuation.GetValueForTeam(asset, receivingTeam));
+        int marketValue = valuation.GetPackageMarketValue(package);
+        int teamValue = valuation.GetPackageValueForTeam(package, receivingTeam);
         return $"{receivingTeam.GetTeamName()}: {package.Count} assets, market {marketValue}, team value {teamValue}, direction {valuation.GetProfile(receivingTeam).Direction}";
     }
 
     private int GetValue(ITradeable asset, TradeValueService valuation, Team receivingTeam)
     {
-        return valuation == null || receivingTeam == null
-            ? asset.CalculateTradeValue()
+        return receivingTeam == null
+            ? valuation.GetMarketValue(asset)
             : valuation.GetValueForTeam(asset, receivingTeam);
+    }
+
+    private int GetPackageValue(IEnumerable<ITradeable> assets, TradeValueService valuation, Team receivingTeam)
+    {
+        return receivingTeam == null
+            ? valuation.GetPackageMarketValue(assets)
+            : valuation.GetPackageValueForTeam(assets, receivingTeam);
     }
 }

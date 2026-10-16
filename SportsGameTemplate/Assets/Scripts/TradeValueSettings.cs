@@ -14,16 +14,17 @@ public class TradeValueSettings
     [Min(0f)] public float MaximumContractAdjustment = 0.4f;
 
     [Header("Draft Pick Value")]
-    [Min(1f)] public float FirstPickValue = 95000f;
-    [Min(0.1f)] public float PickValueExponent = 0.72f;
+    [Min(1f)] public float FirstPickValue = 5000f;
+    [Min(0.1f)] public float PickValueExponent = 0.4f;
     [Range(0f, 1f)] public float FuturePickDiscount = 0.82f;
     [Range(0f, 1f)] public float MinimumClassMultiplier = 0.7f;
     [Min(1f)] public float MaximumClassMultiplier = 1.3f;
 
     [Header("Negotiation")]
-    [Range(0f, 1f)] public float MinimumAcceptanceRatio = 0.95f;
-    [Range(1f, 2f)] public float MaximumOfferRatio = 1.15f;
+    [Range(0f, 1f)] public float MinimumAcceptanceRatio = 1.1f;
+    [Range(1f, 2f)] public float MaximumOfferRatio = 1.35f;
     [Range(0f, 1f)] public float TeamFitMaximumAdjustment = 0.2f;
+    [Range(0f, 1f)] public float AdditionalPlayerValueMultiplier = 0.7f;
     [Range(1, 5)] public int MaximumAssetsPerSide = 5;
     [Range(1, 5)] public int FutureDraftClassHorizon = 3;
 
