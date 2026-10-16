@@ -155,6 +155,7 @@ MonoBehaviour:
     MinimumAcceptanceRatio: 0.95
     MaximumOfferRatio: 1.15
     TeamFitMaximumAdjustment: 0.2
+    AdditionalPlayerValueMultiplier: 0.45
     MaximumAssetsPerSide: 5
     FutureDraftClassHorizon: 3
   references:
@@ -163,7 +164,7 @@ MonoBehaviour:
     - rid: 960799562269458433
       type: {class: BasketballMatchSimulator, ns: , asm: Assembly-CSharp}
       data:
-        _shotHeatmap: {fileID: 0}
+        _shotHeatmap: {fileID: 11400000, guid: 7ab722ca4b677394ab2d6867e4c7546a, type: 2}
         _seedSalt: 7919
         _timelineCheckpointInterval: 50
     - rid: 5272541413503139917
