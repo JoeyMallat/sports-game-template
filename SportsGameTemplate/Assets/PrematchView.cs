@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ public class PrematchView : MonoBehaviour, ISettable
     [SerializeField] Button _selectAutomaticallyButton;
     [SerializeField] Button _clearButton;
     [SerializeField] Button _goToGameButton;
+    [SerializeField] Button _liveSimButton;
 
     [Header("Team Details")]
     [SerializeField] TextMeshProUGUI _gameTypeText;
@@ -34,6 +36,7 @@ public class PrematchView : MonoBehaviour, ISettable
     public void SetDetails<T>(T item) where T : class
     {
         Team team = item as Team;
+        Debug.Log(item.GetType());
         if (team.GetTeamID() != GameManager.Instance.GetTeamID()) return;
 
         List<LineupItem> _lineupItems = _lineupItemsRoot.GetComponentsInChildren<LineupItem>(true).ToList();
@@ -70,15 +73,18 @@ public class PrematchView : MonoBehaviour, ISettable
 
         _goToGameButton.ToggleButtonStatus(CheckLineupCompletion(players));
         _goToGameButton.onClick.RemoveAllListeners();
-        _goToGameButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.MatchOptions));
 
         if (PlayoffSystem.Instance.IsTeamInPlayoffs() && GameManager.Instance.GetSeasonStage() == SeasonStage.Playoffs)
         {
-            SetTeamDetails(PlayoffSystem.Instance.GetNextMatchData().GetNextMatch());
+            Match match = PlayoffSystem.Instance.GetNextMatchData().GetNextMatch();
+            SetTeamDetails(match);
+            _goToGameButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(true, CanvasKey.MatchOptions, match)));
         }
         else
         {
-            SetTeamDetails(LeagueSystem.Instance.GetNextMatchData());
+            Match match = LeagueSystem.Instance.GetNextMatchData();
+            SetTeamDetails(match);
+            _goToGameButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(true, CanvasKey.MatchOptions, match)));
         }
     }
 

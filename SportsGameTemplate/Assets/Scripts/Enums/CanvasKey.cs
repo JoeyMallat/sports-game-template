@@ -23,5 +23,6 @@ public enum CanvasKey
     PlayerSearch,
     Rotation,
     Tactics,
-    Staff
+    Staff,
+    LiveMatch
 }
