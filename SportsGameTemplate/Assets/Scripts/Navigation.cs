@@ -248,7 +248,9 @@ public class Navigation : SerializedMonoBehaviour
         bool teamSelected = GameManager.Instance != null && GameManager.Instance.GetTeamPickedStatus();
         bool mainMenuIsCurrent = _openedCanvasses.Count > 0 &&
             _openedCanvasses.Last() == GetCanvas(CanvasKey.MainMenu);
-        bool canReturnToMainMenu = teamSelected && !mainMenuIsCurrent;
+        bool liveMatchIsCurrent = _openedCanvasses.Count > 0 &&
+            _openedCanvasses.Last() == GetCanvas(CanvasKey.LiveMatch);
+        bool canReturnToMainMenu = teamSelected && !mainMenuIsCurrent && !liveMatchIsCurrent;
 
         _backButton.gameObject.SetActive(canReturnToMainMenu);
         _nextMatchButton?.SetVisible(teamSelected && mainMenuIsCurrent);

@@ -255,13 +255,14 @@ public class LeagueSystem : MonoBehaviour
 
     IEnumerator SimulateMatchesWithProgress(List<Match> matchesToSim)
     {
-        int matches = matchesToSim.Count;
+        List<Match> unplayedMatches = matchesToSim.Where(match => !match.GetMatchStatus()).ToList();
+        int matches = unplayedMatches.Count;
         Debug.Log($"Simming {matches} matches");
         bool forceWin = GameManager.Instance.GetCurrentForceWinState();
         Match myMatch = null;
         for (int i = 0; i < matches; i++)
         {
-            Match match = matchesToSim[i];
+            Match match = unplayedMatches[i];
 
             if (forceWin)
             {

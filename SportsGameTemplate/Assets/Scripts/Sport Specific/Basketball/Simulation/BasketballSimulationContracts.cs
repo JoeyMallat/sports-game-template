@@ -339,6 +339,153 @@ public sealed class BasketballTeamProfile
     public BasketballTacticProfile Tactics = BasketballTacticProfile.Balanced;
 }
 
+[Serializable]
+public sealed class BasketballSimulationSettings
+{
+    [Header("Pace and Rotation Timing")]
+    [Min(1)] public int MinimumPossessionSeconds = 8;
+    [Min(2)] public int MaximumPossessionSecondsExclusive = 25;
+    [Min(1)] public int AbsoluteMinimumPossessionSeconds = 3;
+    [Min(0f)] public float PaceSecondsAdjustment = 12f;
+    [Min(1)] public int RotationIntervalSeconds = 90;
+    [Range(0f, 1f)] public float HomeOpeningPossessionChance = 0.5f;
+
+    [Header("Scorer Usage")]
+    [Min(0.01f)] public float MinimumUsageExponent = 2.4f;
+    [Min(0.01f)] public float MaximumUsageExponent = 3.6f;
+    [Min(0f)] public float PrimaryScorerMultiplier = 2.2f;
+    [Min(0f)] public float SecondaryScorerMultiplier = 1.5f;
+    [Min(0f)] public float TertiaryScorerMultiplier = 1.15f;
+    [Min(0f)] public float OtherScorerMultiplier = 0.8f;
+    [Min(0f)] public float ThreePointScoringWeight = 0.24f;
+    [Min(0f)] public float MidRangeScoringWeight = 0.16f;
+    [Min(0f)] public float ShortRangeScoringWeight = 0.16f;
+    [Min(0f)] public float LayupScoringWeight = 0.2f;
+    [Min(0f)] public float DunkScoringWeight = 0.12f;
+    [Min(0f)] public float PlaymakingScoringWeight = 0.04f;
+    [Min(0f)] public float OverallScoringWeight = 0.08f;
+
+    [Header("Turnovers and Steals")]
+    [Range(0f, 1f)] public float BaseTurnoverChance = 0.16f;
+    [Min(0f)] public float TurnoverPressureWeight = 0.025f;
+    [Min(0f)] public float TurnoverDribblingWeight = 1f;
+    [Min(0f)] public float TurnoverPlaymakingWeight = 1f;
+    [Min(1f)] public float BallHandlingTurnoverDivisor = 1100f;
+    [Range(0f, 1f)] public float MinimumTurnoverChance = 0.07f;
+    [Range(0f, 1f)] public float MaximumTurnoverChance = 0.22f;
+    [Range(0f, 1f)] public float OffensiveFoulTurnoverShare = 0.16f;
+    [Range(0f, 1f)] public float StealOnTurnoverChance = 0.62f;
+    [Min(0f)] public float StealSpeedWeight = 0.5f;
+
+    [Header("Shot Selection")]
+    [Min(0.01f)] public float ThreePointSkillExponent = 2.35f;
+    [Min(0f)] public float ThreePointAttemptWeight = 0.62f;
+    [Min(0f)] public float RimAttemptWeight = 0.48f;
+    [Min(1f)] public float RimSkillDivisor = 297f;
+    [Min(0f)] public float MidRangeBaseWeight = 0.16f;
+    [Min(1f)] public float MidRangeSkillDivisor = 260f;
+    public float DunkSkillOffset = 35f;
+    [Min(1f)] public float DunkSkillDivisor = 85f;
+
+    [Header("Shot Making")]
+    [Range(0f, 1f)] public float ThreePointMakeBaseline = 0.335f;
+    [Range(0f, 1f)] public float DunkMakeBaseline = 0.78f;
+    [Range(0f, 1f)] public float LayupMakeBaseline = 0.57f;
+    [Range(0f, 1f)] public float MidRangeMakeBaseline = 0.41f;
+    public float MakeProbabilitySkillCenter = 60f;
+    [Min(0f)] public float ShootingSkillImpact = 0.0032f;
+    [Min(0f)] public float DefenseSkillImpact = 0.0014f;
+    [Min(0f)] public float DefenderSpeedWeight = 0.5f;
+    [Min(0f)] public float DefenderBlockingWeight = 0.5f;
+    [Min(0f)] public float BallMovementMakeImpact = 0.055f;
+    [Min(0f)] public float DefensivePressureMakeImpact = 0.045f;
+    [Range(0f, 1f)] public float MinimumMakeProbability = 0.18f;
+    [Range(0f, 1f)] public float MaximumMakeProbability = 0.78f;
+    [Range(0f, 1f)] public float MinimumDunkMakeProbability = 0.48f;
+    [Range(0f, 1f)] public float MaximumDunkMakeProbability = 0.96f;
+
+    [Header("Free Throws")]
+    [Range(0f, 1f)] public float FreeThrowBaseProbability = 0.54f;
+    [Min(0f)] public float FreeThrowMidRangeWeight = 1f;
+    [Min(0f)] public float FreeThrowShortRangeWeight = 1f;
+    [Min(1f)] public float FreeThrowSkillDivisor = 500f;
+    [Range(0f, 1f)] public float MinimumFreeThrowProbability = 0.55f;
+    [Range(0f, 1f)] public float MaximumFreeThrowProbability = 0.94f;
+
+    [Header("Fouls and Blocks")]
+    [Range(0f, 1f)] public float PersonalFoulChance = 0.035f;
+    [Range(0f, 1f)] public float RimShootingFoulBaseline = 0.13f;
+    [Range(0f, 1f)] public float ThreePointShootingFoulBaseline = 0.035f;
+    [Range(0f, 1f)] public float MidRangeShootingFoulBaseline = 0.065f;
+    [Range(0f, 1f)] public float MinimumShootingFoulChance = 0.02f;
+    [Range(0f, 1f)] public float MaximumShootingFoulChance = 0.2f;
+    [Range(0f, 1f)] public float ThreePointBlockBaseline = 0.018f;
+    [Range(0f, 1f)] public float DunkBlockBaseline = 0.07f;
+    [Range(0f, 1f)] public float OtherShotBlockBaseline = 0.055f;
+    [Min(1f)] public float BlockSkillDivisor = 900f;
+    [Range(0f, 1f)] public float MinimumBlockChance = 0.008f;
+    [Range(0f, 1f)] public float MaximumBlockChance = 0.16f;
+    [Min(0f)] public float ShotDefenderBlockingWeight = 1f;
+    [Min(0f)] public float ShotDefenderSpeedWeight = 0.5f;
+
+    [Header("Rebounds")]
+    [Range(0f, 1f)] public float OffensiveReboundBaseline = 0.19f;
+    [Min(1f)] public float ReboundRatingDivisor = 350f;
+    [Min(0f)] public float OffensiveReboundingTacticImpact = 0.12f;
+    [Range(0f, 1f)] public float MinimumOffensiveReboundChance = 0.12f;
+    [Range(0f, 1f)] public float MaximumOffensiveReboundChance = 0.39f;
+    [Min(0f)] public float CenterReboundWeight = 1.35f;
+    [Min(0f)] public float PowerForwardReboundWeight = 1.2f;
+    [Min(0f)] public float PointGuardReboundWeight = 0.75f;
+    [Min(0f)] public float OtherPositionReboundWeight = 1f;
+
+    [Header("Assists")]
+    [Range(0f, 1f)] public float AssistBaseline = 0.48f;
+    [Min(1f)] public float ShooterPlaymakingAssistDivisor = 600f;
+    [Range(0f, 1f)] public float MinimumAssistChance = 0.35f;
+    [Range(0f, 1f)] public float MaximumAssistChance = 0.82f;
+    [Min(0f)] public float AssisterPassingWeight = 1f;
+    [Min(0f)] public float AssisterPlaymakingWeight = 1f;
+
+    [Header("Timeouts")]
+    [Min(0)] public int StartingTimeouts = 7;
+    [Range(0f, 1f)] public float NormalTimeoutChance = 0.012f;
+    [Range(0f, 1f)] public float LateGameTimeoutChance = 0.055f;
+    [Min(0)] public int LateGameTimeoutWindowSeconds = 180;
+    [Min(0)] public int ScheduledTimeoutPeriod = 2;
+    [Min(0)] public int ScheduledTimeoutSecondsRemaining = 360;
+
+    [Header("Forced Winner")]
+    [Min(0f)] public float NormalForceWinMakeAdjustment = 0.045f;
+    [Min(0f)] public float LateForceWinMakeAdjustment = 0.11f;
+
+    [Header("Player Profile")]
+    [Min(0f)] public float StaminaSpeedWeight = 0.6f;
+    [Min(0f)] public float StaminaOverallWeight = 0.4f;
+
+    [Header("Lineup Selection")]
+    [Min(0f)] public float PositionalFitSelectionWeight = 2.2f;
+    [Min(0f)] public float MinutesNeedSelectionWeight = 2.4f;
+    [Min(1f)] public float OverallSelectionDivisor = 200f;
+    [Min(0f)] public float ContinuityBonus = 0.08f;
+    [Min(0f)] public float FatiguePenaltyWeight = 2f;
+    [Min(0f)] public float StaminaCapacityBaseSeconds = 240f;
+    [Min(0f)] public float MinimumStaminaRating = 25f;
+    [Min(0f)] public float StaminaCapacitySecondsPerRating = 5f;
+    [Range(0f, 1f)] public float FatigueThreshold = 0.45f;
+    [Min(0f)] public float ThreeFoulPenalty = 0.45f;
+    [Min(0f)] public float FourFoulPenalty = 1.2f;
+    [Min(0f)] public float FiveFoulPenalty = 2.5f;
+    [Range(0f, 1f)] public float ExactPositionFit = 1f;
+    [Range(0f, 1f)] public float AdjacentPositionFit = 0.72f;
+    [Range(0f, 1f)] public float PointGuardFallbackFit = 0.15f;
+    [Range(0f, 1f)] public float ShootingGuardFallbackFit = 0.2f;
+    [Range(0f, 1f)] public float SmallForwardFallbackFit = 0.25f;
+    [Range(0f, 1f)] public float PowerForwardFallbackFit = 0.2f;
+    [Range(0f, 1f)] public float CenterFallbackFit = 0.12f;
+    [Range(0f, 1f)] public float UnknownPositionFit = 0.1f;
+}
+
 public sealed class BasketballSimulationRequest
 {
     public int MatchId;
@@ -349,6 +496,7 @@ public sealed class BasketballSimulationRequest
     public BasketballTeamProfile HomeTeam;
     public BasketballTeamProfile AwayTeam;
     public BasketballShotHeatmap ShotHeatmap;
+    public BasketballSimulationSettings Settings = new BasketballSimulationSettings();
 }
 
 public sealed class BasketballSimulationResult

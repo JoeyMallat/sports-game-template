@@ -377,8 +377,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: F. LASTNAME
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: def3ec46126e26d44a0c049f2ccbf3f0, type: 2}
-  m_sharedMaterial: {fileID: 1213926277619730945, guid: def3ec46126e26d44a0c049f2ccbf3f0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 933e2a61fbe7e884c9b7046d37bdd588, type: 2}
+  m_sharedMaterial: {fileID: -2562579218642588419, guid: 933e2a61fbe7e884c9b7046d37bdd588, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -581,7 +581,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 30
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -1182,8 +1182,8 @@ RectTransform:
   m_Children:
   - {fileID: 7100405825481347492}
   - {fileID: 7253235377309822381}
-  - {fileID: 6692684013606156535}
   - {fileID: 883617546490699689}
+  - {fileID: 6692684013606156535}
   m_Father: {fileID: 1840341782671904077}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1276,7 +1276,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7316867309295365505}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1596,7 +1596,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 74.3666}
+  m_SizeDelta: {x: 0, y: 53.2118}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &9201416053491398725
 MonoBehaviour:
@@ -1696,8 +1696,8 @@ MonoBehaviour:
   _playerPosition: {fileID: 6838529183411266124}
   _playerRating: {fileID: 3209850045727123306}
   _pointsPerGame: {fileID: 1858962131156615333}
-  _assistsPerGame: {fileID: 7993160584993030673}
-  _reboundsPerGame: {fileID: 8200822260215189262}
+  _assistsPerGame: {fileID: 8200822260215189262}
+  _reboundsPerGame: {fileID: 7993160584993030673}
   _salary: {fileID: 0}
   _teamLogo: {fileID: 0}
 --- !u!1 &9118287845203341762

@@ -42,6 +42,7 @@ public class LiveMatchCourt : MonoBehaviour
         bool isMade,
         bool isBlocked,
         float outcomeDuration,
+        float playbackSpeed,
         Action revealOutcome)
     {
         RectTransform container = GetShotContainer();
@@ -61,7 +62,7 @@ public class LiveMatchCourt : MonoBehaviour
         GameObject trajectory = CreateTrajectory(container, shotPoint, basketPoint, attacksRightBasket);
         Image[] segments = trajectory.GetComponentsInChildren<Image>(true);
 
-        float delayPerSegment = _trajectoryDuration / Mathf.Max(1, segments.Length);
+        float delayPerSegment = _trajectoryDuration / (Mathf.Max(1f, playbackSpeed) * Mathf.Max(1, segments.Length));
         foreach (Image segment in segments)
         {
             segment.gameObject.SetActive(true);

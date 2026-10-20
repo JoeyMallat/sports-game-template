@@ -13,9 +13,15 @@ public class LocalSaveManager : MonoBehaviour
 
     public void SaveGame()
     {
+        SaveGame(true);
+    }
+
+    public void SaveGame(bool showNotification)
+    {
         try
         {
-            Notification.Instance.ShowNotification("Game was succesfully saved!", NotificationType.Success, 2);
+            if (showNotification)
+                Notification.Instance.ShowNotification("Game was succesfully saved!", NotificationType.Success, 2);
 
             LocalSaveData localSaveData = new LocalSaveData();
             localSaveData.Teams = LeagueSystem.Instance.GetTeams();
@@ -41,7 +47,8 @@ public class LocalSaveManager : MonoBehaviour
         catch (Exception e)
         {
             Debug.LogWarning("Data was not saved! " + e);
-            Notification.Instance.ShowNotification("Game was not saved. Restart the game and try again.", NotificationType.Warning, 2);
+            if (showNotification)
+                Notification.Instance.ShowNotification("Game was not saved. Restart the game and try again.", NotificationType.Warning, 2);
         }
     }
 

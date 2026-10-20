@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,6 +8,8 @@ public class HomeStandingsComponent : MonoBehaviour, ISettable
 {
     [SerializeField] Transform _standingsRoot;
     [SerializeField] TeamItem _teamItemPrefab;
+
+    Coroutine _layoutRefreshCoroutine;
 
     public void SetDetails<T>(T item) where T : class
     {
@@ -38,6 +41,24 @@ public class HomeStandingsComponent : MonoBehaviour, ISettable
             teamItems[i].SetTeamDetails(standingsIndex + 1, standings[standingsIndex], mostWins);
         }
 
-        LayoutRebuilder.ForceRebuildLayoutImmediate(_standingsRoot as RectTransform);
+        if (_layoutRefreshCoroutine != null)
+            StopCoroutine(_layoutRefreshCoroutine);
+        _layoutRefreshCoroutine = StartCoroutine(RefreshLayoutAfterPopulation());
+    }
+
+    IEnumerator RefreshLayoutAfterPopulation()
+    {
+        yield return null;
+        Canvas.ForceUpdateCanvases();
+
+        RectTransform current = _standingsRoot as RectTransform;
+        while (current != null)
+        {
+            LayoutRebuilder.ForceRebuildLayoutImmediate(current);
+            current = current.parent as RectTransform;
+        }
+
+        Canvas.ForceUpdateCanvases();
+        _layoutRefreshCoroutine = null;
     }
 }

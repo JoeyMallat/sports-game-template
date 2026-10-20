@@ -59,6 +59,59 @@ public class BasketballSimulationTests
     }
 
     [Test]
+    public void PrimaryScorerReceivesConcentratedProduction()
+    {
+        const string primaryScorerId = "H0";
+        int primaryScorerPoints = 0;
+        int homeTeamPoints = 0;
+
+        for (int seed = 1; seed <= 12; seed++)
+        {
+            BasketballSimulationRequest request = CreateRequest(seed * 7919);
+            ConfigurePrimaryScorerRotation(request.HomeTeam);
+            BasketballSimulationResult result = new EventDrivenBasketballEngine().Simulate(request);
+            primaryScorerPoints += result.FinalState.PlayerBoxScores[primaryScorerId].Points;
+            homeTeamPoints += result.FinalState.HomeScore;
+        }
+
+        Assert.GreaterOrEqual(primaryScorerPoints / (float)homeTeamPoints, 0.28f);
+    }
+
+    [Test]
+    public void OffensiveAndDefensiveReboundsReconcileWithTotalRebounds()
+    {
+        int offensiveReboundEvents = _result.Events.Count(matchEvent =>
+            matchEvent.EventType == BasketballEventType.Rebound &&
+            matchEvent.ReboundType == BasketballReboundType.Offensive);
+        int defensiveReboundEvents = _result.Events.Count(matchEvent =>
+            matchEvent.EventType == BasketballEventType.Rebound &&
+            matchEvent.ReboundType == BasketballReboundType.Defensive);
+        int offensiveRebounds = _result.FinalState.PlayerBoxScores.Values.Sum(boxScore => boxScore.OffensiveRebounds);
+        int defensiveRebounds = _result.FinalState.PlayerBoxScores.Values.Sum(boxScore => boxScore.DefensiveRebounds);
+
+        Assert.AreEqual(offensiveReboundEvents, offensiveRebounds);
+        Assert.AreEqual(defensiveReboundEvents, defensiveRebounds);
+        Assert.AreEqual(offensiveRebounds + defensiveRebounds, _result.FinalState.PlayerBoxScores.Values.Sum(boxScore => boxScore.Rebounds));
+        Assert.IsTrue(_result.FinalState.PlayerBoxScores.Values.All(boxScore =>
+            boxScore.Rebounds == boxScore.OffensiveRebounds + boxScore.DefensiveRebounds));
+    }
+
+    [Test]
+    public void CustomSimulationSettingsChangeEngineBehavior()
+    {
+        BasketballSimulationRequest request = CreateRequest(97531);
+        request.Settings.BaseTurnoverChance = 0f;
+        request.Settings.TurnoverPressureWeight = 0f;
+        request.Settings.MinimumTurnoverChance = 0f;
+        request.Settings.MaximumTurnoverChance = 0f;
+
+        BasketballSimulationResult result = new EventDrivenBasketballEngine().Simulate(request);
+
+        Assert.IsFalse(result.Events.Any(matchEvent => matchEvent.EventType == BasketballEventType.Turnover));
+        Assert.IsTrue(BasketballSimulationValidator.Validate(request, result.Events).IsValid);
+    }
+
+    [Test]
     public void LineupsRemainLegalAndSubstitutionsAreGenerated()
     {
         BasketballMatchTimeline timeline = new BasketballMatchTimeline(_request, _result.Events, 17);
@@ -173,5 +226,21 @@ public class BasketballSimulationTests
             });
         }
         return team;
+    }
+
+    private static void ConfigurePrimaryScorerRotation(BasketballTeamProfile team)
+    {
+        int[] targetMinutes = { 40, 34, 32, 30, 28, 22, 18, 14, 12, 10 };
+        for (int i = 0; i < team.Players.Count; i++)
+            team.Players[i].TargetMinutes = targetMinutes[i];
+
+        BasketballPlayerProfile primaryScorer = team.Players[0];
+        primaryScorer.Overall = 99;
+        primaryScorer.ShortRange = 99;
+        primaryScorer.MidRange = 99;
+        primaryScorer.ThreePoint = 99;
+        primaryScorer.Dunking = 99;
+        primaryScorer.Layups = 99;
+        primaryScorer.Playmaking = 99;
     }
 }

@@ -16,6 +16,10 @@ public class LiveMatchView : MonoBehaviour, ISettable
     [SerializeField] TextMeshProUGUI _awayTeamName;
     [SerializeField] TextMeshProUGUI _awayTeamScore;
 
+    [Header("Team box scores")]
+    [SerializeField] LiveMatchTeamView _homeTeamView;
+    [SerializeField] LiveMatchTeamView _awayTeamView;
+
     [Header("Score Animation")]
     [SerializeField] Color _scoreHighlightColor = new Color(1f, 0.82f, 0.2f, 1f);
     [SerializeField, Min(1f)] float _scoreBounceScale = 1.15f;
@@ -33,6 +37,20 @@ public class LiveMatchView : MonoBehaviour, ISettable
     [SerializeField] Image _teamColorIndicator; //Change to team color of player currently in action
     [SerializeField] TextMeshProUGUI _playerName; //Format: #10 Firstname Lastname
     [SerializeField] TextMeshProUGUI _actionDescription; //Format: "Player pulls up for a 3-point shot!"
+
+    [Header("Navigation")]
+    [SerializeField] Button _continueButton;
+
+    [Header("Game Speed")]
+    [SerializeField] Button _speed1xButton;
+    [SerializeField] Button _speed2xButton;
+    [SerializeField] Button _speed4xButton;
+    [SerializeField] Button _speed8xButton;
+    [SerializeField] Button _speed16xButton;
+    [SerializeField] Color _selectedSpeedButtonColor = Color.white;
+    [SerializeField] Color _selectedSpeedTextColor = Color.black;
+    [SerializeField] Color _deselectedSpeedButtonColor = Color.gray;
+    [SerializeField] Color _deselectedSpeedTextColor = Color.white;
 
     [Header("Court")]
     [SerializeField] LiveMatchCourt _court;
@@ -59,6 +77,7 @@ public class LiveMatchView : MonoBehaviour, ISettable
     Color _awayScoreNormalColor;
     Vector3 _homeScoreNormalScale;
     Vector3 _awayScoreNormalScale;
+    float _playbackSpeed = 1f;
     int _possessionStartPeriod = -1;
     int _possessionStartSeconds = -1;
 
@@ -68,6 +87,9 @@ public class LiveMatchView : MonoBehaviour, ISettable
         _awayScoreNormalColor = _awayTeamScore.color;
         _homeScoreNormalScale = _homeTeamScore.rectTransform.localScale;
         _awayScoreNormalScale = _awayTeamScore.rectTransform.localScale;
+        _continueButton.gameObject.SetActive(false);
+        InitializeSpeedButtons();
+        SetPlaybackSpeed(1f);
     }
 
     public void SetDetails<T>(T item) where T : class
@@ -88,6 +110,11 @@ public class LiveMatchView : MonoBehaviour, ISettable
             return;
 
         StopPlayback();
+        _continueButton.gameObject.SetActive(false);
+        _continueButton.interactable = true;
+        _continueButton.onClick.RemoveAllListeners();
+        _continueButton.onClick.AddListener(ContinueToMatchResult);
+        SetPlaybackSpeed(1f);
         _match = match;
         _homeTeam = LeagueSystem.Instance.GetTeam(match.GetHomeTeamID());
         _awayTeam = LeagueSystem.Instance.GetTeam(match.GetAwayTeamID());
@@ -141,11 +168,13 @@ public class LiveMatchView : MonoBehaviour, ISettable
             float presentationDuration = Mathf.Max(0f, matchEvent.RecommendedAnimationDuration);
             if (!IsActionMoment(matchEvent.EventType))
                 presentationDuration /= Mathf.Max(1f, _betweenActionSpeed);
+            presentationDuration = GetPlaybackDuration(presentationDuration);
             if (presentationDuration > 0f)
                 yield return new WaitForSeconds(presentationDuration);
         }
 
         _playbackCoroutine = null;
+        _continueButton.gameObject.SetActive(true);
     }
 
     IEnumerator AnimateGap(BasketballGameClock from, BasketballGameClock to)
@@ -157,7 +186,7 @@ public class LiveMatchView : MonoBehaviour, ISettable
         }
 
         int elapsedGameSeconds = from.SecondsRemaining - to.SecondsRemaining;
-        float duration = elapsedGameSeconds / Mathf.Max(1f, _betweenActionSpeed);
+        float duration = elapsedGameSeconds / Mathf.Max(1f, _betweenActionSpeed * _playbackSpeed);
         if (duration <= 0f)
             yield break;
 
@@ -182,7 +211,7 @@ public class LiveMatchView : MonoBehaviour, ISettable
 
         bool homeAttacksRight = matchEvent.Clock.Period % 2 == 1;
         bool attacksRight = matchEvent.TeamId == _homeTeam.GetTeamID() ? homeAttacksRight : !homeAttacksRight;
-        float outcomeDuration = GetShotOutcomeDuration(matchEvent);
+        float outcomeDuration = GetPlaybackDuration(GetShotOutcomeDuration(matchEvent));
 
         yield return _court.ShowShot(
             matchEvent.CourtPosition,
@@ -190,10 +219,11 @@ public class LiveMatchView : MonoBehaviour, ISettable
             matchEvent.IsMade,
             matchEvent.IsBlocked,
             outcomeDuration,
+            _playbackSpeed,
             () => RevealShotOutcome(matchEvent, state));
 
         if (_shotResultHoldDuration > 0f)
-            yield return new WaitForSeconds(_shotResultHoldDuration);
+            yield return new WaitForSeconds(GetPlaybackDuration(_shotResultHoldDuration));
     }
 
     IEnumerator PresentTimeout(BasketballMatchEvent matchEvent, BasketballMatchState state)
@@ -202,13 +232,13 @@ public class LiveMatchView : MonoBehaviour, ISettable
         Team timeoutTeam = matchEvent.TeamId == _homeTeam.GetTeamID() ? _homeTeam : _awayTeam;
         _actionDescription.text = $"{timeoutTeam.GetTeamName()} timeout";
 
-        float timeoutDuration = Mathf.Max(_timeoutPresentationDuration, matchEvent.RecommendedAnimationDuration);
+        float timeoutDuration = GetPlaybackDuration(Mathf.Max(_timeoutPresentationDuration, matchEvent.RecommendedAnimationDuration));
         if (timeoutDuration > 0f)
             yield return new WaitForSeconds(timeoutDuration);
 
         _actionDescription.text = "Timeout over — play resumes";
         if (_timeoutEndMessageDuration > 0f)
-            yield return new WaitForSeconds(_timeoutEndMessageDuration);
+            yield return new WaitForSeconds(GetPlaybackDuration(_timeoutEndMessageDuration));
     }
 
     void RevealShotOutcome(BasketballMatchEvent matchEvent, BasketballMatchState state)
@@ -216,6 +246,7 @@ public class LiveMatchView : MonoBehaviour, ISettable
         _actionDescription.text = matchEvent.Description;
         _homeTeamScore.text = state.HomeScore.ToString();
         _awayTeamScore.text = state.AwayScore.ToString();
+        UpdateTeamViews(state);
         if (matchEvent.Points > 0)
             StartScoreBounce(matchEvent.TeamId == _homeTeam.GetTeamID());
         SetPossession(state.PossessionTeamId);
@@ -242,11 +273,12 @@ public class LiveMatchView : MonoBehaviour, ISettable
 
     IEnumerator BounceScore(TextMeshProUGUI scoreText, Color normalColor, Vector3 normalScale, bool homeTeamScore)
     {
+        float duration = GetPlaybackDuration(_scoreBounceDuration);
         float elapsed = 0f;
-        while (elapsed < _scoreBounceDuration)
+        while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            float progress = Mathf.Clamp01(elapsed / _scoreBounceDuration);
+            float progress = Mathf.Clamp01(elapsed / duration);
             float pulse = Mathf.Sin(progress * Mathf.PI);
             scoreText.rectTransform.localScale = normalScale * Mathf.Lerp(1f, _scoreBounceScale, pulse);
             scoreText.color = Color.Lerp(normalColor, _scoreHighlightColor, pulse);
@@ -278,6 +310,7 @@ public class LiveMatchView : MonoBehaviour, ISettable
         SetClock(state.CurrentClock.Period, state.CurrentClock.SecondsRemaining);
         _homeTeamScore.text = state.HomeScore.ToString();
         _awayTeamScore.text = state.AwayScore.ToString();
+        UpdateTeamViews(state);
         SetPossession(state.PossessionTeamId);
 
         if (IsActionMoment(matchEvent.EventType))
@@ -291,6 +324,52 @@ public class LiveMatchView : MonoBehaviour, ISettable
         _homeTeamLogo.sprite = _homeTeam.GetTeamLogo();
         _awayTeamName.text = _awayTeam.GetTeamName();
         _awayTeamLogo.sprite = _awayTeam.GetTeamLogo();
+        _homeTeamView.Initialize(_homeTeam);
+        _awayTeamView.Initialize(_awayTeam);
+    }
+
+    void UpdateTeamViews(BasketballMatchState state)
+    {
+        float bounceDuration = GetPlaybackDuration(_scoreBounceDuration);
+        _homeTeamView.UpdateState(state.PlayerBoxScores, state.HomeLineup, _scoreHighlightColor, _scoreBounceScale, bounceDuration);
+        _awayTeamView.UpdateState(state.PlayerBoxScores, state.AwayLineup, _scoreHighlightColor, _scoreBounceScale, bounceDuration);
+    }
+
+    void InitializeSpeedButtons()
+    {
+        InitializeSpeedButton(_speed1xButton, 1f, "1x");
+        InitializeSpeedButton(_speed2xButton, 2f, "2x");
+        InitializeSpeedButton(_speed4xButton, 4f, "4x");
+        InitializeSpeedButton(_speed8xButton, 8f, "8x");
+        InitializeSpeedButton(_speed16xButton, 16f, "16x");
+    }
+
+    void InitializeSpeedButton(Button button, float speed, string label)
+    {
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(() => SetPlaybackSpeed(speed));
+        button.GetComponentInChildren<TextMeshProUGUI>(true).text = label;
+    }
+
+    void SetPlaybackSpeed(float speed)
+    {
+        _playbackSpeed = speed;
+        SetSpeedButtonState(_speed1xButton, speed == 1f);
+        SetSpeedButtonState(_speed2xButton, speed == 2f);
+        SetSpeedButtonState(_speed4xButton, speed == 4f);
+        SetSpeedButtonState(_speed8xButton, speed == 8f);
+        SetSpeedButtonState(_speed16xButton, speed == 16f);
+    }
+
+    void SetSpeedButtonState(Button button, bool selected)
+    {
+        button.targetGraphic.color = selected ? _selectedSpeedButtonColor : _deselectedSpeedButtonColor;
+        button.GetComponentInChildren<TextMeshProUGUI>(true).color = selected ? _selectedSpeedTextColor : _deselectedSpeedTextColor;
+    }
+
+    float GetPlaybackDuration(float duration)
+    {
+        return duration / _playbackSpeed;
     }
 
     void ResetPresentation()
@@ -439,6 +518,14 @@ public class LiveMatchView : MonoBehaviour, ISettable
         _homeTeamScore.text = homeScore.ToString();
         _awayTeamScore.text = awayScore.ToString();
         _actionDescription.text = "Detailed play-by-play is unavailable for this match.";
+        _continueButton.gameObject.SetActive(true);
+    }
+
+    void ContinueToMatchResult()
+    {
+        _continueButton.interactable = false;
+        GameManager.Instance.Advance();
+        Navigation.Instance.GoToScreen(false, CanvasKey.MatchResult, _match);
     }
 
     void StopPlayback()
@@ -474,5 +561,7 @@ public class LiveMatchView : MonoBehaviour, ISettable
     {
         StopPlayback();
         StopScoreBounces();
+        _homeTeamView.StopAnimations();
+        _awayTeamView.StopAnimations();
     }
 }

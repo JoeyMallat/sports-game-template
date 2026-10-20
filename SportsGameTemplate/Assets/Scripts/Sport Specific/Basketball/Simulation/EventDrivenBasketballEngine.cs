@@ -10,8 +10,10 @@ public sealed class EventDrivenBasketballEngine
     private const int OvertimeSeconds = 300;
     private const int ShotClockSeconds = 24;
     private readonly List<BasketballMatchEvent> _events = new List<BasketballMatchEvent>();
-    private readonly BasketballRotationPlanner _rotation = new BasketballRotationPlanner();
+    private BasketballRotationPlanner _rotation;
+    private readonly Dictionary<string, float> _scorerRoleMultipliers = new Dictionary<string, float>();
     private BasketballSimulationRequest _request;
+    private BasketballSimulationSettings _settings;
     private BasketballRandom _random;
     private BasketballMatchState _state;
     private int _homeTimeouts;
@@ -21,13 +23,18 @@ public sealed class EventDrivenBasketballEngine
     {
         ValidateRequest(request);
         _request = request;
+        _settings = request.Settings ?? new BasketballSimulationSettings();
+        _rotation = new BasketballRotationPlanner(_settings);
         _random = new BasketballRandom(request.Seed);
         _state = BasketballEventReducer.CreateInitialState(request);
         _events.Clear();
-        _homeTimeouts = 7;
-        _awayTimeouts = 7;
+        _scorerRoleMultipliers.Clear();
+        BuildScorerRoles(request.HomeTeam);
+        BuildScorerRoles(request.AwayTeam);
+        _homeTimeouts = Mathf.Max(0, _settings.StartingTimeouts);
+        _awayTimeouts = Mathf.Max(0, _settings.StartingTimeouts);
 
-        int possessionTeamId = _random.Chance(0.5f) ? request.HomeTeamId : request.AwayTeamId;
+        int possessionTeamId = _random.Chance(_settings.HomeOpeningPossessionChance) ? request.HomeTeamId : request.AwayTeamId;
         int period = 1;
         do
         {
@@ -50,7 +57,11 @@ public sealed class EventDrivenBasketballEngine
                 int defenseTeamId = OtherTeamId(possessionTeamId);
                 float pace = offense.Tactics?.Pace ?? 1f;
                 int maximumDuration = Math.Min(ShotClockSeconds, secondsRemaining);
-                int duration = Math.Min(maximumDuration, Math.Max(3, _random.Range(8, 25) - Mathf.RoundToInt((pace - 1f) * 12f)));
+                int minimumPossession = Math.Max(1, _settings.MinimumPossessionSeconds);
+                int maximumPossession = Math.Max(minimumPossession + 1, _settings.MaximumPossessionSecondsExclusive);
+                int duration = Math.Min(maximumDuration, Math.Max(
+                    Math.Max(1, _settings.AbsoluteMinimumPossessionSeconds),
+                    _random.Range(minimumPossession, maximumPossession) - Mathf.RoundToInt((pace - 1f) * _settings.PaceSecondsAdjustment)));
                 BasketballGameClock possessionStartClock = new BasketballGameClock(period, secondsRemaining, RegulationPeriods);
                 Emit(new BasketballMatchEvent(BasketballEventType.PossessionStarted, possessionStartClock)
                 {
@@ -69,7 +80,7 @@ public sealed class EventDrivenBasketballEngine
                 secondsSinceRotation += duration;
 
                 MaybeCallTimeout(resultClock, possessionTeamId);
-                if (secondsSinceRotation >= 90 || HasFoulOutOnCourt())
+                if (secondsSinceRotation >= Math.Max(1, _settings.RotationIntervalSeconds) || HasFoulOutOnCourt())
                 {
                     ApplyRotation(resultClock, false);
                     secondsSinceRotation = 0;
@@ -106,11 +117,16 @@ public sealed class EventDrivenBasketballEngine
         IReadOnlyList<string> defenseLineup = GetLineup(defense.TeamId);
         BasketballPlayerProfile ballHandler = SelectShooter(offense, offenseLineup);
         float pressure = defense.Tactics?.DefensivePressure ?? 1f;
-        float turnoverChance = Mathf.Clamp(0.16f + pressure * 0.025f - (ballHandler.Dribbling + ballHandler.Playmaking) / 1100f, 0.07f, 0.22f);
+        float ballHandling = ballHandler.Dribbling * _settings.TurnoverDribblingWeight +
+            ballHandler.Playmaking * _settings.TurnoverPlaymakingWeight;
+        float turnoverChance = ClampConfigured(
+            _settings.BaseTurnoverChance + pressure * _settings.TurnoverPressureWeight - ballHandling / Math.Max(1f, _settings.BallHandlingTurnoverDivisor),
+            _settings.MinimumTurnoverChance,
+            _settings.MaximumTurnoverChance);
 
         if (_random.Chance(turnoverChance))
         {
-            bool offensiveFoul = _random.Chance(0.16f);
+            bool offensiveFoul = _random.Chance(_settings.OffensiveFoulTurnoverShare);
             if (offensiveFoul)
             {
                 EmitFoul(ballHandler, offense.TeamId, defense.TeamId, BasketballFoulType.Offensive, clock, duration, -1);
@@ -126,7 +142,7 @@ public sealed class EventDrivenBasketballEngine
                 Importance = BasketballEventImportance.Notable,
                 RecommendedAnimationDuration = 0.65f
             });
-            if (!offensiveFoul && _random.Chance(0.62f))
+            if (!offensiveFoul && _random.Chance(_settings.StealOnTurnoverChance))
             {
                 BasketballPlayerProfile stealer = SelectDefender(defense, defenseLineup, player => player.Stealing);
                 Emit(new BasketballMatchEvent(BasketballEventType.Steal, clock)
@@ -145,8 +161,9 @@ public sealed class EventDrivenBasketballEngine
             return defense.TeamId;
         }
 
-        BasketballPlayerProfile defender = SelectDefender(defense, defenseLineup, player => player.Blocking + player.Speed / 2);
-        if (_random.Chance(0.035f * pressure))
+        BasketballPlayerProfile defender = SelectDefender(defense, defenseLineup, player =>
+            player.Blocking * _settings.ShotDefenderBlockingWeight + player.Speed * _settings.ShotDefenderSpeedWeight);
+        if (_random.Chance(_settings.PersonalFoulChance * pressure))
         {
             EmitFoul(defender, defense.TeamId, offense.TeamId, BasketballFoulType.Personal, clock, duration, -1);
             if (_state.TeamFoulsInternal[defense.TeamId] >= 5)
@@ -217,7 +234,12 @@ public sealed class EventDrivenBasketballEngine
     private int SimulateFreeThrows(BasketballPlayerProfile shooter, BasketballTeamProfile offense, BasketballTeamProfile defense, BasketballGameClock clock, int attempts, int linkedShotIndex)
     {
         bool finalMade = false;
-        float probability = Mathf.Clamp(0.54f + (shooter.MidRange + shooter.ShortRange) / 500f, 0.55f, 0.94f);
+        float freeThrowSkill = shooter.MidRange * _settings.FreeThrowMidRangeWeight +
+            shooter.ShortRange * _settings.FreeThrowShortRangeWeight;
+        float probability = ClampConfigured(
+            _settings.FreeThrowBaseProbability + freeThrowSkill / Math.Max(1f, _settings.FreeThrowSkillDivisor),
+            _settings.MinimumFreeThrowProbability,
+            _settings.MaximumFreeThrowProbability);
         for (int attempt = 1; attempt <= attempts; attempt++)
         {
             finalMade = _random.Chance(probability);
@@ -250,7 +272,12 @@ public sealed class EventDrivenBasketballEngine
         float offenseReboundRating = (float)offenseLineup.Average(id => FindPlayer(offense, id).Rebounding);
         float defenseReboundRating = (float)defenseLineup.Average(id => FindPlayer(defense, id).Rebounding);
         float tacticBoost = offense.Tactics?.OffensiveRebounding ?? 1f;
-        float offensiveChance = Mathf.Clamp(0.19f + (offenseReboundRating - defenseReboundRating) / 350f + (tacticBoost - 1f) * 0.12f, 0.12f, 0.39f);
+        float offensiveChance = ClampConfigured(
+            _settings.OffensiveReboundBaseline +
+            (offenseReboundRating - defenseReboundRating) / Math.Max(1f, _settings.ReboundRatingDivisor) +
+            (tacticBoost - 1f) * _settings.OffensiveReboundingTacticImpact,
+            _settings.MinimumOffensiveReboundChance,
+            _settings.MaximumOffensiveReboundChance);
         bool offensive = _random.Chance(offensiveChance);
         BasketballTeamProfile reboundTeam = offensive ? offense : defense;
         IReadOnlyList<string> lineup = offensive ? offenseLineup : defenseLineup;
@@ -299,8 +326,12 @@ public sealed class EventDrivenBasketballEngine
     private void MaybeCallTimeout(BasketballGameClock clock, int possessionTeamId)
     {
         int remaining = possessionTeamId == _request.HomeTeamId ? _homeTimeouts : _awayTimeouts;
-        float chance = clock.Period >= 4 && clock.SecondsRemaining <= 180 ? 0.055f : 0.012f;
-        bool scheduledTimeout = clock.Period == 2 && clock.SecondsRemaining <= 360 && remaining == 7;
+        float chance = clock.Period >= 4 && clock.SecondsRemaining <= _settings.LateGameTimeoutWindowSeconds
+            ? _settings.LateGameTimeoutChance
+            : _settings.NormalTimeoutChance;
+        bool scheduledTimeout = clock.Period == _settings.ScheduledTimeoutPeriod &&
+            clock.SecondsRemaining <= _settings.ScheduledTimeoutSecondsRemaining &&
+            remaining == _settings.StartingTimeouts;
         if (remaining <= 0 || (!scheduledTimeout && !_random.Chance(chance)))
             return;
         if (possessionTeamId == _request.HomeTeamId)
@@ -382,11 +413,44 @@ public sealed class EventDrivenBasketballEngine
     {
         List<BasketballPlayerProfile> players = lineup.Select(id => FindPlayer(team, id)).ToList();
         float concentration = team.Tactics?.UsageConcentration ?? 1f;
+        float exponent = Mathf.Lerp(_settings.MinimumUsageExponent, _settings.MaximumUsageExponent, Mathf.InverseLerp(0.5f, 1.5f, concentration));
         return _random.Weighted(players, player =>
         {
-            float scoring = player.ThreePoint * 0.22f + player.MidRange * 0.13f + player.ShortRange * 0.18f + player.Layups * 0.2f + player.Dunking * 0.12f + player.Playmaking * 0.15f;
-            return Mathf.Pow(Mathf.Max(1f, scoring), concentration);
+            float scoring = GetScoringRating(player);
+            float roleMultiplier = _scorerRoleMultipliers.TryGetValue(player.PlayerId, out float multiplier) ? multiplier : 1f;
+            return Mathf.Pow(Mathf.Max(1f, scoring), exponent) * roleMultiplier;
         });
+    }
+
+    private void BuildScorerRoles(BasketballTeamProfile team)
+    {
+        List<BasketballPlayerProfile> rankedScorers = team.Players
+            .OrderByDescending(GetScoringRating)
+            .ThenByDescending(player => player.Overall)
+            .ToList();
+
+        for (int i = 0; i < rankedScorers.Count; i++)
+        {
+            float multiplier = i == 0
+                ? _settings.PrimaryScorerMultiplier
+                : i == 1
+                    ? _settings.SecondaryScorerMultiplier
+                    : i == 2
+                        ? _settings.TertiaryScorerMultiplier
+                        : _settings.OtherScorerMultiplier;
+            _scorerRoleMultipliers[rankedScorers[i].PlayerId] = multiplier;
+        }
+    }
+
+    private float GetScoringRating(BasketballPlayerProfile player)
+    {
+        return player.ThreePoint * _settings.ThreePointScoringWeight +
+            player.MidRange * _settings.MidRangeScoringWeight +
+            player.ShortRange * _settings.ShortRangeScoringWeight +
+            player.Layups * _settings.LayupScoringWeight +
+            player.Dunking * _settings.DunkScoringWeight +
+            player.Playmaking * _settings.PlaymakingScoringWeight +
+            player.Overall * _settings.OverallScoringWeight;
     }
 
     private BasketballPlayerProfile SelectDefender(BasketballTeamProfile team, IReadOnlyList<string> lineup, Func<BasketballPlayerProfile, float> rating)
@@ -397,11 +461,11 @@ public sealed class EventDrivenBasketballEngine
 
     private BasketballShotType SelectShotType(BasketballPlayerProfile shooter, BasketballTacticProfile tactics)
     {
-        float threeSkill = Mathf.Pow(Mathf.Clamp01(shooter.ThreePoint / 99f), 2.35f);
-        float threeWeight = 0.62f * threeSkill * (tactics?.ThreePointEmphasis ?? 1f);
-        float rimSkill = (shooter.Layups + shooter.Dunking + shooter.ShortRange) / 297f;
-        float rimWeight = 0.48f * rimSkill * (tactics?.RimEmphasis ?? 1f);
-        float midWeight = 0.16f + shooter.MidRange / 260f;
+        float threeSkill = Mathf.Pow(Mathf.Clamp01(shooter.ThreePoint / 99f), _settings.ThreePointSkillExponent);
+        float threeWeight = _settings.ThreePointAttemptWeight * threeSkill * (tactics?.ThreePointEmphasis ?? 1f);
+        float rimSkill = (shooter.Layups + shooter.Dunking + shooter.ShortRange) / Math.Max(1f, _settings.RimSkillDivisor);
+        float rimWeight = _settings.RimAttemptWeight * rimSkill * (tactics?.RimEmphasis ?? 1f);
+        float midWeight = _settings.MidRangeBaseWeight + shooter.MidRange / Math.Max(1f, _settings.MidRangeSkillDivisor);
         float total = threeWeight + rimWeight + midWeight;
         float roll = _random.Range(0f, total);
         if (roll < threeWeight)
@@ -409,7 +473,7 @@ public sealed class EventDrivenBasketballEngine
         roll -= threeWeight;
         if (roll < rimWeight)
         {
-            float dunkChance = Mathf.Clamp01((shooter.Dunking - 35f) / 85f);
+            float dunkChance = Mathf.Clamp01((shooter.Dunking - _settings.DunkSkillOffset) / Math.Max(1f, _settings.DunkSkillDivisor));
             return _random.Chance(dunkChance) ? BasketballShotType.Dunk : BasketballShotType.Layup;
         }
         return BasketballShotType.TwoPointJumpShot;
@@ -436,42 +500,63 @@ public sealed class EventDrivenBasketballEngine
         float baseline;
         switch (shotType)
         {
-            case BasketballShotType.ThreePointer: skill = shooter.ThreePoint; baseline = 0.335f; break;
-            case BasketballShotType.Dunk: skill = shooter.Dunking; baseline = 0.78f; break;
-            case BasketballShotType.Layup: skill = shooter.Layups; baseline = 0.57f; break;
-            default: skill = shooter.MidRange; baseline = 0.41f; break;
+            case BasketballShotType.ThreePointer: skill = shooter.ThreePoint; baseline = _settings.ThreePointMakeBaseline; break;
+            case BasketballShotType.Dunk: skill = shooter.Dunking; baseline = _settings.DunkMakeBaseline; break;
+            case BasketballShotType.Layup: skill = shooter.Layups; baseline = _settings.LayupMakeBaseline; break;
+            default: skill = shooter.MidRange; baseline = _settings.MidRangeMakeBaseline; break;
         }
-        float defenseRating = (defender.Speed + defender.Blocking) * 0.5f;
-        float probability = baseline + (skill - 60f) * 0.0032f - (defenseRating - 60f) * 0.0014f;
-        probability += ((offense.Tactics?.BallMovement ?? 1f) - 1f) * 0.055f;
-        probability -= ((defense.Tactics?.DefensivePressure ?? 1f) - 1f) * 0.045f;
+        float defenseRating = defender.Speed * _settings.DefenderSpeedWeight + defender.Blocking * _settings.DefenderBlockingWeight;
+        float probability = baseline +
+            (skill - _settings.MakeProbabilitySkillCenter) * _settings.ShootingSkillImpact -
+            (defenseRating - _settings.MakeProbabilitySkillCenter) * _settings.DefenseSkillImpact;
+        probability += ((offense.Tactics?.BallMovement ?? 1f) - 1f) * _settings.BallMovementMakeImpact;
+        probability -= ((defense.Tactics?.DefensivePressure ?? 1f) - 1f) * _settings.DefensivePressureMakeImpact;
         if (_request.TeamToForceWin >= 0)
         {
-            float force = clock.Period >= 4 ? 0.11f : 0.045f;
+            float force = clock.Period >= 4 ? _settings.LateForceWinMakeAdjustment : _settings.NormalForceWinMakeAdjustment;
             probability += offense.TeamId == _request.TeamToForceWin ? force : -force;
         }
-        return Mathf.Clamp(probability, shotType == BasketballShotType.Dunk ? 0.48f : 0.18f, shotType == BasketballShotType.Dunk ? 0.96f : 0.78f);
+        return shotType == BasketballShotType.Dunk
+            ? ClampConfigured(probability, _settings.MinimumDunkMakeProbability, _settings.MaximumDunkMakeProbability)
+            : ClampConfigured(probability, _settings.MinimumMakeProbability, _settings.MaximumMakeProbability);
     }
 
     private float CalculateBlockChance(BasketballPlayerProfile shooter, BasketballPlayerProfile defender, BasketballShotType shotType)
     {
-        float baseline = shotType == BasketballShotType.ThreePointer ? 0.018f : shotType == BasketballShotType.Dunk ? 0.07f : 0.055f;
-        return Mathf.Clamp(baseline + (defender.Blocking - shooter.Speed) / 900f, 0.008f, 0.16f);
+        float baseline = shotType == BasketballShotType.ThreePointer
+            ? _settings.ThreePointBlockBaseline
+            : shotType == BasketballShotType.Dunk
+                ? _settings.DunkBlockBaseline
+                : _settings.OtherShotBlockBaseline;
+        return ClampConfigured(
+            baseline + (defender.Blocking - shooter.Speed) / Math.Max(1f, _settings.BlockSkillDivisor),
+            _settings.MinimumBlockChance,
+            _settings.MaximumBlockChance);
     }
 
-    private static float CalculateShootingFoulChance(BasketballShotType shotType, float pressure)
+    private float CalculateShootingFoulChance(BasketballShotType shotType, float pressure)
     {
-        float baseline = shotType == BasketballShotType.Dunk || shotType == BasketballShotType.Layup ? 0.13f : shotType == BasketballShotType.ThreePointer ? 0.035f : 0.065f;
-        return Mathf.Clamp(baseline * pressure, 0.02f, 0.2f);
+        float baseline = shotType == BasketballShotType.Dunk || shotType == BasketballShotType.Layup
+            ? _settings.RimShootingFoulBaseline
+            : shotType == BasketballShotType.ThreePointer
+                ? _settings.ThreePointShootingFoulBaseline
+                : _settings.MidRangeShootingFoulBaseline;
+        return ClampConfigured(baseline * pressure, _settings.MinimumShootingFoulChance, _settings.MaximumShootingFoulChance);
     }
 
     private string SelectAssister(BasketballTeamProfile offense, IReadOnlyList<string> lineup, BasketballPlayerProfile shooter)
     {
-        float chance = Mathf.Clamp(0.48f * (offense.Tactics?.BallMovement ?? 1f) + shooter.Playmaking / 600f, 0.35f, 0.82f);
+        float chance = ClampConfigured(
+            _settings.AssistBaseline * (offense.Tactics?.BallMovement ?? 1f) +
+            shooter.Playmaking / Math.Max(1f, _settings.ShooterPlaymakingAssistDivisor),
+            _settings.MinimumAssistChance,
+            _settings.MaximumAssistChance);
         if (!_random.Chance(chance))
             return string.Empty;
         List<BasketballPlayerProfile> candidates = lineup.Where(id => id != shooter.PlayerId).Select(id => FindPlayer(offense, id)).ToList();
-        return _random.Weighted(candidates, player => Math.Max(1, player.Passing + player.Playmaking)).PlayerId;
+        return _random.Weighted(candidates, player => Math.Max(
+            1f,
+            player.Passing * _settings.AssisterPassingWeight + player.Playmaking * _settings.AssisterPlaymakingWeight)).PlayerId;
     }
 
     private bool HasFoulOutOnCourt()
@@ -483,7 +568,15 @@ public sealed class EventDrivenBasketballEngine
     private BasketballTeamProfile GetTeam(int teamId) => teamId == _request.HomeTeamId ? _request.HomeTeam : _request.AwayTeam;
     private int OtherTeamId(int teamId) => teamId == _request.HomeTeamId ? _request.AwayTeamId : _request.HomeTeamId;
     private static BasketballPlayerProfile FindPlayer(BasketballTeamProfile team, string playerId) => team.Players.First(player => player.PlayerId == playerId);
-    private static float PositionReboundWeight(string position) => position == "Center" ? 1.35f : position == "Power Forward" ? 1.2f : position == "Point Guard" ? 0.75f : 1f;
+    private float PositionReboundWeight(string position) => position == "Center"
+        ? _settings.CenterReboundWeight
+        : position == "Power Forward"
+            ? _settings.PowerForwardReboundWeight
+            : position == "Point Guard"
+                ? _settings.PointGuardReboundWeight
+                : _settings.OtherPositionReboundWeight;
+    private static float ClampConfigured(float value, float firstBound, float secondBound) =>
+        Mathf.Clamp(value, Mathf.Min(firstBound, secondBound), Mathf.Max(firstBound, secondBound));
     private static string ShotName(BasketballShotType shotType) => shotType == BasketballShotType.ThreePointer ? "Three-pointer" : shotType == BasketballShotType.Dunk ? "Dunk" : shotType == BasketballShotType.Layup ? "Layup" : "Two-point jumper";
 
     private static void ValidateRequest(BasketballSimulationRequest request)

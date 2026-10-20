@@ -9,6 +9,7 @@ public class BasketballMatchSimulator : MatchSimulator
     [SerializeField] BasketballShotHeatmap _shotHeatmap;
     [SerializeField] int _seedSalt = 7919;
     [SerializeField][Min(1)] int _timelineCheckpointInterval = 50;
+    [SerializeField] BasketballSimulationSettings _settings = new BasketballSimulationSettings();
 
     public void SimulateMatch(Match match, int teamToForceWin)
     {
@@ -51,6 +52,9 @@ public class BasketballMatchSimulator : MatchSimulator
 
     public BasketballSimulationRequest BuildRequest(Match match, Team homeTeam, Team awayTeam, int teamToForceWin = -1)
     {
+        if (_settings == null)
+            _settings = new BasketballSimulationSettings();
+
         int seed = unchecked(match.GetMatchID() * 73856093 ^ homeTeam.GetTeamID() * 19349663 ^ awayTeam.GetTeamID() * 83492791 ^ _seedSalt);
         return new BasketballSimulationRequest
         {
@@ -59,13 +63,14 @@ public class BasketballMatchSimulator : MatchSimulator
             HomeTeamId = homeTeam.GetTeamID(),
             AwayTeamId = awayTeam.GetTeamID(),
             TeamToForceWin = teamToForceWin,
-            HomeTeam = BuildTeamProfile(homeTeam),
-            AwayTeam = BuildTeamProfile(awayTeam),
-            ShotHeatmap = _shotHeatmap
+            HomeTeam = BuildTeamProfile(homeTeam, _settings),
+            AwayTeam = BuildTeamProfile(awayTeam, _settings),
+            ShotHeatmap = _shotHeatmap,
+            Settings = _settings
         };
     }
 
-    private static BasketballTeamProfile BuildTeamProfile(Team team)
+    private static BasketballTeamProfile BuildTeamProfile(Team team, BasketballSimulationSettings settings)
     {
         BasketballTeamProfile profile = new BasketballTeamProfile
         {
@@ -93,7 +98,9 @@ public class BasketballMatchSimulator : MatchSimulator
                 Playmaking = SkillRating(player, Skill.Playmaking),
                 Rebounding = SkillRating(player, Skill.Rebounding),
                 Blocking = SkillRating(player, Skill.Blocking),
-                Stamina = Mathf.RoundToInt(SkillRating(player, Skill.Speed) * 0.6f + SafeOverall(player) * 0.4f)
+                Stamina = Mathf.RoundToInt(
+                    SkillRating(player, Skill.Speed) * settings.StaminaSpeedWeight +
+                    SafeOverall(player) * settings.StaminaOverallWeight)
             });
         }
         return profile;
@@ -124,12 +131,13 @@ public class BasketballMatchSimulator : MatchSimulator
         {
             if (!players.TryGetValue(boxScore.PlayerId, out Player player))
                 continue;
+            int totalRebounds = boxScore.OffensiveRebounds + boxScore.DefensiveRebounds;
             player.GetLatestSeason().UpdateMatch(matchId, new List<(string, int)>
             {
                 ("minutes", boxScore.Minutes),
                 ("assists", boxScore.Assists),
                 ("steals", boxScore.Steals),
-                ("rebounds", boxScore.Rebounds),
+                ("rebounds", totalRebounds),
                 ("offensiveRebounds", boxScore.OffensiveRebounds),
                 ("defensiveRebounds", boxScore.DefensiveRebounds),
                 ("blocks", boxScore.Blocks),

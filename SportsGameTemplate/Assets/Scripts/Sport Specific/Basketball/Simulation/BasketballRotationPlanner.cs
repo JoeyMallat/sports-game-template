@@ -20,6 +20,12 @@ public sealed class BasketballRotationPlanner
 {
     private static readonly string[] CourtSlots = { "Point Guard", "Shooting Guard", "Small Forward", "Power Forward", "Center" };
     private readonly Dictionary<string, int> _stintSeconds = new Dictionary<string, int>();
+    private readonly BasketballSimulationSettings _settings;
+
+    public BasketballRotationPlanner(BasketballSimulationSettings settings)
+    {
+        _settings = settings ?? new BasketballSimulationSettings();
+    }
 
     public void Advance(IEnumerable<string> homeLineup, IEnumerable<string> awayLineup, int elapsedSeconds)
     {
@@ -88,14 +94,27 @@ public sealed class BasketballRotationPlanner
             : 0;
         float minutesNeed = (targetSeconds - playedSeconds) / (float)targetSeconds;
         float stint = _stintSeconds.TryGetValue(player.PlayerId, out int seconds) ? seconds : 0;
-        float staminaCapacity = 240f + Math.Max(25, player.Stamina) * 5f;
-        float fatiguePenalty = Math.Max(0f, stint - staminaCapacity * 0.45f) / staminaCapacity;
+        float staminaCapacity = _settings.StaminaCapacityBaseSeconds +
+            Math.Max(_settings.MinimumStaminaRating, player.Stamina) * _settings.StaminaCapacitySecondsPerRating;
+        staminaCapacity = Math.Max(1f, staminaCapacity);
+        float fatiguePenalty = Math.Max(0f, stint - staminaCapacity * _settings.FatigueThreshold) / staminaCapacity;
         int fouls = GetFouls(state, player.PlayerId);
-        float foulPenalty = fouls >= 5 ? 2.5f : fouls >= 4 ? 1.2f : fouls >= 3 ? 0.45f : 0f;
-        float continuityBonus = currentLineup.Contains(player.PlayerId) ? 0.08f : 0f;
+        float foulPenalty = fouls >= 5
+            ? _settings.FiveFoulPenalty
+            : fouls >= 4
+                ? _settings.FourFoulPenalty
+                : fouls >= 3
+                    ? _settings.ThreeFoulPenalty
+                    : 0f;
+        float continuityBonus = currentLineup.Contains(player.PlayerId) ? _settings.ContinuityBonus : 0f;
         float positionalFit = PositionalFit(player.Position, slot);
 
-        return positionalFit * 2.2f + minutesNeed * 2.4f + player.Overall / 200f + continuityBonus - fatiguePenalty * 2f - foulPenalty;
+        return positionalFit * _settings.PositionalFitSelectionWeight +
+            minutesNeed * _settings.MinutesNeedSelectionWeight +
+            player.Overall / Math.Max(1f, _settings.OverallSelectionDivisor) +
+            continuityBonus -
+            fatiguePenalty * _settings.FatiguePenaltyWeight -
+            foulPenalty;
     }
 
     private static float CalculateMinuteScale(IReadOnlyCollection<BasketballPlayerProfile> players)
@@ -111,25 +130,25 @@ public sealed class BasketballRotationPlanner
             : 0;
     }
 
-    private static float PositionalFit(string playerPosition, string courtSlot)
+    private float PositionalFit(string playerPosition, string courtSlot)
     {
         if (string.Equals(playerPosition, courtSlot, StringComparison.OrdinalIgnoreCase))
-            return 1f;
+            return _settings.ExactPositionFit;
 
         switch (courtSlot)
         {
             case "Point Guard":
-                return Is(playerPosition, "Shooting Guard") ? 0.72f : 0.15f;
+                return Is(playerPosition, "Shooting Guard") ? _settings.AdjacentPositionFit : _settings.PointGuardFallbackFit;
             case "Shooting Guard":
-                return Is(playerPosition, "Point Guard", "Small Forward") ? 0.72f : 0.2f;
+                return Is(playerPosition, "Point Guard", "Small Forward") ? _settings.AdjacentPositionFit : _settings.ShootingGuardFallbackFit;
             case "Small Forward":
-                return Is(playerPosition, "Shooting Guard", "Power Forward") ? 0.72f : 0.25f;
+                return Is(playerPosition, "Shooting Guard", "Power Forward") ? _settings.AdjacentPositionFit : _settings.SmallForwardFallbackFit;
             case "Power Forward":
-                return Is(playerPosition, "Small Forward", "Center") ? 0.72f : 0.2f;
+                return Is(playerPosition, "Small Forward", "Center") ? _settings.AdjacentPositionFit : _settings.PowerForwardFallbackFit;
             case "Center":
-                return Is(playerPosition, "Power Forward") ? 0.72f : 0.12f;
+                return Is(playerPosition, "Power Forward") ? _settings.AdjacentPositionFit : _settings.CenterFallbackFit;
             default:
-                return 0.1f;
+                return _settings.UnknownPositionFit;
         }
     }
 
