@@ -24,5 +24,6 @@ public enum CanvasKey
     Rotation,
     Tactics,
     Staff,
-    LiveMatch
+    LiveMatch,
+    TradeOffers,
 }

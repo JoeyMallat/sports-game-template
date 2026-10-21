@@ -13,6 +13,11 @@ public class TradeAssetWrapper
         _assetID = id;
     }
 
+    public string GetAssetID()
+    {
+        return _assetID;
+    }
+
     public ITradeable GetTradeable(int teamID)
     {
         Team team = LeagueSystem.Instance.GetTeam(teamID);

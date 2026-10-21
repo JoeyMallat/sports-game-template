@@ -1,11 +1,11 @@
 using System.Collections;
 using TMPro;
-using Unity.Services.RemoteConfig;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class RewardsView : MonoBehaviour, ISettable
 {
+    const int WheelSpinCost = 12;
     [SerializeField] float _secondsToWaitForTransitionToRewardsScreen;
     [SerializeField] float _secondsToWaitBetweenTextAnimations;
 
@@ -65,8 +65,8 @@ public class RewardsView : MonoBehaviour, ISettable
         _mainMenuButton.onClick.RemoveAllListeners();
         _assignItemButton.onClick.RemoveAllListeners();
 
-        int spinWheelAgainCost = RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12);
-        _spinAgainText.text = $"Spin again <color=\"white\">{spinWheelAgainCost} <sprite name=\"Gem\">";
+        int spinWheelAgainCost = WheelSpinCost;
+        _spinAgainText.text = $"Spin again <color=\"white\">{spinWheelAgainCost} DP";
         _spinAgainButton.onClick.AddListener(() => FindAnyObjectByType<BallSystem>().SetStartingState());
         _spinAgainButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.BallGame, spinWheelAgainCost)));
 

@@ -1,12 +1,13 @@
 using TMPro;
-using Unity.Services.RemoteConfig;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ForceWinToggle : MonoBehaviour
 {
+    const int ForceWinCost = 78;
     [SerializeField] Image _checkmarkImage;
     [SerializeField] TextMeshProUGUI _forceWinText;
+    int _reservedCost;
 
     private void Awake()
     {
@@ -15,7 +16,7 @@ public class ForceWinToggle : MonoBehaviour
 
     private void Start()
     {
-        _forceWinText.text = $"Force win   <color=\"white\"> {RemoteConfigService.Instance.appConfig.GetInt("forcewin_cost", 78)} <sprite name=\"Gem\">";
+        _forceWinText.text = $"Force win   <color=\"white\"> {ForceWinCost} DP";
     }
 
     private void CheckWinToggle(Match match)
@@ -35,18 +36,21 @@ public class ForceWinToggle : MonoBehaviour
 
     public void ToggleForceWin()
     {
-        _forceWinText.text = $"Force win   <color=\"white\"> {RemoteConfigService.Instance.appConfig.GetInt("forcewin_cost", 78)} <sprite name=\"Gem\">";
+        _forceWinText.text = $"Force win   <color=\"white\"> {ForceWinCost} DP";
 
         if (GameManager.Instance.GetCurrentForceWinState())
         {
-            GameManager.Instance.AddToGems(RemoteConfigService.Instance.appConfig.GetInt("forcewin_cost", 78));
+            DevelopmentPointsManager.Instance.Award(_reservedCost, DevelopmentPointsSource.Refund, DevelopmentPointsManager.CreateTransactionId("force-win-refund"), "Force win refund");
+            _reservedCost = 0;
             GameManager.Instance.SetCurrentForceWinState(false);
             _checkmarkImage.gameObject.SetActive(GameManager.Instance.GetCurrentForceWinState());
         }
         else
         {
-            if (GameManager.Instance.CheckBuyItem(RemoteConfigService.Instance.appConfig.GetInt("forcewin_cost", 78)))
+            int cost = ForceWinCost;
+            if (DevelopmentPointsManager.Instance.Spend(cost, DevelopmentPointsSource.GameplayPurchase, DevelopmentPointsManager.CreateTransactionId("force-win"), "Force win"))
             {
+                _reservedCost = cost;
                 GameManager.Instance.SetCurrentForceWinState(true);
                 _checkmarkImage.gameObject.SetActive(GameManager.Instance.GetCurrentForceWinState());
             }

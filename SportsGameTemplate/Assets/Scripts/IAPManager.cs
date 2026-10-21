@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
@@ -22,7 +24,7 @@ public class IAPManager : IDetailedStoreListener
     string _50kgemsID = "com.basketballgm.gems50k";
     string _100kgemsID = "com.basketballgm.gems100k";
 
-    public static event Action<string> OnProductPurchased;
+    public static event Action<string, string> OnProductPurchased;
 
     public IAPManager()
     {
@@ -84,7 +86,7 @@ public class IAPManager : IDetailedStoreListener
     {
         Debug.Log($"Purchased product with ID: {e.purchasedProduct.definition.id}");
 
-        OnProductPurchased?.Invoke(e.purchasedProduct.definition.id);
+        OnProductPurchased?.Invoke(e.purchasedProduct.definition.id, GetPurchaseIdentity(e.purchasedProduct));
         Dictionary<string, string> dict = new Dictionary<string, string>() { { "com.basketballgm.allstar", "2.99USD" } };
 
         if (e.purchasedProduct.definition.type == ProductType.Subscription)
@@ -109,6 +111,20 @@ public class IAPManager : IDetailedStoreListener
         }
 
         return PurchaseProcessingResult.Complete;
+    }
+
+    static string GetPurchaseIdentity(Product product)
+    {
+        if (!string.IsNullOrWhiteSpace(product.transactionID))
+            return product.transactionID;
+        if (string.IsNullOrWhiteSpace(product.receipt))
+            return string.Empty;
+
+        using (SHA256 sha256 = SHA256.Create())
+        {
+            byte[] hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(product.receipt));
+            return BitConverter.ToString(hash).Replace("-", string.Empty);
+        }
     }
 
     /// <summary>

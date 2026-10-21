@@ -17,6 +17,8 @@ public class Navigation : SerializedMonoBehaviour
     public Dictionary<CanvasKey, Canvas> CanvasDatabase;
 
     public static event Action OnNewScreenOpened;
+    public static event Action<CanvasKey> OnScreenOpened;
+    public CanvasKey CurrentScreen { get; private set; }
 
     private void Awake()
     {
@@ -51,7 +53,7 @@ public class Navigation : SerializedMonoBehaviour
         if (!overlay)
             DisableAllCanvasses();
 
-        AddToOpenCanvasses(GetCanvas(canvasKey));
+        AddToOpenCanvasses(GetCanvas(canvasKey), canvasKey);
         Canvas canvas = GetCanvas(canvasKey);
         canvas.enabled = true;
 
@@ -70,7 +72,7 @@ public class Navigation : SerializedMonoBehaviour
         if (!overlay)
             DisableAllCanvasses();
 
-        AddToOpenCanvasses(GetCanvas(canvasKey));
+        AddToOpenCanvasses(GetCanvas(canvasKey), canvasKey);
         Canvas canvas = GetCanvas(canvasKey);
         canvas.enabled = true;
 
@@ -89,7 +91,7 @@ public class Navigation : SerializedMonoBehaviour
         if (!overlay)
             DisableAllCanvasses();
 
-        AddToOpenCanvasses(GetCanvas(canvasKey));
+        AddToOpenCanvasses(GetCanvas(canvasKey), canvasKey);
         Canvas canvas = GetCanvas(canvasKey);
         canvas.enabled = true;
 
@@ -108,7 +110,7 @@ public class Navigation : SerializedMonoBehaviour
         if (!overlay)
             DisableAllCanvasses();
 
-        AddToOpenCanvasses(GetCanvas(canvasKey));
+        AddToOpenCanvasses(GetCanvas(canvasKey), canvasKey);
         Canvas canvas = GetCanvas(canvasKey);
         canvas.enabled = true;
 
@@ -127,7 +129,7 @@ public class Navigation : SerializedMonoBehaviour
         if (!overlay)
             DisableAllCanvasses();
 
-        AddToOpenCanvasses(GetCanvas(canvasKey));
+        AddToOpenCanvasses(GetCanvas(canvasKey), canvasKey);
         Canvas canvas = GetCanvas(canvasKey);
         canvas.enabled = true;
 
@@ -141,7 +143,7 @@ public class Navigation : SerializedMonoBehaviour
         SetBackButton();
     }
 
-    private void AddToOpenCanvasses(Canvas canvas)
+    private void AddToOpenCanvasses(Canvas canvas, CanvasKey canvasKey)
     {
         if (canvas == GetCanvas(CanvasKey.MainMenu))
         {
@@ -167,7 +169,9 @@ public class Navigation : SerializedMonoBehaviour
             _openedCanvasses[i].sortingOrder = index;
         }
 
+        CurrentScreen = canvasKey;
         OnNewScreenOpened?.Invoke();
+        OnScreenOpened?.Invoke(canvasKey);
     }
 
     public void GoToScreen(bool overlay, CanvasKey canvasKey)
@@ -175,7 +179,7 @@ public class Navigation : SerializedMonoBehaviour
         if (!overlay)
             DisableAllCanvasses();
 
-        AddToOpenCanvasses(GetCanvas(canvasKey));
+        AddToOpenCanvasses(GetCanvas(canvasKey), canvasKey);
         Canvas canvas = GetCanvas(canvasKey);
         canvas.enabled = true;
 
@@ -184,21 +188,21 @@ public class Navigation : SerializedMonoBehaviour
 
     public void GoToScreen(bool overlay, CanvasKey canvasKey, int coinsNeeded)
     {
-        if (coinsNeeded > GameManager.Instance.GetGems())
+        if (!DevelopmentPointsManager.Instance.CanAfford(coinsNeeded))
         {
             GoToScreen(true, CanvasKey.Store);
             return;
         }
         else
         {
-            // Subtract the gems off your current balance
-            GameManager.Instance.AddToGems(-coinsNeeded);
+            DevelopmentPointsManager.Instance.Spend(coinsNeeded, DevelopmentPointsSource.GameplayPurchase,
+                DevelopmentPointsManager.CreateTransactionId("screen:" + canvasKey), canvasKey.ToString());
         }
 
         if (!overlay)
             DisableAllCanvasses();
 
-        AddToOpenCanvasses(GetCanvas(canvasKey));
+        AddToOpenCanvasses(GetCanvas(canvasKey), canvasKey);
         Canvas canvas = GetCanvas(canvasKey);
         canvas.enabled = true;
 

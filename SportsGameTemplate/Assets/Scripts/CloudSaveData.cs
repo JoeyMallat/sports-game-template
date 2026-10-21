@@ -7,12 +7,14 @@ public class CloudSaveData
     public bool PremiumStatus;
     public int GemAmount;
     public List<CloudInventoryItem> Inventory;
+    public DevelopmentPointsSaveData DevelopmentPoints;
 
-    public CloudSaveData(float salaryCapIncrease, bool premiumStatus, int gems, List<OwnedGameItem> items)
+    public CloudSaveData(float salaryCapIncrease, bool premiumStatus, int gems, List<OwnedGameItem> items, DevelopmentPointsSaveData developmentPoints = null)
     {
         SalaryCapIncrease = salaryCapIncrease;
         PremiumStatus = premiumStatus;
         GemAmount = gems;
+        DevelopmentPoints = developmentPoints;
         Inventory = new List<CloudInventoryItem>();
 
         foreach (OwnedGameItem item in items)

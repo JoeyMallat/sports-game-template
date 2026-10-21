@@ -67,21 +67,20 @@ public class GameManager : MonoBehaviour
 
     public void AddToGems(int gemsToEdit)
     {
-        _gems += gemsToEdit;
-        OnGemsUpdated.Invoke(new CloudSaveData(_salaryCapIncrease, _premiumStatus, _gems, _ownedGameItems));
+        if (DevelopmentPointsManager.Instance == null || gemsToEdit == 0)
+            return;
+
+        string transactionId = DevelopmentPointsManager.CreateTransactionId("legacy-currency");
+        if (gemsToEdit > 0)
+            DevelopmentPointsManager.Instance.Award(gemsToEdit, DevelopmentPointsSource.Migration, transactionId, "Legacy currency grant");
+        else
+            DevelopmentPointsManager.Instance.Spend(-gemsToEdit, DevelopmentPointsSource.GameplayPurchase, transactionId, "Legacy currency spend");
     }
 
     public bool CheckBuyItem(int cost)
     {
-        if (cost <= _gems)
-        {
-            AddToGems(-cost);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return DevelopmentPointsManager.Instance != null && DevelopmentPointsManager.Instance.Spend(
+            cost, DevelopmentPointsSource.GameplayPurchase, DevelopmentPointsManager.CreateTransactionId("legacy-purchase"), "Legacy purchase");
     }
 
     public void SetPremiumStatus(bool status, bool save)
@@ -114,6 +113,11 @@ public class GameManager : MonoBehaviour
     public float GetSalaryCapIncrease()
     {
         return _salaryCapIncrease;
+    }
+
+    public void RestoreSalaryCapIncrease(float salaryCapIncrease)
+    {
+        _salaryCapIncrease = Mathf.Max(0f, salaryCapIncrease);
     }
 
     public void ResetSalaryCapIncrease()
@@ -187,6 +191,8 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        if (DevelopmentPointsManager.Instance != null)
+            DevelopmentPointsManager.Instance.StartNewCareerIdentity();
         TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(_selectedTeamID)));
         FirebaseAnalytics.LogEvent("team_picked", new Parameter("team", LeagueSystem.Instance.GetTeam(_selectedTeamID).GetTeamName()));
         OnGameStarted?.Invoke(SeasonStage.RegularSeason, 0);
@@ -257,7 +263,7 @@ public class GameManager : MonoBehaviour
 
         if (_currentWeek == 10 && LeagueSystem.Instance.GetTeam(_selectedTeamID).GetSeed() < 10)
         {
-            Notification.Instance.ShowNotification("Reminder: you can get free gems by reviewing the game and watching an ad. Go to the store to get your free gems!", NotificationType.Reminder, 2);
+            Notification.Instance.ShowNotification("Reminder: you can get free DP by reviewing the game and watching an ad. Go to the store to claim it!", NotificationType.Reminder, 2);
         }
 
         if (_currentWeek % 25 == 0)
@@ -277,6 +283,11 @@ public class GameManager : MonoBehaviour
     }
 
     public int GetGems()
+    {
+        return DevelopmentPointsManager.Instance != null ? DevelopmentPointsManager.Instance.CurrentBalance : _gems;
+    }
+
+    public int GetLegacyGemBalance()
     {
         return _gems;
     }

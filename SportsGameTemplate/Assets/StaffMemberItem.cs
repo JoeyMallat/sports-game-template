@@ -1,6 +1,5 @@
 using System;
 using TMPro;
-using Unity.Services.RemoteConfig;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,7 +19,7 @@ public class StaffMemberItem : MonoBehaviour
         _hirePriceText.text = CalculatePriceString(staffMember);
         _hireButton.onClick.RemoveAllListeners();
 
-        _hireButton.onClick.AddListener(() => { if (GameManager.Instance.CheckBuyItem(CalculatePrice(staffMember))) { OnStaffHired?.Invoke(staffMember, populateIndex); Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID())); } else { Navigation.Instance.GoToScreen(true, CanvasKey.Store); } });
+        _hireButton.onClick.AddListener(() => { int cost = CalculatePrice(staffMember); if (cost == 0 || DevelopmentPointsManager.Instance.Spend(cost, DevelopmentPointsSource.CoachingStaff, DevelopmentPointsManager.CreateTransactionId("staff-hire"), "Hire coaching staff")) { OnStaffHired?.Invoke(staffMember, populateIndex); Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID())); } else { Navigation.Instance.GoToScreen(true, CanvasKey.Store); } });
     }
 
     private string GetBoostText(BoostType boostType, float v)
@@ -32,7 +31,7 @@ public class StaffMemberItem : MonoBehaviour
     {
         int price = CalculatePrice(staffMember);
 
-        return $"Hire for <color=\"White\">{price} <sprite name=\"Gem\">";
+        return $"Hire for <color=\"White\">{price} DP";
     }
 
     private int CalculatePrice(StaffMember staffMember)

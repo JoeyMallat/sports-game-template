@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using Firebase.Analytics;
 using TMPro;
-using Unity.Services.Authentication;
-using Unity.Services.RemoteConfig;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MM_OfficeView : MonoBehaviour, ISettable
 {
+    const int SalaryCapIncreaseCost = 46;
+    const int WheelSpinCost = 12;
     [SerializeField] GameObject _freeSpinNotifier;
     [SerializeField] Image _salaryFill;
     [SerializeField] TextMeshProUGUI _salaryText;
@@ -32,8 +32,12 @@ public class MM_OfficeView : MonoBehaviour, ISettable
 
     private void Start()
     {
-        GameManager.OnGemsUpdated += UpdateBalance;
-        AuthenticationService.Instance.SignedIn += SetFreeSpinButton;
+        DevelopmentPointsManager.OnDevelopmentPointsChanged += UpdateBalance;
+    }
+
+    void OnDestroy()
+    {
+        DevelopmentPointsManager.OnDevelopmentPointsChanged -= UpdateBalance;
     }
 
     public void SetDetails<T>(T item) where T : class
@@ -46,17 +50,17 @@ public class MM_OfficeView : MonoBehaviour, ISettable
         _salaryText.text = $"{team.GetTotalSalaryAmount().ConvertToMonetaryString()}  <color=\"white\">/  {(ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease())).ConvertToMonetaryString()}";
 
         _increaseSalaryCapButton.onClick.RemoveAllListeners();
-        _increaseSalaryCapButton.onClick.AddListener(() => { if (GameManager.Instance.CheckBuyItem(RemoteConfigService.Instance.appConfig.GetInt("increasesalarycap_cost", 46))) { GameManager.Instance.SetSalaryCapIncrease(0.2f, true); SetDetails(team); } else { Navigation.Instance.GoToScreen(true, CanvasKey.Store); } });
-        _increaseSalaryCapText.text = $"Increase salary cap (+20%)\n<color=\"white\"> {RemoteConfigService.Instance.appConfig.GetInt("increasesalarycap_cost", 46)} <sprite name=\"Gem\">";
+        _increaseSalaryCapButton.onClick.AddListener(() => { if (DevelopmentPointsManager.Instance.Spend(SalaryCapIncreaseCost, DevelopmentPointsSource.GameplayPurchase, DevelopmentPointsManager.CreateTransactionId("salary-cap"), "Salary cap increase")) { GameManager.Instance.SetSalaryCapIncrease(0.2f, true); SetDetails(team); } else { Navigation.Instance.GoToScreen(true, CanvasKey.Store); } });
+        _increaseSalaryCapText.text = $"Increase salary cap (+20%)\n<color=\"white\"> {SalaryCapIncreaseCost} DP";
 
-        _currentBalanceText.text = $"club house   <color=#DA7100>  Balance   <color=\"white\">{GameManager.Instance.GetGems()} <sprite name=\"Gem\">";
+        _currentBalanceText.text = $"club house   <color=#DA7100>  Balance   <color=\"white\">{DevelopmentPointsManager.Instance.CurrentBalance} DP";
 
         SetFreeSpinButton();
 
         _paidSpinButton.onClick.RemoveAllListeners();
-        _paidSpinButton.onClick.AddListener(() => GoToBallGame(RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12)));
-        _paidSpinButton.onClick.AddListener(() => FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventSpendVirtualCurrency, new Parameter("gems_spent", RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12))));
-        _paidSpinCostText.text = $"Spin wheel    <color=\"white\">{RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12)} <sprite name=\"Gem\">";
+        _paidSpinButton.onClick.AddListener(() => GoToBallGame(WheelSpinCost));
+        _paidSpinButton.onClick.AddListener(() => FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventSpendVirtualCurrency, new Parameter("dp_spent", WheelSpinCost)));
+        _paidSpinCostText.text = $"Spin wheel    <color=\"white\">{WheelSpinCost} DP";
 
         _storeButton.onClick.RemoveAllListeners();
         _storeButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(true, CanvasKey.Store)));
@@ -91,13 +95,13 @@ public class MM_OfficeView : MonoBehaviour, ISettable
         _goToInventoryButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(true, CanvasKey.ItemInventory, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()))));
     }
 
-    private async void SetFreeSpinButton()
+    private void SetFreeSpinButton()
     {
-        TimeObject timeObject = await FindFirstObjectByType<CloudSaveManager>().LoadTime();
+        LocalSaveManager saveManager = FindFirstObjectByType<LocalSaveManager>();
+        if (saveManager == null) return;
+        DateTime freeSpinTime = saveManager.GetFreeSpinTime();
 
-        if (timeObject == null) return;
-
-        if ((DateTime.Now - timeObject.FreeSpinTime).TotalHours > 24)
+        if ((DateTime.Now - freeSpinTime).TotalHours > 24)
         {
             _freeSpinNotifier.SetActive(true);
             _freeSpinTimeLeftText.gameObject.SetActive(false);
@@ -112,7 +116,7 @@ public class MM_OfficeView : MonoBehaviour, ISettable
             _freeSpinNotifier.SetActive(false);
             _freeSpinTimeLeftText.gameObject.SetActive(true);
             _freeSpinButton.ToggleStoreButtonStatus(false);
-            _freeSpinTimeLeftText.text = $"Available in {Mathf.FloorToInt((float)(24 - (DateTime.Now - timeObject.FreeSpinTime).TotalHours)).ToString("F0")} hours";
+            _freeSpinTimeLeftText.text = $"Available in {Mathf.FloorToInt((float)(24 - (DateTime.Now - freeSpinTime).TotalHours)).ToString("F0")} hours";
         }
     }
 
@@ -122,8 +126,8 @@ public class MM_OfficeView : MonoBehaviour, ISettable
         FindAnyObjectByType<BallSystem>().SetStartingState();
     }
 
-    private void UpdateBalance(CloudSaveData data)
+    private void UpdateBalance(DevelopmentPointsChange change)
     {
-        _currentBalanceText.text = $"club house   <color=#DA7100>  Balance   <color=\"white\">{GameManager.Instance.GetGems()} <sprite name=\"Gem\">";
+        _currentBalanceText.text = $"club house   <color=#DA7100>  Balance   <color=\"white\">{change.NewBalance} DP";
     }
 }

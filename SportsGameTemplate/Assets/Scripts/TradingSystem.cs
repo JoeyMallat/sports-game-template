@@ -27,6 +27,7 @@ public class TradingSystem : MonoBehaviour
 
     public static event Action<int, int, List<ITradeable>, bool> OnAssetsUpdated;
     public static event Action OnTradeCompleted;
+    public static event Action<IReadOnlyCollection<string>> OnTradeAccepted;
 
     private void Awake()
     {
@@ -54,6 +55,10 @@ public class TradingSystem : MonoBehaviour
 
         FirebaseAnalytics.LogEvent("trade_confirmed", new Parameter("value_sent", GetTotalTradeValue(_teamATradingAssets)), new Parameter("value_received", GetTotalTradeValue(_teamBTradingAssets)));
 
+        HashSet<string> acceptedAssetIDs = new HashSet<string>();
+        AddTradeableIDs(_teamATradingAssets, acceptedAssetIDs);
+        AddTradeableIDs(_teamBTradingAssets, acceptedAssetIDs);
+
         TradeAssets(_teamAID, _teamBID, _teamATradingAssets);
         TradeAssets(_teamBID, _teamAID, _teamBTradingAssets);
         teamA.GenerateLineup();
@@ -61,7 +66,11 @@ public class TradingSystem : MonoBehaviour
 
         ClearTrades(false);
         UpdateAcceptButtonAndText(false, "");
+        OnTradeAccepted?.Invoke(acceptedAssetIDs);
         OnTradeCompleted?.Invoke();
+        LocalSaveManager localSaveManager = FindFirstObjectByType<LocalSaveManager>();
+        if (localSaveManager != null)
+            localSaveManager.SaveGame(false);
 
         Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
         Navigation.Instance.GoToScreen(true, CanvasKey.Team, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
@@ -73,6 +82,38 @@ public class TradingSystem : MonoBehaviour
     {
         _willAlwaysAccept = true;
         CheckTradeWillingness(1, _teamBID, _teamBTradingAssets, true);
+    }
+
+    public bool OpenIncomingTradeOffer(TradeOffer tradeOffer)
+    {
+        if (tradeOffer == null)
+            return false;
+
+        (List<ITradeable> requestedAssets, List<ITradeable> offeredAssets) = tradeOffer.GetAssets();
+        if (requestedAssets.Count == 0 || offeredAssets.Count == 0)
+            return false;
+
+        _teamAID = GameManager.Instance.GetTeamID();
+        _teamBID = tradeOffer.GetOfferingTeamID();
+        _teamATradingAssets = new List<ITradeable>(requestedAssets);
+        _teamBTradingAssets = new List<ITradeable>(offeredAssets);
+        _willAlwaysAccept = true;
+        UpdateBothTeamsAssets(false);
+        CheckTradeWillingness(1, _teamBID, _teamBTradingAssets, true);
+        Navigation.Instance.GoToScreen(true, CanvasKey.Trade);
+        return true;
+    }
+
+    static void AddTradeableIDs(List<ITradeable> assets, HashSet<string> assetIDs)
+    {
+        if (assets == null)
+            return;
+
+        for (int i = 0; i < assets.Count; i++)
+        {
+            if (assets[i] != null)
+                assetIDs.Add(assets[i].GetTradeableID());
+        }
     }
 
     private void GenerateTradeForPlayer(SeasonStage seasonStage, int week)
@@ -340,11 +381,14 @@ public class TradingSystem : MonoBehaviour
             _confirmTradeButton.ToggleButtonStatus(false);
         }
 
-        if (GameManager.Instance.GetGems() >= 1)
+        if (DevelopmentPointsManager.Instance.CanAfford(1))
         {
             _confirmTradeButton.onClick.RemoveAllListeners();
-            _confirmTradeButton.onClick.AddListener(() => ConfirmTrade());
-            _confirmTradeButton.onClick.AddListener(() => GameManager.Instance.AddToGems(-1));
+            _confirmTradeButton.onClick.AddListener(() =>
+            {
+                if (DevelopmentPointsManager.Instance.Spend(1, DevelopmentPointsSource.GameplayPurchase, DevelopmentPointsManager.CreateTransactionId("trade"), "Confirm trade"))
+                    ConfirmTrade();
+            });
         }
         else
         {

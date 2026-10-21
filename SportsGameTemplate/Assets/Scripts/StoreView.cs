@@ -1,7 +1,6 @@
 using System;
 using Firebase.Analytics;
 using TMPro;
-using Unity.Services.RemoteConfig;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,9 +18,16 @@ public class StoreView : MonoBehaviour, ISettable
     private void Awake()
     {
         SetDetails(this);
-        GameManager.OnStoreItemsUpdated += UpdateBalance;
         GameManager.OnStoreItemsUpdated += TogglePremiumObject;
+        DevelopmentPointsManager.OnDevelopmentPointsChanged += UpdateBalance;
         RewardedAdsManager.OnRewardedAdWatched += GrantRewardedAdReward;
+    }
+
+    void OnDestroy()
+    {
+        GameManager.OnStoreItemsUpdated -= TogglePremiumObject;
+        DevelopmentPointsManager.OnDevelopmentPointsChanged -= UpdateBalance;
+        RewardedAdsManager.OnRewardedAdWatched -= GrantRewardedAdReward;
     }
 
     private void ToggleReviewButton()
@@ -34,17 +40,14 @@ public class StoreView : MonoBehaviour, ISettable
         {
             _reviewForGemsButton.ToggleStoreButtonStatus(true);
             _reviewForGemsButton.onClick.RemoveAllListeners();
-            _reviewForGemsButton.onClick.AddListener(() => GameManager.Instance.AddToGems(20));
+            _reviewForGemsButton.onClick.AddListener(() => DevelopmentPointsManager.Instance.Award(
+                DevelopmentPointsManager.Instance.Settings != null ? DevelopmentPointsManager.Instance.Settings.ReviewReward : 20,
+                DevelopmentPointsSource.ReviewReward,
+                "review:app-store",
+                "Store review reward"));
             _reviewForGemsButton.onClick.AddListener(() => PlayerPrefs.SetInt("reviewed", 1));
 
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                _reviewForGemsButton.onClick.AddListener(() => Application.OpenURL(RemoteConfigService.Instance.appConfig.GetString("review_link_android", "market://details?id=" + Application.productName)));
-            }
-            else
-            {
-                _reviewForGemsButton.onClick.AddListener(() => Application.OpenURL(RemoteConfigService.Instance.appConfig.GetString("review_link_ios", "market://details?id=" + Application.productName)));
-            }
+            _reviewForGemsButton.onClick.AddListener(() => Application.OpenURL("market://details?id=" + Application.productName));
 
             _reviewForGemsButton.onClick.AddListener(() => ToggleReviewButton());
         }
@@ -58,13 +61,12 @@ public class StoreView : MonoBehaviour, ISettable
 
     private void ToggleSubscriptionObject()
     {
-        _subscriptionObject.SetActive(RemoteConfigService.Instance.appConfig.GetBool("show_subscription", false));
+        _subscriptionObject.SetActive(false);
     }
 
-    private void UpdateBalance(int gems, bool premiumStatus)
+    private void UpdateBalance(DevelopmentPointsChange change)
     {
-        Debug.Log($"Set balance to {GameManager.Instance.GetGems()}");
-        _balanceText.text = $"Current Balance: {GameManager.Instance.GetGems()} <sprite name=\"Gem\">";
+        _balanceText.text = $"Current Balance: {DevelopmentPointsManager.Instance.CurrentBalance} DP";
         _premiumButton.ToggleStoreButtonStatus(!GameManager.Instance.GetPremiumStatus());
     }
 
@@ -72,7 +74,8 @@ public class StoreView : MonoBehaviour, ISettable
     {
         if (adCode == "gems")
         {
-            GameManager.Instance.AddToGems(5);
+            int reward = DevelopmentPointsManager.Instance.Settings != null ? DevelopmentPointsManager.Instance.Settings.RewardedAdvertisementReward : 5;
+            DevelopmentPointsManager.Instance.Award(reward, DevelopmentPointsSource.RewardedAdvertisement, DevelopmentPointsManager.CreateTransactionId("rewarded-ad:" + adCode), "Rewarded advertisement");
             _rewardedAdsButton.ToggleStoreButtonStatus(false);
         }
     }
@@ -82,6 +85,8 @@ public class StoreView : MonoBehaviour, ISettable
         ToggleSubscriptionObject();
         ToggleReviewButton();
         TogglePromoItem();
+        if (DevelopmentPointsManager.Instance != null)
+            _balanceText.text = $"Current Balance: {DevelopmentPointsManager.Instance.CurrentBalance} DP";
 
         FirebaseAnalytics.LogEvent("opened_store");
     }

@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
-using Unity.Services.RemoteConfig;
 using UnityEngine;
 
 public class UnityServicesInitializing : MonoBehaviour
@@ -22,7 +21,7 @@ public class UnityServicesInitializing : MonoBehaviour
     {
         // initialize Unity's authentication and core services, however check for internet connection
         // in order to fail gracefully without throwing exception if connection does not exist
-        if (Utilities.CheckForInternetConnection())
+        if (Application.internetReachability != NetworkReachability.NotReachable)
         {
             await InitializeAsync();
         }

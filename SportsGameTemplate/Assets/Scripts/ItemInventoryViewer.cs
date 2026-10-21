@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Firebase.Analytics;
 using TMPro;
-using Unity.Services.RemoteConfig;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ItemInventoryViewer : MonoBehaviour, ISettable
 {
+    const int WheelSpinCost = 12;
     [SerializeField] bool _filterActive;
     [SerializeField] ItemType _typeFilter;
 
@@ -90,9 +90,9 @@ public class ItemInventoryViewer : MonoBehaviour, ISettable
             _noItemsObject.SetActive(true);
             _spinWheelButton.onClick.RemoveAllListeners();
             _spinWheelButton.onClick.RemoveAllListeners();
-            _spinWheelButton.onClick.AddListener(() => GoToBallGame(RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12)));
-            _spinWheelButton.onClick.AddListener(() => FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventSpendVirtualCurrency, new Parameter("gems_spent", RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12))));
-            _spinWheelButtonText.text = $"Spin wheel    <color=\"white\">{RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12)} <sprite name=\"Gem\">";
+            _spinWheelButton.onClick.AddListener(() => GoToBallGame(WheelSpinCost));
+            _spinWheelButton.onClick.AddListener(() => FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventSpendVirtualCurrency, new Parameter("dp_spent", WheelSpinCost)));
+            _spinWheelButtonText.text = $"Spin wheel    <color=\"white\">{WheelSpinCost} DP";
         }
     }
 
@@ -140,9 +140,9 @@ public class ItemInventoryViewer : MonoBehaviour, ISettable
             _itemsObject.SetActive(false);
             _spinWheelButton.onClick.RemoveAllListeners();
             _spinWheelButton.onClick.RemoveAllListeners();
-            _spinWheelButton.onClick.AddListener(() => GoToBallGame(RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12)));
-            _spinWheelButton.onClick.AddListener(() => FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventSpendVirtualCurrency, new Parameter("gems_spent", RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12))));
-            _spinWheelButtonText.text = $"Spin wheel    <color=\"white\">{RemoteConfigService.Instance.appConfig.GetInt("wheelspin_cost", 12)} <sprite name=\"Gem\">";
+            _spinWheelButton.onClick.AddListener(() => GoToBallGame(WheelSpinCost));
+            _spinWheelButton.onClick.AddListener(() => FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventSpendVirtualCurrency, new Parameter("dp_spent", WheelSpinCost)));
+            _spinWheelButtonText.text = $"Spin wheel    <color=\"white\">{WheelSpinCost} DP";
         }
     }
 

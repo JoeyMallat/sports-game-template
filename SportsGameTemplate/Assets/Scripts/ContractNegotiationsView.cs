@@ -1,12 +1,12 @@
 using System;
 using Firebase.Analytics;
 using TMPro;
-using Unity.Services.RemoteConfig;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ContractNegotiationsView : MonoBehaviour, ISettable
 {
+    const int SalaryCapIncreaseCost = 46;
     [SerializeField] TextMeshProUGUI _playerNameText;
     [SerializeField] Image _playerPortrait;
     [SerializeField] TextMeshProUGUI _ageText;
@@ -74,10 +74,13 @@ public class ContractNegotiationsView : MonoBehaviour, ISettable
     {
         _signContractButton.onClick.RemoveAllListeners();
 
-        if (GameManager.Instance.GetGems() >= 1)
+        if (DevelopmentPointsManager.Instance.CanAfford(1))
         {
-            _signContractButton.onClick.AddListener(() => OnContractSigned?.Invoke());
-            _signContractButton.onClick.AddListener(() => GameManager.Instance.AddToGems(-1));
+            _signContractButton.onClick.AddListener(() =>
+            {
+                if (DevelopmentPointsManager.Instance.Spend(1, DevelopmentPointsSource.GameplayPurchase, DevelopmentPointsManager.CreateTransactionId("player-contract"), "Player contract negotiation"))
+                    OnContractSigned?.Invoke();
+            });
             _signContractButton.onClick.AddListener(() => FirebaseAnalytics.LogEvent("extended_contract"));
         }
         else
@@ -100,8 +103,21 @@ public class ContractNegotiationsView : MonoBehaviour, ISettable
         _salaryTile.InitializeTile(player.GetContract().GetYearlySalary());
         _contractLengthTile.InitializeTile(player.GetContract().GetYearsOnContract());
 
-        _increaseSalaryCapButton.onClick.AddListener(GameManager.Instance.CheckBuyItem(RemoteConfigService.Instance.appConfig.GetInt("increasesalarycap_cost", 46)) ? () => { GameManager.Instance.SetSalaryCapIncrease(0.2f, true); SetDetails(player); } : () => Navigation.Instance.GoToScreen(true, CanvasKey.Store));
-        _increaseSalaryCapText.text = $"Increase salary cap by 20%\n<color=\"white\"> {RemoteConfigService.Instance.appConfig.GetInt("increasesalarycap_cost", 46)} <sprite name=\"Gem\">";
+        _increaseSalaryCapButton.onClick.RemoveAllListeners();
+        _increaseSalaryCapButton.onClick.AddListener(() =>
+        {
+            int cost = SalaryCapIncreaseCost;
+            if (DevelopmentPointsManager.Instance.Spend(cost, DevelopmentPointsSource.GameplayPurchase, DevelopmentPointsManager.CreateTransactionId("salary-cap"), "Salary cap increase"))
+            {
+                GameManager.Instance.SetSalaryCapIncrease(0.2f, true);
+                SetDetails(player);
+            }
+            else
+            {
+                Navigation.Instance.GoToScreen(true, CanvasKey.Store);
+            }
+        });
+        _increaseSalaryCapText.text = $"Increase salary cap by 20%\n<color=\"white\"> {SalaryCapIncreaseCost} DP";
     }
 
     private void UpdateSalaryCapImpact(int total, int change)

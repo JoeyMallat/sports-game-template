@@ -17,8 +17,9 @@ public class MatchOptionsScreen : MonoBehaviour, ISettable
             return;
         }
 
+        SetButtonsInteractable(true);
         _skipToResultButton.onClick.RemoveAllListeners();
-        _skipToResultButton.onClick.AddListener(() => SkipToResult(match));
+        _skipToResultButton.onClick.AddListener(SkipToResult);
 
         _liveSimButton.onClick.RemoveAllListeners();
         _liveSimButton.onClick.AddListener(() => LiveSim(match));
@@ -26,12 +27,19 @@ public class MatchOptionsScreen : MonoBehaviour, ISettable
 
     private void LiveSim(Match match)
     {
+        SetButtonsInteractable(false);
         Navigation.Instance.GoToScreen(false, CanvasKey.LiveMatch, match);
     }
 
-    private void SkipToResult(Match match)
+    private void SkipToResult()
     {
+        SetButtonsInteractable(false);
         GameManager.Instance.Advance();
-        Navigation.Instance.GoToScreen(false, CanvasKey.MatchResult, match);
+    }
+
+    void SetButtonsInteractable(bool interactable)
+    {
+        _skipToResultButton.interactable = interactable;
+        _liveSimButton.interactable = interactable;
     }
 }

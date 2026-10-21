@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Firebase.Analytics;
 using TMPro;
-using Unity.Services.RemoteConfig;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -43,13 +42,20 @@ public class DraftPlayerUI : MonoBehaviour, ISettable
     {
         _scoutButton.ToggleButtonStatus(player.GetScoutingPercentage() <= .99f);
 
-        _scoutButton.GetComponentInChildren<TextMeshProUGUI>().text = $"Scout player <color=\"white\">\n{RemoteConfigService.Instance.appConfig.GetInt("scoutplayer_cost", 2)} <sprite name=\"Gem\">";
+        int scoutingCost = DevelopmentPointsManager.Instance.Settings != null ? DevelopmentPointsManager.Instance.Settings.DraftScoutingReportCost : 100;
+        _scoutButton.GetComponentInChildren<TextMeshProUGUI>().text = $"Scout player <color=\"white\">\n{scoutingCost} DP";
         _scoutButton.onClick.RemoveAllListeners();
-        if (GameManager.Instance.CheckBuyItem(2))
+        if (DevelopmentPointsManager.Instance.CanAfford(scoutingCost))
         {
-            _scoutButton.onClick.AddListener(() => player.ScoutPlayer());
-            _scoutButton.onClick.AddListener(() => FirebaseAnalytics.LogEvent("player_scouted", new Parameter("percentage_scouted", player.GetScoutingPercentage())));
-            _scoutButton.onClick.AddListener(() => SetDetails(player));
+            _scoutButton.onClick.AddListener(() =>
+            {
+                if (DevelopmentPointsManager.Instance.Spend(scoutingCost, DevelopmentPointsSource.DraftScoutingReport, DevelopmentPointsManager.CreateTransactionId("draft-scouting"), player.GetFullName()))
+                {
+                    player.ScoutPlayer();
+                    FirebaseAnalytics.LogEvent("player_scouted", new Parameter("percentage_scouted", player.GetScoutingPercentage()));
+                    SetDetails(player);
+                }
+            });
         }
         else
         {

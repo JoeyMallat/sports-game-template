@@ -11,75 +11,72 @@ public class Purchaser : MonoBehaviour
     {
         _iapManager = new IAPManager();
         IAPManager.OnProductPurchased += DistributeBoughtItems;
-        CheckSubscription();
     }
 
-    private void DistributeBoughtItems(string productID)
+    void OnDestroy()
     {
+        IAPManager.OnProductPurchased -= DistributeBoughtItems;
+    }
+
+    private void DistributeBoughtItems(string productID, string purchaseTransactionId)
+    {
+        string transactionId = string.IsNullOrWhiteSpace(purchaseTransactionId) ? string.Empty : "iap:" + purchaseTransactionId;
+        int grant = DevelopmentPointsManager.Instance != null ? DevelopmentPointsManager.Instance.GetProductGrant(productID) : 0;
+        if (grant > 0 && !string.IsNullOrEmpty(transactionId))
+            DevelopmentPointsManager.Instance.Award(grant, DevelopmentPointsSource.InAppPurchase, transactionId, productID);
+
         switch (productID)
         {
             case "com.basketballgm.allstar":
                 FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventPurchase, new Parameter("value", 2.99f));
-                GameManager.Instance.AddToGems(250);
                 break;
             case "com.basketballgm.mvp":
                 FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventPurchase, new Parameter("value", 6.99f));
-                GameManager.Instance.AddToGems(250);
                 GameManager.Instance.SetPremiumStatus(true, true);
                 break;
             case "com.basketballgm.mvppromo":
                 FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventPurchase, new Parameter("value", 3.49f));
-                GameManager.Instance.AddToGems(250);
                 GameManager.Instance.SetPremiumStatus(true, true);
                 break;
             case "com.basketballgm.promo599":
                 FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventPurchase, new Parameter("value", 5.99f));
-                GameManager.Instance.AddToGems(2024);
                 break;
             case "com.basketballgm.gems10":
-                GameManager.Instance.AddToGems(10);
                 FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventPurchase, new Parameter("value", 0.99f));
 
                 break;
             case "com.basketballgm.gems100":
                 // 100 gems + 10 gems free
-                GameManager.Instance.AddToGems(110);
                 FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventPurchase, new Parameter("value", 2.99f));
 
                 break;
             case "com.basketballgm.gems250":
                 // 250 gems + 25 gems free
-                GameManager.Instance.AddToGems(275);
                 FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventPurchase, new Parameter("value", 4.99f));
 
                 break;
             case "com.basketballgm.gems500":
                 // 500 gems + 100 gems free
-                GameManager.Instance.AddToGems(600);
                 FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventPurchase, new Parameter("value", 9.99f));
 
                 break;
             case "com.basketballgm.gems1000":
                 // 1.000 gems + 500 gems free
-                GameManager.Instance.AddToGems(1500);
                 FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventPurchase, new Parameter("value", 14.99f));
 
                 break;
             case "com.basketballgm.gems10k":
                 // 10.000 gems + 2.000 gems free
-                GameManager.Instance.AddToGems(12000);
                 FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventPurchase, new Parameter("value", 29.99f));
 
                 break;
             case "com.basketballgm.gems50k":
                 // 50.000 gems + 10.000 gems free
-                GameManager.Instance.AddToGems(60000);
                 FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventPurchase, new Parameter("value", 74.99f));
 
                 break;
             case "com.basketballgm.gems100k":
                 // 100.000 gems + 100.000 gems free
-                GameManager.Instance.AddToGems(200000);
                 FirebaseAnalytics.LogEvent(FirebaseAnalytics.EventPurchase, new Parameter("value", 99.99f));
 
                 break;
