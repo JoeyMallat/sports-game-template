@@ -1,13 +1,7 @@
 using UnityEngine;
-using UnityEngine.Advertisements;
 
-public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener
+public class AdsInitializer : MonoBehaviour
 {
-    [SerializeField] string _androidGameId;
-    [SerializeField] string _iOSGameId;
-    [SerializeField] bool _testMode = true;
-    private string _gameId;
-
     void Awake()
     {
         InitializeAds();
@@ -15,28 +9,18 @@ public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener
 
     public void InitializeAds()
     {
-#if UNITY_IOS
-            _gameId = _iOSGameId;
-#elif UNITY_ANDROID
-        _gameId = _androidGameId;
-#elif UNITY_EDITOR
-            _gameId = _androidGameId; //Only for testing the functionality in the Editor
-#endif
-        if (!Advertisement.isInitialized && Advertisement.isSupported)
+        AdmobManager manager = AdmobManager.Instance;
+
+        if (manager == null)
         {
-            Advertisement.Initialize(_gameId, _testMode, this);
+            manager = FindObjectOfType<AdmobManager>();
         }
-    }
 
+        if (manager == null)
+        {
+            manager = gameObject.AddComponent<AdmobManager>();
+        }
 
-    public void OnInitializationComplete()
-    {
-        Debug.Log("Unity Ads initialization complete.");
-        RewardedAdsManager.Instance.LoadAd();
-    }
-
-    public void OnInitializationFailed(UnityAdsInitializationError error, string message)
-    {
-        Debug.Log($"Unity Ads Initialization Failed: {error.ToString()} - {message}");
+        manager.InitializeAds();
     }
 }

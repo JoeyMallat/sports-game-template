@@ -256,11 +256,6 @@ public class GameManager : MonoBehaviour
 
         OnAdvance?.Invoke(_currentSeasonStage, _currentWeek);
 
-        if (_currentWeek % 10 == 0 && !GetPremiumStatus() && _currentWeek > 10)
-        {
-            InterstitialAdsManager.Instance.ShowAd();
-        }
-
         if (_currentWeek == 10 && LeagueSystem.Instance.GetTeam(_selectedTeamID).GetSeed() < 10)
         {
             Notification.Instance.ShowNotification("Reminder: you can get free DP by reviewing the game and watching an ad. Go to the store to claim it!", NotificationType.Reminder, 2);

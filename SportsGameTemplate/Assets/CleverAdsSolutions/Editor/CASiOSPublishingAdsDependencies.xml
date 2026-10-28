@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dependencies>
+  <iosPods>
+    <!-- PublishingAds version="4.8.0" -->
+    <iosPod name="CASMediationIronSource" version="9.5.0.1"/>
+    <iosPod name="CASMediationUnityAds" version="4.18.1.0"/>
+    <iosPod name="CASMediationGoogleAds" version="13.6.0.0"/>
+    <iosPod name="CASMediationLiftoffMonetize" version="7.7.4.0"/>
+    <iosPod name="CASMediationInMobi" version="11.3.0.0"/>
+    <iosPod name="CASMediationChartboost" version="9.12.0.0"/>
+    <iosPod name="CASMediationMintegral" version="8.1.5.0"/>
+    <iosPod name="CASMediationAppLovin" version="13.6.3.3"/>
+    <iosPod name="CASMediationPangle" version="8.1.1.0.0"/>
+    <iosPod name="CASMediationBigo" version="5.3.0.0"/>
+    <iosPod name="CASMediationYangoAds" version="8.1.0.1"/>
+    <iosPod name="CASMediationAudienceNetwork" version="6.21.1.0"/>
+    <iosPod name="CASMediationYsoNetwork" version="1.1.31.2"/>
+    <iosPod name="CASMediationCASExchange" version="4.6.3.0"/>
+    <iosPod name="CASMediationOgury" version="5.2.3.0"/>
+    <iosPod name="CASMediationMaticoo" version="2.2.0.0"/>
+    <iosPod name="CASMediationMonetrix" version="1.2.0.5"/>
+    <iosPod name="CASMediationMoloco" version="4.9.0.0"/>
+  </iosPods>
+</dependencies>

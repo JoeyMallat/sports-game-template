@@ -9,10 +9,8 @@ using UnityEngine.UI;
 
 public class TradingSystem : MonoBehaviour
 {
-    [InfoBox("@GetTotalTradeValue(_teamATradingAssets)")]
     [SerializeField] int _teamAID = 0;
     [SerializeReference] List<ITradeable> _teamATradingAssets;
-    [InfoBox("@GetTotalTradeValue(_teamBTradingAssets)")]
     [SerializeField] int _teamBID = 10;
     [SerializeReference] List<ITradeable> _teamBTradingAssets;
 
