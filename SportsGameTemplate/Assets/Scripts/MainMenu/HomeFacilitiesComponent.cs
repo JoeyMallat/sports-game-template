@@ -26,6 +26,6 @@ public class HomeFacilitiesComponent : MonoBehaviour, ISettable
         }
 
         _button.onClick.RemoveAllListeners();
-        _button.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Store));
+        _button.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Store, showMatchButton));
     }
 }

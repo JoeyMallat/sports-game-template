@@ -51,7 +51,7 @@ public class HomeTacticsComponent : MonoBehaviour, ISettable
         if (_button != null)
         {
             _button.onClick.RemoveAllListeners();
-            _button.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Tactics, team));
+            _button.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Tactics, team, showMatchButton));
         }
     }
 

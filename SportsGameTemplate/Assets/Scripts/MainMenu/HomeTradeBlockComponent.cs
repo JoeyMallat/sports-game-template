@@ -27,6 +27,6 @@ public class HomeTradeBlockComponent : MonoBehaviour, ISettable
         }
 
         _button.onClick.RemoveAllListeners();
-        _button.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Trade));
+        _button.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Trade, showMatchButton));
     }
 }

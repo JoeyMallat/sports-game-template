@@ -43,7 +43,7 @@ public class HomeRosterComponent : MonoBehaviour, ISettable
         {
             Team selectedTeam = LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID());
             _button.onClick.RemoveAllListeners();
-            _button.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Team, selectedTeam));
+            _button.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Team, selectedTeam, showMatchButton));
         }
     }
 

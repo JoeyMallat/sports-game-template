@@ -20,6 +20,6 @@ public class HomeTradeFinderComponent : MonoBehaviour, ISettable
 
         _button.onClick.RemoveAllListeners();
         _button.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() =>
-            Navigation.Instance.GoToScreen(true, CanvasKey.PlayerSearch, team)));
+            Navigation.Instance.GoToScreen(true, CanvasKey.PlayerSearch, team, showMatchButton)));
     }
 }

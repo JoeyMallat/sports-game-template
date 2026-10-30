@@ -17,22 +17,23 @@ public class NewMainMenuViewer : MonoBehaviour, ISettable
     public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         OnEnable();
+        _nextMatchButton.SetVisible(showMatchButton);
     }
 
     private void OnEnable()
     {
         Team team = LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID());
 
-        _homeTeamBarComponent.SetDetails(team);
-        _homeRosterComponent.SetDetails(team);
-        _homeTacticsComponent.SetDetails(team);
-        _homeCoachesComponent.SetDetails(StaffSystem.Instance.GetAllStaff());
-        _homeStandingsComponent.SetDetails(LeagueSystem.Instance.GetTeams());
-        _homeTradeOffersComponent.SetDetails(team);
-        _homeTradeBlockComponent.SetDetails(team);
-        _homeTradeFinderComponent.SetDetails(team);
-        _homeBudgetComponent.SetDetails(team);
-        _homeFacilitiesComponent.SetDetails(team);
+        _homeTeamBarComponent.SetDetails(team, true);
+        _homeRosterComponent.SetDetails(team, true);
+        _homeTacticsComponent.SetDetails(team, true);
+        _homeCoachesComponent.SetDetails(StaffSystem.Instance.GetAllStaff(), true);
+        _homeStandingsComponent.SetDetails(LeagueSystem.Instance.GetTeams(), true);
+        _homeTradeOffersComponent.SetDetails(team, true);
+        _homeTradeBlockComponent.SetDetails(team, true);
+        _homeTradeFinderComponent.SetDetails(team, true);
+        _homeBudgetComponent.SetDetails(team, true);
+        _homeFacilitiesComponent.SetDetails(team, true);
         _nextMatchButton.SetDetails(team);
     }
 }

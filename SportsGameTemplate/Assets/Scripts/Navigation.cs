@@ -222,7 +222,7 @@ public class Navigation : SerializedMonoBehaviour
         bool canGoBack = !liveMatchIsCurrent && (hasPreviousScreen || canReturnToMainMenu);
 
         _backButton.gameObject.SetActive(canGoBack);
-        _nextMatchButton?.SetVisible(teamSelected && current != null && current.ShowMatchButton);
+        _nextMatchButton?.SetVisible(current != null && current.ShowMatchButton);
 
         if (hasPreviousScreen && !liveMatchIsCurrent)
         {

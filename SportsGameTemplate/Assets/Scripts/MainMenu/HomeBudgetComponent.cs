@@ -26,6 +26,6 @@ public class HomeBudgetComponent : MonoBehaviour, ISettable
         }
 
         _button.onClick.RemoveAllListeners();
-        _button.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Budget, team));
+        _button.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Budget, team, showMatchButton));
     }
 }
