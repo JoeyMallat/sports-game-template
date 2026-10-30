@@ -92,7 +92,7 @@ public class LiveMatchView : MonoBehaviour, ISettable
         SetPlaybackSpeed(1f);
     }
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         Match match = item as Match;
         if (match == null)

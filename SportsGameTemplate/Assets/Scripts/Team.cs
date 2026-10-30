@@ -118,6 +118,44 @@ public class Team
         Debug.Log("Lineup changed");
     }
 
+    public void AutoAssignRotation(bool notifyLineupChanged = true)
+    {
+        string[] positions = { "Point Guard", "Shooting Guard", "Small Forward", "Power Forward", "Center" };
+        for (int i = 0; i < positions.Length; i++)
+        {
+            List<Player> players = _players
+                .Where(player => player.GetPosition() == positions[i])
+                .OrderByDescending(player => player.CalculateRatingForPosition())
+                .ToList();
+
+            AssignMinutes(players);
+            if (players.Count > 0)
+                _startingLineup.SetPosition(players[0].GetTradeableID(), positions[i]);
+        }
+
+        if (notifyLineupChanged)
+            OnLineupChanged?.Invoke(this);
+    }
+
+    static void AssignMinutes(List<Player> players)
+    {
+        if (players.Count == 0)
+            return;
+
+        const int minutesPerGame = 48;
+        int totalRating = players.Sum(player => Mathf.Max(1, player.CalculateRatingForPosition()));
+        int assignedMinutes = 0;
+        for (int i = 0; i < players.Count; i++)
+        {
+            int minutes = Mathf.FloorToInt(
+                Mathf.Max(1, players[i].CalculateRatingForPosition()) / (float)totalRating * minutesPerGame);
+            players[i].SetMinutes(minutes);
+            assignedMinutes += minutes;
+        }
+
+        players[0].SetMinutes(players[0].GetMinutes() + minutesPerGame - assignedMinutes);
+    }
+
     public TeamSeason GetCurrentSeasonStats()
     {
         if (_seasonStats == null)

@@ -36,7 +36,7 @@ public class RewardsView : MonoBehaviour, ISettable
         TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.Rewards, pickedBall));
     }
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         BallItem rewardTier = item as BallItem;
 
@@ -70,7 +70,7 @@ public class RewardsView : MonoBehaviour, ISettable
         _spinAgainButton.onClick.AddListener(() => FindAnyObjectByType<BallSystem>().SetStartingState());
         _spinAgainButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.BallGame, spinWheelAgainCost)));
 
-        _mainMenuButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()))));
+        _mainMenuButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()), true)));
 
         _assignItemButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(true, CanvasKey.Team, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()))));
     }

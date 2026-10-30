@@ -359,7 +359,7 @@ public class LeagueSystem : MonoBehaviour
                     }
                     else
                     {
-                        StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { GetNextGame(seasonStage, week); Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID())); _isSimulatingGameweek = false; }, SimulateToNextMatchWithProgress()));
+                        StartCoroutine(TransitionAnimation.Instance.StartTransitionWithWaitForCompletion(() => { GetNextGame(seasonStage, week); Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, GetTeam(GameManager.Instance.GetTeamID()), true); _isSimulatingGameweek = false; }, SimulateToNextMatchWithProgress()));
                     }
                 }
                 else

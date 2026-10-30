@@ -7,7 +7,7 @@ public class StandingsViewer : MonoBehaviour, ISettable
 {
     [SerializeField] RectTransform _teamItemsRoot;
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         List<Team> teamList = item as List<Team>;
         List<TeamItem> teamItems = _teamItemsRoot.GetComponentsInChildren<TeamItem>().ToList();

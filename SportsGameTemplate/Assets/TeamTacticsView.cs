@@ -20,7 +20,7 @@ public class TeamTacticsView : MonoBehaviour, ISettable
         MinutesBar.OnMinutesChanged += UpdateMinutesRemaining;
     }
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         _team = item as Team;
 

@@ -19,7 +19,7 @@ public class StaffMemberItem : MonoBehaviour
         _hirePriceText.text = CalculatePriceString(staffMember);
         _hireButton.onClick.RemoveAllListeners();
 
-        _hireButton.onClick.AddListener(() => { int cost = CalculatePrice(staffMember); if (cost == 0 || DevelopmentPointsManager.Instance.Spend(cost, DevelopmentPointsSource.CoachingStaff, DevelopmentPointsManager.CreateTransactionId("staff-hire"), "Hire coaching staff")) { OnStaffHired?.Invoke(staffMember, populateIndex); Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID())); } else { Navigation.Instance.GoToScreen(true, CanvasKey.Store); } });
+        _hireButton.onClick.AddListener(() => { int cost = CalculatePrice(staffMember); if (cost == 0 || DevelopmentPointsManager.Instance.Spend(cost, DevelopmentPointsSource.CoachingStaff, DevelopmentPointsManager.CreateTransactionId("staff-hire"), "Hire coaching staff")) { OnStaffHired?.Invoke(staffMember, populateIndex); Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()), true); } else { Navigation.Instance.GoToScreen(true, CanvasKey.Store); } });
     }
 
     private string GetBoostText(BoostType boostType, float v)

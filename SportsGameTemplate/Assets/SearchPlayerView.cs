@@ -24,7 +24,7 @@ public class SearchPlayerView : MonoBehaviour, ISettable
 
     List<StatObject> _statObjects;
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         _statObjects = _statObjectRoot.GetComponentsInChildren<StatObject>().ToList();
 

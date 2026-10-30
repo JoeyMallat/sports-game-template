@@ -19,7 +19,7 @@ public class MM_TradeView : MonoBehaviour, ISettable
 
     [SerializeField] TextMeshProUGUI _tradeOfferCountText;
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         Team team = item as Team;
 

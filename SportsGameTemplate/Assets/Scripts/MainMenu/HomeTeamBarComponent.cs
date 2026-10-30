@@ -15,7 +15,7 @@ public class HomeTeamBarComponent : MonoBehaviour, ISettable
     [SerializeField] Image _moraleFill;
     [SerializeField] Image _ratingFill;
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         Team team = item as Team;
 

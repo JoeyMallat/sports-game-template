@@ -30,7 +30,7 @@ public class ItemInventoryViewer : MonoBehaviour, ISettable
         _typeFilter = itemType;
     }
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         if (item.GetType() == typeof(Player))
         {

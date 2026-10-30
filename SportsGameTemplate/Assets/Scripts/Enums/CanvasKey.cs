@@ -26,4 +26,5 @@ public enum CanvasKey
     Staff,
     LiveMatch,
     TradeOffers,
+    Budget,
 }

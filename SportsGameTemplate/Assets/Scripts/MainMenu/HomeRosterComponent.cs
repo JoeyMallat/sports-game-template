@@ -12,7 +12,7 @@ public class HomeRosterComponent : MonoBehaviour, ISettable
     [SerializeField] Image _frontPlayerHeadshot;
     [SerializeField] Image _backPlayerHeadshot;
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         List<Player> players = item as List<Player>;
 

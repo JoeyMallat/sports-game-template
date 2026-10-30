@@ -137,7 +137,7 @@ public class PlayoffSystem : MonoBehaviour
     {
         _playoffRounds[_currentRound].SimSeries();
         SetNextMatch();
-        Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
+        Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()), true);
         yield return null;
     }
 
@@ -149,7 +149,7 @@ public class PlayoffSystem : MonoBehaviour
             yield return null;
         }
 
-        Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
+        Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()), true);
     }
 
     private void SetNextMatch()

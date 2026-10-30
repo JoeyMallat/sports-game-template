@@ -45,7 +45,7 @@ public class TeamViewer : MonoBehaviour, ISettable
         _rotationDirty = false;
     }
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         Team team = item as Team;
         if (team == null)
@@ -135,39 +135,10 @@ public class TeamViewer : MonoBehaviour, ISettable
         if (_team == null)
             return;
 
-        string[] positions = { "Point Guard", "Shooting Guard", "Small Forward", "Power Forward", "Center" };
-        for (int i = 0; i < positions.Length; i++)
-        {
-            List<Player> players = _team.GetPlayersFromTeam()
-                .Where(player => player.GetPosition() == positions[i])
-                .OrderByDescending(player => player.CalculateRatingForPosition())
-                .ToList();
-
-            AssignMinutes(players);
-            if (players.Count > 0)
-                _team.SetPositionInLineup(players[0], positions[i]);
-        }
+        _team.AutoAssignRotation();
 
         _rotationDirty = true;
         RefreshRotationRows();
-    }
-
-    static void AssignMinutes(List<Player> players)
-    {
-        if (players.Count == 0)
-            return;
-
-        int totalRating = players.Sum(player => Mathf.Max(1, player.CalculateRatingForPosition()));
-        int assignedMinutes = 0;
-        for (int i = 0; i < players.Count; i++)
-        {
-            int minutes = Mathf.FloorToInt(
-                Mathf.Max(1, players[i].CalculateRatingForPosition()) / (float)totalRating * MinutesPerGame);
-            players[i].SetMinutes(minutes);
-            assignedMinutes += minutes;
-        }
-
-        players[0].SetMinutes(players[0].GetMinutes() + MinutesPerGame - assignedMinutes);
     }
 
     void RefreshRotationRows()

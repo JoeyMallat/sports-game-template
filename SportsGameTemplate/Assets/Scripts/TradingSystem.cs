@@ -70,7 +70,7 @@ public class TradingSystem : MonoBehaviour
         if (localSaveManager != null)
             localSaveManager.SaveGame(false);
 
-        Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
+        Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()), true);
         Navigation.Instance.GoToScreen(true, CanvasKey.Team, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
 
         Notification.Instance.ShowNotification("Trade confirmed!", NotificationType.Success, 2);

@@ -6,9 +6,9 @@ public class HomeBudgetComponent : MonoBehaviour, ISettable
 {
     [SerializeField] Button _button;
 
-    [SerializeField] TextMeshProUGUI _budgetText; //Format: $123.5m / $130.4m
+    [SerializeField] TextMeshProUGUI _budgetText;
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         Team team = item as Team;
 
@@ -18,7 +18,7 @@ public class HomeBudgetComponent : MonoBehaviour, ISettable
         }
 
         float salaryCap = ConfigManager.Instance.GetCurrentConfig().SalaryCap * (1 + GameManager.Instance.GetSalaryCapIncrease());
-        _budgetText.text = $"{team.GetTotalSalaryAmount().ConvertToMonetaryString()} / {salaryCap.ConvertToMonetaryString()}";
+        _budgetText.text = $"{BudgetView.FormatCurrency(team.GetTotalSalaryAmount())} / {BudgetView.FormatCurrency(salaryCap)}";
 
         if (_button == null)
         {
@@ -26,6 +26,6 @@ public class HomeBudgetComponent : MonoBehaviour, ISettable
         }
 
         _button.onClick.RemoveAllListeners();
-        _button.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Store));
+        _button.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.Budget, team));
     }
 }

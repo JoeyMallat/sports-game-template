@@ -7,7 +7,7 @@ public class TeamOverview : MonoBehaviour, ISettable
 {
     [SerializeField] RectTransform _teamItemsRoot;
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         List<Team> teams = item as List<Team>;
 

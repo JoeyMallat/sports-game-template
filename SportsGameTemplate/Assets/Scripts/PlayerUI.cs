@@ -47,7 +47,7 @@ public class PlayerUI : MonoBehaviour, ISettable
     [SerializeField] GameObject _itemsScreen;
     [SerializeField] GameObject _itemsTabTitle;
 
-    public void SetDetails<T>(T itemDetails) where T : class
+    public void SetDetails<T>(T itemDetails, bool showMatchButton = false) where T : class
     {
         Player player = itemDetails as Player;
         _playerPortrait.sprite = player.GetPlayerPortrait();

@@ -30,7 +30,7 @@ public class HomeTacticsComponent : MonoBehaviour, ISettable
     [SerializeField] TextMeshProUGUI _defensiveRatingText; //Format: 99 Def
     [SerializeField] TextMeshProUGUI _attackingRatingText; //Format: 99 Off
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         Team team = item as Team;
 

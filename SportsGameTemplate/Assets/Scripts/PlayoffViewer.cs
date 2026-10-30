@@ -13,10 +13,15 @@ public class PlayoffViewer : MonoBehaviour, ISettable
 
     private void Awake()
     {
-        PlayoffRound.OnPlayoffRoundUpdated += SetDetails;
+        PlayoffRound.OnPlayoffRoundUpdated += RefreshPlayoffRound;
     }
 
-    public void SetDetails<T>(T item) where T : class
+    void RefreshPlayoffRound(PlayoffRound playoffRound)
+    {
+        SetDetails(playoffRound);
+    }
+
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         gameObject.SetActive(false);
 

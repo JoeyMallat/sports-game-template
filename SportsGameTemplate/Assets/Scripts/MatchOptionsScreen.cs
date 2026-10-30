@@ -7,7 +7,7 @@ public class MatchOptionsScreen : MonoBehaviour, ISettable
     [SerializeField] Button _skipToResultButton;
     [SerializeField] Button _liveSimButton;
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         Match match = item as Match;
 

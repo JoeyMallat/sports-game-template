@@ -9,7 +9,7 @@ public class StatObject : MonoBehaviour, ISettable
     [SerializeField] List<TextMeshProUGUI> _statText;
     [SerializeField] Button _playerLinkButton;
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         StatObjectWrapper wrapper = item as StatObjectWrapper;
 

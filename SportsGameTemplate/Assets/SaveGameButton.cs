@@ -26,7 +26,7 @@ public class SaveGameButton : MonoBehaviour
             _teamName.text = savedTeam.GetTeamName();
             _teamLogo.sprite = savedTeam.GetTeamLogo();
 
-            button.onClick.AddListener(async () => { await localSaveManager.LoadGame(path); TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(savedTeam.GetTeamID()))); });
+            button.onClick.AddListener(async () => { await localSaveManager.LoadGame(path); TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(savedTeam.GetTeamID()), true)); });
             _overwriteButton.gameObject.SetActive(true);
             _overwriteButton.onClick.AddListener(() => localSaveManager.SetFilePath(path));
             _overwriteButton.onClick.AddListener(async () => await LeagueSystem.Instance.ReadTeamsFromFile(false));

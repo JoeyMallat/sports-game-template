@@ -193,8 +193,11 @@ public class GameManager : MonoBehaviour
     {
         if (DevelopmentPointsManager.Instance != null)
             DevelopmentPointsManager.Instance.StartNewCareerIdentity();
-        TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(_selectedTeamID)));
-        FirebaseAnalytics.LogEvent("team_picked", new Parameter("team", LeagueSystem.Instance.GetTeam(_selectedTeamID).GetTeamName()));
+
+        Team selectedTeam = LeagueSystem.Instance.GetTeam(_selectedTeamID);
+        selectedTeam.AutoAssignRotation(false);
+        TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, selectedTeam, true));
+        FirebaseAnalytics.LogEvent("team_picked", new Parameter("team", selectedTeam.GetTeamName()));
         OnGameStarted?.Invoke(SeasonStage.RegularSeason, 0);
     }
 
@@ -229,7 +232,7 @@ public class GameManager : MonoBehaviour
     public void StartNewSeason()
     {
         ChangeSeasonStage(LeagueSystem.Instance.GetTeams(), SeasonStage.RegularSeason);
-        TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(_selectedTeamID)));
+        TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(_selectedTeamID), true));
         FirebaseAnalytics.LogEvent("new_season_started", new Parameter("season", _currentSeason));
         ResetSalaryCapIncrease();
     }

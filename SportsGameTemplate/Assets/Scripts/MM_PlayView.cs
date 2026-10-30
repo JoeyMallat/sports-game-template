@@ -18,7 +18,7 @@ public class MM_PlayView : MonoBehaviour, ISettable
     [SerializeField] GameObject _freeAgencyGameObject;
 
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         Team team = item as Team;
 

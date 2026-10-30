@@ -21,7 +21,7 @@ public class DraftPlayerUI : MonoBehaviour, ISettable
 
     public static event Action<Player> OnPlayerDrafted;
 
-    public void SetDetails<T>(T itemDetails) where T : class
+    public void SetDetails<T>(T itemDetails, bool showMatchButton = false) where T : class
     {
         Player player = itemDetails as Player;
         _playerPortrait.sprite = player.GetPlayerPortrait();

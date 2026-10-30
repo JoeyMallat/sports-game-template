@@ -14,7 +14,7 @@ public class NewMainMenuViewer : MonoBehaviour, ISettable
     [SerializeField] HomeFacilitiesComponent _homeFacilitiesComponent;
     [SerializeField] NextMatchButton _nextMatchButton;
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         OnEnable();
     }

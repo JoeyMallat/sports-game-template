@@ -14,7 +14,7 @@ public class MM_LeagueView : MonoBehaviour, ISettable
     [SerializeField] Button _playoffsButton;
     [SerializeField] Button _statsCenterButton;
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         List<Team> league = item as List<Team>;
 

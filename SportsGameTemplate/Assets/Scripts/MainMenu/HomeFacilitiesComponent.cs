@@ -11,7 +11,7 @@ public class HomeFacilitiesComponent : MonoBehaviour, ISettable
 
     [SerializeField] Image[] _stars;
     [SerializeField] TextMeshProUGUI _upgradesAvailableText; // Format: "x upgrades available"
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         for (int i = 0; i < _stars.Length; i++)
         {

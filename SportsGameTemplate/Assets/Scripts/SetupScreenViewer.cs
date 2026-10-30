@@ -23,14 +23,19 @@ public class SetupScreenViewer : MonoBehaviour, ISettable
 
     private void Awake()
     {
-        TeamSelection.OnSelectedTeam += SetDetails;
+        TeamSelection.OnSelectedTeam += RefreshSelectedTeam;
         _teamDataObject.SetActive(false);
         _noTeamSelectedObject.SetActive(true);
         _startGameButton.ToggleButtonStatus(false);
         _selectTeamButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(true, CanvasKey.TeamOverview, LeagueSystem.Instance.GetTeamsSortedByID()));
     }
 
-    public void SetDetails<T>(T item) where T : class
+    void RefreshSelectedTeam(Team team)
+    {
+        SetDetails(team);
+    }
+
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         _noTeamSelectedObject.SetActive(false);
         _startGameButton.ToggleButtonStatus(true);

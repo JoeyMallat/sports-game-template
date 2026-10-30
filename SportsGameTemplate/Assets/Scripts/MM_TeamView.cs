@@ -12,7 +12,7 @@ public class MM_TeamView : MonoBehaviour, ISettable
     [SerializeField] Button _rotationButton;
     [SerializeField] Button _teamTacticsButton;
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         List<Player> players = item as List<Player>;
 

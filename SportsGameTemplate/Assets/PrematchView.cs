@@ -30,10 +30,15 @@ public class PrematchView : MonoBehaviour, ISettable
 
     private void Awake()
     {
-        Team.OnLineupChanged += SetDetails;
+        Team.OnLineupChanged += RefreshLineup;
     }
 
-    public void SetDetails<T>(T item) where T : class
+    void RefreshLineup(Team team)
+    {
+        SetDetails(team);
+    }
+
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         Team team = item as Team;
         Debug.Log(item.GetType());

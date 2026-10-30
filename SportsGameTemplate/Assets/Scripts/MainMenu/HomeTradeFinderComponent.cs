@@ -7,7 +7,7 @@ public class HomeTradeFinderComponent : MonoBehaviour, ISettable
     [SerializeField] Button _button;
     [SerializeField] TextMeshProUGUI _recommendationsText;
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         _recommendationsText.text = "0";
 

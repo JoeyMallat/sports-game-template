@@ -16,7 +16,7 @@ public class StartupScreenView : MonoBehaviour, ISettable
         SetDetails("empty");
     }
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         // Load saves and get chosen team
         List<(bool, string)> filePaths = GetSaveFilePaths();

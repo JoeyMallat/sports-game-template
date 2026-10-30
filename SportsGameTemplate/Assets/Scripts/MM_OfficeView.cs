@@ -40,7 +40,7 @@ public class MM_OfficeView : MonoBehaviour, ISettable
         DevelopmentPointsManager.OnDevelopmentPointsChanged -= UpdateBalance;
     }
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         Team team = item as Team;
 

@@ -24,7 +24,7 @@ public class TeamBoxScores : MonoBehaviour, ISettable
 
     [SerializeField] Button _backToMenuButton;
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         Match match = item as Match;
 
@@ -45,7 +45,7 @@ public class TeamBoxScores : MonoBehaviour, ISettable
         SetPlayerBoxScores(match, awayTeam, _awayBoxRoot);
 
         _backToMenuButton.onClick.RemoveAllListeners();
-        _backToMenuButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()))));
+        _backToMenuButton.onClick.AddListener(() => TransitionAnimation.Instance.StartTransition(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()), true)));
     }
 
     private void SetPlayerBoxScores(Match match, Team team, GameObject boxRoot)

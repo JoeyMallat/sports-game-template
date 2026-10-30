@@ -8,7 +8,7 @@ public class HomeCoachesComponent : MonoBehaviour, ISettable
     [SerializeField] TextMeshProUGUI _amountOfCoachesHiredText; //Format: 3/3
     [SerializeField] Image _coachingBadge; //Not yet implemented
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         AllStaff staff = item as AllStaff;
 

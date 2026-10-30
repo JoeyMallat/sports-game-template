@@ -32,7 +32,7 @@ public class ContractNegotiationsSystem : MonoBehaviour
             LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()).AddPlayer(_currentPlayer);
         }
 
-        Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()));
+        Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()), true);
         Navigation.Instance.GoToScreen(true, CanvasKey.Player, _currentPlayer);
     }
 

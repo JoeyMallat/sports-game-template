@@ -11,7 +11,7 @@ public class HomeStandingsComponent : MonoBehaviour, ISettable
 
     Coroutine _layoutRefreshCoroutine;
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         List<Team> standings = item as List<Team>;
 

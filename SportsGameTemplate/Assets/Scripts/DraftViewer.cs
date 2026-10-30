@@ -24,10 +24,15 @@ public class DraftViewer : MonoBehaviour, ISettable
 
     private void Start()
     {
-        DraftSystem.OnGetDraftOrder += SetDetails;
+        DraftSystem.OnGetDraftOrder += RefreshDraftOrder;
         DraftSystem.OnPlayerPicked += RefreshDraftView;
         DraftSystem.OnDraftClassUpdated += SetDraftClassPlayers;
         DraftSystem.OnDraftEnded += SetEndGraphics;
+    }
+
+    void RefreshDraftOrder(List<DraftOrderItemWrapper> draftOrder)
+    {
+        SetDetails(draftOrder);
     }
 
     private void SetDraftClassPlayers(DraftClass draftClass)
@@ -57,7 +62,7 @@ public class DraftViewer : MonoBehaviour, ISettable
         }
     }
 
-    public void SetDetails<T>(T item) where T : class
+    public void SetDetails<T>(T item, bool showMatchButton = false) where T : class
     {
         if (item.GetType() != typeof(List<DraftOrderItemWrapper>))
         {
@@ -112,7 +117,7 @@ public class DraftViewer : MonoBehaviour, ISettable
         _draftInfoText.text = _textAfterDraft;
         _closeDraftButton.ToggleButtonStatus(true);
         _closeDraftButton.onClick.RemoveAllListeners();
-        _closeDraftButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID())));
+        _closeDraftButton.onClick.AddListener(() => Navigation.Instance.GoToScreen(false, CanvasKey.MainMenu, LeagueSystem.Instance.GetTeam(GameManager.Instance.GetTeamID()), true));
 
         _roundText.text = "";
     }
